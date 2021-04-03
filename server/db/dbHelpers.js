@@ -37,7 +37,12 @@ const dbHelpers = {
     });
   },
   postNewConvo: (user_id, recipient_id, callback) => {
-    const queryStr = `INSERT INTO waw.convo (id, user1, user2) VALUES (DEFAULT, ${user_id}, ${recipient_id})`;
+    const queryStr = `INSERT INTO waw.convo
+    SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
+    WHERE
+        NOT EXISTS (
+            SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id})
+        );`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
@@ -48,8 +53,8 @@ const dbHelpers = {
       callback(err, res);
     });
   },
-  postMessage: (user_id, convo_id, body, callback) => {
-    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, ${convo_id})`;
+  postMessage: (user_id, recipient_id, body, callback) => {
+    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, (select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})))`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
