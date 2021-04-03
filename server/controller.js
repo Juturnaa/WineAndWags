@@ -1,4 +1,4 @@
-const dbHelpers = require("./dbHelpers.js");
+// const dbHelpers = require("./dbHelpers.js");
 
 module.exports = {
   getMyProfile: (req, res) => {
