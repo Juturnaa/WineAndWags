@@ -13,3 +13,14 @@ router
   .patch(controller.editDogProfile);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
+
+// MESSAGES ------------------------------------//
+router
+  .route('/:user_id/convos')
+  .get(controller.getAllConvos)
+  .post(controller.postNewConvo);
+
+router
+  .route('/:user_id/convos/:convo_id')
+  .get(controller.getConvoMessages)
+  .post(controller.postMessage);

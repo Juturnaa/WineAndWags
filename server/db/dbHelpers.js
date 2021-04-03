@@ -39,8 +39,32 @@ const dbHelpers = {
     console.log(qryStr);
     // db.query(qryStr, (err, results) => callback(err, results));
   },
-  editDogProfile: (req, callback) => {
+  editDogProfile: (req, callback) => {},
 
+  // MESSAGES ------------------------------------//
+  getAllConvos: (user_id, callback) => {
+    const queryStr = `SELECT * FROM waw.convo WHERE user1 IN (${user_id}) OR user2 IN (${user_id});`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  postNewConvo: (user_id, recipient_id, callback) => {
+    const queryStr = `INSERT INTO waw.convo (id, user1, user2) VALUES (DEFAULT, ${user_id}, ${recipient_id})`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  getConvoMessages: (user_id, convo_id, callback) => {
+    const queryStr = `SELECT * FROM waw.message WHERE convo_id=${convo_id}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  postMessage: (user_id, convo_id, body, callback) => {
+    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, ${convo_id})`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
   },
 };
 
