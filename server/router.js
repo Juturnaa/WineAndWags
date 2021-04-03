@@ -13,17 +13,3 @@ router
   .patch(controller.editDogProfile);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
-
-// DOG INFORMATION
-[
-//   { id: 0,
-//     owner_id: 1,
-//     name: '',
-//     ...,
-//     dog_info: [{ ... }, { ... }]
-//   },
-//   { id: 1,
-//     owner_id: 2,
-//     dog_info: [{ ... }]},
-//     ...
-// ]

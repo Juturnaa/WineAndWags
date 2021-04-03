@@ -8,7 +8,13 @@ const controller = {
     dbHelpers.getRandomProfile(req, res);
   },
   editOwnerProfile: (req, res) => {
-    dbHelpers.editProfile(req, (err, results) => {
+    dbHelpers.editOwnerProfile(req, (err, results) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+  editDogProfile: (req, res) => {
+    dbHelpers.editDogProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
       res.status(202).send(results.rows);
     });

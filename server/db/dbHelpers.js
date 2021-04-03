@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+/* eslint-disable no-plusplus */
 const db = require('./index.js');
 
 // get my profile
@@ -10,27 +12,32 @@ const db = require('./index.js');
 
 const dbHelpers = {
   getMyProfile: (req, res) => {
-    let email = req.params.email;
+    const { email } = req.params;
     // let qryStr = `SELECT * FROM waw.users WHERE email = '${email}'`;
-    let qryStr = `SELECT waw.users.*, json_agg(json_build_object('dogs', dogs)) dogs_info FROM waw.users
-    LEFT JOIN (SELECT waw.dogs.owner_id, json_agg(json_build_object(
+    const qryStr = `SELECT waw.users.*, json_agg(dogs) dogs_info FROM waw.users
+    LEFT JOIN (SELECT waw.dogs.owner_id, json_object_agg(waw.dogs.id, json_build_object(
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
     waw. dogs.neutered, 'rating', waw.dogs.rating, 'age',
      waw.dogs.age, 'size', waw.dogs.size, 'breed', waw.dogs.breed,
      'healthy', dogs.healthy
-    )) dogs FROM waw.dogs GROUP BY waw.dogs.owner_id) dogs ON dogs.owner_id = waw.users.id GROUP BY waw.users.id`;
+    )) dogs FROM waw.dogs GROUP BY waw.dogs.owner_id) dogs ON dogs.owner_id = waw.users.id WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
         res.status(400).send('something went wrong with your query');
       } else {
-        res.send(data);
+        res.send(data.rows[0]);
       }
     });
   },
   getRandomProfile: (req, res) => {},
   editOwnerProfile: (req, callback) => {
-
+    const {
+      name, gender, bio, email, password, age, zipcode, searched_as,
+    } = req.body;
+    const qryStr = `UPDATE waw.users SET name='${name}', gender='${gender}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE email='${req.params.email}'`;
+    console.log(qryStr);
+    // db.query(qryStr, (err, results) => callback(err, results));
   },
   editDogProfile: (req, callback) => {
 
