@@ -40,7 +40,6 @@ let ages = [
   25,
   56,
 ];
-let userEmail = "sophiaacheong@gmail.com";
 let zipcodes = [
   "90220",
   "90221",
@@ -150,7 +149,7 @@ const seedUsers = () => {
     let name = names[getRandom(0, names.length - 1)];
     let gender = genders[getRandom(0, genders.length - 1)];
     let bio = bios[getRandom(0, bios.length - 1)];
-    let email = userEmail + i;
+    let email = `sophiaacheong${i}@gmail.com`;
     let age = ages[getRandom(0, ages.length - 1)];
     let zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
     db.query(
