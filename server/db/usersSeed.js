@@ -138,24 +138,34 @@ let zipcodes = [
   "92823",
 ];
 let genders = ["m", "f", "nb"];
-let bio = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
+let bios = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
 let password = "password";
 
 const getRandom = (min, max) => {
-  return Math.random() * (max - min) + min;
+  return Math.floor(Math.random() * (max - min) + min);
 };
 
 const seedUsers = () => {
   for (let i = 0; i < 1000; i++) {
     let name = names[getRandom(0, names.length - 1)];
     let gender = genders[getRandom(0, genders.length - 1)];
-    let bio = genders[getRandom(0, genders.length - 1)];
+    let bio = bios[getRandom(0, bios.length - 1)];
     let email = userEmail + i;
     let age = ages[getRandom(0, ages.length - 1)];
     let zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
     db.query(
-      `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode) VALUES('${name}', '${gender}', '${bio}', '${email}', '${password}', ${age}, '${zipcode}')`
+      `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode) VALUES($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        `'${name}'`,
+        `'${gender}'`,
+        `'${bio}'`,
+        `'${email}'`,
+        `'${password}'`,
+        `${age}`,
+        `'${zipcode}'`,
+      ]
     );
+  }
 };
 
 seedUsers();
