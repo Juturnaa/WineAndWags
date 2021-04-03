@@ -1,10 +1,12 @@
 import React from 'react';
+import NavBar from './Navbar';
+import Map from './Map';
 
 const App = () => {
-  console.log('hell0')
   return (
     <div>
-      Hi
+      <NavBar />
+      <Map />
     </div>
   )
 }
