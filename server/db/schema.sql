@@ -1,3 +1,4 @@
+DROP SCHEMA IF EXISTS waw;
 CREATE SCHEMA IF NOT EXISTS waw;
 
 CREATE TABLE IF NOT EXISTS waw.users (
@@ -8,7 +9,8 @@ CREATE TABLE IF NOT EXISTS waw.users (
   email VARCHAR(250) NOT NULL,
   password VARCHAR(255) NOT NULL,
   age INT NOT NULL,
-  zipcode VARCHAR(15) NOT NULL
+  zipcode VARCHAR(15) NOT NULL,
+  searched_as VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS waw.dogs (
@@ -30,7 +32,7 @@ CREATE TABLE IF NOT EXISTS waw.photos (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
   dog_id INT,
-  url VARCHAR(100) NOT NULL
+  url VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS waw.profileLikes (
