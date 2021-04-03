@@ -153,9 +153,9 @@ const seedUsers = () => {
     let email = userEmail + i;
     let age = ages[getRandom(0, ages.length - 1)];
     let zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
-    // db.query(
-    //   `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode) VALUES('${name}', '${gender}', '${bio}', '${email}', '${password}', ${age}, '${zipcode}')`
-    // );
+    db.query(
+      `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode) VALUES('${name}', '${gender}', '${bio}', '${email}', '${password}', ${age}, '${zipcode}')`
+    );
 };
 
 seedUsers();
