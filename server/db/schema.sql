@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS waw.photos (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
   dog_id INT,
-  url VARCHAR(100) NOT NULL
+  url VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS waw.profileLikes (
