@@ -1,14 +1,14 @@
-const path = require('path');
+const path = require("path");
 
-const DIST_DIR = path.join(__dirname, '/client/src');
-const SRC_DIR = path.join(__dirname, '/client');
+const DIST_DIR = path.join(__dirname, "/client/dist");
+const SRC_DIR = path.join(__dirname, "/client/src");
 
 module.exports = {
   entry: `${SRC_DIR}/Index.jsx`,
-  mode: 'development',
-  devtool: 'source-map',
+  mode: "development",
+  devtool: "source-map",
   output: {
-    filename: 'bundle.js',
+    filename: "bundle.js",
     path: DIST_DIR,
   },
   module: {
@@ -16,15 +16,15 @@ module.exports = {
       {
         test: [/\.jsx$/],
         exclude: /node_modules/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         query: {
-          presets: ['env', 'react'],
+          presets: ["env", "react"],
         },
       },
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: [".js", ".jsx"],
   },
   watch: true,
 };
