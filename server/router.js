@@ -7,13 +7,15 @@ router.route('/users/my-profile').get(controller.getMyProfile);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
 
+router.route('/users/my-profile/:email').get(controller.getMyProfile);
+
 // Messages //
 router
-  .route('/messages')
+  .route('/:user_id/messages')
   .get(controller.getAllConvos)
   .post(controller.postNewConvo);
 
 router
-  .route('/messages/:convo_id')
-  .get(controller.getConvoId)
+  .route('/:user_id/messages/:convo_id')
+  .get(controller.getConvoMessages)
   .post(controller.postMessage);
