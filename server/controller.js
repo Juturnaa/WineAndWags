@@ -10,7 +10,7 @@ const controller = {
   getAllConvos: (req, res) => {
     dbHelpers.getAllConvos(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
-      else res.status(200).send(results);
+      else res.status(200).send(results.rows);
     });
   },
   postNewConvo: (req, res) => {

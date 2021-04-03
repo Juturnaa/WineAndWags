@@ -22,7 +22,12 @@ const dbHelpers = {
     });
   },
   getRandomProfile: (req, res) => {},
-  getAllConvos: (req, res) => {},
+  getAllConvos: (user_id, callback) => {
+    const queryStr = `SELECT * FROM waw.convo WHERE user1 IN (${user_id}) OR user2 IN (${user_id});`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
   postNewConvo: (user_id, recipient_id, callback) => {
     const queryStr = `INSERT INTO waw.convo (id, user1, user2) VALUES (DEFAULT, ${user_id}, ${recipient_id})`;
     db.query(queryStr, (err, res) => {
