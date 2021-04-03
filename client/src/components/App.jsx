@@ -5,7 +5,6 @@ import Map from './Map';
 const App = () => {
   return (
     <div>
-      Hi
       <NavBar />
       <Map />
     </div>
