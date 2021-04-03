@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const db = require('./index.js');
+const db = require("./index.js");
 
 // get my profile
 // get my photos
@@ -23,7 +23,7 @@ const dbHelpers = {
     )) dogs FROM waw.dogs GROUP BY waw.dogs.owner_id) dogs ON dogs.owner_id = waw.users.id WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
-        res.status(400).send('something went wrong with your query');
+        res.status(400).send("something went wrong with your query");
       } else {
         res.send(data.rows[0]);
       }
@@ -31,18 +31,39 @@ const dbHelpers = {
   },
   getRandomProfile: (req, res) => {},
   getPhotos: (req, callback) => {
-    db.query(`SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`, (err, results) => { callback(err, results); });
+    db.query(
+      `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,
+      (err, results) => {
+        callback(err, results);
+      }
+    );
   },
   editOwnerProfile: (req, callback) => {
     const {
-      name, gender, bio, email, password, age, zipcode, searched_as,
+      name,
+      gender,
+      bio,
+      email,
+      password,
+      age,
+      zipcode,
+      searched_as,
     } = req.body;
     const qryStr = `UPDATE waw.users SET name='${name}', gender='${gender}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE email='${req.params.email}'`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   editDogProfile: (req, callback) => {
     const {
-      name, gender, bio, hypo, neutered, rating, age, size, breed, healthy
+      name,
+      gender,
+      bio,
+      hypo,
+      neutered,
+      rating,
+      age,
+      size,
+      breed,
+      healthy,
     } = req.body;
     const qryStr = `UPDATE waw.dogs SET name=${name}, gender=${gender}, bio=${bio}, hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size=${size}, breed=${breed}, healthy=${healthy} WHERE id=${req.params.dogid}`;
     db.query(qryStr, (err, results) => callback(err, results));

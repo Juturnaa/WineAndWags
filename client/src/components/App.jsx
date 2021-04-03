@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import NavBar from './Navbar';
 import Map from './Map';
-import ProfileView from './Homepage/ProfileVIew';
+import ProfileView from './Homepage/ProfileView';
 import axios from 'axios';
 const App = () => {
 
@@ -9,7 +9,7 @@ const App = () => {
   const getUser = () => {
     axios.get('/app/users/my-profile/sophiaacheong4@gmail.com')
       .then((data) => {
-        setCurrentUser(data.data[0])
+        setCurrentUser(data.data)
       })
       .catch((err) => {
         console.log(err);
