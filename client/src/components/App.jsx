@@ -4,7 +4,6 @@ import NavBar from './Navbar';
 const App = () => {
   return (
     <div>
-      Hi
       <NavBar />
     </div>
   )

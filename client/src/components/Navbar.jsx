@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, NavLink } from "react-router-dom";
+import Homepage from './Homepage'
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -8,9 +9,7 @@ import { BrowserRouter, Route, Switch, NavLink } from "react-router-dom";
 // </Route>
 
 // replace these with imports of the actual components/pages when they're ready
-const Homepage = () => (
-  <div>Home Page</div>
-)
+
 const Notifications = () => (
   <div>Notifications</div>
 )
