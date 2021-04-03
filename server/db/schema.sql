@@ -45,7 +45,6 @@ CREATE TABLE IF NOT EXISTS waw.notification (
   time_stamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   sender_id INT NOT NULL,
   recipient_id INT NOT NULL,
-  sent BOOLEAN NOT NULL,
   type VARCHAR(20) NOT NULL
 );
 
@@ -59,7 +58,7 @@ CREATE TABLE IF NOT EXISTS waw.comments (
 
 CREATE TABLE IF NOT EXISTS waw.photoLikes (
   id SERIAL PRIMARY KEY,
-  liked BOOLEAN NOT NULL,
+  user_id INT NOT NULL,
   photo_id INT NOT NULL
 );
 
