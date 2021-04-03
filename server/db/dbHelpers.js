@@ -35,7 +35,12 @@ const dbHelpers = {
     });
   },
   getConvoMessages: (req, res) => {},
-  postMessage: (req, res) => {},
+  postMessage: (user_id, body, callback) => {
+    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, ${body.convo_id})`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
 };
 
 module.exports = dbHelpers;

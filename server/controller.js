@@ -23,7 +23,10 @@ const controller = {
     dbHelpers.getConvoMessages(req, res);
   },
   postMessage: (req, res) => {
-    dbHelpers.postMessage(req, res);
+    dbHelpers.postMessage(req.params.user_id, req.body, (err, results) => {
+      if (err) res.status(400).send(err);
+      else res.status(200).send('Message sent!');
+    });
   },
 };
 

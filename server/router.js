@@ -11,11 +11,11 @@ router.route('/users/my-profile/:email').get(controller.getMyProfile);
 
 // Messages //
 router
-  .route('/:user_id/messages')
+  .route('/:user_id/convos')
   .get(controller.getAllConvos)
   .post(controller.postNewConvo);
 
 router
-  .route('/:user_id/messages/:convo_id')
+  .route('/:user_id/convos/messages')
   .get(controller.getConvoMessages)
   .post(controller.postMessage);
