@@ -7,6 +7,12 @@ const controller = {
   getRandomProfile: (req, res) => {
     dbHelpers.getRandomProfile(req, res);
   },
+  getPhotos: (req, res) => {
+    dbHelpers.getPhotos(req, (err, results) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send(results.rows);
+    });
+  },
   editOwnerProfile: (req, res) => {
     dbHelpers.editOwnerProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
@@ -16,7 +22,7 @@ const controller = {
   editDogProfile: (req, res) => {
     dbHelpers.editDogProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send(results.rows);
+      res.status(202).send('Success!');
     });
   },
   // MESSAGES ------------------------------------//

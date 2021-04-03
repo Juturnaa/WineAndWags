@@ -9,6 +9,10 @@ router
   .patch(controller.editOwnerProfile);
 
 router
+  .route('/users/photos/:id')
+  .get(controller.getPhotos);
+
+router
   .route('/users/my-profile/:dogid')
   .patch(controller.editDogProfile);
 

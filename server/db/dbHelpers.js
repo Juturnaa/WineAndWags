@@ -13,7 +13,6 @@ const db = require('./index.js');
 const dbHelpers = {
   getMyProfile: (req, res) => {
     const { email } = req.params;
-    // let qryStr = `SELECT * FROM waw.users WHERE email = '${email}'`;
     const qryStr = `SELECT waw.users.*, json_agg(dogs) dogs_info FROM waw.users
     LEFT JOIN (SELECT waw.dogs.owner_id, json_object_agg(waw.dogs.id, json_build_object(
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
@@ -31,15 +30,23 @@ const dbHelpers = {
     });
   },
   getRandomProfile: (req, res) => {},
+  getPhotos: (req, callback) => {
+    db.query(`SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`, (err, results) => { callback(err, results); });
+  },
   editOwnerProfile: (req, callback) => {
     const {
       name, gender, bio, email, password, age, zipcode, searched_as,
     } = req.body;
     const qryStr = `UPDATE waw.users SET name='${name}', gender='${gender}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE email='${req.params.email}'`;
-    console.log(qryStr);
-    // db.query(qryStr, (err, results) => callback(err, results));
+    db.query(qryStr, (err, results) => callback(err, results));
   },
-  editDogProfile: (req, callback) => {},
+  editDogProfile: (req, callback) => {
+    const {
+      name, gender, bio, hypo, neutered, rating, age, size, breed, healthy
+    } = req.body;
+    const qryStr = `UPDATE waw.dogs SET name=${name}, gender=${gender}, bio=${bio}, hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size=${size}, breed=${breed}, healthy=${healthy} WHERE id=${req.params.dogid}`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
 
   // MESSAGES ------------------------------------//
   getAllConvos: (user_id, callback) => {
