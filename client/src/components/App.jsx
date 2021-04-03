@@ -1,6 +1,7 @@
 import React from 'react';
 
-function App() {
+const App = () => {
+  console.log('hell0')
   return (
     <div>
       Hi
