@@ -1,1 +1,4 @@
-module.exports = {};
+module.exports = {
+  getMyProfile: (req, res) => {},
+  getRandomProfile: (req, res) => {},
+};
