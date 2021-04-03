@@ -154,7 +154,7 @@ const seedUsers = () => {
     let zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
     let searched_as = genders[getRandom(0, genders.length - 1)];
     db.query(
-      `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7)`,
+      `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`,
       [
         `'${name}'`,
         `'${gender}'`,
