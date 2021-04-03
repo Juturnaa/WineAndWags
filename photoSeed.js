@@ -14,7 +14,7 @@ for (let i = 1; i < 100; i++) {
       url: profilePhotos[Math.floor(Math.random() * profilePhotos.length)]
     }
     // save entry to db
-    console.log(entry) // db.query(INSERT INTO TABLE NAME VALUES (user_id, dog_id, response.data.message))
+    console.log(entry) // db.query(INSERT INTO TABLE NAME VALUES (user_id, dog_id, profilePhotos[Math.floor(Math.random() * profilePhotos.length)]))
   }
   if (isDog) {
     dog_id = Math.floor(Math.random() * 100) + 1 + i // random id for dog 1-10k
