@@ -1,4 +1,4 @@
-const db = require("./index.js");
+const db = require('./index.js');
 
 // get my profile
 // get my photos
@@ -10,18 +10,24 @@ const db = require("./index.js");
 
 const dbHelpers = {
   getMyProfile: (req, res) => {
-    let email = req.params.email;
+    const { email } = req.params;
     console.log(email);
-    let qryStr = `SELECT * FROM waw.users WHERE email = '${email}'`;
+    const qryStr = `SELECT * FROM waw.users WHERE email = '${email}'`;
     db.query(qryStr, (err, data) => {
       if (err) {
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.send(data);
       }
     });
   },
   getRandomProfile: (req, res) => {},
+  editOwnerProfile: (req, callback) => {
+
+  },
+  editDogProfile: (req, callback) => {
+
+  }
 };
 
 module.exports = dbHelpers;
