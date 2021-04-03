@@ -20,7 +20,7 @@ let names = [
   "Abbe",
   "Abbey",
 ];
-let age = [
+let ages = [
   44,
   34,
   42,
@@ -40,14 +40,122 @@ let age = [
   25,
   56,
 ];
-let email = "sophiaacheong@gmail.com";
-let zipcode = ["91001", "92833", "90024", "91354"];
-let gender = ["m", "f", "nb"];
+let userEmail = "sophiaacheong@gmail.com";
+let zipcodes = [
+  "90220",
+  "90221",
+  "90502",
+  "90710",
+  "90712",
+  "90713",
+  "90715",
+  "90716",
+  "90731",
+  "90732",
+  "90744",
+  "90745",
+  "90746",
+  "90755",
+  "90802",
+  "90803",
+  "90804",
+  "90805",
+  "90806",
+  "90807",
+  "90808",
+  "90810",
+  "90813",
+  "90814",
+  "90815",
+  "90822",
+  "90831",
+  "90840",
+  "90846",
+  "90040",
+  "90058",
+  "90201",
+  "90220",
+  "90221",
+  "90240",
+  "90241",
+  "90242",
+  "90255",
+  "90262",
+  "90270",
+  "90280",
+  "90604",
+  "90605",
+  "90606",
+  "90638",
+  "90640",
+  "90650",
+  "90660",
+  "90670",
+  "90703",
+  "90706",
+  "90723",
+  "90601",
+  "90602",
+  "90603",
+  "90605",
+  "90631",
+  "91006",
+  "91007",
+  "91008",
+  "91010",
+  "91016",
+  "91024",
+  "91030",
+  "91108",
+  "91702",
+  "91706",
+  "91722",
+  "91723",
+  "91724",
+  "91731",
+  "91732",
+  "91733",
+  "91741",
+  "91744",
+  "91745",
+  "91746",
+  "91748",
+  "91754",
+  "91756",
+  "91765",
+  "91770",
+  "91773",
+  "91775",
+  "91776",
+  "91780",
+  "91789",
+  "91790",
+  "91791",
+  "91792",
+  "91801",
+  "91803",
+  "92821",
+  "92823",
+];
+let genders = ["m", "f", "nb"];
 let bio = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
 let password = "password";
 
-const getRandomArbitrary = (min, max) => {
+const getRandom = (min, max) => {
   return Math.random() * (max - min) + min;
 };
 
-const seedUsers = () => {};
+const seedUsers = () => {
+  for (let i = 0; i < 1000; i++) {
+    let name = names[getRandom(0, names.length - 1)];
+    let gender = genders[getRandom(0, genders.length - 1)];
+    let bio = genders[getRandom(0, genders.length - 1)];
+    let email = userEmail + i;
+    let age = ages[getRandom(0, ages.length - 1)];
+    let zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
+    // db.query(
+    //   `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode) VALUES('${name}', '${gender}', '${bio}', '${email}', '${password}', ${age}, '${zipcode}')`
+    // );
+};
+
+seedUsers();

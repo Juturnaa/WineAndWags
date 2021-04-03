@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS waw.comments (
 CREATE TABLE IF NOT EXISTS waw.photoLikes (
   id SERIAL PRIMARY KEY,
   photo_id INT NOT NULL,
-  user_id INT NOT NULL,
+  user_id INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS waw.convo (
