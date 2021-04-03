@@ -6,8 +6,8 @@ const express = require("express"),
   router = require("./router"),
   app = express();
 
-app.use(morgan("dev")).use(cors()).use(express.json());
-app.use("/app", router);
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(morgan('dev')).use(cors()).use(express.json());
+app.use('/app', router);
+app.use(express.static(path.join(__dirname, '../client/dist')));
 
 app.listen(PORT, () => console.log(`Listening on PORT ${PORT}`));
