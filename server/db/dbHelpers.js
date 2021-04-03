@@ -22,6 +22,7 @@ const dbHelpers = {
     });
   },
   getRandomProfile: (req, res) => {},
+  // MESSAGES ------------------------------------//
   getAllConvos: (user_id, callback) => {
     const queryStr = `SELECT * FROM waw.convo WHERE user1 IN (${user_id}) OR user2 IN (${user_id});`;
     db.query(queryStr, (err, res) => {

@@ -7,6 +7,7 @@ const controller = {
   getRandomProfile: (req, res) => {
     dbHelpers.getRandomProfile(req, res);
   },
+  // MESSAGES ------------------------------------//
   getAllConvos: (req, res) => {
     dbHelpers.getAllConvos(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);

@@ -9,7 +9,7 @@ router.route('/users/random-profile').get(controller.getRandomProfile);
 
 router.route('/users/my-profile/:email').get(controller.getMyProfile);
 
-// Messages //
+// MESSAGES ------------------------------------//
 router
   .route('/:user_id/convos')
   .get(controller.getAllConvos)
