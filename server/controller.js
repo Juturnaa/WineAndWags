@@ -1,6 +1,6 @@
-// const dbHelpers = require("./dbHelpers.js");
+const dbHelpers = require("./db/dbHelpers");
 
-module.exports = {
+const controller = {
   getMyProfile: (req, res) => {
     dbHelpers.getMyProfile(req, res);
   },
@@ -8,3 +8,5 @@ module.exports = {
     dbHelpers.getRandomProfile(req, res);
   },
 };
+
+module.exports = controller;

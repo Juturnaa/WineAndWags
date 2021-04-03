@@ -11,6 +11,7 @@ const db = require("./index.js");
 const dbHelpers = {
   getMyProfile: (req, res) => {
     let email = req.params.email;
+    console.log(email);
     let qryStr = `SELECT * FROM waw.users WHERE email = '${email}'`;
     db.query(qryStr, (err, data) => {
       if (err) {
