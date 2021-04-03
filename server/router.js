@@ -16,6 +16,6 @@ router
   .post(controller.postNewConvo);
 
 router
-  .route('/:user_id/convos/messages')
+  .route('/:user_id/convos/:convo_id')
   .get(controller.getConvoMessages)
   .post(controller.postMessage);

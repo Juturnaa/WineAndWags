@@ -34,9 +34,14 @@ const dbHelpers = {
       callback(err, res);
     });
   },
-  getConvoMessages: (req, res) => {},
-  postMessage: (user_id, body, callback) => {
-    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, ${body.convo_id})`;
+  getConvoMessages: (user_id, convo_id, callback) => {
+    const queryStr = `SELECT * FROM waw.message WHERE convo_id=${convo_id}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  postMessage: (user_id, convo_id, body, callback) => {
+    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, ${convo_id})`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
