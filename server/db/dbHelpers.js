@@ -46,7 +46,8 @@ const dbHelpers = {
     const {
       name, gender, bio, hypo, neutered, rating, age, size, breed, healthy,
     } = req.body;
-    const qryStr = `UPDATE waw.dogs SET name=${name}, gender=${gender}, bio=${bio}, hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size=${size}, breed=${breed}, healthy=${healthy} WHERE id=${req.params.dogid}`;
+    const qryStr = `UPDATE waw.dogs SET name='${name}', gender='${gender}', bio='${bio}', hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size='${size}', breed='${breed}', healthy=${healthy} WHERE id=${req.params.dogid}`;
+    console.log(qryStr)
     db.query(qryStr, (err, results) => callback(err, results));
   },
 

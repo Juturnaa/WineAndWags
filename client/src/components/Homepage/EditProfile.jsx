@@ -9,6 +9,7 @@ import axios from 'axios';
 // implement react paginton for edit of dogs
 // hard coded to display only ONE DOG ONLY, need to adjust
 // add placeholder texts for the current value of the place
+// need to add photos
 
 function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [human, setHuman] = useState(false);
@@ -29,12 +30,14 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [hypoallergenic, setHypo] = useState();
   const [neutered, setNeutered] = useState();
   const [healthy, setHealthy] = useState();
+  const [dogsInfo, setDogsinfo] = useState();
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
       setHypo(currentUser.dogs_info[0].hypo);
       setNeutered(currentUser.dogs_info[0].neutered);
       setHealthy(currentUser.dogs_info[0].healthy);
+      setDogsinfo(currentUser.dogs_info);
     }
   }, [currentUser]);
 
@@ -62,6 +65,28 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     }
     // hardcoded the end point
     axios.patch('/app/users/my-profile/sophiaacheong5@gmail.com', newValues)
+      .then((results) => alert(results.data))
+      .catch((err) => console.error(err));
+  };
+
+  const submitDog = (e) => {
+    e.preventDefault();
+    const values = Object.values(dogValue);
+    const keys = Object.keys(dogValue);
+    const newValues = {};
+    for (let i = 0; i < values.length; i++) {
+      if (values[i].length === 0) {
+        newValues[keys[i]] = dogsInfo[0][keys[i]];
+      } else {
+        newValues[keys[i]] = values[i];
+      }
+    }
+    newValues.hypo = hypoallergenic;
+    newValues.neutered = neutered;
+    newValues.healthy = healthy;
+    newValues.owner_id = currentUser.id;
+    //hardcoded the end point
+    axios.patch('/app/users/my-dog/43', newValues)
       .then((results) => alert(results.data))
       .catch((err) => console.error(err));
   };
@@ -150,7 +175,7 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
         )
         : null}
       {dogs ? (
-        <form id="editDog">
+        <form id="editDog" onSubmit={submitDog}>
           <div>
             Name:
             {' '}
