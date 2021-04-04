@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const ProfileView = ({ user }) => {
-    console.log(user)
     return (
         <div>
             <div style={{display: 'flex', flexDirection: 'row'}} >
