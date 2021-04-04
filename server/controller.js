@@ -21,7 +21,7 @@ const controller = {
     });
   },
   getConvoMessages: (req, res) => {
-    dbHelpers.getConvoMessages(req.params.user_id, req.params.convo_id, (err, results) => {
+    dbHelpers.getConvoMessages(req.params.user_id, req.params.recipient_id, (err, results) => {
       if (err) res.status(400).send(err);
       else res.status(200).send(results.rows);
     });
