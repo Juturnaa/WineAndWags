@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './Navbar';
+import breedData from '../dummyData/dogBreed';
 import Map from './Map';
 import ProfileView from './Homepage/ProfileVIew';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState();
+  const [breeds, setBreeds] = useState(breedData);
   const [currentPhoto, setPhoto] = useState();
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar currentUser={currentUser} currentPhoto={currentPhoto} />
+      <NavBar currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} />
       {/* ProfileView needs to be moved under HOME PAGE component */}
       {/* <ProfileView user={currentUser} /> */}
       {/* <Map /> */}
