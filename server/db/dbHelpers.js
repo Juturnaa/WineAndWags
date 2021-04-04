@@ -57,7 +57,7 @@ const dbHelpers = {
   },
   // PROFILE LIKES ------------------------------------//
   getProfileLikes: (user_id, callback) => {
-    const queryStr = `SELECT * FROM waw.convo WHERE user1 IN (${user_id}) OR user2 IN (${user_id});`;
+    const queryStr = `SELECT * FROM waw.profilelikes WHERE user_id=${user_id}`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
