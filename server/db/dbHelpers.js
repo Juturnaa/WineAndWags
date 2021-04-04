@@ -22,7 +22,7 @@ const dbHelpers = {
      'healthy', dogs.healthy
     )) dogs_info FROM waw.users
     LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
-    WHERE waw.users.email = ${email} GROUP BY waw.users.id`;
+    WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
         res.status(400).send('something went wrong with your query');

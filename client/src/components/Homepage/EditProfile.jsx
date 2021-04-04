@@ -1,11 +1,14 @@
+/* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-plusplus */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
 // need to set up a function to check the inputs for ZIPCODE, AGE, EMAIL FOLLOWS THE RIGHT FORMAT.
 // implement react paginton for edit of dogs
+// hard coded to display only ONE DOG ONLY, need to adjust
+// add placeholder texts for the current value of the place
 
 function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [human, setHuman] = useState(false);
@@ -17,15 +20,23 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     name: '',
     gender: '',
     bio: '',
-    hypo: ,
-    neutered: '',
     rating: '',
     owner_id: '',
     age: '',
     size: '',
     breed: '',
-    healthy: '',
   });
+  const [hypoallergenic, setHypo] = useState();
+  const [neutered, setNeutered] = useState();
+  const [healthy, setHealthy] = useState();
+
+  useEffect(() => {
+    if (Object.keys(currentUser).length > 0) {
+      setHypo(currentUser.dogs_info[0].hypo);
+      setNeutered(currentUser.dogs_info[0].neutered);
+      setHealthy(currentUser.dogs_info[0].healthy);
+    }
+  }, [currentUser]);
 
   const changeHuman = () => {
     setHuman(true);
@@ -62,8 +73,6 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
   const dogValueChange = (e) => {
     setDogValue({ ...dogValue, [e.target.name]: e.target.value });
   };
-
-  console.log(dogValue);
 
   return (
     <div>
@@ -168,12 +177,12 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
           <div>
             Hypo
             {' '}
-            <input type="checkbox" name="hypo" checked={checked} onChange={dogValueChange} />
+            <input type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
           </div>
           <div>
             Neutered/Spayed
             {' '}
-            <input type="checkbox" name="neutered" checked={checked} onChange={dogValueChange} />
+            <input type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
           </div>
           <div>
             Age
@@ -185,10 +194,20 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
             Size ...input examples under the inputs
             {' '}
             <br />
+            XS
+            {' '}
             <input type="radio" name="size" value="XS" onChange={dogValueChange} />
+            S
+            {' '}
             <input type="radio" name="size" value="S" onChange={dogValueChange} />
+            M
+            {' '}
             <input type="radio" name="size" value="M" onChange={dogValueChange} />
+            L
+            {' '}
             <input type="radio" name="size" value="L" onChange={dogValueChange} />
+            XL
+            {' '}
             <input type="radio" name="size" value="XL" onChange={dogValueChange} />
           </div>
           <div>
@@ -204,7 +223,7 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
           <div>
             Healthy
             {' '}
-            <input type="checkbox" name="healthy" value="yes" onChange={dogValueChange} />
+            <input type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
           </div>
           <button type="submit">Save changes</button>
         </form>
