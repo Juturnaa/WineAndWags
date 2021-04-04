@@ -37,12 +37,8 @@ const dbHelpers = {
     });
   },
   postNewConvo: (user_id, recipient_id, callback) => {
-    const queryStr = `INSERT INTO waw.convo
-    SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
-    WHERE
-        NOT EXISTS (
-            SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id})
-        );`;
+    const queryStr = `INSERT INTO waw.convo SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
+    WHERE NOT EXISTS (SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id}))`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });

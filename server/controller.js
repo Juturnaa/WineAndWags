@@ -17,7 +17,7 @@ const controller = {
   postNewConvo: (req, res) => {
     dbHelpers.postNewConvo(req.params.user_id, req.body.recipient_id, (err, results) => {
       if (err) res.status(400).send(err);
-      else res.status(200).send(res);
+      else res.status(200).send('Created new convo!');
     });
   },
   getConvoMessages: (req, res) => {
