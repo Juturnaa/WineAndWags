@@ -19,3 +19,9 @@ router
   .route('/:user_id/convos/:recipient_id')
   .get(controller.getConvoMessages)
   .post(controller.postMessage);
+
+// PROFILE LIKES ------------------------------------//
+router
+  .route('/:user_id/profile-likes')
+  .get(controller.getProfileLikes)
+  .post(controller.postNewProfileLike);
