@@ -32,12 +32,21 @@ const App = () => {
   }, [dogsPhoto]);
 
   const getRandomUser = () => {
+    let random;
     axios.get('/app/users/random-profile')
       .then((data) => {
-        const random = Math.floor(Math.random() * (data.data.length - 0) + 0);
-        console.log(random);
-      });
-  };
+        random = Math.floor(Math.random() * (data.data.length - 0) + 0);
+        setCurrentUser(data.data[random])
+        setCurrentDogs(data.data[random].dogs_info);
+      })
+      .then(() => {
+        axios.get(`/app/users/photos/${random + 1}`)
+          .then((data) => {
+            setHumanPhoto(data.data)
+          })
+      })
+
+  }
 
   useEffect(() => {
     axios.all([
@@ -47,7 +56,6 @@ const App = () => {
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
-        setPhoto(two.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
