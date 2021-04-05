@@ -42,9 +42,13 @@ function EditProfile({
   const [breedFilterOptions, setBreedFilter] = useState();
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
+  const [dogImages, setDogImages] = useState();
 
-  console.log(dogsInfo)
-  console.log(dogsImg)
+  useEffect(() => {
+    if (dogsImg.length > 0) {
+      setDogImages(Object.assign({}, ...dogsImg));
+    }
+  }, [dogsImg]);
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
@@ -303,8 +307,14 @@ function EditProfile({
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>
-                Photo: <br />
-                {}
+                Photo:
+                {' '}
+                <br />
+                {dogImages[item.id].map((currentItem, ind) => (
+                  <div key={ind}>
+                    <img src={currentItem.url} alt="dog" />
+                  </div>
+                ))}
               </div>
               <div>
                 Name:
