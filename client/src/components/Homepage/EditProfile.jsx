@@ -43,6 +43,9 @@ function EditProfile({
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
 
+  console.log(dogsInfo)
+  console.log(dogsImg)
+
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
       setHypo(currentUser.dogs_info[0].hypo);
