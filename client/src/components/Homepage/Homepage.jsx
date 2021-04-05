@@ -79,6 +79,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
           ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
           ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
+          close={toggleFilterModal}
         /> : null}
     </div>
   )

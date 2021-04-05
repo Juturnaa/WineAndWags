@@ -23,7 +23,8 @@ export default function Filters({
   preferredBreeds, changePreferredBreeds,
   maxDistance, changeMaxDistance,
   ownerAgeRange, changeOwnerAgeRange,
-  ownerGenders, changeOwnerGenders
+  ownerGenders, changeOwnerGenders,
+  close
 }) {
 
   const breeds = [
@@ -548,6 +549,8 @@ export default function Filters({
 
   return (
     <div className='filter-modal'>
+      <button onClick={() => close(false)} className='close-filters-btn'>X</button>
+      <h2>Filters</h2>
       <div className='dog-filters'>
         <h3>Dog</h3>
         <p>Age Range: {dogAgeRange[0]}-{dogAgeRange[1]}</p>
@@ -631,7 +634,7 @@ export default function Filters({
             <FormControlLabel value="All" control={<Radio />} label="All" />
           </RadioGroup>
         </FormControl>
-        <button className='apply-btn' onClick={() => saveChanges()}>Apply changes</button>
+        <button className='apply-filters-btn' onClick={() => saveChanges()}>Apply</button>
       </div>
     </div>
   )
