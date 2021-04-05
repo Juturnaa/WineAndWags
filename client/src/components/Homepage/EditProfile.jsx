@@ -1,16 +1,18 @@
+/* eslint-disable no-alert */
+/* eslint-disable no-restricted-globals */
 /* eslint-disable max-len */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Pagination } from '@material-ui/lab';
 
-// need to set up a function to check the inputs for ZIPCODE, AGE, EMAIL FOLLOWS THE RIGHT FORMAT.
 // implement react paginton for edit of dogs
 // hard coded to display only ONE DOG ONLY, need to adjust
 // add placeholder texts for the current value of the place
 // need to add photos
-// need to make sure ratings, age is nubers for dogs information
+// for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [human, setHuman] = useState(false);
@@ -32,6 +34,8 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [neutered, setNeutered] = useState();
   const [healthy, setHealthy] = useState();
   const [dogsInfo, setDogsinfo] = useState();
+  const [currentDogPg, setDogPage] = useState(1);
+  const [dogPages, setPages] = useState();
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
@@ -42,11 +46,24 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     }
   }, [currentUser]);
 
-  console.log(dogsInfo);
+  const arrangeDogs = (arr) => {
+    const chunk = [];
+    for (let i = 0; i < arr.length; i += 2) {
+      const myChunk = arr.slice(i, i + 2);
+      chunk.push(myChunk);
+    }
+    setPages(chunk);
+  };
 
-  const arrangeDogs = () => {
+  useEffect(() => {
+    if (dogsInfo !== undefined) {
+      arrangeDogs(dogsInfo);
+    }
+  }, [dogsInfo]);
 
-  }
+  const changePages = (e, value) => {
+    setDogPage(value);
+  };
 
   const changeHuman = () => {
     setHuman(true);
@@ -58,48 +75,96 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     setDogs(true);
   };
 
+  const emailValidation = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(email)) {
+      return true;
+    }
+    return false;
+  };
+
+  const numberValidation = (num) => {
+    if (isNaN(num)) {
+      return false;
+    }
+    return true;
+  };
+
   const submitHuman = (e) => {
     e.preventDefault();
-    const values = Object.values(humanValue);
-    const keys = Object.keys(humanValue);
-    const newValues = {};
-    for (let i = 0; i < values.length; i++) {
-      if (values[i].length === 0) {
-        newValues[keys[i]] = currentUser[keys[i]];
-      } else if (keys[i] === 'age') {
-        newValues[keys[i]] = Number(values[i]);
-      } else {
-        newValues[keys[i]] = values[i];
-      }
+    let result;
+    let resultAge;
+    let resultZip;
+    if (humanValue.email.length > 0) {
+      result = emailValidation(humanValue.email);
+    } else {
+      result = true;
     }
-    // hardcoded the end point
-    axios.patch('/app/users/my-profile/sophiaacheong5@gmail.com', newValues)
-      .then((results) => alert(results.data))
-      .catch((err) => console.error(err));
+    if (humanValue.age.length > 0) {
+      resultAge = numberValidation(humanValue.age)
+    } else {
+      resultAge = true;
+    }
+    if (humanValue.zipcode.length > 0) {
+      resultZip = numberValidation(humanValue.zipcode);
+    } else {
+      resultZip = true;
+    }
+
+    if (result && resultAge && resultZip) {
+      const values = Object.values(humanValue);
+      const keys = Object.keys(humanValue);
+      const newValues = {};
+      for (let i = 0; i < values.length; i++) {
+        if (values[i].length === 0) {
+          newValues[keys[i]] = currentUser[keys[i]];
+        } else if (keys[i] === 'age') {
+          newValues[keys[i]] = Number(values[i]);
+        } else {
+          newValues[keys[i]] = values[i];
+        }
+      }
+      // hardcoded the end point
+      axios.patch('/app/users/my-profile/sophiaacheong5@gmail.com', newValues)
+        .then((results) => alert(results.data))
+        .catch((err) => console.error(err));
+    } else if (!result && !resultAge && !resultZip) {
+      alert('Email, Age, Zipcode are not valid');
+    } else if (!result) {
+      alert('Email is not valid');
+    } else if (!resultAge) {
+      alert('Age is not valid');
+    } else {
+      alert('Zipcode is not valid');
+    }
   };
 
   const submitDog = (e) => {
     e.preventDefault();
-    const values = Object.values(dogValue);
-    const keys = Object.keys(dogValue);
-    const newValues = {};
-    for (let i = 0; i < values.length; i++) {
-      if (values[i].length === 0) {
-        newValues[keys[i]] = dogsInfo[0][keys[i]];
-      } else if (keys[i] === 'age') {
-        newValues[keys[i]] = Number(values[i]);
-      } else {
-        newValues[keys[i]] = values[i];
+    if (isNaN(dogValue.age)) {
+      alert('Age is not valid');
+    } else {
+      const values = Object.values(dogValue);
+      const keys = Object.keys(dogValue);
+      const newValues = {};
+      for (let i = 0; i < values.length; i++) {
+        if (values[i].length === 0) {
+          newValues[keys[i]] = dogsInfo[0][keys[i]];
+        } else if (keys[i] === 'age') {
+          newValues[keys[i]] = Number(values[i]);
+        } else {
+          newValues[keys[i]] = values[i];
+        }
       }
+      newValues.hypo = hypoallergenic;
+      newValues.neutered = neutered;
+      newValues.healthy = healthy;
+      newValues.owner_id = currentUser.id;
+      // hardcoded the end point
+      axios.patch('/app/users/my-dog/43', newValues)
+        .then((results) => alert(results.data))
+        .catch((err) => console.error(err));
     }
-    newValues.hypo = hypoallergenic;
-    newValues.neutered = neutered;
-    newValues.healthy = healthy;
-    newValues.owner_id = currentUser.id;
-    // hardcoded the end point
-    axios.patch('/app/users/my-dog/43', newValues)
-      .then((results) => alert(results.data))
-      .catch((err) => console.error(err));
   };
 
   const humanValueChange = (e) => {
@@ -186,83 +251,88 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
         )
         : null}
       {dogs ? (
-        <form id="editDog" onSubmit={submitDog}>
-          <div>
-            Name:
-            {' '}
-            <br />
-            <input type="text" name="name" onChange={dogValueChange} />
-          </div>
-          <div>
-            Gender:
-            {' '}
-            <br />
-            Male
-            {' '}
-            <input type="radio" name="gender" value="M" onChange={dogValueChange} />
-            Female
-            {' '}
-            <input type="radio" name="gender" value="F" onChange={dogValueChange} />
-          </div>
-          <div>
-            Bio
-            {' '}
-            <br />
-            <textarea name="bio" rows="4" cols="50" onChange={dogValueChange} />
-          </div>
-          <div>
-            Hypo
-            {' '}
-            <input type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
-          </div>
-          <div>
-            Neutered/Spayed
-            {' '}
-            <input type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
-          </div>
-          <div>
-            Age
-            {' '}
-            <br />
-            <input type="text" name="age" onChange={dogValueChange} />
-          </div>
-          <div>
-            Size ...input examples under the inputs
-            {' '}
-            <br />
-            XS
-            {' '}
-            <input type="radio" name="size" value="XS" onChange={dogValueChange} />
-            S
-            {' '}
-            <input type="radio" name="size" value="S" onChange={dogValueChange} />
-            M
-            {' '}
-            <input type="radio" name="size" value="M" onChange={dogValueChange} />
-            L
-            {' '}
-            <input type="radio" name="size" value="L" onChange={dogValueChange} />
-            XL
-            {' '}
-            <input type="radio" name="size" value="XL" onChange={dogValueChange} />
-          </div>
-          <div>
-            Breeds
-            {' '}
-            <br />
-            <select name="breed" onChange={dogValueChange}>
-              {breeds.map((item, index) => (
-                <option key={index} value={item} name="breed">{item}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            Healthy
-            {' '}
-            <input type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
-          </div>
-          <button type="submit">Save changes</button>
-        </form>
+        <div id="editDogPage">
+          {dogPages[currentDogPg - 1].map((item, index) => (
+            <form id="editDog" onSubmit={submitDog} key={index}>
+              <div>
+                Name:
+                {' '}
+                <br />
+                <input type="text" name="name" placeholder={item.name} onChange={dogValueChange} />
+              </div>
+              <div>
+                Gender:
+                {' '}
+                <br />
+                Male
+                {' '}
+                <input type="radio" name="gender" value="M" onChange={dogValueChange} />
+                Female
+                {' '}
+                <input type="radio" name="gender" value="F" onChange={dogValueChange} />
+              </div>
+              <div>
+                Bio
+                {' '}
+                <br />
+                <textarea name="bio" rows="4" cols="50" placeholder={item.bio} onChange={dogValueChange} />
+              </div>
+              <div>
+                Hypo
+                {' '}
+                <input type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
+              </div>
+              <div>
+                Neutered/Spayed
+                {' '}
+                <input type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
+              </div>
+              <div>
+                Age
+                {' '}
+                <br />
+                <input type="text" name="age" placeholder={item.age} onChange={dogValueChange} />
+              </div>
+              <div>
+                Size ...input examples under the inputs
+                {' '}
+                <br />
+                XS
+                {' '}
+                <input type="radio" name="size" value="XS" onChange={dogValueChange} />
+                S
+                {' '}
+                <input type="radio" name="size" value="S" onChange={dogValueChange} />
+                M
+                {' '}
+                <input type="radio" name="size" value="M" onChange={dogValueChange} />
+                L
+                {' '}
+                <input type="radio" name="size" value="L" onChange={dogValueChange} />
+                XL
+                {' '}
+                <input type="radio" name="size" value="XL" onChange={dogValueChange} />
+              </div>
+              <div>
+                Breeds
+                {' '}
+                <br />
+                <select name="breed" onChange={dogValueChange}>
+                  {breeds.map((itemBreed, index) => (
+                    <option key={index} value={itemBreed} name="breed">{itemBreed}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                Healthy
+                {' '}
+                <input type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
+              </div>
+              <button type="submit">Save changes</button>
+            </form>
+          ))}
+          <Pagination count={dogPages.length} variant="outlined" page={currentDogPg} onChange={changePages} />
+        </div>
       ) : null}
     </div>
   );
