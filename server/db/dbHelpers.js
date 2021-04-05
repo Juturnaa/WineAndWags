@@ -70,6 +70,16 @@ const dbHelpers = {
     const qryStr = `UPDATE waw.dogs SET name='${name}', gender='${gender}', bio='${bio}', hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size='${size}', breed='${breed}', healthy=${healthy} WHERE id=${req.params.dogid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
+  uploadPhotos: (req, callback) => {
+    const { url } = req.body;
+    const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${req.params.id}, null, '${url}')`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
+  uploadDogPhotos: (req, callback) => {
+    const { url, owner_id } = req.body;
+    const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${owner_id}, ${req.params.dogid}, '${url}')`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
 
   // MESSAGES ------------------------------------//
   getAllConvos: (user_id, callback) => {

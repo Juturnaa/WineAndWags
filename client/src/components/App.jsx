@@ -13,7 +13,7 @@ const App = () => {
   const [humanPhoto, setHumanPhoto] = useState([]);
   const [dogsPhoto, setDogsPhoto] = useState([]);
 
-  console.log(humanPhoto, dogsPhoto);
+  console.log(currentUser);
 
   useEffect(() => {
     axios.all([
