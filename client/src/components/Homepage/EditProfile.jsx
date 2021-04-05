@@ -14,7 +14,7 @@ import { Pagination } from '@material-ui/lab';
 // need to consider MUTT dogs
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
-function EditProfile({ currentUser, currentPhoto, breeds }) {
+function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
   const [human, setHuman] = useState(false);
   const [dogs, setDogs] = useState(false);
   const [humanValue, setHumanValue] = useState({
@@ -37,8 +37,6 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [currentDogPg, setDogPage] = useState(1);
   const [dogPages, setPages] = useState();
   const [breedFilterOptions, setBreedFilter] = useState();
-
-  console.log(currentPhoto)
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
@@ -370,7 +368,12 @@ EditProfile.propTypes = {
       PropTypes.any,
     ]),
   ),
-  currentPhoto: PropTypes.arrayOf(
+  dogsPhoto: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
+  humanPhoto: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -384,8 +387,9 @@ EditProfile.propTypes = {
 
 EditProfile.defaultProps = {
   currentUser: {},
-  currentPhoto: [],
+  dogsPhoto: [],
   breeds: [],
+  humanPhoto: [],
 };
 
 export default EditProfile;

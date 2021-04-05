@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+/* eslint-disable no-plusplus */
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './Navbar';
@@ -8,7 +10,10 @@ import ProfileView from './Homepage/ProfileView';
 const App = () => {
   const [currentUser, setCurrentUser] = useState();
   const [breeds, setBreeds] = useState(breedData);
-  const [currentPhoto, setPhoto] = useState();
+  const [humanPhoto, setHumanPhoto] = useState([]);
+  const [dogsPhoto, setDogsPhoto] = useState([]);
+
+  console.log(humanPhoto, dogsPhoto);
 
   useEffect(() => {
     axios.all([
@@ -17,14 +22,24 @@ const App = () => {
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
-        setPhoto(two.data);
+        const human = [];
+        const dogs = [];
+        for (let i = 0; i < two.data.length; i++) {
+          if (two.data[i].dog_id === null) {
+            human.push(two.data[i]);
+          } else {
+            dogs.push(two.data[i]);
+          }
+        }
+        setHumanPhoto(human);
+        setDogsPhoto(dogs);
       }))
       .catch((err) => console.error(err));
   }, []);
 
   return (
     <div>
-      <NavBar currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} />
+      <NavBar currentUser={currentUser} humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} breeds={breeds} />
       {/* ProfileView needs to be moved under HOME PAGE component */}
       {/* <ProfileView user={currentUser} /> */}
       {/* <Map /> */}
