@@ -12,6 +12,23 @@ const App = () => {
   const [breeds, setBreeds] = useState(breedData);
   const [humanPhoto, setHumanPhoto] = useState([]);
   const [dogsPhoto, setDogsPhoto] = useState([]);
+  const [dogsImg, setDogsImg] = useState([]);
+
+  useEffect(() => {
+    const dogsimages = [];
+    const dogsKey = {};
+    if (dogsPhoto.length > 0) {
+      for (let i = 0; i < dogsPhoto.length; i++) {
+        if (dogsPhoto[i].dog_id in dogsKey) {
+          dogsKey[dogsPhoto[i].dog_id].push(dogsPhoto[i]);
+        } else {
+          dogsKey[dogsPhoto[i].dog_id] = [dogsPhoto[i]];
+        }
+      }
+      dogsimages.push(dogsKey);
+    }
+    setDogsImg(dogsimages);
+  }, [dogsPhoto]);
 
   useEffect(() => {
     axios.all([

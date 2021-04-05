@@ -54,18 +54,6 @@ function EditProfile({
   }, [currentUser]);
 
   useEffect(() => {
-    const dogsimages = [];
-    if (dogsPhoto.length > 0) {
-      dogsPhoto.map((ite) => {
-        const urlDog = {};
-        urlDog.url = ite.url;
-        return dogsimages.push(urlDog);
-      });
-    }
-    setDogsImg(dogsimages);
-  }, [dogsPhoto]);
-
-  useEffect(() => {
     const humansimages = [];
     if (humanPhoto.length > 0) {
       humanPhoto.map((item) => {
@@ -222,7 +210,7 @@ function EditProfile({
 
   const uploadClick = () => {
     axios.post('/app/users/photos/7', { url: `${uploadHuman}` })
-      .then((results) => console.log(results.data))
+      .then((results) => alert(results.data))
       .catch((err) => console.error(err));
   };
 
@@ -230,8 +218,6 @@ function EditProfile({
     <div>
       <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
       <button type="button" onClick={changeDogs}>EDIT MY DOG(S)</button>
-      <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
-      <button type="button" onClick={uploadClick}>Photos</button>
       {human
         ? (
           <form id="editHuman" onSubmit={submitHuman}>
@@ -239,6 +225,8 @@ function EditProfile({
               Photo:
               {' '}
               <SimpleImageSlider width={400} height={400} images={humanImg} />
+              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
+              <button type="button" onClick={uploadClick}>Photos</button>
             </div>
             <div>
               Name:
@@ -312,6 +300,10 @@ function EditProfile({
         <div id="editDogPage">
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
+              <div>
+                Photo: <br />
+                {}
+              </div>
               <div>
                 Name:
                 {' '}
