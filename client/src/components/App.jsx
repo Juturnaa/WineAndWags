@@ -18,7 +18,7 @@ const App = () => {
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
-        setCurrentDogs(one.data.dogs);
+        setCurrentDogs(one.data.dogs_info);
         setPhoto(two.data);
       }))
       .catch((err) => console.error(err));
@@ -27,7 +27,6 @@ const App = () => {
   return (
     <div>
       <NavBar currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} currentDogs={currentDogs}/>
-      {/* ProfileView needs to be moved under HOME PAGE component */}
       {/* <Map /> */}
     </div>
   );
