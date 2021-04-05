@@ -16,7 +16,7 @@ import SimpleImageSlider from 'react-simple-image-slider';
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 function EditProfile({
-  currentUser, dogsPhoto, breeds, humanPhoto,
+  currentUser, dogsImg, breeds, humanPhoto,
 }) {
   const [human, setHuman] = useState(false);
   const [dogs, setDogs] = useState(false);
@@ -41,7 +41,6 @@ function EditProfile({
   const [dogPages, setPages] = useState();
   const [breedFilterOptions, setBreedFilter] = useState();
   const [humanImg, setHumanImg] = useState([]);
-  const [dogsImg, setDogsImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
 
   useEffect(() => {
@@ -407,7 +406,7 @@ EditProfile.propTypes = {
       PropTypes.any,
     ]),
   ),
-  dogsPhoto: PropTypes.arrayOf(
+  dogsImg: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -426,7 +425,7 @@ EditProfile.propTypes = {
 
 EditProfile.defaultProps = {
   currentUser: {},
-  dogsPhoto: [],
+  dogsImg: [],
   breeds: [],
   humanPhoto: [],
 };

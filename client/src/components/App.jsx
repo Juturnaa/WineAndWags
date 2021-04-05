@@ -47,7 +47,6 @@ const App = () => {
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
-        setPhoto(two.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
@@ -65,7 +64,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} breeds={breeds} currentDogs={currentDogs} />
+      <NavBar humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
       {/* <Map /> */}
     </div>
   );
