@@ -15,11 +15,20 @@ const App = () => {
   const [dogsPhoto, setDogsPhoto] = useState([]);
 
   const getRandomUser = () => {
+    let random;
     axios.get('/app/users/random-profile')
       .then((data) => {
-        let random = Math.floor(Math.random() * (data.data.length - 0) + 0);
+        random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setCurrentUser(data.data[random])
+        setCurrentDogs(data.data[random].dogs_info);
       })
+      .then(() => {
+        axios.get(`/app/users/photos/${random + 1}`)
+          .then((data) => {
+            setHumanPhoto(data.data)
+          })
+      })
+
   }
 
   useEffect(() => {
