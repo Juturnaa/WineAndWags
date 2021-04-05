@@ -129,20 +129,56 @@ const dbHelpers = {
     });
   },
   // PROFILE LIKES ------------------------------------//
+  // getAllProfileLikes: (callback) => {
+  //   const queryStr = 'SELECT * from waw.profilelikes';
+  //   db.query(queryStr, (err, res) => {
+  //     callback(err, res);
+  //   });
+  // },
   getProfileLikes: (user_id, callback) => {
-    const queryStr = `SELECT * FROM waw.profilelikes WHERE user_id=${user_id}`;
+    const queryStr = `SELECT liked_user_id FROM waw.profilelikes WHERE user_id=${user_id}`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
   },
   postNewProfileLike: (user_id, liked_user_id, callback) => {
-    const queryStr = `INSERT INTO waw.profilelikes (id, user_id, liked_user_id) VALUES (DEFAULT, ${user_id}, ${liked_user_id})`;
-    const queryStr2 = `INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_user_id}
+    let queryStr = `INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_user_id}
     WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${user_id} AND liked_user_id in (${liked_user_id}))`;
-    db.query(queryStr2, (err, res) => {
+    db.query(queryStr, (err, res) => {
       callback(err, res);
     });
   },
+  getMatches: (user_id, callback) => {
+    const queryStr = `SELECT user_id FROM waw.profilelikes WHERE user_id IN (SELECT liked_user_id FROM waw.profilelikes WHERE user_id=${user_id}) AND liked_user_id=${user_id}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  // FILTERS //
+  getSavedFilters: (user_id, callback) => {
+    const queryStr = `SELECT * FROM waw.filters WHERE user_id=${user_id}`;
+    db.query(queryStr, (err, results) => {
+      callback(err, results);
+    });
+  },
+  updateSavedFilters: (user_id, req, callback) => {
+    const {
+      sizeRange,
+      dogAgeRange,
+      dogGenders,
+      hypoallergenic,
+      neutered,
+      healthIssues,
+      avoidBreeds,
+      preferredBreeds,
+      maxDistance,
+      ownerAgeRange,
+      ownerGenders
+    } = req.body;
+    const queryStr = `UPDATE waw.filters SET min_size='${sizeRange[0]}', max_size='${sizeRange[1]}', dog_min_age=${dogAgeRange[0]},dog_max_age=${dogAgeRange[1]}, dog_genders='${dogGenders}', hypo=${hypoallergenic}, neutered=${neutered}, health_issues=${healthIssues}, avoid_breeds='${avoidBreeds}', favorite_breeds='${preferredBreeds}', max_dist=${maxDistance}, genders='${ownerGenders}', min_age=${ownerAgeRange[0]}, max_age=${ownerAgeRange[1]} WHERE user_id=${user_id}`
+
+    db.query(queryStr, (err, results) => callback(err, results));
+  }
 };
 
 module.exports = dbHelpers;
