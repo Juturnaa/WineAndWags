@@ -25,6 +25,25 @@ const controller = {
       res.status(202).send('Success!');
     });
   },
+  uploadPhotos: (req, res) => {
+    dbHelpers.uploadPhotos(req, (err, result) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+  uploadDogPhotos: (req, res) => {
+    dbHelpers.uploadDogPhotos(req, (err, result) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+  removePhotos: (req, res) => {
+    dbHelpers.removePhotos(req, (err, results) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+
   // MESSAGES ------------------------------------//
   getAllConvos: (req, res) => {
     dbHelpers.getAllConvos(req.params.user_id, (err, results) => {
@@ -69,12 +88,26 @@ const controller = {
       else res.status(200).send('Profile liked!');
     });
   },
+<<<<<<< HEAD
   getMatches: (req, res) => {
     dbHelpers.getMatches(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
       else res.status(200).send(results.rows);
     });
   },
+=======
+  // FILTERS //
+  getSavedFilters: (req, res) => {
+    dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
+      err ? res.status(400).send(err) : res.status(200).send(results.rows)
+    })
+  },
+  updateSavedFilters: (req, res) => {
+    dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
+      err ? res.status(404).send(err) : res.status(202).send('Updated')
+    })
+  }
+>>>>>>> f4433f17ca78f536e0d36b7eff4d59efb23f03f8
 };
 
 module.exports = controller;

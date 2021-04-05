@@ -10,11 +10,17 @@ router
 
 router
   .route('/users/photos/:id')
-  .get(controller.getPhotos);
+  .get(controller.getPhotos)
+  .post(controller.uploadPhotos);
 
 router
   .route('/users/my-dog/:dogid')
-  .patch(controller.editDogProfile);
+  .patch(controller.editDogProfile)
+  .post(controller.uploadDogPhotos);
+
+router
+  .route('/users/delete/:photoid')
+  .delete(controller.removePhotos);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
 
@@ -39,6 +45,14 @@ router
   .get(controller.getProfileLikes)
   .post(controller.postNewProfileLike);
 
+<<<<<<< HEAD
 router
   .route('/:user_id/matches')
   .get(controller.getMatches);
+=======
+// FILTERS
+router
+  .route('/:user_id/filters')
+  .get(controller.getSavedFilters)
+  .patch(controller.updateSavedFilters);
+>>>>>>> f4433f17ca78f536e0d36b7eff4d59efb23f03f8
