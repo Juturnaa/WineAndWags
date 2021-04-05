@@ -13,7 +13,7 @@ router
   .get(controller.getPhotos);
 
 router
-  .route('/users/my-profile/:dogid')
+  .route('/users/my-dog/:dogid')
   .patch(controller.editDogProfile);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);

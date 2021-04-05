@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
 const db = require('./index.js');
@@ -13,14 +14,15 @@ const db = require('./index.js');
 const dbHelpers = {
   getMyProfile: (req, res) => {
     const { email } = req.params;
-    const qryStr = `SELECT waw.users.*, json_agg(dogs) dogs_info FROM waw.users
-    LEFT JOIN (SELECT waw.dogs.owner_id, json_object_agg(waw.dogs.id, json_build_object(
+    const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
     waw. dogs.neutered, 'rating', waw.dogs.rating, 'age',
      waw.dogs.age, 'size', waw.dogs.size, 'breed', waw.dogs.breed,
      'healthy', dogs.healthy
-    )) dogs FROM waw.dogs GROUP BY waw.dogs.owner_id) dogs ON dogs.owner_id = waw.users.id WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
+    )) dogs_info FROM waw.users
+    LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
+    WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
         res.status(400).send('something went wrong with your query');
@@ -42,9 +44,9 @@ const dbHelpers = {
   },
   editDogProfile: (req, callback) => {
     const {
-      name, gender, bio, hypo, neutered, rating, age, size, breed, healthy
+      name, gender, bio, hypo, neutered, rating, age, size, breed, healthy,
     } = req.body;
-    const qryStr = `UPDATE waw.dogs SET name=${name}, gender=${gender}, bio=${bio}, hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size=${size}, breed=${breed}, healthy=${healthy} WHERE id=${req.params.dogid}`;
+    const qryStr = `UPDATE waw.dogs SET name='${name}', gender='${gender}', bio='${bio}', hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size='${size}', breed='${breed}', healthy=${healthy} WHERE id=${req.params.dogid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
 
@@ -76,3 +78,12 @@ const dbHelpers = {
 };
 
 module.exports = dbHelpers;
+
+/* SELECT waw.users.*, json_agg(dogs) dogs_info FROM waw.users
+LEFT JOIN (SELECT waw.dogs.owner_id, json_object_agg(waw.dogs.id, json_build_object(
+  'name', waw.dogs.name, 'gender', waw.dogs.gender,
+   'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
+  waw. dogs.neutered, 'rating', waw.dogs.rating, 'age',
+   waw.dogs.age, 'size', waw.dogs.size, 'breed', waw.dogs.breed,
+   'healthy', dogs.healthy
+  )) dogs FROM waw.dogs GROUP BY waw.dogs.owner_id) dogs ON dogs.owner_id = waw.users.id WHERE waw.users.email = '${email}' GROUP BY waw.users.id */
