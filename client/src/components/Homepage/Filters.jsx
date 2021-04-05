@@ -47,6 +47,7 @@ export default function Filters({
           <FormControlLabel value="Both" control={<Radio />} label="Both" />
         </RadioGroup>
       </FormControl>
+      <p>Information</p>
       <FormControlLabel
         control={<Checkbox checked={hypoallergenic} onChange={() => changeHypoallergenic(!hypoallergenic)} name="hypoallergenic" />}
         label="Hypoallergenic"
