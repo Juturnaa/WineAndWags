@@ -143,6 +143,31 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+  // FILTERS //
+  getSavedFilters: (user_id, callback) => {
+    const queryStr = `SELECT * FROM waw.filters WHERE user_id=${user_id}`;
+    db.query(queryStr, (err, results) => {
+      callback(err, results);
+    });
+  },
+  updateSavedFilters: (user_id, req, callback) => {
+    const {
+      sizeRange,
+      dogAgeRange,
+      dogGenders,
+      hypoallergenic,
+      neutered,
+      healthIssues,
+      avoidBreeds,
+      preferredBreeds,
+      maxDistance,
+      ownerAgeRange,
+      ownerGenders
+    } = req.body;
+    const queryStr = `UPDATE waw.filters SET min_size='${sizeRange[0]}', max_size='${sizeRange[1]}', dog_min_age=${dogAgeRange[0]},dog_max_age=${dogAgeRange[1]}, dog_genders='${dogGenders}', hypo=${hypoallergenic}, neutered=${neutered}, health_issues=${healthIssues}, avoid_breeds='${avoidBreeds}', favorite_breeds='${preferredBreeds}', max_dist=${maxDistance}, genders='${ownerGenders}', min_age=${ownerAgeRange[0]}, max_age=${ownerAgeRange[1]} WHERE user_id=${user_id}`
+
+    db.query(queryStr, (err, results) => callback(err, results));
+  }
 };
 
 module.exports = dbHelpers;
