@@ -5,8 +5,10 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 import Filters from './Filters';
+import ProfileView from './ProfileView';
+import DogView from './DogView'
 
-export default function Homepage() {
+export default function Homepage({ currentUser, currentPhoto, currentDogs }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
 
   // Dog Filters
@@ -39,6 +41,7 @@ export default function Homepage() {
       <h3>Home Page</h3>
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
       {filterModalOpen ? <Filters /> : null}
+      <ProfileView user={currentUser} dogs={currentDogs}/>
     </div>
   )
 }

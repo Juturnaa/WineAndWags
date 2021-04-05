@@ -25,7 +25,7 @@ const Map = () => (
   <div>Map</div>
 );
 
-function NavBar({ currentUser, currentPhoto, breeds }) {
+function NavBar({ currentUser, currentPhoto, breeds, currentDogs }) {
   return (
     <BrowserRouter>
       {/* part that needs to be styled */}
@@ -45,7 +45,7 @@ function NavBar({ currentUser, currentPhoto, breeds }) {
         <Route exact path="/messages" component={Messages} />
         <Route exact path="/map" component={Map} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} />} />
-        <Route path="/*" component={Homepage} />
+        <Route path="/*" render={() => <Homepage currentUser={currentUser} currentPhoto={currentPhoto} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 
@@ -68,12 +68,18 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  currentDogs: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 NavBar.defaultProps = {
   currentUser: {},
   currentPhoto: [],
   breeds: [],
+  currentDogs: [],
 };
 
 export default NavBar;

@@ -3,7 +3,6 @@ import axios from 'axios';
 
 
 const LikeButton = () => {
-    console.log('hey')
     return (
         <div style={{display: 'flex', flexDirection: 'rows'}} >
             <div id="mdiv">

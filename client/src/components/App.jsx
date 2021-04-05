@@ -3,11 +3,10 @@ import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Map from './Map';
-import ProfileView from './Homepage/ProfileView';
-import axios from 'axios';
 
 const App = () => {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState({});
+  const [currentDogs, setCurrentDogs] = useState([]);
   const [breeds, setBreeds] = useState(breedData);
   const [currentPhoto, setPhoto] = useState();
 
@@ -19,6 +18,7 @@ const App = () => {
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
+        setCurrentDogs(one.data.dogs);
         setPhoto(two.data);
       }))
       .catch((err) => console.error(err));
@@ -26,9 +26,8 @@ const App = () => {
 
   return (
     <div>
-      <NavBar currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} />
+      <NavBar currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} currentDogs={currentDogs}/>
       {/* ProfileView needs to be moved under HOME PAGE component */}
-      {/* <ProfileView user={currentUser} /> */}
       {/* <Map /> */}
     </div>
   );
