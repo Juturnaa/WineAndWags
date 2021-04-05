@@ -21,7 +21,6 @@ const App = () => {
         console.log(random)
       })
   }
-  console.log(humanPhoto, dogsPhoto);
 
   useEffect(() => {
     axios.all([
@@ -49,7 +48,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} getRandomUser={getRandomUser} currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} currentDogs={currentDogs}/>
+      <NavBar humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} breeds={breeds} currentDogs={currentDogs}/>
       {/* <Map /> */}
     </div>
   );

@@ -45,7 +45,7 @@ function NavBar({ currentUser, humanPhoto, breeds, dogsPhoto, currentDogs, getRa
         <Route exact path="/messages" component={Messages} />
         <Route exact path="/map" component={Map} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} currentPhoto={currentPhoto} currentDogs={currentDogs} />} />
+        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 

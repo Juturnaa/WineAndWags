@@ -9,10 +9,9 @@ import ProfileView from './ProfileView';
 import DogView from './DogView'
 import LikeButton from './LikeButton';
 
-export default function Homepage({ currentUser, currentPhoto, currentDogs, getRandomUser }) {
+export default function Homepage({ currentUser, humanPhoto, currentDogs, getRandomUser }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
-  console.log(currentUser)
   useEffect(() => {
     setCurrentDog(currentDogs[0])
   }, [currentDogs])
@@ -47,7 +46,7 @@ export default function Homepage({ currentUser, currentPhoto, currentDogs, getRa
       <h3>Home Page</h3>
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
       {filterModalOpen ? <Filters /> : null}
-      <ProfileView user={currentUser} photos={currentPhoto}/>
+      <ProfileView user={currentUser} photos={humanPhoto}/>
       <DogView dog={currentDog || ''} />
       <LikeButton getRandomUser={getRandomUser} />
     </div>
