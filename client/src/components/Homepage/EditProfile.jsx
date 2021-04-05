@@ -10,6 +10,8 @@ import { Pagination } from '@material-ui/lab';
 
 // implement react paginton for edit of dogs
 // need to add photos
+// switch raw auto complete code to react library
+// need to consider MUTT dogs
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 function EditProfile({ currentUser, currentPhoto, breeds }) {
@@ -336,6 +338,9 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
                     </datalist>
                   )
                   : null }
+                {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
+                  ? <div> No options found! </div>
+                  : null}
                 {/* <select name="breed" onChange={dogValueChange}>
                   {breeds.map((itemBreed, index) => (
                     <option key={index} value={itemBreed} name="breed">{itemBreed}</option>
