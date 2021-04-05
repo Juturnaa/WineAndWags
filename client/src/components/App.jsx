@@ -17,16 +17,19 @@ const App = () => {
 
   useEffect(() => {
     const dogsimages = [];
-    const dogsKey = {};
+    const store = [];
     if (dogsPhoto.length > 0) {
       for (let i = 0; i < dogsPhoto.length; i++) {
-        if (dogsPhoto[i].dog_id in dogsKey) {
-          dogsKey[dogsPhoto[i].dog_id].push(dogsPhoto[i]);
+        const ind = store.indexOf(dogsPhoto[i].dog_id);
+        if (ind > -1) {
+          dogsimages[ind][dogsPhoto[i].dog_id].push(dogsPhoto[i]);
         } else {
+          const dogsKey = {};
           dogsKey[dogsPhoto[i].dog_id] = [dogsPhoto[i]];
+          dogsimages.push(dogsKey);
+          store.push(dogsPhoto[i].dog_id);
         }
       }
-      dogsimages.push(dogsKey);
     }
     setDogsImg(dogsimages);
   }, [dogsPhoto]);
@@ -36,17 +39,16 @@ const App = () => {
     axios.get('/app/users/random-profile')
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
-        setCurrentUser(data.data[random])
+        setCurrentUser(data.data[random]);
         setCurrentDogs(data.data[random].dogs_info);
       })
       .then(() => {
         axios.get(`/app/users/photos/${random + 1}`)
           .then((data) => {
-            setHumanPhoto(data.data)
-          })
-      })
-
-  }
+            setHumanPhoto(data.data);
+          });
+      });
+  };
 
   useEffect(() => {
     axios.all([
@@ -73,7 +75,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} breeds={breeds} currentDogs={currentDogs} />
+      <NavBar humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
       {/* <Map /> */}
     </div>
   );
