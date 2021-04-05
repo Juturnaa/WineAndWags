@@ -8,7 +8,8 @@ import Map from './Map';
 import ProfileView from './Homepage/ProfileView';
 
 const App = () => {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState({});
+  const [currentDogs, setCurrentDogs] = useState([]);
   const [breeds, setBreeds] = useState(breedData);
   const [humanPhoto, setHumanPhoto] = useState([]);
   const [dogsPhoto, setDogsPhoto] = useState([]);
@@ -30,6 +31,14 @@ const App = () => {
     setDogsImg(dogsimages);
   }, [dogsPhoto]);
 
+  const getRandomUser = () => {
+    axios.get('/app/users/random-profile')
+      .then((data) => {
+        const random = Math.floor(Math.random() * (data.data.length - 0) + 0);
+        console.log(random);
+      });
+  };
+
   useEffect(() => {
     axios.all([
       axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
@@ -37,6 +46,8 @@ const App = () => {
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
+        setCurrentDogs(one.data.dogs_info);
+        setPhoto(two.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
@@ -54,9 +65,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar currentUser={currentUser} humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} breeds={breeds} />
-      {/* ProfileView needs to be moved under HOME PAGE component */}
-      {/* <ProfileView user={currentUser} /> */}
+      <NavBar humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} breeds={breeds} currentDogs={currentDogs} />
       {/* <Map /> */}
     </div>
   );

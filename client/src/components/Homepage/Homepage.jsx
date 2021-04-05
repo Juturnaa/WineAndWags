@@ -2,12 +2,19 @@
 // can open the filter modal
 // displays 1 user + their dogs at a time with like or pass button
 
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Filters from './Filters';
+import ProfileView from './ProfileView';
+import DogView from './DogView'
+import LikeButton from './LikeButton';
 
-export default function Homepage() {
+export default function Homepage({ currentUser, humanPhoto, currentDogs, getRandomUser }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
+  const [currentDog, setCurrentDog] = useState({});
+  useEffect(() => {
+    setCurrentDog(currentDogs[0])
+  }, [currentDogs])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -36,6 +43,9 @@ export default function Homepage() {
     <div>
       <h3>Home Page</h3>
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
+      <ProfileView user={currentUser} photos={humanPhoto}/>
+      <DogView dog={currentDog || ''} />
+      <LikeButton getRandomUser={getRandomUser} />
       {filterModalOpen ?
         <Filters
           sizeRange={sizeRange} changeSizeRange={changeSizeRange}
