@@ -12,7 +12,7 @@ export default function Homepage() {
   // Dog Filters
   const [sizes, changeSizes] = useState([]); // array of strings XS, S, M, L, XL
   const [dogAgeRange, changeDogAgeRange] = useState([0, 20]);
-  const [dogGenders, changeDogGenders] = useState('both');
+  const [dogGenders, changeDogGenders] = useState('Both');
   const [hypoallergenic, changeHypoallergenic] = useState(false);
   const [neutered, changeNeutered] = useState(false);
   const [healthIssues, changeHealthIssues] = useState(false);
