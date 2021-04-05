@@ -63,6 +63,17 @@ const controller = {
       else res.status(200).send('Profile liked!');
     });
   },
+  // FILTERS //
+  getSavedFilters: (req, res) => {
+    dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
+      err ? res.status(400).send(err) : res.status(200).send(results.rows)
+    })
+  },
+  updateSavedFilters: (req, res) => {
+    dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
+      err ? res.status(404).send(err) : res.status(202).send('Updated')
+    })
+  }
 };
 
 module.exports = controller;
