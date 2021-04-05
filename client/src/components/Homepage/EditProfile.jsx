@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
+import SimpleImageSlider from 'react-simple-image-slider';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -14,7 +15,9 @@ import { Pagination } from '@material-ui/lab';
 // need to consider MUTT dogs
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
-function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
+function EditProfile({
+  currentUser, dogsImg, breeds, humanPhoto,
+}) {
   const [human, setHuman] = useState(false);
   const [dogs, setDogs] = useState(false);
   const [humanValue, setHumanValue] = useState({
@@ -37,6 +40,11 @@ function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
   const [currentDogPg, setDogPage] = useState(1);
   const [dogPages, setPages] = useState();
   const [breedFilterOptions, setBreedFilter] = useState();
+  const [humanImg, setHumanImg] = useState([]);
+  const [uploadHuman, setUploadHuman] = useState('');
+
+  console.log(dogsInfo)
+  console.log(dogsImg)
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
@@ -46,6 +54,18 @@ function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
       setDogsinfo(currentUser.dogs_info);
     }
   }, [currentUser]);
+
+  useEffect(() => {
+    const humansimages = [];
+    if (humanPhoto.length > 0) {
+      humanPhoto.map((item) => {
+        const url = {};
+        url.url = item.url;
+        return humansimages.push(url);
+      });
+    }
+    setHumanImg(humansimages);
+  }, [humanPhoto]);
 
   const arrangeDogs = (arr) => {
     const chunk = [];
@@ -103,6 +123,10 @@ function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
       return false;
     }
     return true;
+  };
+
+  const deletePhoto = () => {
+
   };
 
   const submitHuman = (e) => {
@@ -186,6 +210,12 @@ function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
     setHumanValue({ ...humanValue, [e.target.name]: e.target.value });
   };
 
+  const uploadClick = () => {
+    axios.post('/app/users/photos/7', { url: `${uploadHuman}` })
+      .then((results) => alert(results.data))
+      .catch((err) => console.error(err));
+  };
+
   return (
     <div>
       <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
@@ -193,6 +223,13 @@ function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
       {human
         ? (
           <form id="editHuman" onSubmit={submitHuman}>
+            <div>
+              Photo:
+              {' '}
+              <SimpleImageSlider width={400} height={400} images={humanImg} />
+              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
+              <button type="button" onClick={uploadClick}>Photos</button>
+            </div>
             <div>
               Name:
               {' '}
@@ -265,6 +302,10 @@ function EditProfile({ currentUser, dogsPhoto, breeds, humanPhoto }) {
         <div id="editDogPage">
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
+              <div>
+                Photo: <br />
+                {}
+              </div>
               <div>
                 Name:
                 {' '}
@@ -368,7 +409,7 @@ EditProfile.propTypes = {
       PropTypes.any,
     ]),
   ),
-  dogsPhoto: PropTypes.arrayOf(
+  dogsImg: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -387,7 +428,7 @@ EditProfile.propTypes = {
 
 EditProfile.defaultProps = {
   currentUser: {},
-  dogsPhoto: [],
+  dogsImg: [],
   breeds: [],
   humanPhoto: [],
 };

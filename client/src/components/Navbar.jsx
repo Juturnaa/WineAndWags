@@ -25,7 +25,7 @@ const Map = () => (
   <div>Map</div>
 );
 
-function NavBar({ currentUser, humanPhoto, breeds, dogsPhoto, currentDogs, getRandomUser }) {
+function NavBar({ currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser }) {
   return (
     <BrowserRouter>
       {/* part that needs to be styled */}
@@ -44,8 +44,8 @@ function NavBar({ currentUser, humanPhoto, breeds, dogsPhoto, currentDogs, getRa
         {/* delete this route if notifications is just modal not a page */}
         <Route exact path="/messages" component={Messages} />
         <Route exact path="/map" component={Map} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} currentDogs={currentDogs} />} />
+        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
+        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 
@@ -68,7 +68,7 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
-  dogsPhoto: PropTypes.arrayOf(
+  dogsImg: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -80,7 +80,7 @@ NavBar.defaultProps = {
   humanPhoto: [],
   breeds: [],
   currentDogs: [],
-  dogsPhoto: [],
+  dogsImg: [],
 };
 
 export default NavBar;
