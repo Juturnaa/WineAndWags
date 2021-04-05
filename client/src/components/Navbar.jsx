@@ -25,7 +25,7 @@ const Map = () => (
   <div>Map</div>
 );
 
-function NavBar({ currentUser, currentPhoto, breeds, currentDogs }) {
+function NavBar({ currentUser, currentPhoto, breeds, currentDogs, getRandomUser }) {
   return (
     <BrowserRouter>
       {/* part that needs to be styled */}
@@ -45,7 +45,7 @@ function NavBar({ currentUser, currentPhoto, breeds, currentDogs }) {
         <Route exact path="/messages" component={Messages} />
         <Route exact path="/map" component={Map} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage currentUser={currentUser} currentPhoto={currentPhoto} currentDogs={currentDogs} />} />
+        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} currentPhoto={currentPhoto} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 

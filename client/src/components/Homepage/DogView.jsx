@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const DogView = ({ dog }) => {
-    console.log(dog)
     return (
         <div className="profile-card" >
             <div id="card-name"> 

@@ -31,7 +31,24 @@ const dbHelpers = {
       }
     });
   },
-  getRandomProfile: (req, res) => {},
+  getRandomProfile: (req, res) => {
+    const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
+    'name', waw.dogs.name, 'gender', waw.dogs.gender,
+     'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
+    waw. dogs.neutered, 'rating', waw.dogs.rating, 'age',
+     waw.dogs.age, 'size', waw.dogs.size, 'breed', waw.dogs.breed,
+     'healthy', dogs.healthy
+    )) dogs_info FROM waw.users
+    LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
+    GROUP BY waw.users.id`;
+    db.query(qryStr, (err, data) => {
+      if (err) {
+        res.status(400).send("something went wrong with your query");
+      } else {
+        res.send(data.rows);
+      }
+    });
+  },
   getPhotos: (req, callback) => {
     db.query(
       `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,

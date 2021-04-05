@@ -10,6 +10,13 @@ const App = () => {
   const [breeds, setBreeds] = useState(breedData);
   const [currentPhoto, setPhoto] = useState();
 
+  const getRandomUser = () => {
+    axios.get('/app/users/random-profile')
+      .then((data) => {
+        let random = Math.floor(Math.random() * (data.data.length - 0) + 0);
+        console.log(random)
+      })
+  }
 
   useEffect(() => {
     axios.all([
@@ -26,7 +33,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} currentDogs={currentDogs}/>
+      <NavBar getRandomUser={getRandomUser} currentUser={currentUser} currentPhoto={currentPhoto} breeds={breeds} currentDogs={currentDogs}/>
       {/* <Map /> */}
     </div>
   );
