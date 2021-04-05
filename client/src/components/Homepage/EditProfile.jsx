@@ -10,6 +10,7 @@ import axios from 'axios';
 // hard coded to display only ONE DOG ONLY, need to adjust
 // add placeholder texts for the current value of the place
 // need to add photos
+// need to make sure ratings, age is nubers for dogs information
 
 function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [human, setHuman] = useState(false);
@@ -41,6 +42,12 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     }
   }, [currentUser]);
 
+  console.log(dogsInfo);
+
+  const arrangeDogs = () => {
+
+  }
+
   const changeHuman = () => {
     setHuman(true);
     setDogs(false);
@@ -59,6 +66,8 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     for (let i = 0; i < values.length; i++) {
       if (values[i].length === 0) {
         newValues[keys[i]] = currentUser[keys[i]];
+      } else if (keys[i] === 'age') {
+        newValues[keys[i]] = Number(values[i]);
       } else {
         newValues[keys[i]] = values[i];
       }
@@ -77,6 +86,8 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     for (let i = 0; i < values.length; i++) {
       if (values[i].length === 0) {
         newValues[keys[i]] = dogsInfo[0][keys[i]];
+      } else if (keys[i] === 'age') {
+        newValues[keys[i]] = Number(values[i]);
       } else {
         newValues[keys[i]] = values[i];
       }
@@ -85,7 +96,7 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     newValues.neutered = neutered;
     newValues.healthy = healthy;
     newValues.owner_id = currentUser.id;
-    //hardcoded the end point
+    // hardcoded the end point
     axios.patch('/app/users/my-dog/43', newValues)
       .then((results) => alert(results.data))
       .catch((err) => console.error(err));
