@@ -10,7 +10,7 @@ export default function Homepage() {
   const [filterModalOpen, toggleFilterModal] = useState(false);
 
   // Dog Filters
-  const [sizes, changeSizes] = useState([]); // array of strings XS, S, M, L, XL
+  const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
   const [dogAgeRange, changeDogAgeRange] = useState([0, 20]);
   const [dogGenders, changeDogGenders] = useState('Both');
   const [hypoallergenic, changeHypoallergenic] = useState(false);
@@ -38,7 +38,7 @@ export default function Homepage() {
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
       {filterModalOpen ?
         <Filters
-          sizes={sizes} changeSizes={changeSizes}
+          sizeRange={sizeRange} changeSizeRange={changeSizeRange}
           dogAgeRange={dogAgeRange} changeDogAgeRange={changeDogAgeRange}
           dogGenders={dogGenders} changeDogGenders={changeDogGenders}
           hypoallergenic={hypoallergenic} changeHypoallergenic={changeHypoallergenic}
