@@ -44,8 +44,8 @@ function NavBar({ currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRand
         {/* delete this route if notifications is just modal not a page */}
         <Route exact path="/messages" component={Messages} />
         <Route exact path="/map" component={Map} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} currentDogs={currentDogs} />} />
+        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsPhoto={dogsPhoto} breeds={breeds} />} />
+        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsPhoto} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 
