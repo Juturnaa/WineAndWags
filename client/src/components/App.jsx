@@ -3,12 +3,14 @@ import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Map from './Map';
-import ProfileView from './Homepage/ProfileVIew';
+import ProfileView from './Homepage/ProfileView';
+import axios from 'axios';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState();
   const [breeds, setBreeds] = useState(breedData);
   const [currentPhoto, setPhoto] = useState();
+
 
   useEffect(() => {
     axios.all([
