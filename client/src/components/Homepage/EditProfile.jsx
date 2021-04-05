@@ -38,6 +38,8 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [dogPages, setPages] = useState();
   const [breedFilterOptions, setBreedFilter] = useState();
 
+  console.log(currentPhoto)
+
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
       setHypo(currentUser.dogs_info[0].hypo);
