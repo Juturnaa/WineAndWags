@@ -11,8 +11,7 @@ export default function Homepage() {
 
   // Dog Filters
   const [sizes, changeSizes] = useState([]); // array of strings XS, S, M, L, XL
-  const [dogMinAge, changeDogMinAge] = useState(0);
-  const [dogMaxAge, changeDogMaxAge] = useState(20);
+  const [dogAgeRange, changeDogAgeRange] = useState([0, 20]);
   const [dogGenders, changeDogGenders] = useState('both');
   const [hypoallergenic, changeHypoallergenic] = useState(false);
   const [neutered, changeNeutered] = useState(false);
@@ -21,8 +20,7 @@ export default function Homepage() {
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
-  const [ownerMinAge, changeOwnerMinAge] = useState(18);
-  const [ownerMaxAge, changeOwnerMaxAge] = useState(100);
+  const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
   const [ownerGenders, changeOwnerGenders] = useState('all');
 
   // Requests
@@ -40,16 +38,14 @@ export default function Homepage() {
       {filterModalOpen ?
         <Filters
           sizes={sizes} changeSizes={changeSizes}
-          dogMinAge={dogMinAge} changeDogMinAge={changeDogMinAge}
-          dogMaxAge={dogMaxAge} changeDogMaxAge={changeDogMaxAge}
+          dogAgeRange={dogAgeRange} changeDogAgeRange={changeDogAgeRange}
           dogGenders={dogGenders} changeDogGenders={changeDogGenders}
           hypoallergenic={hypoallergenic} changeHypoallergenic={changeHypoallergenic}
           neutered={neutered} changeNeutered={changeNeutered}
           healthIssues={healthIssues} changeHealthIssues={changeHealthIssues}
           avoidBreeds={avoidBreeds} changeAvoidedBreeds={changeAvoidedBreeds}
           maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
-          ownerMinAge={ownerMinAge} changeOwnerMinAge={changeOwnerMinAge}
-          ownerMaxAge={ownerMaxAge} changeOwnerMaxAge={changeOwnerMaxAge}
+          ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
           ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
         /> : null}
     </div>
