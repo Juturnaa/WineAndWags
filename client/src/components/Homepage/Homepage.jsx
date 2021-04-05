@@ -21,7 +21,7 @@ export default function Homepage() {
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
   const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
-  const [ownerGenders, changeOwnerGenders] = useState('all');
+  const [ownerGenders, changeOwnerGenders] = useState('All');
 
   // Requests
 
