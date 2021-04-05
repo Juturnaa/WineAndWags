@@ -31,6 +31,10 @@ router
 
 // PROFILE LIKES ------------------------------------//
 router
+  .route('/profile-likes')
+  .get(controller.getAllProfileLikes);
+
+router
   .route('/:user_id/profile-likes')
   .get(controller.getProfileLikes)
   .post(controller.postNewProfileLike);

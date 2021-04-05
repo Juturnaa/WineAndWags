@@ -51,6 +51,12 @@ const controller = {
     });
   },
   // PROFILE LIKES ------------------------------------//
+  getAllProfileLikes: (req, res) => {
+    dbHelpers.getAllProfileLikes((err, results) => {
+      if (err) res.status(400).send(err);
+      else res.status(200).send(results.rows);
+    });
+  },
   getProfileLikes: (req, res) => {
     dbHelpers.getProfileLikes(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);

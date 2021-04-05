@@ -115,6 +115,12 @@ const dbHelpers = {
     });
   },
   // PROFILE LIKES ------------------------------------//
+  getAllProfileLikes: (callback) => {
+    const queryStr = 'SELECT * from waw.profilelikes';
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
   getProfileLikes: (user_id, callback) => {
     const queryStr = `SELECT * FROM waw.profilelikes WHERE user_id=${user_id}`;
     db.query(queryStr, (err, res) => {
