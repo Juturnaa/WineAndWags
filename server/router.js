@@ -3,11 +3,20 @@ const controller = require('./controller');
 
 module.exports = router;
 
-router.route('/users/my-profile').get(controller.getMyProfile);
+router
+  .route('/users/my-profile/:email')
+  .get(controller.getMyProfile)
+  .patch(controller.editOwnerProfile);
+
+router
+  .route('/users/photos/:id')
+  .get(controller.getPhotos);
+
+router
+  .route('/users/my-dog/:dogid')
+  .patch(controller.editDogProfile);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
-
-router.route('/users/my-profile/:email').get(controller.getMyProfile);
 
 // MESSAGES ------------------------------------//
 router
