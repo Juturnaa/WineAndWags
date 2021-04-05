@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const db = require("./index.js");
+const db = require('./index.js');
 
 // get my profile
 // get my photos
@@ -25,7 +25,7 @@ const dbHelpers = {
     WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.send(data.rows[0]);
       }
@@ -54,7 +54,7 @@ const dbHelpers = {
       `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,
       (err, results) => {
         callback(err, results);
-      }
+      },
     );
   },
   editOwnerProfile: (req, callback) => {
@@ -85,6 +85,20 @@ const dbHelpers = {
       healthy,
     } = req.body;
     const qryStr = `UPDATE waw.dogs SET name='${name}', gender='${gender}', bio='${bio}', hypo=${hypo}, neutered=${neutered}, rating=${rating}, age=${age}, size='${size}', breed='${breed}', healthy=${healthy} WHERE id=${req.params.dogid}`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
+  uploadPhotos: (req, callback) => {
+    const { url } = req.body;
+    const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${req.params.id}, null, '${url}')`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
+  uploadDogPhotos: (req, callback) => {
+    const { url, owner_id } = req.body;
+    const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${owner_id}, ${req.params.dogid}, '${url}')`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
+  removePhotos: (req, callback) => {
+    const qryStr = `DELETE FROM waw.photos WHERE url=${req.params.photoid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
 

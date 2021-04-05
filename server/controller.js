@@ -25,6 +25,25 @@ const controller = {
       res.status(202).send('Success!');
     });
   },
+  uploadPhotos: (req, res) => {
+    dbHelpers.uploadPhotos(req, (err, result) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+  uploadDogPhotos: (req, res) => {
+    dbHelpers.uploadDogPhotos(req, (err, result) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+  removePhotos: (req, res) => {
+    dbHelpers.removePhotos(req, (err, results) => {
+      if (err) res.status(404).send(err);
+      res.status(202).send('Success!');
+    });
+  },
+
   // MESSAGES ------------------------------------//
   getAllConvos: (req, res) => {
     dbHelpers.getAllConvos(req.params.user_id, (err, results) => {
