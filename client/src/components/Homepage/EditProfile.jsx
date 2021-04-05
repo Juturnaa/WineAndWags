@@ -9,8 +9,6 @@ import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 
 // implement react paginton for edit of dogs
-// hard coded to display only ONE DOG ONLY, need to adjust
-// add placeholder texts for the current value of the place
 // need to add photos
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
@@ -36,6 +34,7 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
   const [dogsInfo, setDogsinfo] = useState();
   const [currentDogPg, setDogPage] = useState(1);
   const [dogPages, setPages] = useState();
+  const [breedFilterOptions, setBreedFilter] = useState();
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
@@ -75,6 +74,20 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     setDogs(true);
   };
 
+  const dogValueChange = (e) => {
+    setDogValue({ ...dogValue, [e.target.name]: e.target.value });
+  };
+
+  const filterChange = (e) => {
+    const userInput = e.target.value;
+
+    const filterOptions = breeds.filter(
+      (breed) => breed.toLowerCase().indexOf(userInput.toLowerCase()) > -1,
+    );
+    setBreedFilter(filterOptions);
+    dogValueChange(e);
+  };
+
   const emailValidation = (email) => {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (re.test(email)) {
@@ -101,7 +114,7 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
       result = true;
     }
     if (humanValue.age.length > 0) {
-      resultAge = numberValidation(humanValue.age)
+      resultAge = numberValidation(humanValue.age);
     } else {
       resultAge = true;
     }
@@ -171,10 +184,6 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
     setHumanValue({ ...humanValue, [e.target.name]: e.target.value });
   };
 
-  const dogValueChange = (e) => {
-    setDogValue({ ...dogValue, [e.target.name]: e.target.value });
-  };
-
   return (
     <div>
       <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
@@ -186,7 +195,7 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
               Name:
               {' '}
               <br />
-              <input type="text" name="name" onChange={humanValueChange} />
+              <input type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
             </div>
             <div>
               Gender:
@@ -206,13 +215,13 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
               Bio:
               {' '}
               <br />
-              <textarea rows="4" cols="50" name="bio" onChange={humanValueChange} />
+              <textarea rows="4" cols="50" name="bio" placeholder={currentUser.bio} onChange={humanValueChange} />
             </div>
             <div>
               E-mail:
               {' '}
               <br />
-              <input type="text" name="email" onChange={humanValueChange} />
+              <input type="text" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
             </div>
             <div>
               Password:
@@ -224,13 +233,13 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
               Age:
               {' '}
               <br />
-              <input type="text" name="age" onChange={humanValueChange} />
+              <input type="text" name="age" placeholder={currentUser.age} onChange={humanValueChange} />
             </div>
             <div>
               Zipcode:
               {' '}
               <br />
-              <input type="text" name="zipcode" onChange={humanValueChange} />
+              <input type="text" name="zipcode" placeholder={currentUser.zipcode} onChange={humanValueChange} />
             </div>
             <div>
               Search as:
@@ -317,11 +326,21 @@ function EditProfile({ currentUser, currentPhoto, breeds }) {
                 Breeds
                 {' '}
                 <br />
-                <select name="breed" onChange={dogValueChange}>
+                <input list="dogBreeds" type="text" name="breed" onChange={filterChange} />
+                {breedFilterOptions !== undefined && breedFilterOptions.length > 0
+                  ? (
+                    <datalist id="dogBreeds">
+                      {breedFilterOptions.map((breedItem, ind) => (
+                        <option key={ind} value={breedItem}>{breedItem}</option>
+                      ))}
+                    </datalist>
+                  )
+                  : null }
+                {/* <select name="breed" onChange={dogValueChange}>
                   {breeds.map((itemBreed, index) => (
                     <option key={index} value={itemBreed} name="breed">{itemBreed}</option>
                   ))}
-                </select>
+                </select> */}
               </div>
               <div>
                 Healthy
