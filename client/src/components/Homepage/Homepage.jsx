@@ -55,14 +55,9 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
         changeOwnerGenders(filters.genders);
       })
       .catch((err) => {
-        console.log(error);
+        console.error(error);
       })
   }, [])
-
-  // PATCH user settings
-  const saveChanges = () => {
-    //
-  }
 
   return (
     <div>

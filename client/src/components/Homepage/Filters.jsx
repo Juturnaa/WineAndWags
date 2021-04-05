@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import axios from 'axios';
 import Slider from '@material-ui/core/Slider';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
@@ -517,6 +518,34 @@ export default function Filters({
     width: '50%'
   }
 
+  // PATCH user settings
+  const saveChanges = () => {
+    const sizeNumToString = (n) => {
+      if (n === 0) return 'XS'
+      if (n === 1) return 'S'
+      if (n === 2) return 'M'
+      if (n === 3) return 'L'
+      if (n === 4) return 'XL'
+    }
+    const values = {
+      sizeRange: [sizeNumToString(sizeRange[0]), sizeNumToString(sizeRange[1])],
+      dogAgeRange,
+      dogGenders,
+      hypoallergenic,
+      neutered,
+      healthIssues,
+      avoidBreeds,
+      preferredBreeds,
+      maxDistance,
+      ownerAgeRange,
+      ownerGenders
+    }
+    // change 1 to current user id
+    axios.patch(`/app/${1}/filters`, values)
+        .then((results) => alert(results.data))
+        .catch((err) => console.error(err));
+  }
+
   return (
     <div className='filter-modal'>
       <div className='dog-filters'>
@@ -602,7 +631,7 @@ export default function Filters({
             <FormControlLabel value="All" control={<Radio />} label="All" />
           </RadioGroup>
         </FormControl>
-        <button className='apply-btn' onClick={() => alert('PUT REQUEST')}>Apply changes</button>
+        <button className='apply-btn' onClick={() => saveChanges()}>Apply changes</button>
       </div>
     </div>
   )
