@@ -95,5 +95,4 @@ CREATE TABLE IF NOT EXISTS waw.filters (
   genders VARCHAR(20) NOT NULL,
   min_age INT NOT NULL,
   max_age INT NOT NULL
-  
 );
