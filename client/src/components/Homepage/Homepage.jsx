@@ -20,7 +20,6 @@ export default function Homepage() {
   const [avoidBreeds, changeAvoidedBreeds] = useState([]); // multi dropdown that adds/removes dog breed strings from this array
 
   // Owner Filters
-  const [minDistance, changeMinDistance] = useState(1);
   const [maxDistance, changeMaxDistance] = useState(10); // miles
   const [ownerMinAge, changeOwnerMinAge] = useState(18);
   const [ownerMaxAge, changeOwnerMaxAge] = useState(100);
@@ -28,9 +27,9 @@ export default function Homepage() {
 
   // Requests
 
-  // GET request to get the user's initial settings on first login
-  // GET request to get their most recent settings on subsequent logins
-  // PUT/PATCH when the user clicks save/apply changes on the modal
+  // GET request to get the user's settings
+  // PUT/PATCH user settings when they click save/apply changes on the modal
+
   // GET 1 owner at a time + all their dogs, based on filters. Called on page load and on clicking X button for a user
   // PUT/PATCH the 'liked' table when clicking check button for a user.
 
