@@ -91,7 +91,8 @@ CREATE TABLE IF NOT EXISTS waw.filters (
   health_issues BOOLEAN NOT NULL,
   avoid_breeds TEXT,
   favorite_breeds TEXT,
-  min_distance INT NOT NULL,
-  max_distance INT NOT NULL,
-  genders VARCHAR(20) NOT NULL
+  max_dist INT NOT NULL,
+  genders VARCHAR(20) NOT NULL,
+  min_age INT NOT NULL,
+  max_age INT NOT NULL
 );
