@@ -6,6 +6,10 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
 
 export default function Filters({
   sizes, changeSizes,
@@ -15,10 +19,14 @@ export default function Filters({
   neutered, changeNeutered,
   healthIssues, changeHealthIssues,
   avoidBreeds, changeAvoidedBreeds,
+  preferredBreeds, changePreferredBreeds,
   maxDistance, changeMaxDistance,
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders
 }) {
+
+  // replace with whatever full list of breeds all of us end up using
+  const breeds = ['pug', 'goldendoodle', 'golden retriever', 'bulldog', 'beagle', 'rottweiler', 'corgi']
 
   return (
     <div>
@@ -61,7 +69,35 @@ export default function Filters({
         label="Health issues"
       />
       <p>Avoid breeds:</p>
+      <FormControl>
+        <Select
+          multiple
+          value={avoidBreeds}
+          onChange={(e) => changeAvoidedBreeds(e.target.value)}
+          input={<Input />}
+        >
+          {breeds.map((breed) => (
+            <MenuItem key={breed} value={breed}>
+              {breed}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <p>Preferred breeds:</p>
+      <FormControl>
+        <Select
+          multiple
+          value={preferredBreeds}
+          onChange={(e) => changePreferredBreeds(e.target.value)}
+          input={<Input />}
+        >
+          {breeds.map((breed) => (
+            <MenuItem key={breed} value={breed}>
+              {breed}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
       <button onClick={() => alert('PUT REQUEST')}>Apply</button>
     </div>
   )

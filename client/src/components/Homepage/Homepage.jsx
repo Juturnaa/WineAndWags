@@ -16,7 +16,8 @@ export default function Homepage() {
   const [hypoallergenic, changeHypoallergenic] = useState(false);
   const [neutered, changeNeutered] = useState(false);
   const [healthIssues, changeHealthIssues] = useState(false);
-  const [avoidBreeds, changeAvoidedBreeds] = useState([]); // multi dropdown that adds/removes dog breed strings from this array
+  const [avoidBreeds, changeAvoidedBreeds] = useState([]);
+  const [preferredBreeds, changePreferredBreeds] = useState([]);
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
@@ -44,6 +45,7 @@ export default function Homepage() {
           neutered={neutered} changeNeutered={changeNeutered}
           healthIssues={healthIssues} changeHealthIssues={changeHealthIssues}
           avoidBreeds={avoidBreeds} changeAvoidedBreeds={changeAvoidedBreeds}
+          preferredBreeds={preferredBreeds} changePreferredBreeds={changePreferredBreeds}
           maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
           ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
           ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
