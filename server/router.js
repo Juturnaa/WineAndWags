@@ -30,11 +30,15 @@ router
   .post(controller.postMessage);
 
 // PROFILE LIKES ------------------------------------//
-router
-  .route('/profile-likes')
-  .get(controller.getAllProfileLikes);
+// router
+//   .route('/profile-likes')
+//   .get(controller.getAllProfileLikes);
 
 router
   .route('/:user_id/profile-likes')
   .get(controller.getProfileLikes)
   .post(controller.postNewProfileLike);
+
+router
+  .route('/:user_id/matches')
+  .get(controller.getMatches);

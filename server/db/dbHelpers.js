@@ -115,21 +115,27 @@ const dbHelpers = {
     });
   },
   // PROFILE LIKES ------------------------------------//
-  getAllProfileLikes: (callback) => {
-    const queryStr = 'SELECT * from waw.profilelikes';
-    db.query(queryStr, (err, res) => {
-      callback(err, res);
-    });
-  },
+  // getAllProfileLikes: (callback) => {
+  //   const queryStr = 'SELECT * from waw.profilelikes';
+  //   db.query(queryStr, (err, res) => {
+  //     callback(err, res);
+  //   });
+  // },
   getProfileLikes: (user_id, callback) => {
-    const queryStr = `SELECT * FROM waw.profilelikes WHERE user_id=${user_id}`;
+    const queryStr = `SELECT liked_user_id FROM waw.profilelikes WHERE user_id=${user_id}`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
   },
   postNewProfileLike: (user_id, liked_user_id, callback) => {
-    const queryStr = `INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_user_id}
+    let queryStr = `INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_user_id}
     WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${user_id} AND liked_user_id in (${liked_user_id}))`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  getMatches: (user_id, callback) => {
+    const queryStr = `SELECT user_id FROM waw.profilelikes WHERE user_id IN (SELECT liked_user_id FROM waw.profilelikes WHERE user_id=${user_id}) AND liked_user_id=${user_id}`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
