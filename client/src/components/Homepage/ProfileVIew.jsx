@@ -4,19 +4,21 @@ import PhotosList from './PhotosList.jsx';
 const ProfileView = ({ user, photos }) => {
     return (
         <div className="profile-card">
-            <div> 
+            <div id="card-name"> 
                 {user.name} 
             </div>
+            <div style={{display: 'flex', direction: 'row'}} >
+                <div>
+                    <PhotosList photos={photos} />
+                </div>
+                <div className="card-text" >
+                    <div className="text-component"> <div className="text-component-key">City: </div>  <div className="text-component-value" > {user.zipcode} </div>  </div>
+                    <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {user.age} </div></div>
+                    <div className="text-component"><div className="text-component-key">About Me: </div> <div className="text-component-value"> {user.bio} </div></div>
+                </div>
+            </div>
 
-            <div>
-                <PhotosList photos={photos} />
-            </div>
-            <div className="card-text" >
-                <div> {user.zipcode} </div>
-                <div> {user.gender} </div>
-                <div> {user.age} </div>
-                <div> {user.bio} </div>
-            </div>
+          
         </div>
     )
 }

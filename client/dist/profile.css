@@ -56,12 +56,29 @@
   height: 250px;
 }
 .profile-card {
-  display: flex;
-  flex-direction: row;
   margin-left: 35%;
-  margin-bottom: 7%;
+  margin-bottom: 5%;
 }
 .card-text {
   margin-left: 7%;
   margin-top: 5%;
+}
+
+#card-name {
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 20%;
+  margin-bottom: 4%;
+}
+.text-component {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3%;
+  width: 500px;
+}
+.text-component-value {
+  margin-left: 2%;
+}
+.text-component-key {
+  font-weight: bold;
 }
