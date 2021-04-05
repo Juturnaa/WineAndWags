@@ -37,7 +37,21 @@ export default function Homepage() {
     <div>
       <h3>Home Page</h3>
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
-      {filterModalOpen ? <Filters /> : null}
+      {filterModalOpen ?
+        <Filters
+          sizes={sizes} changeSizes={changeSizes}
+          dogMinAge={dogMinAge} changeDogMinAge={changeDogMinAge}
+          dogMaxAge={dogMaxAge} changeDogMaxAge={changeDogMaxAge}
+          dogGenders={dogGenders} changeDogGenders={changeDogGenders}
+          hypoallergenic={hypoallergenic} changeHypoallergenic={changeHypoallergenic}
+          neutered={neutered} changeNeutered={changeNeutered}
+          healthIssues={healthIssues} changeHealthIssues={changeHealthIssues}
+          avoidBreeds={avoidBreeds} changeAvoidedBreeds={changeAvoidedBreeds}
+          maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
+          ownerMinAge={ownerMinAge} changeOwnerMinAge={changeOwnerMinAge}
+          ownerMaxAge={ownerMaxAge} changeOwnerMaxAge={changeOwnerMaxAge}
+          ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
+        /> : null}
     </div>
   )
 }
