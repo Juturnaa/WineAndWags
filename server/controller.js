@@ -88,6 +88,7 @@ const controller = {
       else res.status(200).send('Profile liked!');
     });
   },
+
   getMatches: (req, res) => {
     dbHelpers.getMatches(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
