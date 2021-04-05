@@ -18,6 +18,10 @@ router
   .patch(controller.editDogProfile)
   .post(controller.uploadDogPhotos);
 
+router
+  .route('/users/delete/:photoid')
+  .delete(controller.removePhotos);
+
 router.route('/users/random-profile').get(controller.getRandomProfile);
 
 // MESSAGES ------------------------------------//

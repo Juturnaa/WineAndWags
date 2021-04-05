@@ -54,22 +54,27 @@ function EditProfile({
   }, [currentUser]);
 
   useEffect(() => {
-    const humansimages = [];
     const dogsimages = [];
+    if (dogsPhoto.length > 0) {
+      dogsPhoto.map((ite) => {
+        const urlDog = {};
+        urlDog.url = ite.url;
+        return dogsimages.push(urlDog);
+      });
+    }
+    setDogsImg(dogsimages);
+  }, [dogsPhoto]);
+
+  useEffect(() => {
+    const humansimages = [];
     if (humanPhoto.length > 0) {
       humanPhoto.map((item) => {
         const url = {};
         url.url = item.url;
         return humansimages.push(url);
       });
-      dogsPhoto.map((ite) => {
-        const urlDog = {};
-        urlDog.url = ite.url;
-        return dogsimages.push(urlDog);
-      });
-      setHumanImg(humansimages);
-      setDogsImg(dogsimages);
     }
+    setHumanImg(humansimages);
   }, [humanPhoto]);
 
   const arrangeDogs = (arr) => {

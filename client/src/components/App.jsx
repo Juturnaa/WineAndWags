@@ -13,8 +13,6 @@ const App = () => {
   const [humanPhoto, setHumanPhoto] = useState([]);
   const [dogsPhoto, setDogsPhoto] = useState([]);
 
-  console.log(currentUser);
-
   useEffect(() => {
     axios.all([
       axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
