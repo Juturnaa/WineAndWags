@@ -45,14 +45,11 @@ router
   .get(controller.getProfileLikes)
   .post(controller.postNewProfileLike);
 
-<<<<<<< HEAD
 router
   .route('/:user_id/matches')
   .get(controller.getMatches);
-=======
 // FILTERS
 router
   .route('/:user_id/filters')
   .get(controller.getSavedFilters)
   .patch(controller.updateSavedFilters);
->>>>>>> f4433f17ca78f536e0d36b7eff4d59efb23f03f8
