@@ -18,7 +18,7 @@ const App = () => {
     axios.get('/app/users/random-profile')
       .then((data) => {
         let random = Math.floor(Math.random() * (data.data.length - 0) + 0);
-        console.log(random)
+        setCurrentUser(data.data[random])
       })
   }
 
@@ -30,7 +30,6 @@ const App = () => {
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
-        setPhoto(two.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
