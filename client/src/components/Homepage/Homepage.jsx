@@ -7,7 +7,6 @@ import axios from 'axios';
 import Filters from './Filters';
 
 export default function Homepage() {
-
   const [filterModalOpen, toggleFilterModal] = useState(false);
 
   // Dog Filters
