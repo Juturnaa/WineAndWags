@@ -10,11 +10,17 @@ router
 
 router
   .route('/users/photos/:id')
-  .get(controller.getPhotos);
+  .get(controller.getPhotos)
+  .post(controller.uploadPhotos);
 
 router
   .route('/users/my-dog/:dogid')
-  .patch(controller.editDogProfile);
+  .patch(controller.editDogProfile)
+  .post(controller.uploadDogPhotos);
+
+router
+  .route('/users/delete/:photoid')
+  .delete(controller.removePhotos);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
 
