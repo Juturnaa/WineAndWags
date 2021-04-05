@@ -105,10 +105,9 @@ const dbHelpers = {
     });
   },
   postNewProfileLike: (user_id, liked_user_id, callback) => {
-    const queryStr = `INSERT INTO waw.profilelikes (id, user_id, liked_user_id) VALUES (DEFAULT, ${user_id}, ${liked_user_id})`;
-    const queryStr2 = `INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_user_id}
+    const queryStr = `INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_user_id}
     WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${user_id} AND liked_user_id in (${liked_user_id}))`;
-    db.query(queryStr2, (err, res) => {
+    db.query(queryStr, (err, res) => {
       callback(err, res);
     });
   },
