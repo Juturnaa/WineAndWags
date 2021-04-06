@@ -65,4 +65,4 @@ function Map({ location, zoomLevel }) {
   );
 }
 
-export default Map;
+// export default Map;

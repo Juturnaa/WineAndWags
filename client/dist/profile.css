@@ -1,0 +1,61 @@
+.heart {
+  position: relative;
+  width: 100px;
+  height: 90px;
+  margin-top: 10px;
+}
+
+.heart::before,
+.heart::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 52px;
+  height: 80px;
+  border-radius: 50px 50px 0 0;
+  background: red;
+}
+
+.heart::before {
+  left: 50px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+}
+
+.heart::after {
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+}
+
+.profile-pic {
+  width: 250px;
+  height: 250px;
+}
+.profile-card {
+  margin-left: 35%;
+  margin-bottom: 5%;
+}
+.card-text {
+  margin-left: 7%;
+  margin-top: 5%;
+}
+
+#card-name {
+  font-size: 36px;
+  font-weight: bold;
+  margin-left: 20%;
+  margin-bottom: 4%;
+}
+.text-component {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 3%;
+  width: 500px;
+}
+.text-component-value {
+  margin-left: 2%;
+}
+.text-component-key {
+  font-weight: bold;
+}
