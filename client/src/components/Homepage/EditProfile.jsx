@@ -8,6 +8,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import SimpleImageSlider from 'react-simple-image-slider';
+import EditHumanImage from './EditHumanImage';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -43,6 +44,8 @@ function EditProfile({
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
+
+  console.log(humanPhoto)
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -230,7 +233,7 @@ function EditProfile({
             <div>
               Photo:
               {' '}
-              <SimpleImageSlider width={400} height={400} images={humanImg} />
+              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} />
               <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
               <button type="button" onClick={uploadClick}>Photos</button>
             </div>
