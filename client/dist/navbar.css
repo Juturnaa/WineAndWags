@@ -1,0 +1,18 @@
+nav {
+  background-color: #13070C;
+  width: 100vw;
+  height: 2.5rem;
+  justify-content: right;
+  text-align: right;
+  padding: 0.5rem;
+}
+
+.nav-icon {
+  margin-left: 1rem;
+  color: #EFF9F0;
+  transition-duration: 0.25s;
+}
+
+.nav-icon:hover {
+  color: #DDC8C4;
+}
