@@ -1,0 +1,47 @@
+#inbox-container {
+  width: 1000px;
+	margin: 0 auto;
+}
+
+#matches-container {
+  display: flex;
+  justify-content: space-evenly;
+  position: block;
+}
+
+.match-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: block;
+}
+
+.match-photos-container {
+  display: flex;
+  position: relative;
+}
+
+#messages-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.human-photos {
+  position: block;
+  object-fit: cover;
+  border: 1px solid darkgrey;
+  border-radius: 50%;
+  height: 75px;
+  width: 75px;
+}
+
+.dog-photos {
+  position: absolute;
+  bottom: 1%;
+  right: -10%;
+  object-fit: cover;
+  border: 1px solid darkgrey;
+  border-radius: 50%;
+  height: 35px;
+  width: 35px;
+}

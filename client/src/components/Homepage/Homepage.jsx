@@ -5,7 +5,7 @@ import ProfileView from './ProfileView';
 import DogView from './DogView'
 import LikeButton from './LikeButton';
 
-export default function Homepage({ currentUser, humanPhoto, currentDogs, getRandomUser, dogPhotos }) {
+export default function Homepage({ currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   useEffect(() => {
@@ -21,6 +21,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
   const [healthIssues, changeHealthIssues] = useState(false);
   const [avoidBreeds, changeAvoidedBreeds] = useState([]);
   const [preferredBreeds, changePreferredBreeds] = useState([]);
+  const [filterParams, setFilterParams] = useState({})
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
@@ -42,6 +43,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           if (str === 'XL') return 4
         }
         const filters = results.data[0];
+        setFilterParams(results.data[0]);
         changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
         changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
         changeDogGenders(filters.dog_genders);
@@ -63,9 +65,9 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
     <div>
       <h3>Home Page</h3>
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
-      <ProfileView user={currentUser} photos={humanPhoto}/>
-      <DogView dog={currentDog || ''} dogPhotos={dogPhotos} />
-      <LikeButton getRandomUser={getRandomUser} />
+      <ProfileView user={currentUser} photos={humanPhoto} likePhoto={likePhoto}/>
+      <DogView dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
+      <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
       {filterModalOpen ?
         <Filters
           sizeRange={sizeRange} changeSizeRange={changeSizeRange}

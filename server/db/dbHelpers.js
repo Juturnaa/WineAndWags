@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const db = require('./index.js');
+const db = require("./index.js");
 
 // get my profile
 // get my photos
@@ -15,6 +15,7 @@ const dbHelpers = {
   // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
     const { email } = req.params;
+    console.log(email);
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -26,13 +27,30 @@ const dbHelpers = {
     WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
-        res.status(400).send('something went wrong with your query');
+        console.log(err);
+        res.status(400).send("something went wrong with your query");
       } else {
         res.send(data.rows[0]);
       }
     });
   },
   getRandomProfile: (req, res) => {
+    const {
+      min_size,
+      max_size,
+      dog_min_age,
+      dog_max_age,
+      dog_genders,
+      hypo,
+      neutered,
+      health_issues,
+      genders,
+      avoid_breeds,
+      min_age,
+      max_age,
+      favorite_breeds,
+    } = JSON.parse(req.query.filters);
+    console.log(min_age, max_age, dog_min_age, dog_max_age);
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -41,9 +59,21 @@ const dbHelpers = {
      'healthy', dogs.healthy
     )) dogs_info FROM waw.users
     LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
+    WHERE waw.users.age BETWEEN ${min_age} AND ${max_age} AND waw.dogs.age BETWEEN ${dog_min_age} AND ${dog_max_age}
     GROUP BY waw.users.id`;
+    // const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object(‘id’, waw.dogs.id,
+    //   ‘name’, waw.dogs.name, ‘gender’, waw.dogs.gender,
+    //    ‘bio’, waw.dogs.bio, ‘hypo’, waw.dogs.hypo, ‘neutered’,
+    //   waw. dogs.neutered, ‘rating’, waw.dogs.rating, ‘age’,
+    //    waw.dogs.age, ‘size’, waw.dogs.size, ‘breed’, waw.dogs.breed,
+    //    ‘healthy’, dogs.healthy
+    //   )) dogs_info FROM waw.users
+    //   LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
+    //   WHERE waw.users.gender = ‘m’
+    //   GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
+        console.log(err);
         res.status(400).send("something went wrong with your query");
       } else {
         res.send(data.rows);
@@ -55,7 +85,7 @@ const dbHelpers = {
       `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,
       (err, results) => {
         callback(err, results);
-      },
+      }
     );
   },
   editOwnerProfile: (req, callback) => {
@@ -149,8 +179,21 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+  postNewPhotoLike: (user_id, liked_photo_id, callback) => {
+    let queryStr = `INSERT INTO waw.photoLikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_photo_id}
+    WHERE NOT EXISTS (SELECT id FROM waw.photoLikes WHERE user_id=${user_id} AND photo_id in (${liked_user_id}))`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
   getMatches: (user_id, callback) => {
     const queryStr = `SELECT user_id FROM waw.profilelikes WHERE user_id IN (SELECT liked_user_id FROM waw.profilelikes WHERE user_id=${user_id}) AND liked_user_id=${user_id}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  getProfile: (user_id, callback) => {
+    const queryStr = `SELECT waw.users.name, waw.dogs.name FROM waw.users INNER JOIN waw.dogs ON waw.users.id=waw.dogs.owner_id WHERE waw.users.id=${user_id}`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
@@ -174,9 +217,9 @@ const dbHelpers = {
       preferredBreeds,
       maxDistance,
       ownerAgeRange,
-      ownerGenders
+      ownerGenders,
     } = req.body;
-    const queryStr = `UPDATE waw.filters SET min_size='${sizeRange[0]}', max_size='${sizeRange[1]}', dog_min_age=${dogAgeRange[0]},dog_max_age=${dogAgeRange[1]}, dog_genders='${dogGenders}', hypo=${hypoallergenic}, neutered=${neutered}, health_issues=${healthIssues}, avoid_breeds='${avoidBreeds}', favorite_breeds='${preferredBreeds}', max_dist=${maxDistance}, genders='${ownerGenders}', min_age=${ownerAgeRange[0]}, max_age=${ownerAgeRange[1]} WHERE user_id=${user_id}`
+    const queryStr = `UPDATE waw.filters SET min_size='${sizeRange[0]}', max_size='${sizeRange[1]}', dog_min_age=${dogAgeRange[0]},dog_max_age=${dogAgeRange[1]}, dog_genders='${dogGenders}', hypo=${hypoallergenic}, neutered=${neutered}, health_issues=${healthIssues}, avoid_breeds='${avoidBreeds}', favorite_breeds='${preferredBreeds}', max_dist=${maxDistance}, genders='${ownerGenders}', min_age=${ownerAgeRange[0]}, max_age=${ownerAgeRange[1]} WHERE user_id=${user_id}`;
 
     db.query(queryStr, (err, results) => callback(err, results));
   },
@@ -190,7 +233,6 @@ const dbHelpers = {
       }
       );
   },
-
   // REGISTRATION AND LOGIN ------------------------------------//
   postUser: (req, res) => {
     let {name, bio, email, hash, age, zipcode, searched_as} = req.body;
