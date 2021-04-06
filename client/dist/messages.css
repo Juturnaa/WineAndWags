@@ -1,9 +1,24 @@
 #inbox-container {
-  /* display: flex; */
+  width: 1000px;
+	margin: 0 auto;
 }
 
 #matches-container {
   display: flex;
+  justify-content: space-evenly;
+  position: block;
+}
+
+.match-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: block;
+}
+
+.match-photos-container {
+  display: flex;
+  position: relative;
 }
 
 #messages-container {
@@ -21,10 +36,12 @@
 }
 
 .dog-photos {
-  position: block;
+  position: absolute;
+  bottom: 1%;
+  right: -10%;
   object-fit: cover;
   border: 1px solid darkgrey;
   border-radius: 50%;
-  height: 75px;
-  width: 75px;
+  height: 35px;
+  width: 35px;
 }

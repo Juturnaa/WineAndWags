@@ -26,25 +26,29 @@ const Inbox = ({ matches, matchesPhotos }) => {
 
   return (
     <div id="inbox-container">
-      Matches here:
       <br />
       <div id="matches-container">
         {matchesPhotos.map((match) => (
-          <div key={match[0].user_id}>
+          <div className="match-container" key={match[0].user_id}>
             <span>Human and Dog</span>
-            <img
-              className="human-photos"
-              alt="human"
-              src={match[0].url}
-            />
-            <img
-              className="dog-photos"
-              alt="dog"
-              src={match[1].url}
-            />
+            <br />
+            <div className="match-photos-container">
+              <img
+                className="human-photos"
+                alt="human"
+                src={match[0].url}
+              />
+              <img
+                className="dog-photos"
+                alt="dog"
+                src={match[1].url}
+              />
+            </div>
           </div>
         ))}
       </div>
+      <br />
+      <br />
       <div id="messages-container">
         Inbox HERE:
         <div>
