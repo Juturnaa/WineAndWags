@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Pagination } from '@material-ui/lab';
+import PhotoLikeButton from './PhotoLikeButton';
+const PhotosList = ({ photos, likePhoto }) => {
 
-const PhotosList = ({ photos }) => {
+  const [currentPhoto, setCurrentPhoto] = useState(1);
+  const changePages = (e, value) => {
+    setCurrentPhoto(value);
+  };
+
     const userPhotos = [
         {
           id: 1,
@@ -23,10 +30,13 @@ const PhotosList = ({ photos }) => {
         },
       ];
     return (
-        <div>
-            {userPhotos.map((photo) => (
+        <div className="img-container" >
+          <img className='profile-pic' src={userPhotos[currentPhoto -1].url}  />
+          <Pagination count={userPhotos.length} variant="outlined" page={currentPhoto} onChange={changePages} />
+          <PhotoLikeButton photoId={userPhotos[currentPhoto -1].id} likePhoto={likePhoto} />
+            {/* {userPhotos[currentPhoto].map((photo) => (
                 <img className="profile-pic" key={photo.id} src={photo.url} />
-            ))}
+            ))} */}
         </div>
     )
 }
