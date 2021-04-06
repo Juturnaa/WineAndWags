@@ -47,10 +47,8 @@ const dbHelpers = {
       genders,
       avoid_breeds,
       min_age,
-      max_age,
-      favorite_breeds,
+      max_age
     } = JSON.parse(req.query.filters);
-    console.log(min_age, max_age, dog_min_age, dog_max_age);
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -59,8 +57,16 @@ const dbHelpers = {
      'healthy', dogs.healthy
     )) dogs_info FROM waw.users
     LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
-    WHERE waw.users.age BETWEEN ${min_age} AND ${max_age} AND waw.dogs.age BETWEEN ${dog_min_age} AND ${dog_max_age} 
-    GROUP BY waw.users.id`;
+    WHERE waw.users.age BETWEEN ${min_age} AND ${max_age}
+    AND waw.users.searched_as = ${genders}
+    AND waw.dogs.age BETWEEN ${dog_min_age} AND 12 ${dog_max_age}
+    AND waw.dogs.size IN ('XS', 'M')
+    AND waw.dogs.hypo = ${hypo}
+    AND waw.dogs.neutered = ${neutered}
+    AND waw.dogs.healthy = ${health_issues}
+    AND waw.dogs.gender = ${dog_genders}
+    AND waw.dogs.breed NOT IN (${avoid_breeds})
+      GROUP BY waw.users.id`
     // const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object(‘id’, waw.dogs.id,
     //   ‘name’, waw.dogs.name, ‘gender’, waw.dogs.gender,
     //    ‘bio’, waw.dogs.bio, ‘hypo’, waw.dogs.hypo, ‘neutered’,
