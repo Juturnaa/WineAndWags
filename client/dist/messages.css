@@ -43,10 +43,16 @@
 
 /* -------------MESSAGES------------------ */
 
+#messages-outer-container {
+  display: flex;
+  justify-content: center;
+}
+
 #messages-container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  width: 800px;
 }
 
 .message-container {
