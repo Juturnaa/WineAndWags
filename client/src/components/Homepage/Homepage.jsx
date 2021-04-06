@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Filters from './Filters';
-import ProfileView from './ProfileView';
+import ProfileView from './ProfileVIew';
 import DogView from './DogView'
 import LikeButton from './LikeButton';
 
