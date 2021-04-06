@@ -48,6 +48,16 @@ const App = () => {
           });
       });
   };
+  const likeProfile = (id) => {
+    axios.post(`/${1}/profile-likes`, {liked_user_id: id})
+      .then(() => {
+        console.log('liked this user..');
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  }
+
 
   useEffect(() => {
     axios.all([
@@ -74,7 +84,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar getRandomUser={getRandomUser} humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
+      <NavBar likeProfile={likeProfile} getRandomUser={getRandomUser} humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
       {/* <Map /> */}
     </div>
   );
