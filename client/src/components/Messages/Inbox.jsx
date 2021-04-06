@@ -51,9 +51,23 @@ const Inbox = ({ matches, matchesPhotos }) => {
       <br />
       <div id="messages-container">
         Inbox HERE:
-        <div>
-          Map through messages here
-        </div>
+        {matchesPhotos.map((match) => (
+          <div className="message-container" key={match[0].user_id}>
+            <div className="messages-photos-container">
+              <img
+                className="human-photos-small"
+                alt="human"
+                src={match[0].url}
+              />
+              <img
+                className="dog-photos-small"
+                alt="dog"
+                src={match[1].url}
+              />
+            </div>
+            Message HERE dkajgfhaiusdhgiuahegoi
+          </div>
+        ))}
       </div>
     </div>
   );

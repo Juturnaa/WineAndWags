@@ -2,7 +2,7 @@
   width: 1000px;
 	margin: 0 auto;
 }
-
+/* -------------MATCHES------------------ */
 #matches-container {
   display: flex;
   justify-content: space-evenly;
@@ -19,11 +19,6 @@
 .match-photos-container {
   display: flex;
   position: relative;
-}
-
-#messages-container {
-  display: flex;
-  flex-direction: column;
 }
 
 .human-photos {
@@ -44,4 +39,42 @@
   border-radius: 50%;
   height: 35px;
   width: 35px;
+}
+
+/* -------------MESSAGES------------------ */
+
+#messages-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.message-container {
+  display: flex;
+  margin: 10px;
+  align-items: center;
+}
+
+.messages-photos-container {
+  display: flex;
+  width: 100px;
+  justify-content: space-evenly;
+}
+
+.human-photos-small {
+  /* position: block; */
+  object-fit: cover;
+  border: 1px solid darkgrey;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
+}
+
+.dog-photos-small {
+  /* position: block; */
+  object-fit: cover;
+  border: 1px solid darkgrey;
+  border-radius: 50%;
+  height: 40px;
+  width: 40px;
 }
