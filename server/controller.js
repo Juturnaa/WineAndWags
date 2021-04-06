@@ -1,4 +1,4 @@
-const dbHelpers = require('./db/dbHelpers');
+const dbHelpers = require("./db/dbHelpers");
 
 const controller = {
   getMyProfile: (req, res) => {
@@ -16,31 +16,31 @@ const controller = {
   editOwnerProfile: (req, res) => {
     dbHelpers.editOwnerProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
   editDogProfile: (req, res) => {
     dbHelpers.editDogProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
   uploadPhotos: (req, res) => {
     dbHelpers.uploadPhotos(req, (err, result) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
   uploadDogPhotos: (req, res) => {
     dbHelpers.uploadDogPhotos(req, (err, result) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
   removePhotos: (req, res) => {
     dbHelpers.removePhotos(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
 
@@ -52,22 +52,35 @@ const controller = {
     });
   },
   postNewConvo: (req, res) => {
-    dbHelpers.postNewConvo(req.params.user_id, req.body.recipient_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send('Created new convo!');
-    });
+    dbHelpers.postNewConvo(
+      req.params.user_id,
+      req.body.recipient_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send("Created new convo!");
+      }
+    );
   },
   getConvoMessages: (req, res) => {
-    dbHelpers.getConvoMessages(req.params.user_id, req.params.recipient_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send(results.rows);
-    });
+    dbHelpers.getConvoMessages(
+      req.params.user_id,
+      req.params.recipient_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send(results.rows);
+      }
+    );
   },
   postMessage: (req, res) => {
-    dbHelpers.postMessage(req.params.user_id, req.params.recipient_id, req.body, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send('Message sent!');
-    });
+    dbHelpers.postMessage(
+      req.params.user_id,
+      req.params.recipient_id,
+      req.body,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send("Message sent!");
+      }
+    );
   },
   // PROFILE LIKES AND MATCHES------------------------------------//
   // getAllProfileLikes: (req, res) => {
@@ -83,10 +96,14 @@ const controller = {
     });
   },
   postNewProfileLike: (req, res) => {
-    dbHelpers.postNewProfileLike(req.params.user_id, req.body.liked_user_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send('Profile liked!');
-    });
+    dbHelpers.postNewProfileLike(
+      req.params.user_id,
+      req.body.liked_user_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send("Profile liked!");
+      }
+    );
   },
   getMatches: (req, res) => {
     dbHelpers.getMatches(req.params.user_id, (err, results) => {
@@ -103,14 +120,14 @@ const controller = {
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
-      err ? res.status(400).send(err) : res.status(200).send(results.rows)
-    })
+      err ? res.status(400).send(err) : res.status(200).send(results.rows);
+    });
   },
   updateSavedFilters: (req, res) => {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
-      err ? res.status(404).send(err) : res.status(202).send('Updated')
-    })
-  }
+      err ? res.status(404).send(err) : res.status(202).send("Updated");
+    });
+  },
 };
 
 module.exports = controller;

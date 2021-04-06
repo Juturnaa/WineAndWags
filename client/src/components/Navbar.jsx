@@ -26,18 +26,33 @@ const Map = () => (
   <div>Map</div>
 );
 
+<<<<<<< HEAD
 function NavBar({
   currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos,
 }) {
+=======
+function NavBar({ currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser }) {
+>>>>>>> e54886c4ff393262bafa368a214859ce65f0639b
   return (
     <BrowserRouter>
-      {/* part that needs to be styled */}
       <nav>
+<<<<<<< HEAD
         <NavLink exact to="/home">Home</NavLink>
         <NavLink exact to="/notifications">Notifications</NavLink>
         <NavLink exact to="/inbox">Messages</NavLink>
         <NavLink exact to="/map">Map</NavLink>
         <NavLink exact to="/editprofile">Edit Profile</NavLink>
+=======
+        <NavLink className='nav-icon' exact to="/home"><i className="fas fa-home"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/notifications"><i className="far fa-bell"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/messages"><i className="far fa-envelope"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/map"><i className="far fa-map"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/editprofile">
+          {humanPhoto.length ? <div className='profile-thumbnail'
+            style={{ backgroundImage: `url(${humanPhoto[0].url})` }}></div>
+            : <div className='profile-thumbnail'></div>}
+        </NavLink>
+>>>>>>> e54886c4ff393262bafa368a214859ce65f0639b
       </nav>
 
       {/* Routes */}
@@ -60,7 +75,7 @@ function NavBar({
         />
         <Route exact path="/map" component={Map} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
+        <Route path="/*" render={() => <Homepage likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 
