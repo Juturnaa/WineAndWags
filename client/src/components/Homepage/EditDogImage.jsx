@@ -14,7 +14,10 @@ function EditDogImage({ dogImages, id }) {
     <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
       {dogImages[id].map((item, ind) => (
         <Carousel.Item key={ind}>
-          <img src={item.url} alt="dog" />
+          <div style={{
+            backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%',
+          }}
+          />
         </Carousel.Item>
       ))}
     </Carousel>

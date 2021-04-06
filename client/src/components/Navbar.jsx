@@ -31,7 +31,7 @@ function NavBar({
 }) {
   return (
     <BrowserRouter>
-      <nav>
+      <nav className='navigation-bar'>
         <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
         <NavLink className="nav-icon" exact to="/notifications"><i className="far fa-bell" /></NavLink>
         <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>

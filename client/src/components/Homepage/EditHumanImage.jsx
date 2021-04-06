@@ -14,7 +14,10 @@ function EditHumanImage({ humanPhoto }) {
     <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
       {humanPhoto.map((item, ind) => (
         <Carousel.Item key={ind}>
-          <img src={item.url} alt="human" />
+          <div style={{
+            backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%',
+          }}
+          />
         </Carousel.Item>
       ))}
     </Carousel>
