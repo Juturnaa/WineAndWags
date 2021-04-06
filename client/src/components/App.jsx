@@ -61,12 +61,13 @@ const App = () => {
 
   useEffect(() => {
     axios.all([
-      axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
+      axios.get('/app/users/my-profile/sophiaacheong26@gmail.com'),
       axios.get('/app/users/photos/7'),
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
+        console.log(one.data)
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
