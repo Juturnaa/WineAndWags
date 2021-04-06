@@ -154,6 +154,12 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+  getProfile: (user_id, callback) => {
+    const queryStr = `SELECT waw.users.name, waw.dogs.name FROM waw.users INNER JOIN waw.dogs ON waw.users.id=waw.dogs.owner_id WHERE waw.users.id=${user_id}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
   // FILTERS //
   getSavedFilters: (user_id, callback) => {
     const queryStr = `SELECT * FROM waw.filters WHERE user_id=${user_id}`;

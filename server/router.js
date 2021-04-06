@@ -39,6 +39,9 @@ router
 // router
 //   .route('/profile-likes')
 //   .get(controller.getAllProfileLikes);
+router
+  .route('/:user_id/profile')
+  .get(controller.getProfile);
 
 router
   .route('/:user_id/profile-likes')

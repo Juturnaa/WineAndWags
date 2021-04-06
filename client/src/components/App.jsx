@@ -14,6 +14,9 @@ const App = () => {
   const [humanPhoto, setHumanPhoto] = useState([]);
   const [dogsPhoto, setDogsPhoto] = useState([]);
   const [dogsImg, setDogsImg] = useState([]);
+  const [matches, setMatches] = useState([]);
+  const [matchesInfo, setMatchesInfo] = useState([]);
+  const [matchesPhotos, setMatchesPhotos] = useState([]);
 
   useEffect(() => {
     const dogsimages = [];
@@ -73,9 +76,46 @@ const App = () => {
       .catch((err) => console.error(err));
   }, []);
 
+  useEffect(() => {
+    axios.get(`/app/${currentUser.id}/matches`)
+      .then((results) => {
+        setMatches(results.data);
+      })
+      .catch((err) => console.log(err));
+  }, [currentUser]);
+
+  useEffect(() => {
+    const matchPhotos = [];
+    matches.map((match) =>
+    axios.all([
+      axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
+      axios.get('/app/users/photos/7'),
+    ])
+    .then(axios.spread((one, two) => {
+      setHumanPhoto(human);
+      setDogsPhoto(dogs);
+    }))
+    .catch((err) => console.error(err));
+    axios.get(`/app/users/photos/${match.user_id}`)
+      .then((results) => {
+        matchPhotos.push(results.data);
+      })
+      .catch((err) => console.log(err)));
+    setMatchesPhotos(matchPhotos);
+  }, [matches]);
+
   return (
     <div>
-      <NavBar humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
+      <NavBar
+        humanPhoto={humanPhoto}
+        dogsImg={dogsImg}
+        getRandomUser={getRandomUser}
+        currentUser={currentUser}
+        breeds={breeds}
+        currentDogs={currentDogs}
+        matches={matches}
+        matchesPhotos={matchesPhotos}
+      />
       {/* <Map /> */}
     </div>
   );
