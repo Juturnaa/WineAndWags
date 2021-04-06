@@ -36,8 +36,8 @@ const dbHelpers = {
   },
   getRandomProfile: (req, res) => {
     const {
-      min_size,
-      max_size,
+      maxDistance,
+      sizeRange,
       dog_min_age,
       dog_max_age,
       dog_genders,
@@ -49,6 +49,7 @@ const dbHelpers = {
       min_age,
       max_age
     } = JSON.parse(req.query.filters);
+    console.log('xddd', JSON.parse(req.query.filters));
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -60,11 +61,11 @@ const dbHelpers = {
     WHERE waw.users.age BETWEEN ${min_age} AND ${max_age}
     AND waw.users.searched_as = ${genders}
     AND waw.dogs.age BETWEEN ${dog_min_age} AND 12 ${dog_max_age}
-    AND waw.dogs.size IN ('XS', 'M')
+    AND waw.dogs.size IN (${sizeRange})
     AND waw.dogs.hypo = ${hypo}
     AND waw.dogs.neutered = ${neutered}
     AND waw.dogs.healthy = ${health_issues}
-    AND waw.dogs.gender = ${dog_genders}
+    ${dog_genders}
     AND waw.dogs.breed NOT IN (${avoid_breeds})
       GROUP BY waw.users.id`
     // const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object(‘id’, waw.dogs.id,

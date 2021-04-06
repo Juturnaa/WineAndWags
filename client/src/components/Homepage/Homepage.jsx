@@ -20,8 +20,8 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
   const [neutered, changeNeutered] = useState(false);
   const [healthIssues, changeHealthIssues] = useState(false);
   const [avoidBreeds, changeAvoidedBreeds] = useState([]);
-  const [preferredBreeds, changePreferredBreeds] = useState([]);
   const [filterParams, setFilterParams] = useState({})
+  // const [preferredBreeds, changePreferredBreeds] = useState([]);
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
@@ -32,7 +32,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
 
   // GET request to get the user's settings
   useEffect(() => {
-    axios.get(`http://localhost:3000/app/${1}/filters`) // should be current user id, not 1
+    axios.get(`http://localhost:3000/app/${5}/filters`) // should be current user id, not 1
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
@@ -42,19 +42,31 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           if (str === 'L') return 3
           if (str === 'XL') return 4
         }
-        const filters = results.data[0];
-        setFilterParams(results.data[0]);
+        let filters = results.data[0];
+        filters.min_size = filters.min_size.replace(/"/g,"");
+        filters.max_size = filters.max_size.replace(/"/g,"");
+        const dogGendersToString = (d_g) => {
+          if (d_g === " ") {
+            return 'Both'
+          } else if (d_g === 'M') {
+            return 'M'
+          } else if (d_g === 'F') {
+            return 'F'
+          } else {
+            return d_g.charAt(23)
+          }
+        }
         changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
         changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
-        changeDogGenders(filters.dog_genders);
+        changeDogGenders(dogGendersToString(filters.dog_genders));
         changeHypoallergenic(filters.hypo);
         changeNeutered(filters.neutered);
         changeHealthIssues(filters.health_issues);
         changeAvoidedBreeds([filters.avoid_breeds]);
-        changePreferredBreeds([filters.favorite_breeds]);
         changeMaxDistance(filters.max_dist);
         changeOwnerAgeRange([filters.min_age, filters.max_age]);
         changeOwnerGenders(filters.genders);
+        // changePreferredBreeds([filters.favorite_breeds]);
       })
       .catch((err) => {
         console.error(error);
@@ -77,11 +89,11 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           neutered={neutered} changeNeutered={changeNeutered}
           healthIssues={healthIssues} changeHealthIssues={changeHealthIssues}
           avoidBreeds={avoidBreeds} changeAvoidedBreeds={changeAvoidedBreeds}
-          preferredBreeds={preferredBreeds} changePreferredBreeds={changePreferredBreeds}
+          // preferredBreeds={preferredBreeds} changePreferredBreeds={changePreferredBreeds}
           maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
           ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
           ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
-          close={toggleFilterModal}
+          close={toggleFilterModal} setFilterParams={setFilterParams}
         /> : null}
     </div>
   )
