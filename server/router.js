@@ -22,6 +22,12 @@ router.route("/users/delete/:photoid").delete(controller.removePhotos);
 
 router.route("/users/random-profile").get(controller.getRandomProfile);
 
+// REGISTRATION ------------------------------------//
+router.route('/users')
+  .post(controller.postUser)
+router.route('/dogs/:user')
+  .post(controller.postDog)  
+
 // MESSAGES ------------------------------------//
 router
   .route("/:user_id/convos")
@@ -51,4 +57,5 @@ router.route("/:user_id/photo-likes").post(controller.postNewPhotoLike);
 router
   .route("/:user_id/filters")
   .get(controller.getSavedFilters)
-  .patch(controller.updateSavedFilters);
+  .patch(controller.updateSavedFilters)
+  .post(controller.postFilters)
