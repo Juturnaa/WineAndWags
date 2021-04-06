@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
+import AddDogModal from './AddDogModal';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -44,6 +45,7 @@ function EditProfile({
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
+  const [addDog, setAddDog] = useState(false);
 
   console.log(dogImages)
 
@@ -307,6 +309,8 @@ function EditProfile({
         : null}
       {dogs ? (
         <div id="editDogPage">
+          <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
+          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>
