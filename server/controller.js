@@ -105,6 +105,16 @@ const controller = {
       }
     );
   },
+  postNewPhotoLike: (req, res) => {
+    dbHelpers.postNewProfileLike(
+      req.params.user_id,
+      req.body.liked_photo_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send("Photo liked!");
+      }
+    );
+  },
   getMatches: (req, res) => {
     dbHelpers.getMatches(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
