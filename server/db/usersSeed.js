@@ -139,28 +139,29 @@ const zipcodes = [
   "92821",
   "92823",
 ];
-const genders = ["m", "f", "nb"];
-const bios = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
-const password = "password";
+
+const genders = ['M', 'F', 'All'];
+const bios = ['hey my name is triko.', 'YEEEEEHAWEWWWWW', 'im all vibed up!'];
+const password = 'password';
 
 const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 const seedUsers = () => {
   for (let i = 0; i < 1000; i++) {
-    const name = names[getRandom(0, names.length - 1)];
-    const gender = genders[getRandom(0, genders.length - 1)];
-    const bio = bios[getRandom(0, bios.length - 1)];
+    const name = names[getRandom(0, names.length)];
+    const gender = genders[getRandom(0, genders.length)];
+    const bio = bios[getRandom(0, bios.length)];
     const email = `sophiaacheong${i}@gmail.com`;
-    const age = ages[getRandom(0, ages.length - 1)];
-    const zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
-    const searched_as = genders[getRandom(0, genders.length - 1)];
+    const age = ages[getRandom(0, ages.length)];
+    const zipcode = zipcodes[getRandom(0, zipcodes.length)];
+    const searched_as = genders[getRandom(0, genders.length)];
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
+    console.log(i);
     db.query(
-      'INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
+      'INSERT INTO waw.users("name", bio, email, "password", age, zipcode, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7)',
       [
         `${name}`,
-        `${gender}`,
         `${bio}`,
         `${email}`,
         `${hash}`,

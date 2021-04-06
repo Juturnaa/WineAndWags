@@ -12,6 +12,7 @@ const db = require("./index.js");
 // get random profile's dogs
 
 const dbHelpers = {
+  // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
     const { email } = req.params;
     console.log(email);
@@ -209,6 +210,7 @@ const dbHelpers = {
 
     db.query(queryStr, (err, results) => callback(err, results));
   },
+  // REGISTRATION AND LOGIN ------------------------------------//
 };
 
 module.exports = dbHelpers;

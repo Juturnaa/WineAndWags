@@ -1,7 +1,11 @@
 import React, {useState} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
 
 export default function Register() {
-    let [page, setPage] = useState(1);
+    let [page, setPage] = useState(3);
+    let [user_id, setUserId] = useState();
     let [owner, setOwner] = useState();
     let [dog, setDog] = useState();
     let [email, setEmail] = useState();
@@ -10,28 +14,282 @@ export default function Register() {
     let [zipcode, setZipcode] = useState();
     let [ownerPics, setOwnerPics] = useState();
     let [ownerAge, setOwnerAge] = useState();
-    let [gender, setGender] = useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
-    // let [] =useState();
+    let [searched_as, setSearchedAs] = useState();
+    let [ownerBio, setOwnerBio] =useState();
+    let [dogPics, setDogPics] =useState();
+    let [dogAge, setDogAge] =useState();
+    let [dogGender, setDogGender] =useState();
+    let [breed, setBreed] =useState();
+    let [hypo, setHypo] =useState();
+    let [neutered, setNeutered] =useState();
+    let [health_issues, setHealthIssues] =useState();
+    let [size, setSize] =useState();
+    let [dogBio, setDogBio] =useState();
+    let [min_size, setMinSize] =useState();
+    let [max_size, setMaxSize] =useState();
+    let [sizePref, setSizePref] =useState([0, 4]);
+    let [dog_min_age, setDogMinAge] =useState();
+    let [dog_max_age, setDogMaxAge] =useState();
+    let [dogAgePref, setDogAgePref] =useState([0, 20])
+    let [dog_genders, setDogGenders] =useState();
+    let [hypoPref, setHypoPref] =useState();
+    let [neuteredPref, setNeuteredPref] =useState();
+    let [healthIssuesPref, setHealthIssuesPref] =useState();
+    let [avoid_breeds, setAvoidBreeds] =useState();
+    let [favorite_breeds, setFavoriteBreeds] =useState();
+    let [max_dist, setMaxDist] =useState(20);
+    let [ownerGenders, setOwnerGenders] =useState();
+    let [owner_min_age, setOwnerMinAge] =useState();
+    let [owner_max_age, setOwnerMaxAge] =useState()
+    let [ownerAgePref, setOwnerAgePref] =useState([18, 50])
 
     let inputs;
     if(page === 1) {
-        // inputs = <>
-        //     <input className="username" type="text" autoComplete="on" placeholder="username" />
-        //     <input className="password" type="password" autoComplete="off" placeholder="password" />
-        //     </>
+        inputs = <React.Fragment>
+            <input name="owner" type="text" placeholder="Owner's Name" />
+            <input name="dog" type="text" placeholder="Dog's Name" />
+            <input name="email" type="email" placeholder="Email" />
+            <input name="password" type="password" placeholder="Password" />
+            <input name="password2" type="password" placeholder="Confirm Password" />
+            <input name="zipcode" type="text" placeholder="Zipcode" />
+            </React.Fragment>
+    } else if (page === 2) {
+        inputs = <React.Fragment>
+            <div className ="pictures">
+                <span>Pictures</span><span>+</span>
+            </div>
+            <input name="ownerAge" type="number" min="18" placeholder="Age" />
+            <div>
+                Include me in searches for: 
+                <label>
+                    <input 
+                        name="searched_as" 
+                        type="radio" 
+                        value="M" 
+                        checked= {searched_as === "M"} 
+                        onClick ={()=> setSearchedAs("M")}
+                    />
+                    M
+                </label>
+                <label>
+                    <input 
+                        name="searched_as" 
+                        type="radio" 
+                        value="F" 
+                        checked= {searched_as === "F"} 
+                        onClick ={()=> setSearchedAs("F")}
+                    />
+                    F
+                </label>
+                <label>
+                    <input 
+                        name="searched_as" 
+                        type="radio" 
+                        value="Both" 
+                        checked= {searched_as === "Both"} 
+                        onClick ={()=> setSearchedAs("Both")}
+                    />
+                    Both
+                </label>
+            </div>
+            <textarea name="ownerBio" placeholder="Bio" />
+            </React.Fragment>
+    } else if (page === 3) {
+        inputs = <React.Fragment>
+            <div className ="pictures">
+                <span>Pictures</span><span>+</span>
+            </div>
+            <input name="dogAge" type="number" min="0" placeholder="Age" />
+            <div>
+                Gender 
+                <label>
+                    <input 
+                        name="dogGender" 
+                        type="radio" 
+                        value="M" 
+                        checked= {dogGender === "M"} 
+                        onClick ={()=> setDogGender("M")}
+                    />
+                    M
+                </label>
+                <label>
+                    <input 
+                        name="dogGender" 
+                        type="radio" 
+                        value="F" 
+                        checked= {dogGender === "F"} 
+                        onClick ={()=> setDogGender("F")}
+                    />
+                    F
+                </label>
+            </div>
+            <input name="breed" type="text" placeholder="Breed" />
+            <div><span>Hypoallergenic</span><input name="hypo" type="checkbox" /></div>
+            <div><span>Neutered/Spayed</span><input name="neutered" type="checkbox" /></div>
+            <div><span>Health Issues</span><input name="health_issues" type="checkbox" /></div>
+            <div style={{width: 400}}>
+                <Typography id="track-false-slider" gutterBottom>
+                    Size
+                </Typography>
+                <Slider
+                    value={size}
+                    onChange={(e, val) => setSize(val)}
+                    aria-labelledby="track-false-slider"
+                    marks={[
+                        {value: 0, label:"XS"},
+                        {value: 1, label:"S"},
+                        {value: 2, label: "M"},
+                        {value: 3, label: "L"},
+                        {value: 4, label: "XL"},
+                        ]}
+                    min={0}
+                    max={4}
+                />
+            </div>
+            <textarea name="dogBio" placeholder="Bio" />
+            <button className="register-button">+ Dog</button>
+            </React.Fragment>
+    } else if (page === 4) {
+        inputs = <React.Fragment>
+            <div>
+                Dog
+                <div style={{width: 400}}>
+                    <Typography id="range-slider" gutterBottom>
+                        Size
+                    </Typography>
+                    <Slider
+                        value={sizePref}
+                        onChange={(e, val) => setSizePref(val)}
+                        aria-labelledby="range-slider"
+                        marks={[
+                            {value: 0, label:"XS"},
+                            {value: 1, label:"S"},
+                            {value: 2, label: "M"},
+                            {value: 3, label: "L"},
+                            {value: 4, label: "XL"},
+                            ]}
+                        min={0}
+                        max={4}
+                    />
+                </div>
+                <div style={{width: 400}}>
+                    <Typography id="range-slider" gutterBottom>
+                        Age
+                    </Typography>
+                    <Slider
+                        value={dogAgePref}
+                        onChange={(e, val) => setDogAgePref(val)}
+                        valueLabelDisplay="auto"
+                        aria-labelledby="range-slider"
+                        min={0}
+                        max={20}
+                    />
+                </div>
+                <div>
+                    Gender 
+                    <label>
+                        <input 
+                            name="dog_genders" 
+                            type="radio" 
+                            value="M" 
+                            checked= {dogGender === "M"} 
+                            onClick ={()=> setDogGenders("M")}
+                        />
+                        M
+                    </label>
+                    <label>
+                        <input 
+                            name="dog_genders" 
+                            type="radio" 
+                            value="F" 
+                            checked= {dogGender === "F"} 
+                            onClick ={()=> setDogGenders("F")}
+                        />
+                        F
+                    </label>
+                    <label>
+                        <input 
+                            name="dog_genders" 
+                            type="radio" 
+                            value="F" 
+                            checked= {dogGender === "Both"} 
+                            onClick ={()=> setDogGenders("Both")}
+                        />
+                        Both
+                    </label>
+                </div>
+                <div><span>Hypoallergenic</span><input name="hypo" type="checkbox" /></div>
+                <div><span>Neutered/Spayed</span><input name="neutered" type="checkbox" /></div>
+                <div><span>Health Issues</span><input name="health_issues" type="checkbox" /></div>
+            </div>
+                Owner
+                <div>
+                    <div style={{width: 400}}>
+                        <Typography id="continuous-slider" gutterBottom>
+                            Distance
+                        </Typography>
+                        <Slider
+                            value={max_dist}
+                            onChange={(e, val) => setMaxDist(val)}
+                            valueLabelDisplay="auto"
+                            aria-labelledby="continuous-slider"
+                            min={0}
+                            max={20}
+                        />
+                    </div>
+                    <div style={{width: 400}}>
+                        <Typography id="range-slider" gutterBottom>
+                            Age
+                        </Typography>
+                        <Slider
+                            value={ownerAgePref}
+                            onChange={(e, val) => setOwnerAgePref(val)}
+                            valueLabelDisplay="auto"
+                            aria-labelledby="range-slider"
+                            min={18}
+                            max={50}
+                        />
+                    </div>
+                <div>
+                    Gender 
+                    <label>
+                        <input 
+                            name="ownerGenders" 
+                            type="radio" 
+                            value="M" 
+                            checked= {ownerGenders === "M"} 
+                            onClick ={()=> setOwnerGenders("M")}
+                        />
+                        M
+                    </label>
+                    <label>
+                        <input 
+                            name="ownerGenders" 
+                            type="radio" 
+                            value="F" 
+                            checked= {ownerGenders === "F"} 
+                            onClick ={()=> setOwnerGenders("F")}
+                        />
+                        F
+                    </label>
+                    <label>
+                        <input 
+                            name="ownerGenders" 
+                            type="radio" 
+                            value="All" 
+                            checked= {ownerGenders=== "All"} 
+                            onClick ={()=> setOwnerGenders("All")}
+                        />
+                        All
+                    </label>
+                </div>
+            </div>
+        </React.Fragment>
+    }
+
+    let pageHandler= (type) => {
+        if(type === 'back') setPage(page-1)
+        else if(page < 4) setPage(page+1)
     }
     
     return (
@@ -101,9 +359,9 @@ export default function Register() {
                         </div>
                     </div>
                     <div className="login-container">
-                        {inputs}                       
-                        <button className="login-button">Log in </button>
-                        <button className="register-button">Register </button>
+                        {inputs}
+                        {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:""}                        
+                        <button className="register-button" onClick={() => pageHandler("next")}>{page === 4 ? "Register" : "Next"} </button>
                     </div>
                 </div>
             </div>
