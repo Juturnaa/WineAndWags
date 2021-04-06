@@ -26,33 +26,25 @@ const Map = () => (
   <div>Map</div>
 );
 
-<<<<<<< HEAD
 function NavBar({
-  currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos,
 }) {
-=======
-function NavBar({ currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser }) {
->>>>>>> e54886c4ff393262bafa368a214859ce65f0639b
   return (
     <BrowserRouter>
       <nav>
-<<<<<<< HEAD
-        <NavLink exact to="/home">Home</NavLink>
-        <NavLink exact to="/notifications">Notifications</NavLink>
-        <NavLink exact to="/inbox">Messages</NavLink>
-        <NavLink exact to="/map">Map</NavLink>
-        <NavLink exact to="/editprofile">Edit Profile</NavLink>
-=======
-        <NavLink className='nav-icon' exact to="/home"><i className="fas fa-home"></i></NavLink>
-        <NavLink className='nav-icon' exact to="/notifications"><i className="far fa-bell"></i></NavLink>
-        <NavLink className='nav-icon' exact to="/messages"><i className="far fa-envelope"></i></NavLink>
-        <NavLink className='nav-icon' exact to="/map"><i className="far fa-map"></i></NavLink>
-        <NavLink className='nav-icon' exact to="/editprofile">
-          {humanPhoto.length ? <div className='profile-thumbnail'
-            style={{ backgroundImage: `url(${humanPhoto[0].url})` }}></div>
-            : <div className='profile-thumbnail'></div>}
+        <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
+        <NavLink className="nav-icon" exact to="/notifications"><i className="far fa-bell" /></NavLink>
+        <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
+        <NavLink className="nav-icon" exact to="/map"><i className="far fa-map" /></NavLink>
+        <NavLink className="nav-icon" exact to="/editprofile">
+          {humanPhoto.length ? (
+            <div
+              className="profile-thumbnail"
+              style={{ backgroundImage: `url(${humanPhoto[0].url})` }}
+            />
+          )
+            : <div className="profile-thumbnail" />}
         </NavLink>
->>>>>>> e54886c4ff393262bafa368a214859ce65f0639b
       </nav>
 
       {/* Routes */}
