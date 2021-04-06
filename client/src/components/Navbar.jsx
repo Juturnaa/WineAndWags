@@ -33,7 +33,11 @@ function NavBar({ currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRand
         <NavLink className='nav-icon' exact to="/notifications"><i className="far fa-bell"></i></NavLink>
         <NavLink className='nav-icon' exact to="/messages"><i className="far fa-envelope"></i></NavLink>
         <NavLink className='nav-icon' exact to="/map"><i className="far fa-map"></i></NavLink>
-        <NavLink className='nav-icon' exact to="/editprofile">Edit Profile</NavLink>
+        <NavLink className='nav-icon' exact to="/editprofile">
+          {humanPhoto.length ? <div className='profile-thumbnail'
+            style={{ backgroundImage: `url(${humanPhoto[0].url})` }}></div>
+            : <div className='profile-thumbnail'></div>}
+        </NavLink>
       </nav>
 
       {/* Routes */}

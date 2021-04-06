@@ -8,11 +8,25 @@ nav {
 }
 
 .nav-icon {
-  margin-left: 1rem;
+  margin-right: 1.5rem;
+  font-size: 1.25rem;
   color: #EFF9F0;
   transition-duration: 0.25s;
 }
 
 .nav-icon:hover {
   color: #DDC8C4;
+}
+
+.profile-thumbnail {
+  height: 2rem;
+  width: 2rem;
+  border: none;
+  border-radius: 50%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0.25rem;
+  right: 0.5rem;
 }
