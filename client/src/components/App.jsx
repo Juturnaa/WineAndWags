@@ -59,9 +59,16 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       })
-  }
-
-
+  };
+  const likePhoto = (photoId) => {
+    axios.post(`/app/${currentUser.id}/photo-likes`, {liked_photo_id: photoId})
+    .then((data) => {
+      alert('you have just liked them!')
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+  };
   useEffect(() => {
     axios.all([
       axios.get('/app/users/my-profile/sophiaacheong26@gmail.com'),
@@ -107,6 +114,7 @@ const App = () => {
   return (
     <div>
       <NavBar
+        likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto}
         dogsImg={dogsImg}

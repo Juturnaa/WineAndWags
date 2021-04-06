@@ -179,6 +179,13 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+  postNewPhotoLike: (user_id, liked_photo_id, callback) => {
+    let queryStr = `INSERT INTO waw.photoLikes SELECT nextval('waw.profilelikes_id_seq'), ${user_id}, ${liked_photo_id}
+    WHERE NOT EXISTS (SELECT id FROM waw.photoLikes WHERE user_id=${user_id} AND photo_id in (${liked_user_id}))`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
   getMatches: (user_id, callback) => {
     const queryStr = `SELECT user_id FROM waw.profilelikes WHERE user_id IN (SELECT liked_user_id FROM waw.profilelikes WHERE user_id=${user_id}) AND liked_user_id=${user_id}`;
     db.query(queryStr, (err, res) => {
