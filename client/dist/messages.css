@@ -19,6 +19,7 @@
 .match-photos-container {
   display: flex;
   position: relative;
+  cursor: pointer;
 }
 
 .human-photos {
@@ -59,6 +60,7 @@
   display: flex;
   margin: 10px;
   align-items: center;
+  cursor: pointer;
 }
 
 .messages-photos-container {

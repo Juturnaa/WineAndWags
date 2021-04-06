@@ -29,7 +29,7 @@ const Inbox = ({ matches, matchesPhotos }) => {
                 <div className="match-container" key={match[0].user_id}>
                   <span>Human and Dog</span>
                   <br />
-                  <div className="match-photos-container">
+                  <div className="match-photos-container" onClick={onMessageClick}>
                     <img
                       className="human-photos"
                       alt="human"
