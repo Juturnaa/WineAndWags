@@ -49,9 +49,9 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
-    axios.post(`/${1}/profile-likes`, {liked_user_id: id})
-      .then(() => {
-        console.log('liked this user..');
+    axios.post(`/app/${currentUser.id}/profile-likes`, {liked_user_id: id})
+      .then((data) => {
+        alert('you have just liked them!')
       })
       .catch((err) => {
         console.log(err);
