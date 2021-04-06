@@ -13,6 +13,7 @@ const ProfileView = ({ user, photos }) => {
                 </div>
                 <div className="card-text" >
                     <div className="text-component"> <div className="text-component-key">City: </div>  <div className="text-component-value" > {user.zipcode} </div>  </div>
+                    <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {user.gender} </div></div>
                     <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {user.age} </div></div>
                     <div className="text-component"><div className="text-component-key">About Me: </div> <div className="text-component-value"> {user.bio} </div></div>
                 </div>
