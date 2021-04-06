@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
-function EditHumanImage({ humanImg, humanPhoto }) {
+function EditHumanImage({ humanPhoto }) {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
@@ -11,10 +11,10 @@ function EditHumanImage({ humanImg, humanPhoto }) {
   };
 
   return (
-    <Carousel activeIndex={index} onSelect={handleSelect}>
+    <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
       {humanPhoto.map((item, ind) => (
         <Carousel.Item key={ind}>
-          <img src={item.url} alt="dog" />
+          <img src={item.url} alt="human" />
         </Carousel.Item>
       ))}
     </Carousel>
@@ -22,11 +22,6 @@ function EditHumanImage({ humanImg, humanPhoto }) {
 }
 
 EditHumanImage.propTypes = {
-  humanImg: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
   humanPhoto: PropTypes.arrayOf(
     PropTypes.oneOfType([
       PropTypes.any,
@@ -35,7 +30,6 @@ EditHumanImage.propTypes = {
 };
 
 EditHumanImage.defaultProps = {
-  humanImg: [],
   humanPhoto: [],
 };
 

@@ -7,8 +7,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
-import SimpleImageSlider from 'react-simple-image-slider';
 import EditHumanImage from './EditHumanImage';
+import EditDogImage from './EditDogImage';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -45,7 +45,7 @@ function EditProfile({
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
 
-  console.log(humanPhoto)
+  console.log(dogImages)
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -313,11 +313,7 @@ function EditProfile({
                 Photo:
                 {' '}
                 <br />
-                {dogImages[item.id].map((currentItem, ind) => (
-                  <div key={ind}>
-                    <img src={currentItem.url} alt="dog" />
-                  </div>
-                ))}
+                <EditDogImage dogImages={dogImages} id={item.id} />
               </div>
               <div>
                 Name:
