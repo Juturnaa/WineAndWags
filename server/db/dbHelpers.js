@@ -12,6 +12,7 @@ const db = require('./index.js');
 // get random profile's dogs
 
 const dbHelpers = {
+  // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
     const { email } = req.params;
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
@@ -179,6 +180,7 @@ const dbHelpers = {
 
     db.query(queryStr, (err, results) => callback(err, results));
   }
+  // REGISTRATION AND LOGIN ------------------------------------//
 };
 
 module.exports = dbHelpers;
