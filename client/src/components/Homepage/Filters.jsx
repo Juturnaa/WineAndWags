@@ -514,22 +514,14 @@ export default function Filters({
     width: '50%'
   }
 
-  // transforming data to work with DB
+  // transforming data to work with filter params for get random profile
   const getSizeRange = (min, max) => {
     const sizes = ['XS', 'S', 'M', 'L', 'XL']
     let result = []
     for (let i = min; i <= max; i++) {
-      result.push('"' + sizes[i] + '"')
+      result.push(`'${sizes[i]}'`)
     }
-    return result
-  }
-
-  const dogGenderQuery = (str) => {
-    if (str === 'Both') {
-      return ' '
-    } else {
-      return `AND waw.dogs.gender = '${str}'`
-    }
+    return result.join(',')
   }
 
   // PATCH user settings
@@ -542,6 +534,30 @@ export default function Filters({
       if (n === 4) return 'XL'
     }
     const values = {
+      sizeRange: [sizeRange[0], sizeRange[1]],
+      dogGenders,
+      dogAgeRange,
+      hypoallergenic,
+      neutered,
+      healthIssues,
+      avoidBreeds: avoidBreeds.join(','),
+      maxDistance,
+      ownerAgeRange,
+      ownerGenders
+      // preferredBreeds,
+    }
+    console.log(values);
+    // change 5 to current user id
+    axios.patch('/app/5/filters', values)
+        .then((results) => {
+          updateFilterParams()
+          alert(results.data);
+        })
+        .catch((err) => console.error(err));
+  }
+
+  const updateFilterParams = () => {
+    const params = {
       sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
       dogGenders,
       dogAgeRange,
@@ -551,33 +567,10 @@ export default function Filters({
       avoidBreeds: avoidBreeds.join(','),
       maxDistance,
       ownerAgeRange,
-      ownerGenders,
-      dogGenderQuery: dogGenderQuery(dogGenders),
-      // preferredBreeds,
-    }
-    console.log(values);
-    setFilterParams(values);
-    // change 5 to current user id
-    axios.patch(`/app/5/filters`, values)
-        .then((results) => alert(results.data))
-        .catch((err) => console.error(err));
-  }
-
-  useEffect(() => {
-    const values = {
-      sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
-      dogGenders: dogGenderQuery(dogGenders),
-      dogAgeRange,
-      hypoallergenic,
-      neutered,
-      healthIssues,
-      avoidBreeds: avoidBreeds.join(','),
-      maxDistance,
-      ownerAgeRange,
       ownerGenders
     }
-    setFilterParams(values);
-  }, [sizeRange, dogGenders, avoidBreeds])
+    setFilterParams(params)
+  }
 
   return (
     <div className='filter-modal'>

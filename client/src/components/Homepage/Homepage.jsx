@@ -43,22 +43,9 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           if (str === 'XL') return 4
         }
         let filters = results.data[0];
-        filters.min_size = filters.min_size.replace(/"/g,"");
-        filters.max_size = filters.max_size.replace(/"/g,"");
-        const dogGendersToString = (d_g) => {
-          if (d_g === " ") {
-            return 'Both'
-          } else if (d_g === 'M') {
-            return 'M'
-          } else if (d_g === 'F') {
-            return 'F'
-          } else {
-            return d_g.charAt(23)
-          }
-        }
         changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
         changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
-        changeDogGenders(dogGendersToString(filters.dog_genders));
+        changeDogGenders(filters.dog_genders);
         changeHypoallergenic(filters.hypo);
         changeNeutered(filters.neutered);
         changeHealthIssues(filters.health_issues);
