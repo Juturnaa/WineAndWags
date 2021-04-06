@@ -1,4 +1,7 @@
 const dbHelpers = require('./db/dbHelpers');
+const upload = require('./file-upload');
+
+const singleUpload = upload.single('image');
 
 const controller = {
   getMyProfile: (req, res) => {
@@ -26,9 +29,14 @@ const controller = {
     });
   },
   uploadPhotos: (req, res) => {
-    dbHelpers.uploadPhotos(req, (err, result) => {
-      if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+    singleUpload(req, res, (err) => {
+      if (err) res.status(422).send(err);
+      else {
+        dbHelpers.uploadPhotos(req, req.file.location, (error) => {
+          if (error) res.status(404).send(error);
+          else res.status(202).send('Success!');
+        });
+      }
     });
   },
   uploadDogPhotos: (req, res) => {
@@ -99,14 +107,14 @@ const controller = {
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
-      err ? res.status(400).send(err) : res.status(200).send(results.rows)
-    })
+      err ? res.status(400).send(err) : res.status(200).send(results.rows);
+    });
   },
   updateSavedFilters: (req, res) => {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
-      err ? res.status(404).send(err) : res.status(202).send('Updated')
-    })
-  }
+      err ? res.status(404).send(err) : res.status(202).send('Updated');
+    });
+  },
 };
 
 module.exports = controller;

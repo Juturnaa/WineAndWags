@@ -220,9 +220,11 @@ function EditProfile({
   };
 
   const uploadClick = () => {
-    axios.post('/app/users/photos/7', { url: `${uploadHuman}` })
+    const fd = new FormData();
+    fd.append('image', uploadHuman, uploadHuman.name);
+    axios.post('/app/users/photos/7', fd)
       .then((results) => alert(results.data))
-      .catch((err) => console.error(err));
+      .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
   return (
@@ -236,7 +238,7 @@ function EditProfile({
               Photo:
               {' '}
               <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} />
-              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
+              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
               <button type="button" onClick={uploadClick}>Photos</button>
             </div>
             <div>
