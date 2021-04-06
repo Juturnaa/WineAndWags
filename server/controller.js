@@ -60,22 +60,35 @@ const controller = {
     });
   },
   postNewConvo: (req, res) => {
-    dbHelpers.postNewConvo(req.params.user_id, req.body.recipient_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send('Created new convo!');
-    });
+    dbHelpers.postNewConvo(
+      req.params.user_id,
+      req.body.recipient_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send('Created new convo!');
+      },
+    );
   },
   getConvoMessages: (req, res) => {
-    dbHelpers.getConvoMessages(req.params.user_id, req.params.recipient_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send(results.rows);
-    });
+    dbHelpers.getConvoMessages(
+      req.params.user_id,
+      req.params.recipient_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send(results.rows);
+      },
+    );
   },
   postMessage: (req, res) => {
-    dbHelpers.postMessage(req.params.user_id, req.params.recipient_id, req.body, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send('Message sent!');
-    });
+    dbHelpers.postMessage(
+      req.params.user_id,
+      req.params.recipient_id,
+      req.body,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send('Message sent!');
+      },
+    );
   },
   // PROFILE LIKES AND MATCHES------------------------------------//
   // getAllProfileLikes: (req, res) => {
@@ -91,19 +104,37 @@ const controller = {
     });
   },
   postNewProfileLike: (req, res) => {
-    dbHelpers.postNewProfileLike(req.params.user_id, req.body.liked_user_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      else res.status(200).send('Profile liked!');
-    });
+    dbHelpers.postNewProfileLike(
+      req.params.user_id,
+      req.body.liked_user_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send('Profile liked!');
+      },
+    );
   },
-
+  postNewPhotoLike: (req, res) => {
+    dbHelpers.postNewProfileLike(
+      req.params.user_id,
+      req.body.liked_photo_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send('Photo liked!');
+      },
+    );
+  },
   getMatches: (req, res) => {
     dbHelpers.getMatches(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
       else res.status(200).send(results.rows);
     });
   },
-
+  getProfile: (req, res) => {
+    dbHelpers.getProfile(req.params.user_id, (err, results) => {
+      if (err) res.status(400).send(err);
+      else res.status(200).send(results.rows);
+    });
+  },
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
@@ -115,6 +146,17 @@ const controller = {
       err ? res.status(404).send(err) : res.status(202).send('Updated');
     });
   },
+  postFilters: (req, res) => {
+    dbHelpers.postFilters(req, res);
+  },
+  // REGISTRATION //
+  postUser: (req, res) => {
+    dbHelpers.postUser(req, res);
+  },
+  postDog: (req, res) => {
+    dbHelpers.postDog(req, res);
+  },
+
 };
 
 module.exports = controller;
