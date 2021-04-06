@@ -27,7 +27,7 @@ const Map = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages,
 }) {
   return (
     <BrowserRouter>
@@ -62,6 +62,7 @@ function NavBar({
               dogsImg={dogsImg}
               matches={matches}
               matchesPhotos={matchesPhotos}
+              allMessages={allMessages}
             />
           )}
         />
@@ -100,6 +101,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  allMessages: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 NavBar.defaultProps = {
@@ -109,6 +115,7 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
+  allMessages: [],
 };
 
 export default NavBar;

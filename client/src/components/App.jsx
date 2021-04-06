@@ -16,6 +16,7 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
     const dogsimages = [];
@@ -111,6 +112,18 @@ const App = () => {
     setMatchesPhotos(matchPhotos);
   }, [matches]);
 
+  useEffect(() => {
+    const messages = [];
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          messages.push([match.user_id, results.data]);
+        })
+        .catch((err) => console.log(err));
+    });
+    setAllMessages(messages);
+  }, []);
+
   return (
     <div>
       <NavBar
@@ -124,6 +137,7 @@ const App = () => {
         currentDogs={currentDogs}
         matches={matches}
         matchesPhotos={matchesPhotos}
+        allMessages={allMessages}
       />
     </div>
   );
