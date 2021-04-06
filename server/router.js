@@ -46,7 +46,7 @@ router
 
 router.route("/:user_id/matches").get(controller.getMatches);
 
-router.route("/:user_id/photo-likes").get(controller.postNewPhotoLike);
+router.route("/:user_id/photo-likes").post(controller.postNewPhotoLike);
 // FILTERS
 router
   .route("/:user_id/filters")

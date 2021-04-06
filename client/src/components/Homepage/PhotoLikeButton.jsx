@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 
-const PhotoLikeButton = (photoId) => {
+const PhotoLikeButton = ({ photoId, likePhoto }) => {
     return (
-        <button className="img-btn" >LIKE</button>
+        <button className="img-btn" onClick={() => likePhoto(photoId)} >LIKE</button>
     )
 };
 
