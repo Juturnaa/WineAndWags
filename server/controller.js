@@ -69,7 +69,13 @@ const controller = {
       else res.status(200).send('Message sent!');
     });
   },
-  // PROFILE LIKES ------------------------------------//
+  // PROFILE LIKES AND MATCHES------------------------------------//
+  // getAllProfileLikes: (req, res) => {
+  //   dbHelpers.getAllProfileLikes((err, results) => {
+  //     if (err) res.status(400).send(err);
+  //     else res.status(200).send(results.rows);
+  //   });
+  // },
   getProfileLikes: (req, res) => {
     dbHelpers.getProfileLikes(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
@@ -82,6 +88,25 @@ const controller = {
       else res.status(200).send('Profile liked!');
     });
   },
+
+  getMatches: (req, res) => {
+    dbHelpers.getMatches(req.params.user_id, (err, results) => {
+      if (err) res.status(400).send(err);
+      else res.status(200).send(results.rows);
+    });
+  },
+
+  // FILTERS //
+  getSavedFilters: (req, res) => {
+    dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
+      err ? res.status(400).send(err) : res.status(200).send(results.rows)
+    })
+  },
+  updateSavedFilters: (req, res) => {
+    dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
+      err ? res.status(404).send(err) : res.status(202).send('Updated')
+    })
+  }
 };
 
 module.exports = controller;

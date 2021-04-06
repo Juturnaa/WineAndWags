@@ -1,7 +1,3 @@
-// has state for all filters
-// can open the filter modal
-// displays 1 user + their dogs at a time with like or pass button
-
 import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Filters from './Filters';
@@ -25,6 +21,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
   const [healthIssues, changeHealthIssues] = useState(false);
   const [avoidBreeds, changeAvoidedBreeds] = useState([]);
   const [preferredBreeds, changePreferredBreeds] = useState([]);
+  const [filterParams, setFilterParams] = useState({})
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
@@ -34,10 +31,35 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
   // Requests
 
   // GET request to get the user's settings
-  // PUT/PATCH user settings when they click save/apply changes on the modal
-
-  // GET 1 owner at a time + all their dogs, based on filters. Called on page load and on clicking X button for a user
-  // PUT/PATCH the 'liked' table when clicking check button for a user.
+  useEffect(() => {
+    axios.get(`http://localhost:3000/app/${1}/filters`) // should be current user id, not 1
+      .then((results) => {
+        // modal slider for dog sizes works by number not strings
+        const sizeToNumberValue = (str) => {
+          if (str === 'XS') return 0
+          if (str === 'S') return 1
+          if (str === 'M') return 2
+          if (str === 'L') return 3
+          if (str === 'XL') return 4
+        }
+        const filters = results.data[0];
+        setFilterParams(results.data[0]);
+        changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
+        changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
+        changeDogGenders(filters.dog_genders);
+        changeHypoallergenic(filters.hypo);
+        changeNeutered(filters.neutered);
+        changeHealthIssues(filters.health_issues);
+        changeAvoidedBreeds([filters.avoid_breeds]);
+        changePreferredBreeds([filters.favorite_breeds]);
+        changeMaxDistance(filters.max_dist);
+        changeOwnerAgeRange([filters.min_age, filters.max_age]);
+        changeOwnerGenders(filters.genders);
+      })
+      .catch((err) => {
+        console.error(error);
+      })
+  }, [])
 
   return (
     <div>
@@ -45,7 +67,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
       <ProfileView user={currentUser} photos={humanPhoto}/>
       <DogView dog={currentDog || ''} dogPhotos={dogPhotos} />
-      <LikeButton getRandomUser={getRandomUser} />
+      <LikeButton filterParams={filterParams} getRandomUser={getRandomUser} />
       {filterModalOpen ?
         <Filters
           sizeRange={sizeRange} changeSizeRange={changeSizeRange}
@@ -59,6 +81,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
           ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
           ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
+          close={toggleFilterModal}
         /> : null}
     </div>
   )
