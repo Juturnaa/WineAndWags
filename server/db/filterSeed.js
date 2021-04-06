@@ -488,13 +488,13 @@ const seedFilters = () => {
       console.log(i)
 
       if(i <= 499) {
-        const avoid_breeds = `${breeds[getRandom(0, breeds.length - 1)]},${breeds[getRandom(0, breeds.length - 1)]}`;
+        const avoid_breeds = `${breeds[getRandom(0, breeds.length)]},${breeds[getRandom(0, breeds.length)]}`;
         db.query(
         `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${i}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_gender}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${gender}', ${min_age}, ${max_age})`
         );
 
       } else {
-        const favorite_breeds = `${breeds[getRandom(0, breeds.length - 1)]},${breeds[getRandom(0, breeds.length - 1)]}`;
+        const favorite_breeds = `${breeds[getRandom(0, breeds.length)]},${breeds[getRandom(0, breeds.length)]}`;
         db.query(
         `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, favorite_breeds, max_dist, genders, min_age, max_age) VALUES(${i}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_gender}', ${hypo}, ${neutered}, ${health_issues}, '${favorite_breeds}', ${max_dist}, '${gender}', ${min_age}, ${max_age})`
         );
