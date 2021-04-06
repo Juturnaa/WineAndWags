@@ -5,7 +5,6 @@ import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Map from './Map';
-import ProfileView from './Homepage/ProfileView';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
