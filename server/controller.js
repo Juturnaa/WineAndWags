@@ -105,14 +105,18 @@ const controller = {
       }
     );
   },
-
   getMatches: (req, res) => {
     dbHelpers.getMatches(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
       else res.status(200).send(results.rows);
     });
   },
-
+  getProfile: (req, res) => {
+    dbHelpers.getProfile(req.params.user_id, (err, results) => {
+      if (err) res.status(400).send(err);
+      else res.status(200).send(results.rows);
+    });
+  },
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
