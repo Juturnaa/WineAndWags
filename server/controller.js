@@ -106,6 +106,16 @@ const controller = {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
       err ? res.status(404).send(err) : res.status(202).send('Updated')
     })
+  },
+  postFilters: (req,res) => {
+    dbHelpers.postFilters(req, res)
+  },
+  // REGISTRATION //
+  postUser: (req, res) => {
+    dbHelpers.postUser(req, res)
+  },
+  postDog: (req, res) => {
+    dbHelpers.postDog(req, res)
   }
 };
 

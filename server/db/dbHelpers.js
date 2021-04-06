@@ -179,8 +179,37 @@ const dbHelpers = {
     const queryStr = `UPDATE waw.filters SET min_size='${sizeRange[0]}', max_size='${sizeRange[1]}', dog_min_age=${dogAgeRange[0]},dog_max_age=${dogAgeRange[1]}, dog_genders='${dogGenders}', hypo=${hypoallergenic}, neutered=${neutered}, health_issues=${healthIssues}, avoid_breeds='${avoidBreeds}', favorite_breeds='${preferredBreeds}', max_dist=${maxDistance}, genders='${ownerGenders}', min_age=${ownerAgeRange[0]}, max_age=${ownerAgeRange[1]} WHERE user_id=${user_id}`
 
     db.query(queryStr, (err, results) => callback(err, results));
-  }
+  },
+  postFilters: (req, res) => {
+   let {min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age} = req.body;
+    db.query(
+      `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${req.params.user_id}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_genders}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${genders}', ${min_age}, ${max_age})`,
+      (err) => {
+        if(err) res.send(err)
+        else res.send('posted filter')
+      }
+      );
+  },
+
   // REGISTRATION AND LOGIN ------------------------------------//
+  postUser: (req, res) => {
+    let {name, bio, email, hash, age, zipcode, searched_as} = req.body;
+    db.query(
+      `INSERT INTO waw.users("name", bio, email, "password", age, zipcode, searched_as) VALUES('${name}', '${bio}', '${email}', '${hash}', ${age}, '${zipcode}', '${searched_as}') RETURNING id`,
+      (err, data) => {
+        if(err) res.send(err)
+        else res.send(`u${data.rows[0].id}`);
+      })
+  },
+  postDog: (req, res) => {
+    let {name, gender, bio, hypo, neutered, age, size, breed, health_issues} =req.body;
+    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues})`,
+    (err) => {
+      if(err) res.send(err)
+      else res.send('dog posted')
+    }
+    );
+  }
 };
 
 module.exports = dbHelpers;

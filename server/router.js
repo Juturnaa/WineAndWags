@@ -24,6 +24,12 @@ router
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
 
+// REGISTRATION ------------------------------------//
+router.route('/users')
+  .post(controller.postUser)
+router.route('/dogs/:user')
+  .post(controller.postDog)  
+
 // MESSAGES ------------------------------------//
 router
   .route('/:user_id/convos')
@@ -53,5 +59,6 @@ router
 router
   .route('/:user_id/filters')
   .get(controller.getSavedFilters)
-  .patch(controller.updateSavedFilters);
+  .patch(controller.updateSavedFilters)
+  .post(controller.postFilters)
 
