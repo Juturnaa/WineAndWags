@@ -7,7 +7,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
-import SimpleImageSlider from 'react-simple-image-slider';
+import EditHumanImage from './EditHumanImage';
+import EditDogImage from './EditDogImage';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -42,9 +43,15 @@ function EditProfile({
   const [breedFilterOptions, setBreedFilter] = useState();
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
+  const [dogImages, setDogImages] = useState();
 
-  console.log(dogsInfo)
-  console.log(dogsImg)
+  console.log(dogImages)
+
+  useEffect(() => {
+    if (dogsImg.length > 0) {
+      setDogImages(Object.assign({}, ...dogsImg));
+    }
+  }, [dogsImg]);
 
   useEffect(() => {
     if (Object.keys(currentUser).length > 0) {
@@ -226,7 +233,7 @@ function EditProfile({
             <div>
               Photo:
               {' '}
-              <SimpleImageSlider width={400} height={400} images={humanImg} />
+              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} />
               <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
               <button type="button" onClick={uploadClick}>Photos</button>
             </div>
@@ -303,8 +310,10 @@ function EditProfile({
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>
-                Photo: <br />
-                {}
+                Photo:
+                {' '}
+                <br />
+                <EditDogImage dogImages={dogImages} id={item.id} />
               </div>
               <div>
                 Name:
