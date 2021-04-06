@@ -66,7 +66,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
       <ProfileView user={currentUser} photos={humanPhoto}/>
       <DogView dog={currentDog || ''} dogPhotos={dogPhotos} />
       <LikeButton getRandomUser={getRandomUser} />
-      {/* {filterModalOpen ?
+      {filterModalOpen ?
         <Filters
           sizeRange={sizeRange} changeSizeRange={changeSizeRange}
           dogAgeRange={dogAgeRange} changeDogAgeRange={changeDogAgeRange}
@@ -80,7 +80,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
           ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
           ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
           close={toggleFilterModal}
-        /> : null} */}
+        /> : null}
     </div>
   )
 }
