@@ -28,13 +28,16 @@ const Map = () => (
 function NavBar({ currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser }) {
   return (
     <BrowserRouter>
-      {/* part that needs to be styled */}
       <nav>
-        <NavLink exact to="/home">Home</NavLink>
-        <NavLink exact to="/notifications">Notifications</NavLink>
-        <NavLink exact to="/messages">Messages</NavLink>
-        <NavLink exact to="/map">Map</NavLink>
-        <NavLink exact to="/editprofile">Edit Profile</NavLink>
+        <NavLink className='nav-icon' exact to="/home"><i className="fas fa-home"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/notifications"><i className="far fa-bell"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/messages"><i className="far fa-envelope"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/map"><i className="far fa-map"></i></NavLink>
+        <NavLink className='nav-icon' exact to="/editprofile">
+          {humanPhoto.length ? <div className='profile-thumbnail'
+            style={{ backgroundImage: `url(${humanPhoto[0].url})` }}></div>
+            : <div className='profile-thumbnail'></div>}
+        </NavLink>
       </nav>
 
       {/* Routes */}

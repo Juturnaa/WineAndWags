@@ -59,7 +59,7 @@ const dbHelpers = {
      'healthy', dogs.healthy
     )) dogs_info FROM waw.users
     LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
-    WHERE waw.users.age BETWEEN ${min_age} AND ${max_age} AND waw.dogs.age BETWEEN ${dog_min_age} AND ${dog_max_age} 
+    WHERE waw.users.age BETWEEN ${min_age} AND ${max_age} AND waw.dogs.age BETWEEN ${dog_min_age} AND ${dog_max_age}
     GROUP BY waw.users.id`;
     // const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object(‘id’, waw.dogs.id,
     //   ‘name’, waw.dogs.name, ‘gender’, waw.dogs.gender,
