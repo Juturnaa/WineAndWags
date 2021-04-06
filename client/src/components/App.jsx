@@ -34,9 +34,9 @@ const App = () => {
     setDogsImg(dogsimages);
   }, [dogsPhoto]);
 
-  const getRandomUser = () => {
+  const getRandomUser = (filters) => {
     let random;
-    axios.get('/app/users/random-profile')
+    axios.get('/app/users/random-profile', {params: {filters}})
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setCurrentUser(data.data[random]);
@@ -75,7 +75,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
+      <NavBar getRandomUser={getRandomUser} humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
       {/* <Map /> */}
     </div>
   );

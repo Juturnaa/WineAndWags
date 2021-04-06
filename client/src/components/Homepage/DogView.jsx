@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList';
 const DogView = ({ dog, dogPhotos }) => {
-    console.log(dog)
     return (
         <div className="profile-card" >
             <div id="card-name"> 
