@@ -25,27 +25,34 @@ const Inbox = ({ matches, matchesPhotos }) => {
   // }, [setMatches]);
 
   return (
-    <div>
+    <div id="inbox-container">
       Matches here:
       <br />
-      {matchesPhotos.map((match) => (
+      <div id="matches-container">
+        {matchesPhotos.map((match) => (
+          <div key={match[0].user_id}>
+            <span>Human and Dog</span>
+            <img
+              className="human-photos"
+              alt="human"
+              src={match[0].url}
+            />
+            <img
+              className="dog-photos"
+              alt="dog"
+              src={match[1].url}
+            />
+          </div>
+        ))}
+      </div>
+      <div id="messages-container">
+        Inbox HERE:
         <div>
-          <span></span>
-          <img alt="human" src={match[0].url} />
-          <img alt="dog" src={match[1].url} />
+          Map through messages here
         </div>
-      ))}
-      {/* {matchesPhotos.length > 0
-        ? console.log('matchesPhotos', matchesPhotos.length)
-        : null} */}
+      </div>
     </div>
   );
-  // }
-  // return (
-  //   <div>
-  //     Hello from inbox
-  //   </div>
-  // );
 };
 
 Inbox.propTypes = {

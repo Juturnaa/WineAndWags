@@ -86,17 +86,7 @@ const App = () => {
 
   useEffect(() => {
     const matchPhotos = [];
-    matches.map((match) =>
-    axios.all([
-      axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
-      axios.get('/app/users/photos/7'),
-    ])
-    .then(axios.spread((one, two) => {
-      setHumanPhoto(human);
-      setDogsPhoto(dogs);
-    }))
-    .catch((err) => console.error(err));
-    axios.get(`/app/users/photos/${match.user_id}`)
+    matches.map((match) => axios.get(`/app/users/photos/${match.user_id}`)
       .then((results) => {
         matchPhotos.push(results.data);
       })
