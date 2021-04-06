@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Filters from './Filters';
 import ProfileView from './ProfileView';
@@ -30,6 +30,32 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
 
   // Requests
 
+  // transforming data to work with filter params for get random profile
+  const getSizeRange = (min, max) => {
+    const sizes = ['XS', 'S', 'M', 'L', 'XL']
+    let result = []
+    for (let i = min; i <= max; i++) {
+      result.push(`'${sizes[i]}'`)
+    }
+    return result.join(',')
+  }
+
+  const updateFilterParams = () => {
+    const params = {
+      sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
+      dogGenders,
+      dogAgeRange,
+      hypoallergenic,
+      neutered,
+      healthIssues,
+      avoidBreeds: avoidBreeds.join(','),
+      maxDistance,
+      ownerAgeRange,
+      ownerGenders
+    }
+    setFilterParams(params)
+  }
+
   // GET request to get the user's settings
   useEffect(() => {
     axios.get(`http://localhost:3000/app/${5}/filters`) // should be current user id, not 1
@@ -53,7 +79,13 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
         changeMaxDistance(filters.max_dist);
         changeOwnerAgeRange([filters.min_age, filters.max_age]);
         changeOwnerGenders(filters.genders);
-        // changePreferredBreeds([filters.favorite_breeds]);
+
+      })
+      .then(() => {
+        updateFilterParams();
+      })
+      .then(() => {
+        getRandomUser();
       })
       .catch((err) => {
         console.error(error);
@@ -64,7 +96,7 @@ export default function Homepage({ currentUser, humanPhoto, currentDogs, getRand
     <div>
       <h3>Home Page</h3>
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
-      <ProfileView user={currentUser} photos={humanPhoto}/>
+      <ProfileView user={currentUser} photos={humanPhoto} />
       <DogView dog={currentDog || ''} dogPhotos={dogPhotos} />
       <LikeButton filterParams={filterParams} getRandomUser={getRandomUser} />
       {filterModalOpen ?

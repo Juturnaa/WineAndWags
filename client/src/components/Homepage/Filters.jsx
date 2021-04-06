@@ -534,7 +534,7 @@ export default function Filters({
       if (n === 4) return 'XL'
     }
     const values = {
-      sizeRange: [sizeRange[0], sizeRange[1]],
+      sizeRange: [sizeNumToString(sizeRange[0]), sizeNumToString(sizeRange[1])],
       dogGenders,
       dogAgeRange,
       hypoallergenic,
@@ -546,7 +546,6 @@ export default function Filters({
       ownerGenders
       // preferredBreeds,
     }
-    console.log(values);
     // change 5 to current user id
     axios.patch('/app/5/filters', values)
         .then((results) => {
