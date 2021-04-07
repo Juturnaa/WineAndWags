@@ -57,8 +57,8 @@ router.route('/:user_id/photo-likes').post(controller.postNewPhotoLike);
 router
   .route('/:user_id/filters')
   .get(controller.getSavedFilters)
-  .patch(controller.updateSavedFilters);
-  .post(controller.postFilters);
+  .patch(controller.updateSavedFilters)
+  .post(controller.postFilters)
 
 // MAP
 router

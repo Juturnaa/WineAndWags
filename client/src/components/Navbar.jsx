@@ -64,12 +64,11 @@ function NavBar({
             />
           )}
         />
-        <Route exact path="/Map/Map" render={() => <Map currentUser={currentUser} />} />
+        <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
         <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
-
   );
 }
 
