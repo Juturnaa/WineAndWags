@@ -1,3 +1,4 @@
+const axios = require('axios');
 const dbHelpers = require('./db/dbHelpers');
 const upload = require('./file-upload');
 
@@ -157,6 +158,38 @@ const controller = {
   updateSavedFilters: (req, res) => {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
       err ? res.status(404).send(err) : res.status(202).send('Updated');
+    });
+  },
+
+  // Map //
+  getYelpResults: (req, res) => {
+    let result1;
+    console.log(req.query.location);
+    const { latitude, longitude } = req.query.location;
+    axios.get('https://api.yelp.com/v3/businesses/search', {
+      params: {
+        latitude: latitude,
+        longitude: longitude,
+        categories: 'dog_parks',
+      },
+      headers: {
+        authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+      },
+    }).then((result) => {
+      result1 = result.data;
+      axios.get('https://api.yelp.com/v3/businesses/search', {
+        params: {
+          latitude: latitude,
+          longitude: longitude,
+          term: 'Off Leash Dog Beaches',
+        },
+        headers: {
+          authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+        },
+      }).then((result2) => {
+        console.log(result1);
+        res.send(result1.businesses.concat(result2.data.businesses));
+      });
     });
   },
   postFilters: (req, res) => {
