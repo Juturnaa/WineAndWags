@@ -15,7 +15,6 @@ const dbHelpers = {
   // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
     const { email } = req.params;
-    console.log(email);
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -139,13 +138,13 @@ const dbHelpers = {
     const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${req.params.id}, null, '${url}')`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
-  uploadDogPhotos: (req, callback) => {
-    const { url, owner_id } = req.body;
+  uploadDogPhotos: (req, url, callback) => {
+    const { owner_id } = req.body;
     const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${owner_id}, ${req.params.dogid}, '${url}')`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   removePhotos: (req, callback) => {
-    const qryStr = `DELETE FROM waw.photos WHERE url=${req.params.photoid}`;
+    const qryStr = `DELETE FROM waw.photos WHERE waw.photos.id=${req.params.photoid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
 
