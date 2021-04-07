@@ -239,7 +239,7 @@ const dbHelpers = {
   },
   postFilters: (req, res) => {
     const {
-      min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age,
+      min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age
     } = req.body;
     db.query(
       `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${req.params.user_id}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_genders}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${genders}', ${min_age}, ${max_age})`,
@@ -252,24 +252,24 @@ const dbHelpers = {
   // REGISTRATION AND LOGIN ------------------------------------//
   postUser: (req, res) => {
     const {
-      name, bio, email, hash, age, zipcode, searched_as,
+      name, bio, email, hash, age, zipcode, city, searched_as,
     } = req.body;
     db.query(
-      `INSERT INTO waw.users("name", bio, email, "password", age, zipcode, searched_as) VALUES('${name}', '${bio}', '${email}', '${hash}', ${age}, '${zipcode}', '${searched_as}') RETURNING id`,
+      `INSERT INTO waw.users("name", bio, email, "password", age, zipcode, city, searched_as) VALUES('${name}', '${bio}', '${email}', '${hash}', ${age}, '${zipcode}', '${city}','${searched_as}') RETURNING id`,
       (err, data) => {
         if (err) res.send(err);
-        else res.send(`u${data.rows[0].id}`);
+        else res.send(data.rows[0]);
       },
     );
   },
   postDog: (req, res) => {
     const {
-      name, gender, bio, hypo, neutered, age, size, breed, health_issues,
+      name, gender, bio, hypo, neutered, age, size, breed, healthy,
     } = req.body;
-    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues}) RETURNING id`,
-      (err) => {
+    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${healthy}) RETURNING id`,
+      (err,data) => {
         if (err) res.send(err);
-        else res.send(`u${data.rows[0].id}`);
+        else res.send(data.rows[0]);
       });
   },
 };
