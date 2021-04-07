@@ -152,8 +152,7 @@ const controller = {
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
-      if (err) res.status(400).send(err);
-      res.status(200).send(results.rows);
+      err ? res.status(400).send(err) : res.status(200).send(results.rows);
     });
   },
   updateSavedFilters: (req, res) => {
@@ -164,6 +163,7 @@ const controller = {
 
   // Map //
   getYelpResults: (req, res) => {
+    let allResults = [];
     let result1;
     const { latitude, longitude } = JSON.parse(req.query.location);
     axios.get('https://api.yelp.com/v3/businesses/search', {
@@ -187,7 +187,21 @@ const controller = {
           authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
         },
       }).then((result2) => {
-        res.send(result1.businesses.concat(result2.data.businesses));
+        allResults = result1.businesses.concat(result2.data.businesses);
+        axios.get('https://api.yelp.com/v3/businesses/search', {
+          params: {
+            latitude: latitude,
+            longitude: longitude,
+            categories: 'restaurants',
+            attributes: 'pet_friendly',
+          },
+          headers: {
+            authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+          },
+        }).then((result3) => {
+          // res.send(allResults.concat(result3.data.businesses));
+          res.send(allResults);
+        });
       });
     });
   },
