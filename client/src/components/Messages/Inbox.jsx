@@ -50,7 +50,9 @@ const Inbox = ({
                 Message Queue (
                 {matches.length}
                 )
-                {matchesPhotos.map((match, index) => (
+                {matchesPhotos.map((match, index) => {
+                  const newestMessageIndex = allMessages[match[0].user_id].length - 1;
+                  return (
                   <div className="message-container" key={match[0].user_id} name={match[0].user_id} onClick={onMessageClick}>
                     <div className="messages-photos-container" name={index} onClick={onMessageClick}>
                       <img
@@ -75,14 +77,14 @@ const Inbox = ({
                         {(allMessages[match[0].user_id].length !== 0)
                           ? (
                             <div name={index} onClick={onMessageClick} >
-                              {allMessages[match[0].user_id][0].body}
+                              {allMessages[match[0].user_id][newestMessageIndex].body}
                             </div>
                           )
                           : <div name={index} onClick={onMessageClick} >Make the first move! Be bold, and write your own story...</div>}
                       </div>
                     </div>
-                  </div>
-                ))}
+                  </div>);
+                })}
               </div>
             </div>
           </div>
