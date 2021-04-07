@@ -6,8 +6,6 @@ import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Landing from './Landing';
 import Register from './Register';
-import Landing from './Landing';
-
 
 const App = () => {
 
