@@ -14,7 +14,7 @@ const db = require('./index.js');
 const dbHelpers = {
   // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
-    const { email } = req.params;
+    const { id } = req.params;
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -23,7 +23,7 @@ const dbHelpers = {
      'healthy', dogs.healthy
     )) dogs_info FROM waw.users
     LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
-    WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
+    WHERE waw.users.id = ${id} GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
         console.log(err);
@@ -86,13 +86,11 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
-
     db.query(qryStr, (err, data) => {
       if (err) {
-        console.log(err);
         res.status(400).send('something went wrong with your query');
       } else {
-        res.send(data.rows);
+        res.status(200).send(data.rows);
       }
     });
   },
@@ -234,7 +232,7 @@ const dbHelpers = {
   },
   // FILTERS //
   getSavedFilters: (user_id, callback) => {
-    const queryStr = `SELECT * FROM waw.filters WHERE user_id=${user_id}`;
+    const queryStr = `SELECT * FROM waw.filters WHERE waw.filters.user_id=${user_id}`;
     db.query(queryStr, (err, results) => {
       callback(err, results);
     });

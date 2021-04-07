@@ -34,7 +34,6 @@ function Map() {
     center.lat = lat;
     center.lng = lng;
   });
-  console.log('center', center);
   React.useEffect(() => {
     axios.get('http://localhost:3000/app/yelp', {
       params: {
@@ -45,7 +44,6 @@ function Map() {
       },
     })
       .then((results) => {
-        console.log('results', results);
         setPlaces([...new Set(results.data)]);
       }).then(() => console.log('places', places)).catch((err) => console.log(err));
   }, []);

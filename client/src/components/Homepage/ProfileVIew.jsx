@@ -4,7 +4,7 @@ import PhotosList from './PhotosList.jsx';
 const ProfileView = ({ user, photos }) => (
   <div className="profile-card">
     <div id="card-name">
-      {user.name}
+      {user !== undefined ? user.name : null}
     </div>
     <div style={{ display: 'flex', direction: 'row' }}>
       <div>
@@ -17,7 +17,7 @@ const ProfileView = ({ user, photos }) => (
           {' '}
           <div className="text-component-value">
             {' '}
-            {user.zipcode}
+            {user !== undefined ? user.zipcode : null}
             {' '}
           </div>
           {' '}
@@ -27,7 +27,7 @@ const ProfileView = ({ user, photos }) => (
           {' '}
           <div className="text-component-value">
             {' '}
-            {user.age}
+            {user !== undefined ? user.age : null}
             {' '}
           </div>
         </div>
@@ -36,7 +36,7 @@ const ProfileView = ({ user, photos }) => (
           {' '}
           <div className="text-component-value">
             {' '}
-            {user.bio}
+            {user !== undefined ? user.bio : null}
             {' '}
           </div>
         </div>

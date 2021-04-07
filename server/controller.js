@@ -152,7 +152,8 @@ const controller = {
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
-      err ? res.status(400).send(err) : res.status(200).send(results.rows);
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
     });
   },
   updateSavedFilters: (req, res) => {
@@ -164,7 +165,6 @@ const controller = {
   // Map //
   getYelpResults: (req, res) => {
     let result1;
-    console.log(req.query.location);
     const { latitude, longitude } = req.query.location;
     axios.get('https://api.yelp.com/v3/businesses/search', {
       params: {

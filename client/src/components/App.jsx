@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
-import Map from './Map/Map';
-import Calendar from './Messages/Calendar.jsx'
+import Landing from './Landing';
 import Register from './Register';
 
 const App = () => {
+  const [currentUserID, setCurrentID] = useState(7);
+  const [register, setRegister] = useState(false);
+  const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [currentDogs, setCurrentDogs] = useState([]);
   const [breeds, setBreeds] = useState(breedData);
@@ -19,6 +21,10 @@ const App = () => {
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
   const [allMessages, setAllMessages] = useState([]);
+
+  // potiential Match User states
+  const [potiential, setPotiential] = useState();
+  const [potientialDog, setPotientialDog] = useState();
 
   useEffect(() => {
     const dogsimages = [];
@@ -44,8 +50,8 @@ const App = () => {
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
-        setCurrentUser(data.data[random]);
-        setCurrentDogs(data.data[random].dogs_info);
+        setPotiential(data.data[random]);
+        setPotientialDog(data.data[random].dogs_info);
       })
       .then(() => {
         axios.get(`/app/users/photos/${random + 1}`)
@@ -74,8 +80,8 @@ const App = () => {
   };
   useEffect(() => {
     axios.all([
-      axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
-      axios.get('/app/users/photos/7'),
+      axios.get(`/app/users/my-profile/${currentUserID}`),
+      axios.get(`/app/users/photos/${currentUserID}`),
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
@@ -127,8 +133,8 @@ const App = () => {
     setAllMessages(messages);
   }, [matches]);
 
-  return (
-    <div>
+  // if (currentUserID > 0) {
+    return (
       <div>
         <NavBar
           likePhoto={likePhoto}
@@ -142,10 +148,21 @@ const App = () => {
           matches={matches}
           matchesPhotos={matchesPhotos}
           allMessages={allMessages}
+          currentUserID={currentUserID}
+          potiential={potiential}
+          potientialDog={potientialDog}
         />
       </div>
-    </div>
-  );
+    );
+  // }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} />
+  //   );
+  // }
 };
 
 export default App;
