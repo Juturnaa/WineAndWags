@@ -23,6 +23,17 @@ const ProfileView = ({ user, photos }) => (
           {' '}
         </div>
         <div className="text-component">
+          {' '}
+          <div className="text-component-key">Gender: </div>
+          {' '}
+          <div className="text-component-value">
+            {' '}
+            {user.searched_as}
+            {' '}
+          </div>
+          {' '}
+        </div>
+        <div className="text-component">
           <div className="text-component-key">Age: </div>
           {' '}
           <div className="text-component-value">

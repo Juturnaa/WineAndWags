@@ -45,7 +45,6 @@ const dbHelpers = {
       maxDistance,
       ownerAgeRange,
       ownerGenders,
-      dogGenderQuery,
     } = JSON.parse(req.query.filters);
     let qryStr;
     if (dogGenders === 'Both') {

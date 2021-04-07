@@ -165,7 +165,7 @@ const controller = {
   // Map //
   getYelpResults: (req, res) => {
     let result1;
-    const { latitude, longitude } = req.query.location;
+    const { latitude, longitude } = JSON.parse(req.query.location);
     axios.get('https://api.yelp.com/v3/businesses/search', {
       params: {
         latitude: latitude,
@@ -187,7 +187,6 @@ const controller = {
           authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
         },
       }).then((result2) => {
-        console.log(result1);
         res.send(result1.businesses.concat(result2.data.businesses));
       });
     });
