@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
-function EditDogImage({ dogImages, id, setDogURL }) {
+function EditDogImage({
+  dogImages, id, setDogURL,
+}) {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {

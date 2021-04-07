@@ -266,10 +266,10 @@ const dbHelpers = {
     const {
       name, gender, bio, hypo, neutered, age, size, breed, health_issues,
     } = req.body;
-    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues})`,
+    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues}) RETURNING id`,
       (err) => {
         if (err) res.send(err);
-        else res.send('dog posted');
+        else res.send(`u${data.rows[0].id}`);
       });
   },
 };

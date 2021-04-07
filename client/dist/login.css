@@ -270,7 +270,7 @@
 
 
 .center .login-container input,
-.center .login-container .login-button, .register-button {
+.login-button, .register-button {
     width: 400px;
     height: 35px;
     border: none;

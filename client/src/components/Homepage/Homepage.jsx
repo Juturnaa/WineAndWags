@@ -8,9 +8,10 @@ import LikeButton from './LikeButton';
 export default function Homepage({ currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
+  const [currentDogIndex, setCurrentDogIndex] = useState(0)
   useEffect(() => {
-    setCurrentDog(currentDogs[0])
-  }, [currentDogs])
+    setCurrentDog(currentDogs[currentDogIndex])
+  }, [currentDogs, currentDogIndex])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -39,6 +40,14 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
     }
     return result.join(',')
   }
+  const updateDogIndex = () => {
+    if (currentDogIndex === currentDogs.length - 1) {
+      setCurrentDogIndex(0)
+    } else {
+      setCurrentDogIndex(currentDogIndex + 1)
+    }
+  }
+
 
   const updateFilterParams = () => {
     const params = {
@@ -88,7 +97,7 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
         getRandomUser();
       })
       .catch((err) => {
-        console.error(error);
+        console.error(err);
       })
   }, [])
 
@@ -98,7 +107,7 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
       <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
 
       <ProfileView user={currentUser} photos={humanPhoto} likePhoto={likePhoto}/>
-      <DogView dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
+      <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
       <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 
       {filterModalOpen ?

@@ -1,9 +1,15 @@
 .pictures{
     width:400px;
-    height: 100px;
+    min-height: 100px;
     background-color: white;
     display:flex;
-    justify-content: space-between;
+    flex-direction: column;
+}
+.add-photos{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 50px;
 }
 .bio {
     width:400px;
