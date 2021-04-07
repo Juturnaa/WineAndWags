@@ -51,6 +51,7 @@ function EditProfile({
   const [humanURL, setHumanURL] = useState(0);
   const [dogURL, setDogURL] = useState(0);
   const [uploadDog, setUploadDog] = useState();
+  const [dogID, setDogID] = useState();
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -86,6 +87,7 @@ function EditProfile({
       chunk.push(myChunk);
     }
     setPages(chunk);
+    setDogID(chunk[0][0].id);
   };
 
   useEffect(() => {
@@ -96,6 +98,7 @@ function EditProfile({
 
   const changePages = (e, value) => {
     setDogPage(value);
+    setDogID(dogPages[value - 1][0].id);
   };
 
   const changeHuman = () => {
@@ -233,16 +236,16 @@ function EditProfile({
   const uploadClick = () => {
     const fd = new FormData();
     fd.append('image', uploadHuman, uploadHuman.name);
-    axios.post('/app/users/photos/7', fd)
+    axios.post(`/app/users/photos/${currentUser.id}`, fd)
       .then((results) => alert(results.data))
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
   const uploadDogClick = () => {
     const fd = new FormData();
-    fd.append('image', uploadHuman, uploadHuman.name);
-    fd.append('owner_id', 7);
-    axios.post('/app/users/my-dog/7', fd)
+    fd.append('owner_id', currentUser.id);
+    fd.append('image', uploadDog, uploadDog.name);
+    axios.post(`/app/users/my-dog/${dogID}`, fd)
       .then((results) => alert(results.data))
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
@@ -344,7 +347,7 @@ function EditProfile({
                 Photo:
                 {' '}
                 <br />
-                <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} />
+                <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
                 <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
                 <button type="button" onClick={uploadDogClick}>Photos</button>
                 <div>
