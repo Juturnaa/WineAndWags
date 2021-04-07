@@ -13,8 +13,6 @@ function EditDogImage({
     setDogURL(dogImages[id][selectedIndex].id);
   };
 
-  console.log()
-
   return (
     <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
       {dogImages[id].map((item, ind) => (

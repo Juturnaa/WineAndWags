@@ -69,6 +69,10 @@ export default function Homepage({
     return params;
   };
 
+  useEffect(() => {
+    setFilterParams(updateFilterParams())
+  }, [sizeRange])
+
   // GET request to get the user's settings
   useEffect(() => {
     axios.get(`http://localhost:3000/app/${currentUserID}/filters`) // should be current user id, not 1
