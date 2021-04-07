@@ -59,6 +59,7 @@ router
   .get(controller.getSavedFilters)
   .patch(controller.updateSavedFilters);
 
+// MAP
 router
-  .route('/yelp/:zip_code')
+  .route('/yelp')
   .get(controller.getYelpResults);

@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
-import Map from './Map';
+import Map from './Map/Map';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -113,7 +113,7 @@ const App = () => {
 
   return (
     <div>
-      <NavBar
+      {/* <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto}
@@ -124,7 +124,8 @@ const App = () => {
         currentDogs={currentDogs}
         matches={matches}
         matchesPhotos={matchesPhotos}
-      />
+      /> */}
+      <Map />
     </div>
   );
 };
