@@ -27,10 +27,10 @@ const options = {
 
 Geocode.setApiKey(key);
 
-function Map() {
+function Map({ currentUser }) {
   const [places, setPlaces] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
-  Geocode.fromAddress('fullerton 92833').then((response) => {
+  Geocode.fromAddress(`${currentUser.city} ${currentUser.zipcode}`).then((response) => {
     const { lat, lng } = response.results[0].geometry.location;
     center.lat = lat;
     center.lng = lng;
