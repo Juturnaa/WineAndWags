@@ -181,9 +181,11 @@ input[type=text]:focus {
 }
 
 .fa-calendar-alt {
+  cursor: pointer;
   margin-right: 10px;
 }
 
 .fa-paper-plane {
+  cursor: pointer;
   margin-left: 10px;
 }

@@ -5,35 +5,13 @@ import Chat from './Chat';
 const Inbox = ({
   currentUser, matches, matchesPhotos, allMessages,
 }) => {
-  // console.log('matches', matches);
-  // console.log('currentUser', currentUser.id);
-  // console.log('matchesPhotos', matchesPhotos);
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
-  // const [matchUserId, setMatchUserId] = useState(null);
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
-    // console.log('currentMessageId type', typeof Number(e.target.getAttribute('name')));
-    // console.log('currentMessageId', e.target.getAttribute('name'));
     setCurrentMessageId(Number(e.target.getAttribute('name')));
-    // setMatchUserId(matchesPhotos[currentMessageId][0].user_id);
   };
-
-  // const renderMessageMode = () => {
-  //   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
-  //   return (
-  //     <div>
-  //       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
-  //       <br />
-  //       <br />
-  //       DMs HERE
-  //       {console.log('matchesphotos', matchUserId)}
-  //       <img alt="human" src={matchesPhotos[currentMessageId][0].url} />
-  //       <img alt="dog" src={matchesPhotos[currentMessageId][1].url} />
-  //     </div>
-  //   );
-  // };
 
   return (
     <div id="inbox-container">
@@ -117,6 +95,7 @@ const Inbox = ({
             currentMessageId={currentMessageId}
             allMessages={allMessages}
             onMessageClick={onMessageClick}
+            currentUser={currentUser}
           />
         )
         }

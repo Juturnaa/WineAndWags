@@ -1,15 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 const Chat = ({
-  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick,
+  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
-  // const [inputValue, setInputValue] = useState('');
+  const currentUserId = currentUser.id;
+  const [inputValue, setInputValue] = useState('');
 
-  // useEffect(() => {
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
 
-  // })
+  const onSendClick = (e) => {
+    console.log('clicked')
+    axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
+      message: inputValue,
+    })
+      .then(() => {
+        setInputValue('');
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <div>
@@ -39,8 +52,8 @@ const Chat = ({
         </div>
         <div id="send-message-container">
           <i className="far fa-calendar-alt" />
-          <input type="text" />
-          <i className="far fa-paper-plane" />
+          <input type="text" onChange={handleInputChange} />
+          <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
       </div>
     </div>
@@ -60,6 +73,11 @@ Chat.propTypes = {
   ),
   messageMode: PropTypes.bool,
   currentMessageId: PropTypes.number,
+  currentUser: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 Chat.defaultProps = {
@@ -67,6 +85,7 @@ Chat.defaultProps = {
   allMessages: {},
   messageMode: false,
   currentMessageId: null,
+  currentUser: {},
 };
 
 export default Chat;
