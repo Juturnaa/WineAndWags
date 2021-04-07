@@ -492,7 +492,24 @@ export default function Register() {
     }
 
     let postInfo = () => {
-        axios.post('/app/users', {owner, dog, email, password, password2, zipcode})
+        let promises =[];
+        // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
+        //axios.post dogs
+        // .then(()=> {
+            
+        //     dogPics.forEach((dog)=>{
+        //         dog.forEach(file=>{
+        //         //upload dog photo
+        //             const fd = new FormData();
+        //             fd.append('image', file, file.name)
+        //             fd.append('owner_id', user_id)
+        //             promises.push(axios.post(`/app/users/my-dog/${dog_id}`, fd))
+        //         })
+        //     })
+        //     //upload user photo
+        // })
+        // axios.post(`/app/users/photos/${}`, {})
+        // .then()
     }
 
     //--------------------------Page validation --------------------------//
