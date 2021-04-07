@@ -12,8 +12,8 @@ import mapStyles from './mapStyles';
 
 const libraries = ['places'];
 const mapContainerStyle = {
-  width: '70vw',
-  height: '70vh',
+  width: '100vw',
+  height: '100vh',
 };
 const center = {
   lat: 33.870350,
@@ -62,6 +62,11 @@ function Map({ currentUser }) {
     mapRef.current = map;
   }, []);
 
+  const panTo = React.useCallback(({ lat, lng }) => {
+    mapRef.current.panTo({ lat, lng });
+    mapRef.current.setZoom(14);
+  }, []);
+
   const dblClick = (e) => {
     axios.get('http://localhost:3000/app/yelp', {
       params: {
@@ -79,10 +84,33 @@ function Map({ currentUser }) {
       }).then(() => console.log('places', places)).catch((err) => console.log(err));
   };
 
+  function Locate({ panTo }) {
+    return (
+      <button
+        className="compass"
+        type="button"
+        onClick={() => {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              panTo({
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+              });
+            },
+            () => null,
+          );
+        }}
+      >
+        <i className="far fa-compass" />
+      </button>
+    );
+  }
+
   if (isLoaded && places) {
     return (
       <div>
         Dog parks and Dog beaches
+        <Locate panTo={panTo} />
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
           zoom={11}
