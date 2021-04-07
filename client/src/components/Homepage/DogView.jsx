@@ -12,6 +12,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex }) => {
                 </div>
                 <div className="card-text" >
                     <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {dog.age} </div>  </div>
+                    <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {dog.gender} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Breed: </div> <div className="text-component-value"> {dog.breed} </div></div>
                     <div className="text-component"><div className="text-component-key">About Me: </div> <div className="text-component-value"> {dog.bio} </div></div>
                     <div className="text-component"><div className="text-component-key">Size: </div> <div className="text-component-value"> {dog.size} </div></div>
