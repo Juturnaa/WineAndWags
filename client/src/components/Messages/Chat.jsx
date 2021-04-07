@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Modal from 'react-modal'
 import Calendar from './Calendar.jsx'
-import ReactNotification from 'react-notifications-component'
+// import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
   matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser,

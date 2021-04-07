@@ -10,13 +10,12 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
     let [password, setPassword] =useState('');
 
     let handleLogin = () => {
-        axios.get(`/app/users/my-profile/${email}`)
+        axios.get(`/app/users/login/${email}`)
             .then((user) => {
                 if(!bcrypt.compareSync(password, user.data.password) || user.data.email !== email){
                     alert('Email and/or password are incorrect')
                 } else {
                     setCurrentID(user.data.id);
-                    setUserId(user.data.id);
                     setLanding(false);
                 }
             })

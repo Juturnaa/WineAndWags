@@ -33,6 +33,18 @@ const dbHelpers = {
       }
     });
   },
+  verifyEmail: (req, res) => {
+    const { email } = req.params;
+    const qryStr = `SELECT * FROM waw.users WHERE email='${email}'`;
+    db.query(qryStr, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send('something went wrong with your query');
+      } else {
+        res.send(data.rows[0]);
+      }
+    });
+  },
   getRandomProfile: (req, res) => {
     const {
       sizeRange,

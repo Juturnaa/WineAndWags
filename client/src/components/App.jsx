@@ -6,8 +6,6 @@ import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Landing from './Landing';
 import Register from './Register';
-import Landing from './Landing';
-
 
 const App = () => {
 
@@ -141,35 +139,34 @@ const App = () => {
   }, [matches]);
 
   // if (currentUserID > 0) {
+  if (landing) {
+    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  }
+  if (register) {
     return (
-      <div>
-        <NavBar
-          likePhoto={likePhoto}
-          likeProfile={likeProfile}
-          humanPhoto={humanPhoto}
-          dogsImg={dogsImg}
-          getRandomUser={getRandomUser}
-          currentUser={currentUser}
-          breeds={breeds}
-          currentDogs={currentDogs}
-          matches={matches}
-          matchesPhotos={matchesPhotos}
-          allMessages={allMessages}
-          currentUserID={currentUserID}
-          potiential={potiential}
-          potientialDog={potientialDog}
-        />
-      </div>
+      <Register setCurrentID={setCurrentID} setRegister={setRegister} />
     );
-  // }
-  // if (landing) {
-  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  // }
-  // if (register) {
-  //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} />
-  //   );
-  // }
+  }
+  return (
+    <div>
+      <NavBar
+        likePhoto={likePhoto}
+        likeProfile={likeProfile}
+        humanPhoto={humanPhoto}
+        dogsImg={dogsImg}
+        getRandomUser={getRandomUser}
+        currentUser={currentUser}
+        breeds={breeds}
+        currentDogs={currentDogs}
+        matches={matches}
+        matchesPhotos={matchesPhotos}
+        allMessages={allMessages}
+        currentUserID={currentUserID}
+        potiential={potiential}
+        potientialDog={potientialDog}
+      />
+    </div>
+  );
 };
 
 export default App;

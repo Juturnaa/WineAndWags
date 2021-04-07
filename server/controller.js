@@ -8,6 +8,9 @@ const controller = {
   getMyProfile: (req, res) => {
     dbHelpers.getMyProfile(req, res);
   },
+  verifyEmail: (req, res) => {
+    dbHelpers.verifyEmail(req, res);
+  },
   getRandomProfile: (req, res) => {
     dbHelpers.getRandomProfile(req, res);
   },
