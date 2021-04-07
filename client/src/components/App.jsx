@@ -143,7 +143,7 @@ const App = () => {
           allMessages={allMessages}
         />
       </div>
-      <Register />
+      {/* <Register /> */}
     </div>
   );
 };

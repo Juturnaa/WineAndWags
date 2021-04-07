@@ -53,44 +53,44 @@ const Inbox = ({
                 {matchesPhotos.map((match, index) => {
                   const newestMessageIndex = allMessages[match[0].user_id].length - 1;
                   return (
-                  <div className="message-container" key={match[0].user_id} name={match[0].user_id} onClick={onMessageClick}>
-                    <div className="messages-photos-container" name={index} onClick={onMessageClick}>
-                      <img
-                        className="human-photos-small"
-                        alt="human"
-                        src={match[0].url}
-                        name={index}
-                        onClick={onMessageClick}
-                      />
-                      <img
-                        className="dog-photos-small"
-                        alt="dog"
-                        src={match[1].url}
-                        name={index}
-                        onClick={onMessageClick}
-                      />
-                    </div>
-                    <div className="name-message-container" name={index} onClick={onMessageClick}>
-                      {/* {console.log('allmessages at userid', allMessages[match[0].user_id])} */}
-                      <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>Human name and Dog name</div>
-                      <div>
-                        {(allMessages[match[0].user_id].length !== 0)
-                          ? (
-                            <div name={index} onClick={onMessageClick} >
-                              {allMessages[match[0].user_id][newestMessageIndex].body}
-                            </div>
-                          )
-                          : <div name={index} onClick={onMessageClick} >Make the first move! Be bold, and write your own story...</div>}
+                    <div className="message-container" key={match[0].user_id} name={match[0].user_id} onClick={onMessageClick}>
+                      <div className="messages-photos-container" name={index} onClick={onMessageClick}>
+                        <img
+                          className="human-photos-small"
+                          alt="human"
+                          src={match[0].url}
+                          name={index}
+                          onClick={onMessageClick}
+                        />
+                        <img
+                          className="dog-photos-small"
+                          alt="dog"
+                          src={match[1].url}
+                          name={index}
+                          onClick={onMessageClick}
+                        />
+                      </div>
+                      <div className="name-message-container" name={index} onClick={onMessageClick}>
+                        {/* {console.log('allmessages at userid', allMessages[match[0].user_id])} */}
+                        <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>Human name and Dog name</div>
+                        <div>
+                          {(allMessages[match[0].user_id].length !== 0)
+                            ? (
+                              <div name={index} onClick={onMessageClick}>
+                                {allMessages[match[0].user_id][newestMessageIndex].body}
+                              </div>
+                            )
+                            : <div name={index} onClick={onMessageClick}>Make the first move! Be bold, and write your own story...</div>}
+                        </div>
                       </div>
                     </div>
-                  </div>);
+                  );
                 })}
               </div>
             </div>
           </div>
         )
-        :
-        (
+        : (
           <Chat
             matchesPhotos={matchesPhotos}
             messageMode={messageMode}
@@ -99,8 +99,7 @@ const Inbox = ({
             onMessageClick={onMessageClick}
             currentUser={currentUser}
           />
-        )
-        }
+        )}
     </div>
   );
 };
