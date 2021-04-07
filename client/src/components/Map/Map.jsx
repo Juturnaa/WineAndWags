@@ -29,13 +29,12 @@ Geocode.setApiKey(key);
 
 function Map() {
   const [places, setPlaces] = React.useState(null);
-  const [selected, setSelected] = React.useState()
+  const [selected, setSelected] = React.useState(null);
   Geocode.fromAddress('fullerton 92833').then((response) => {
     const { lat, lng } = response.results[0].geometry.location;
     center.lat = lat;
     center.lng = lng;
   });
-  console.log('center', center);
   React.useEffect(() => {
     axios.get('http://localhost:3000/app/yelp', {
       params: {
@@ -86,6 +85,25 @@ function Map() {
               }}
             />
           ))}
+
+          {selected ? (
+            <InfoWindow
+              position={{
+                lat: selected.coordinates.latitude,
+                lng: selected.coordinates.longitude,
+              }}
+              onCloseClick={() => {
+                setSelected(null);
+              }}
+            >
+              <div>
+                <img src={`${selected.img_url}`} alt="" width="100" height="50" />
+                <h5>{selected.name}</h5>
+                <div>{`${selected.location.display_address[0]}`}</div>
+                <div>{`${selected.location.display_address[1]}`}</div>
+              </div>
+            </InfoWindow>
+          ) : null}
         </GoogleMap>
       </div>
 
