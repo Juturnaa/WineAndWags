@@ -112,21 +112,21 @@ const App = () => {
   }, [matches]);
 
   return (
-    // <div>
-    //   <NavBar
-    //     likePhoto={likePhoto}
-    //     likeProfile={likeProfile}
-    //     humanPhoto={humanPhoto}
-    //     dogsImg={dogsImg}
-    //     getRandomUser={getRandomUser}
-    //     currentUser={currentUser}
-    //     breeds={breeds}
-    //     currentDogs={currentDogs}
-    //     matches={matches}
-    //     matchesPhotos={matchesPhotos}
-    //   />
-    // </div>
-    <Register />
+    <div>
+      <NavBar
+        likePhoto={likePhoto}
+        likeProfile={likeProfile}
+        humanPhoto={humanPhoto}
+        dogsImg={dogsImg}
+        getRandomUser={getRandomUser}
+        currentUser={currentUser}
+        breeds={breeds}
+        currentDogs={currentDogs}
+        matches={matches}
+        matchesPhotos={matchesPhotos}
+      />
+      {/* <Register /> */}
+    </div>
   );
 };
 
