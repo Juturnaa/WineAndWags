@@ -27,15 +27,15 @@ const Inbox = ({
   return (
     <div id="inbox-container">
       <br />
-      <span>
-        Match Queue (
-        {matches.length}
-        )
-      </span>
-      <br />
+
       {!messageMode
         ? (
           <div>
+            <span>
+              Match Queue (
+              {matches.length}
+              )
+            </span>
             <div id="matches-container">
               {matchesPhotos.map((match, index) => {
                 if (index < 7) {
