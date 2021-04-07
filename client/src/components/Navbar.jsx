@@ -101,7 +101,7 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.arrayOf(
+  allMessages: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -115,7 +115,7 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
-  allMessages: [],
+  allMessages: {},
 };
 
 export default NavBar;

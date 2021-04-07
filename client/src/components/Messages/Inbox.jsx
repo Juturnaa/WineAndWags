@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const Inbox = ({ currentUser, matches, matchesPhotos, allMessages }) => {
+const Inbox = ({
+  currentUser, matches, matchesPhotos, allMessages,
+}) => {
   // console.log('matches', matches);
   // console.log('currentUser', currentUser.id);
   // console.log('matchesPhotos', matchesPhotos);
@@ -77,22 +79,20 @@ const Inbox = ({ currentUser, matches, matchesPhotos, allMessages }) => {
                         src={match[1].url}
                       />
                     </div>
-                    <div>
-                      {allMessages.map((convo) => {
-                        console.log('allMessages', allMessages)
-                        console.log('convo', convo);
-                        if (convo[1].length !== 0) {
-                          return (
+                    <div className="name-message-container">
+                      {/* {console.log('allmessages at userid', allMessages[match[0].user_id])} */}
+                      <div>
+                        <b>Human name and Dog name</b>
+                      </div>
+                      <div>
+                        {(allMessages[match[0].user_id].length !== 0)
+                          ? (
                             <div>
-                              {convo[1][0].body}
+                              {allMessages[match[0].user_id][0].body}
                             </div>
-                          );
-                        }
-                        return (
-                          <span>Make the first move! Be bold, write your own story, and get ready to meet the person and dog of your dreams...</span>
-                        );
-                      })}
-                      {match[0].user_id}
+                          )
+                          : <span>Make the first move! Write your own story and say hello to the person and dog of your dreams...</span>}
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -131,7 +131,7 @@ Inbox.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.arrayOf(
+  allMessages: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -144,7 +144,7 @@ Inbox.defaultProps = {
   humanPhoto: [],
   matches: [],
   matchesPhotos: [],
-  allMessages: [],
+  allMessages: {},
 };
 
 export default Inbox;

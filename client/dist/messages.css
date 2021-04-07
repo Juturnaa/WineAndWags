@@ -86,3 +86,9 @@
   height: 40px;
   width: 40px;
 }
+
+.name-message-container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}

@@ -78,7 +78,7 @@ const App = () => {
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
-        console.log(one.data);
+        // console.log(one.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
@@ -95,11 +95,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/app/${currentUser.id}/matches`)
-      .then((results) => {
-        setMatches(results.data);
-      })
-      .catch((err) => console.log(err));
+    if (currentUser.id) {
+      axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, [currentUser]);
 
   useEffect(() => {
@@ -113,16 +115,16 @@ const App = () => {
   }, [matches]);
 
   useEffect(() => {
-    const messages = [];
+    const messages = {};
     matches.map((match) => {
       axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
         .then((results) => {
-          messages.push([match.user_id, results.data]);
+          messages[match.user_id] = results.data;
         })
         .catch((err) => console.log(err));
     });
     setAllMessages(messages);
-  }, []);
+  }, [matches]);
 
   return (
     <div>
