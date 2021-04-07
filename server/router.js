@@ -9,6 +9,10 @@ router
   .patch(controller.editOwnerProfile);
 
 router
+  .route('/users/login/:email')
+  .get(controller.verifyEmail);
+
+router
   .route('/users/photos/:id')
   .get(controller.getPhotos)
   .post(controller.uploadPhotos);
