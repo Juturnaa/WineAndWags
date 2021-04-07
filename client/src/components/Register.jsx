@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -19,7 +19,7 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Breeds from '../dummyData/dogBreed';
 
-export default function Register() {
+export default function Register({ setCurrentID, setRegister }) {
     let [page, setPage] = useState(3);
     let [user_id, setUserId] = useState();
     let [owner, setOwner] = useState('');
