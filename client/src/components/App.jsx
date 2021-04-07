@@ -7,6 +7,7 @@ import breedData from '../dummyData/dogBreed';
 import Landing from './Landing';
 import Register from './Register';
 
+
 const App = () => {
   const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
