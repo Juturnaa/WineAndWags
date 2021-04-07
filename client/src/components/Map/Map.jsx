@@ -35,7 +35,6 @@ function Map() {
     center.lat = lat;
     center.lng = lng;
   });
-  console.log('center', center);
   React.useEffect(() => {
     axios.get('http://localhost:3000/app/yelp', {
       params: {

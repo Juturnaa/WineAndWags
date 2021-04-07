@@ -7,15 +7,14 @@ import LikeButton from './LikeButton';
 import Button from '@material-ui/core/Button';
 
 export default function Homepage({
-  currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto,
+  currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
 }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   const [currentDogIndex, setCurrentDogIndex] = useState(0)
   useEffect(() => {
-    setCurrentDog(currentDogs[currentDogIndex])
-  }, [currentDogs, currentDogIndex])
-
+    setCurrentDog(potientialDog[currentDogIndex])
+  }, [potientialDog, currentDogIndex])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -31,7 +30,7 @@ export default function Homepage({
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
   const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
-  const [ownerGenders, changeOwnerGenders] = useState('All');
+  const [ownerGenders, changeOwnerGenders] = useState('f');
 
   // Requests
 
@@ -66,12 +65,13 @@ export default function Homepage({
       ownerAgeRange,
       ownerGenders,
     };
-    setFilterParams(params);
+    // setFilterParams(params);
+    return params;
   };
 
   // GET request to get the user's settings
   useEffect(() => {
-    axios.get(`http://localhost:3000/app/${5}/filters`) // should be current user id, not 1
+    axios.get(`http://localhost:3000/app/${currentUserID}/filters`) // should be current user id, not 1
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
@@ -94,15 +94,17 @@ export default function Homepage({
         changeOwnerGenders(filters.genders);
       })
       .then(() => {
-        updateFilterParams();
+        let result = updateFilterParams();
+        setFilterParams(result);
+        getRandomUser(result);
       })
-      .then(() => {
-        getRandomUser();
-      })
+      // .then(() => {
+      //   getRandomUser(filterParams);
+      // })
       .catch((err) => {
         console.error(error);
       });
-  }, []);
+  }, [currentUserID]);
 
   return (
     <div>
