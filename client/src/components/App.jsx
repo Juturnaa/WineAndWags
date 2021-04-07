@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Map from './Map';
+import Register from './Register';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -111,20 +112,21 @@ const App = () => {
   }, [matches]);
 
   return (
-    <div>
-      <NavBar
-        likePhoto={likePhoto}
-        likeProfile={likeProfile}
-        humanPhoto={humanPhoto}
-        dogsImg={dogsImg}
-        getRandomUser={getRandomUser}
-        currentUser={currentUser}
-        breeds={breeds}
-        currentDogs={currentDogs}
-        matches={matches}
-        matchesPhotos={matchesPhotos}
-      />
-    </div>
+    // <div>
+    //   <NavBar
+    //     likePhoto={likePhoto}
+    //     likeProfile={likeProfile}
+    //     humanPhoto={humanPhoto}
+    //     dogsImg={dogsImg}
+    //     getRandomUser={getRandomUser}
+    //     currentUser={currentUser}
+    //     breeds={breeds}
+    //     currentDogs={currentDogs}
+    //     matches={matches}
+    //     matchesPhotos={matchesPhotos}
+    //   />
+    // </div>
+    <Register />
   );
 };
 
