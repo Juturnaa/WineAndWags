@@ -66,7 +66,7 @@ const Chat = ({
           ))}
         </div>
         <div id="send-message-container">
-          <button><i onClick={()=>{clickedCalendar(true)}}className="far fa-calendar-alt" /> </button>
+          <i onClick={()=>{clickedCalendar(true)}}className="far fa-calendar-alt" />
           <Modal widgetname="related-products"
           ariaHideApp={false}
           isOpen={calendar}

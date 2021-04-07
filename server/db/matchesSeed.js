@@ -56,10 +56,10 @@ setTimeout(() => {
     // MESSAGE SENT TO USER 7
     db.query(`INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${i}, 'hi there thanks yours too. what do you do for fun', DEFAULT, (select id from waw.convo where user1 in (${i}, ${7}) and user2 in (${i}, ${7})))`);
   }
-}, 3000);
+}, 5000);
 
 setTimeout(() => {
   db.query(`INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${7}, 'long walks on the beach', DEFAULT, (select id from waw.convo where user1 in (${7}, ${8}) and user2 in (${7}, ${8})))`);
   db.query(`INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${7}, 'netflix and snack marathon', DEFAULT, (select id from waw.convo where user1 in (${7}, ${9}) and user2 in (${7}, ${9})))`);
   db.query(`INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${7}, 'trying cool new bars and all their signature drinks', DEFAULT, (select id from waw.convo where user1 in (${7}, ${12}) and user2 in (${7}, ${12})))`);
-}, 6000);
+}, 10000);
