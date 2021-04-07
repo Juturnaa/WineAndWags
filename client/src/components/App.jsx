@@ -6,9 +6,11 @@ import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Landing from './Landing';
 import Register from './Register';
+import Landing from './Landing';
 
 
 const App = () => {
+
   const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
@@ -21,6 +23,7 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
+
   const [allMessages, setAllMessages] = useState([]);
 
   // potiential Match User states
@@ -79,6 +82,9 @@ const App = () => {
         console.log(err);
       });
   };
+
+
+
   useEffect(() => {
     axios.all([
       axios.get(`/app/users/my-profile/${currentUserID}`),

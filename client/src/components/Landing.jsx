@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 
+
 export default function Landing({ setCurrentID, setLanding, setRegister }) {
+
     let [login, setLogin] = useState(false);
     let [email, setEmail] =useState('');
     let [password, setPassword] =useState('');
-    let [userId, setUserId]=useState();
 
     let handleLogin = () => {
         axios.get(`/app/users/my-profile/${email}`)
@@ -111,7 +112,9 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                         <span>Find love in someone unknown with the doggy they own</span>
                         <div className="landing-btns">
                             <button className="login-button" onClick={()=> setLogin(true)}>Log in </button>
+
                             <button className="register-button" onClick={() => {setRegister(true); setLanding(false)}}>Register </button>
+
                         </div>
                     </div>
                 }
