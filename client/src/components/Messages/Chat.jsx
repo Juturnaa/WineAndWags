@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Modal from 'react-modal'
+import Calendar from './Calendar.jsx'
 
 const Chat = ({
   matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser,
@@ -8,9 +10,22 @@ const Chat = ({
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
   const [inputValue, setInputValue] = useState('');
+  const [calendar, clickedCalendar] = useState(false)
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const customStyles = {
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)',
+      zIndex: 12
+    }
   };
 
   const onSendClick = (e) => {
@@ -51,7 +66,14 @@ const Chat = ({
           ))}
         </div>
         <div id="send-message-container">
-          <i className="far fa-calendar-alt" />
+          <i onClick={()=>{clickedCalendar(true)}}className="far fa-calendar-alt" />
+          <Modal widgetname="related-products"
+          ariaHideApp={false}
+          isOpen={calendar}
+          style={customStyles}
+          onRequestClose={() => {clickedCalendar(!calendar)}}>
+            <Calendar />
+          </Modal>
           <input type="text" onChange={handleInputChange} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>

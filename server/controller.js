@@ -152,7 +152,8 @@ const controller = {
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
-      err ? res.status(400).send(err) : res.status(200).send(results.rows);
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
     });
   },
   updateSavedFilters: (req, res) => {

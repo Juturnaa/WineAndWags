@@ -4,7 +4,7 @@ const controller = require('./controller');
 module.exports = router;
 
 router
-  .route('/users/my-profile/:email')
+  .route('/users/my-profile/:id')
   .get(controller.getMyProfile)
   .patch(controller.editOwnerProfile);
 
