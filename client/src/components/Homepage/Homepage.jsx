@@ -4,6 +4,7 @@ import Filters from './Filters';
 import ProfileView from './ProfileVIew';
 import DogView from './DogView';
 import LikeButton from './LikeButton';
+import Button from '@material-ui/core/Button';
 
 export default function Homepage({
   currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto,
@@ -105,9 +106,7 @@ export default function Homepage({
 
   return (
     <div>
-      <h3>Home Page</h3>
-      <button onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</button>
-
+      <Button variant="contained" style={{width: '6rem', margin: '1rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
       <ProfileView user={currentUser} photos={humanPhoto} likePhoto={likePhoto}/>
       <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
       <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
