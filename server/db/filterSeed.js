@@ -469,8 +469,8 @@ const breeds = [
 const getRandom = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
   };
-const seedFilters = () => {    
-    
+const seedFilters = () => {
+
     for (let i = 1; i <= 1000; i++) {
       const min_size = min_sizes[getRandom(0, min_sizes.length)];
       const max_size = max_sizes[getRandom(0, max_sizes.length)];
@@ -484,8 +484,6 @@ const seedFilters = () => {
       const gender = genders[getRandom(0, genders.length)];
       const min_age = min_ages[getRandom(0, min_ages.length)];
       const max_age = max_ages[getRandom(0, max_ages.length)];
-      
-      console.log(i)
 
       if(i <= 499) {
         const avoid_breeds = `${breeds[getRandom(0, breeds.length)]},${breeds[getRandom(0, breeds.length)]}`;
@@ -501,6 +499,5 @@ const seedFilters = () => {
     }
   }
 };
-  
+
   seedFilters();
-  

@@ -26,7 +26,7 @@ const Inbox = ({
     </div>
   );
 
-  return (
+  (
     <div id="inbox-container">
       <br />
       {!messageMode
@@ -97,8 +97,6 @@ const Inbox = ({
         : renderMessageMode()}
     </div>
   );
-};
-
 Inbox.propTypes = {
   currentUser: PropTypes.objectOf(
     PropTypes.oneOfType([
