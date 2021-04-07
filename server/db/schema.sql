@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS waw.users (
   password VARCHAR(255) NOT NULL,
   age INT NOT NULL,
   zipcode VARCHAR(15) NOT NULL,
+  city VARCHAR(255) NOT NULL,
   searched_as VARCHAR(20) NOT NULL
 );
 

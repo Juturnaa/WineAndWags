@@ -7,8 +7,11 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+import { IconButton } from '@material-ui/core';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
+import AddDogModal from './AddDogModal';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -44,8 +47,11 @@ function EditProfile({
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
-
-  console.log(dogImages)
+  const [addDog, setAddDog] = useState(false);
+  const [humanURL, setHumanURL] = useState(0);
+  const [dogURL, setDogURL] = useState(0);
+  const [uploadDog, setUploadDog] = useState();
+  const [dogID, setDogID] = useState();
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -76,11 +82,12 @@ function EditProfile({
 
   const arrangeDogs = (arr) => {
     const chunk = [];
-    for (let i = 0; i < arr.length; i += 2) {
-      const myChunk = arr.slice(i, i + 2);
+    for (let i = 0; i < arr.length; i += 1) {
+      const myChunk = arr.slice(i, i + 1);
       chunk.push(myChunk);
     }
     setPages(chunk);
+    setDogID(chunk[0][0].id);
   };
 
   useEffect(() => {
@@ -91,6 +98,7 @@ function EditProfile({
 
   const changePages = (e, value) => {
     setDogPage(value);
+    setDogID(dogPages[value - 1][0].id);
   };
 
   const changeHuman = () => {
@@ -133,7 +141,15 @@ function EditProfile({
   };
 
   const deletePhoto = () => {
+    axios.delete(`/app/users/delete/${humanURL}`)
+      .then((results) => alert('deleted'))
+      .catch((err) => console.error(err));
+  };
 
+  const deleteDogPhoto = () => {
+    axios.delete(`/app/users/delete/${dogURL}`)
+      .then((results) => alert('deleted'))
+      .catch((err) => console.error(err));
   };
 
   const submitHuman = (e) => {
@@ -218,9 +234,20 @@ function EditProfile({
   };
 
   const uploadClick = () => {
-    axios.post('/app/users/photos/7', { url: `${uploadHuman}` })
+    const fd = new FormData();
+    fd.append('image', uploadHuman, uploadHuman.name);
+    axios.post(`/app/users/photos/${currentUser.id}`, fd)
       .then((results) => alert(results.data))
-      .catch((err) => console.error(err));
+      .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
+  };
+
+  const uploadDogClick = () => {
+    const fd = new FormData();
+    fd.append('owner_id', currentUser.id);
+    fd.append('image', uploadDog, uploadDog.name);
+    axios.post(`/app/users/my-dog/${dogID}`, fd)
+      .then((results) => alert(results.data))
+      .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
   return (
@@ -233,9 +260,14 @@ function EditProfile({
             <div>
               Photo:
               {' '}
-              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} />
-              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
+              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} />
+              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
               <button type="button" onClick={uploadClick}>Photos</button>
+              <div>
+                <IconButton onClick={deletePhoto}>
+                  <DeleteForeverRoundedIcon variant="rounded" />
+                </IconButton>
+              </div>
             </div>
             <div>
               Name:
@@ -307,13 +339,22 @@ function EditProfile({
         : null}
       {dogs ? (
         <div id="editDogPage">
+          <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
+          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>
                 Photo:
                 {' '}
                 <br />
-                <EditDogImage dogImages={dogImages} id={item.id} />
+                <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
+                <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
+                <button type="button" onClick={uploadDogClick}>Photos</button>
+                <div>
+                  <IconButton onClick={deleteDogPhoto}>
+                    <DeleteForeverRoundedIcon variant="rounded" />
+                  </IconButton>
+                </div>
               </div>
               <div>
                 Name:

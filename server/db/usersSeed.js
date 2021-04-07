@@ -140,9 +140,9 @@ const zipcodes = [
   "92823",
 ];
 
-const genders = ['M', 'F', 'All'];
-const bios = ['hey my name is triko.', 'YEEEEEHAWEWWWWW', 'im all vibed up!'];
-const password = 'password';
+const genders = ["M", "F", "All"];
+const bios = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
+const password = "password";
 
 const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
@@ -157,9 +157,10 @@ const seedUsers = () => {
     const searched_as = genders[getRandom(0, genders.length)];
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
+    const city = "LA";
     console.log(i);
     db.query(
-      'INSERT INTO waw.users("name", bio, email, "password", age, zipcode, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7)',
+      'INSERT INTO waw.users("name", bio, email, "password", age, zipcode, city, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         `${name}`,
         `${bio}`,
@@ -167,6 +168,7 @@ const seedUsers = () => {
         `${hash}`,
         `${age}`,
         `${zipcode}`,
+        `${city}`,
         `${searched_as}`,
       ]
     );

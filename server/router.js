@@ -18,11 +18,15 @@ router
   .patch(controller.editDogProfile)
   .post(controller.uploadDogPhotos);
 
-router
-  .route('/users/delete/:photoid')
-  .delete(controller.removePhotos);
+router.route('/users/delete/:photoid').delete(controller.removePhotos);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
+
+// REGISTRATION ------------------------------------//
+router.route('/users')
+  .post(controller.postUser);
+router.route('/dogs/:user')
+  .post(controller.postDog);
 
 // MESSAGES ------------------------------------//
 router
@@ -39,20 +43,19 @@ router
 // router
 //   .route('/profile-likes')
 //   .get(controller.getAllProfileLikes);
-router
-  .route('/:user_id/profile')
-  .get(controller.getProfile);
+router.route('/:user_id/profile').get(controller.getProfile);
 
 router
   .route('/:user_id/profile-likes')
   .get(controller.getProfileLikes)
   .post(controller.postNewProfileLike);
 
-router
-  .route('/:user_id/matches')
-  .get(controller.getMatches);
+router.route('/:user_id/matches').get(controller.getMatches);
+
+router.route('/:user_id/photo-likes').post(controller.postNewPhotoLike);
 // FILTERS
 router
   .route('/:user_id/filters')
   .get(controller.getSavedFilters)
-  .patch(controller.updateSavedFilters);
+  .patch(controller.updateSavedFilters)
+  .post(controller.postFilters);

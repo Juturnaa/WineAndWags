@@ -27,11 +27,11 @@ const Map = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages,
 }) {
   return (
     <BrowserRouter>
-      <nav>
+      <nav className='navigation-bar'>
         <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
         <NavLink className="nav-icon" exact to="/notifications"><i className="far fa-bell" /></NavLink>
         <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
@@ -62,12 +62,13 @@ function NavBar({
               dogsImg={dogsImg}
               matches={matches}
               matchesPhotos={matchesPhotos}
+              allMessages={allMessages}
             />
           )}
         />
         <Route exact path="/map" component={Map} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
+        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 
@@ -100,6 +101,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  allMessages: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 NavBar.defaultProps = {
@@ -109,6 +115,7 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
+  allMessages: {},
 };
 
 export default NavBar;

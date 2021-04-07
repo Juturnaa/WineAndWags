@@ -1,7 +1,8 @@
-nav {
-  background-color: #13070C;
+.navigation-bar {
+  background-color: #13070c;
   width: 100vw;
   height: 2.5rem;
+  display: 'flex';
   justify-content: right;
   text-align: right;
   padding: 0.5rem;
@@ -10,12 +11,12 @@ nav {
 .nav-icon {
   margin-right: 1.5rem;
   font-size: 1.25rem;
-  color: #EFF9F0;
+  color: #eff9f0;
   transition-duration: 0.25s;
 }
 
 .nav-icon:hover {
-  color: #DDC8C4;
+  color: #ddc8c4;
 }
 
 .profile-thumbnail {

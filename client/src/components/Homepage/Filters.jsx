@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Slider from '@material-ui/core/Slider';
 import Radio from '@material-ui/core/Radio';
@@ -24,7 +24,7 @@ export default function Filters({
   maxDistance, changeMaxDistance,
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders,
-  close
+  close, setFilterParams
 }) {
 
   const breeds = [
@@ -504,11 +504,6 @@ export default function Filters({
     }
   ];
 
-  // for sending to DB
-  const sizeValuesToStrings = (first, second) => {
-    return [sizeLabels[first].label, sizeLabels[second].label]
-  }
-
   const displaySizeRangeAsString = (first, second) => {
     if (first !== undefined && second !== undefined) {
       return `${sizeLabels[first].label} - ${sizeLabels[second].label}`
@@ -517,6 +512,16 @@ export default function Filters({
 
   const sliderStyle = {
     width: '50%'
+  }
+
+  // transforming data to work with filter params for get random profile
+  const getSizeRange = (min, max) => {
+    const sizes = ['XS', 'S', 'M', 'L', 'XL']
+    let result = []
+    for (let i = min; i <= max; i++) {
+      result.push(`'${sizes[i]}'`)
+    }
+    return result.join(',')
   }
 
   // PATCH user settings
@@ -530,21 +535,40 @@ export default function Filters({
     }
     const values = {
       sizeRange: [sizeNumToString(sizeRange[0]), sizeNumToString(sizeRange[1])],
-      dogAgeRange,
       dogGenders,
+      dogAgeRange,
       hypoallergenic,
       neutered,
       healthIssues,
-      avoidBreeds,
-      preferredBreeds,
+      avoidBreeds: avoidBreeds.join(','),
+      maxDistance,
+      ownerAgeRange,
+      ownerGenders
+      // preferredBreeds,
+    }
+    // change 5 to current user id
+    axios.patch('/app/5/filters', values)
+        .then((results) => {
+          updateFilterParams()
+          alert(results.data);
+        })
+        .catch((err) => console.error(err));
+  }
+
+  const updateFilterParams = () => {
+    const params = {
+      sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
+      dogGenders,
+      dogAgeRange,
+      hypoallergenic,
+      neutered,
+      healthIssues,
+      avoidBreeds: avoidBreeds.join(','),
       maxDistance,
       ownerAgeRange,
       ownerGenders
     }
-    // change 1 to current user id
-    axios.patch(`/app/${1}/filters`, values)
-        .then((results) => alert(results.data))
-        .catch((err) => console.error(err));
+    setFilterParams(params)
   }
 
   return (
@@ -603,7 +627,7 @@ export default function Filters({
               ))}
             </Select>
           </FormControl>
-          <p style={{marginRight: '1rem'}}>Prefer</p>
+          {/* <p style={{marginRight: '1rem'}}>Prefer</p>
           <FormControl>
             <Select
               multiple
@@ -617,7 +641,7 @@ export default function Filters({
                 </MenuItem>
               ))}
             </Select>
-          </FormControl>
+          </FormControl> */}
         </div>
       </div>
       <div className='owner-filters'>

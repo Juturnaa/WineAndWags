@@ -1,0 +1,40 @@
+.pictures{
+    width:400px;
+    min-height: 100px;
+    background-color: white;
+    display:flex;
+    flex-direction: column;
+}
+.add-photos{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 50px;
+}
+.bio {
+    width:400px;
+    height: 100px;
+}
+.gender-input {
+    width:400px;
+    display:flex;
+    flex-direction: column;
+}
+.radios{
+    display:flex;
+}
+.radios span {
+    text-align:center;
+    border: 3px solid white;
+    display:flex;
+    flex-direction: column;
+    width:100px;
+}
+.radios input {
+    position:relative;
+    align-self: center;
+}
+.register-btns {
+    display:flex;
+    flex-direction: row;
+}
