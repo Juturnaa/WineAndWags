@@ -16,7 +16,6 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                     alert('Email and/or password are incorrect')
                 } else {
                     setCurrentID(user.data.id);
-                    setUserId(user.data.id);
                     setLanding(false);
                 }
             })
