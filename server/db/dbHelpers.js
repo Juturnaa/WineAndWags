@@ -15,7 +15,6 @@ const dbHelpers = {
   // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
     const { email } = req.params;
-    console.log(email);
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -139,13 +138,13 @@ const dbHelpers = {
     const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${req.params.id}, null, '${url}')`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
-  uploadDogPhotos: (req, callback) => {
-    const { url, owner_id } = req.body;
+  uploadDogPhotos: (req, url, callback) => {
+    const { owner_id } = req.body;
     const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${owner_id}, ${req.params.dogid}, '${url}')`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   removePhotos: (req, callback) => {
-    const qryStr = `DELETE FROM waw.photos WHERE url=${req.params.photoid}`;
+    const qryStr = `DELETE FROM waw.photos WHERE waw.photos.id=${req.params.photoid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
 
@@ -175,6 +174,25 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+
+  //CALENDAR ------------------------------------------//
+  // getSchedule: (req,callback) =>{
+  //   const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id}`
+  //   db.query(queryStr, (err,res)=>{
+  //     callback(err,res)
+  //   })
+  // };
+  // postSchedule: (req,callback)=> {
+  //   const queryStr = `INSERT INTO waw.userSchedule(dates) VALUES (${req.params.date})WHERE user_id = ${req.params.user_id}`
+  //   db.query(queryStr, (err,res)=>{
+  //     callback(err,res)
+  //   })
+  // };
+  // postAppointment: (req,callback)=> {
+  //   const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.params.schedule_id})`
+  // }
+
+
   // PROFILE LIKES ------------------------------------//
   // getAllProfileLikes: (callback) => {
   //   const queryStr = 'SELECT * from waw.profilelikes';
@@ -267,10 +285,10 @@ const dbHelpers = {
     const {
       name, gender, bio, hypo, neutered, age, size, breed, health_issues,
     } = req.body;
-    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues})`,
+    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues}) RETURNING id`,
       (err) => {
         if (err) res.send(err);
-        else res.send('dog posted');
+        else res.send(`u${data.rows[0].id}`);
       });
   },
 };

@@ -5,6 +5,8 @@ import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Map from './Map/Map';
+import Calendar from './Messages/Calendar.jsx'
+import Register from './Register';
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -16,6 +18,7 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
     const dogsimages = [];
@@ -71,13 +74,12 @@ const App = () => {
   };
   useEffect(() => {
     axios.all([
-      axios.get('/app/users/my-profile/sophiaacheong26@gmail.com'),
+      axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
       axios.get('/app/users/photos/7'),
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
-        console.log(one.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
@@ -94,11 +96,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/app/${currentUser.id}/matches`)
-      .then((results) => {
-        setMatches(results.data);
-      })
-      .catch((err) => console.log(err));
+    if (currentUser.id) {
+      axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, [currentUser]);
 
   useEffect(() => {
@@ -111,21 +115,35 @@ const App = () => {
     setMatchesPhotos(matchPhotos);
   }, [matches]);
 
+  useEffect(() => {
+    const messages = {};
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          messages[match.user_id] = results.data;
+        })
+        .catch((err) => console.log(err));
+    });
+    setAllMessages(messages);
+  }, [matches]);
+
   return (
     <div>
-      {/* <NavBar
-        likePhoto={likePhoto}
-        likeProfile={likeProfile}
-        humanPhoto={humanPhoto}
-        dogsImg={dogsImg}
-        getRandomUser={getRandomUser}
-        currentUser={currentUser}
-        breeds={breeds}
-        currentDogs={currentDogs}
-        matches={matches}
-        matchesPhotos={matchesPhotos}
-      /> */}
-      <Map />
+      <div>
+        <NavBar
+          likePhoto={likePhoto}
+          likeProfile={likeProfile}
+          humanPhoto={humanPhoto}
+          dogsImg={dogsImg}
+          getRandomUser={getRandomUser}
+          currentUser={currentUser}
+          breeds={breeds}
+          currentDogs={currentDogs}
+          matches={matches}
+          matchesPhotos={matchesPhotos}
+          allMessages={allMessages}
+        />
+      </div>
     </div>
   );
 };
