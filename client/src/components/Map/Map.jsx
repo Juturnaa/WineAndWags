@@ -29,6 +29,7 @@ Geocode.setApiKey(key);
 
 function Map() {
   const [places, setPlaces] = React.useState(null);
+  const [selected, setSelected] = React.useState()
   Geocode.fromAddress('fullerton 92833').then((response) => {
     const { lat, lng } = response.results[0].geometry.location;
     center.lat = lat;
@@ -46,7 +47,9 @@ function Map() {
     })
       .then((results) => {
         console.log('results', results);
-        setPlaces([...new Set(results.data)]);
+        const filteredResults = Array.from(new Set(results.data.map((a) => a.id))).map((id) => results.data.find((a) => a.id === id));
+        setPlaces(filteredResults);
+        console.log('filtered', filteredResults);
       }).then(() => console.log('places', places)).catch((err) => console.log(err));
   }, []);
 
@@ -77,6 +80,9 @@ function Map() {
               position={{
                 lat: place.coordinates.latitude,
                 lng: place.coordinates.longitude,
+              }}
+              onClick={() => {
+                setSelected(place);
               }}
             />
           ))}
