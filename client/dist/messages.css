@@ -97,3 +97,44 @@
   flex-direction: column;
   margin-left: 20px;
 }
+
+/* -------------CHAT--------------- */
+#chat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#chat-images-container {
+  /* width: 900px; */
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.chat-human-photo {
+  position: block;
+  object-fit: cover;
+  border: 1px solid darkgrey;
+  border-radius: 50%;
+  height: 170px;
+  width: 170px;
+}
+
+.chat-dog-photo {
+  position: absolute;
+  top: 55%;
+  right: 35%;
+  object-fit: cover;
+  border: 1px solid darkgrey;
+  border-radius: 50%;
+  height: 75px;
+  width: 75px;
+}
+
+#chat-names {
+  margin-left: 20px;
+}
+
+#direct-messages-container {
+
+}
