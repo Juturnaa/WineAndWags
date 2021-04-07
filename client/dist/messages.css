@@ -141,8 +141,15 @@
 
 }
 
-.message-container {
+.direct-message-container {
   display: flex;
+  margin: 10px;
+  align-items: center;
+  /* cursor: pointer; */
+  /* border: solid lightblue 1px; */
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #DDC8C4;
 }
 
 .message-body {
@@ -155,4 +162,28 @@
 
 #send-message-container {
   display: flex;
+  align-items: center;
+  border: solid lightblue 1px;
+  border-radius: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-top: 10px;
+}
+
+input[type=text] {
+  border: none;
+  width: 540px;
+}
+input[type=text]:focus {
+  outline: none;
+}
+
+.fa-calendar-alt {
+  margin-right: 10px;
+}
+
+.fa-paper-plane {
+  margin-left: 10px;
 }
