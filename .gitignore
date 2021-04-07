@@ -3,3 +3,4 @@ node_modules
 package-lock.json
 dbConfig.js
 awsConfig.js
+googleConfig.js

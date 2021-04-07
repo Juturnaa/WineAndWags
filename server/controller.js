@@ -1,3 +1,4 @@
+const axios = require('axios');
 const dbHelpers = require('./db/dbHelpers');
 const upload = require('./file-upload');
 
@@ -95,6 +96,14 @@ const controller = {
       },
     );
   },
+  // CALENDAR------------------------------------//
+  // getSchedule: (req,res) => {
+  //   dbHelpers.getSchedule(req, (err,results)=>{
+  //     if(err) res.status(400).send(err);
+  //     else res.status(200).send("Got Schedule")
+  //     }
+  //   )
+  // }
   // PROFILE LIKES AND MATCHES------------------------------------//
   // getAllProfileLikes: (req, res) => {
   //   dbHelpers.getAllProfileLikes((err, results) => {
@@ -149,6 +158,51 @@ const controller = {
   updateSavedFilters: (req, res) => {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
       err ? res.status(404).send(err) : res.status(202).send('Updated');
+    });
+  },
+
+  // Map //
+  getYelpResults: (req, res) => {
+    let allResults = [];
+    let result1;
+    const { latitude, longitude } = JSON.parse(req.query.location);
+    axios.get('https://api.yelp.com/v3/businesses/search', {
+      params: {
+        latitude: latitude,
+        longitude: longitude,
+        categories: 'dog_parks',
+      },
+      headers: {
+        authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+      },
+    }).then((result) => {
+      result1 = result.data;
+      axios.get('https://api.yelp.com/v3/businesses/search', {
+        params: {
+          latitude: latitude,
+          longitude: longitude,
+          term: 'Off Leash Dog Beaches',
+        },
+        headers: {
+          authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+        },
+      }).then((result2) => {
+        allResults = result1.businesses.concat(result2.data.businesses);
+        axios.get('https://api.yelp.com/v3/businesses/search', {
+          params: {
+            latitude: latitude,
+            longitude: longitude,
+            categories: 'restaurants',
+            attributes: 'pet_friendly',
+          },
+          headers: {
+            authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+          },
+        }).then((result3) => {
+          // res.send(allResults.concat(result3.data.businesses));
+          res.send(allResults);
+        });
+      });
     });
   },
   postFilters: (req, res) => {

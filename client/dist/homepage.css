@@ -1,0 +1,14 @@
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+.hompage {
+  display: flex;
+  flex-direction: column;
+}
+
+.potential-match-view {
+  display: flex;
+  flex-flow: row nowrap;
+}

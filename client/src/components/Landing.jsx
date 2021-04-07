@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 
-export default function Landing({setUserId}) {
+
+export default function Landing({ setCurrentID, setLanding, setRegister }) {
+
     let [login, setLogin] = useState(false);
     let [email, setEmail] =useState('');
     let [password, setPassword] =useState('');
@@ -13,7 +15,9 @@ export default function Landing({setUserId}) {
                 if(!bcrypt.compareSync(password, user.data.password) || user.data.email !== email){
                     alert('Email and/or password are incorrect')
                 } else {
+                    setCurrentID(user.data.id);
                     setUserId(user.data.id);
+                    setLanding(false);
                 }
             })
             .catch(err => {
@@ -21,17 +25,17 @@ export default function Landing({setUserId}) {
                 alert('Email is not registered, try signing up')
             })
     }
-    
+
     return (
-        <div className="login">            
+        <div className="login">
             <div className="center">
                 <div className="ear ear--left"></div>
                 <div className="ear ear--right"></div>
                     <div className="login-body">
-                    {login ? 
+                    {login ?
                     <React.Fragment>
                         <div className="face">
-                            
+
                         <div className="eyes">
                             <div className="eye eye--left">
                                 <div className="glow"></div>
@@ -100,15 +104,17 @@ export default function Landing({setUserId}) {
 
                     </React.Fragment>
                 :
-               
+
                     <div className="content">
                         <h2>Wine and Wags</h2>
                         <h2>Wine and Wags</h2>
-                            
+
                         <span>Find love in someone unknown with the doggy they own</span>
                         <div className="landing-btns">
                             <button className="login-button" onClick={()=> setLogin(true)}>Log in </button>
-                            <button className="register-button">Register</button>
+
+                            <button className="register-button" onClick={() => {setRegister(true); setLanding(false)}}>Register </button>
+
                         </div>
                     </div>
                 }

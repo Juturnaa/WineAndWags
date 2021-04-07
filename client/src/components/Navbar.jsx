@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Homepage from './Homepage/Homepage';
 import EditProfile from './Homepage/EditProfile';
 import Inbox from './Messages/Inbox';
+import Map from './Map/Map';
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -22,12 +23,9 @@ const Notifications = () => (
 const Messages = () => (
   <div>Messages</div>
 );
-const Map = () => (
-  <div>Map</div>
-);
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog,
 }) {
   return (
     <BrowserRouter>
@@ -62,15 +60,15 @@ function NavBar({
               dogsImg={dogsImg}
               matches={matches}
               matchesPhotos={matchesPhotos}
+              allMessages={allMessages}
             />
           )}
         />
-        <Route exact path="/map" component={Map} />
+        <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
+        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
       </Switch>
     </BrowserRouter>
-
   );
 }
 
@@ -100,6 +98,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  allMessages: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 NavBar.defaultProps = {
@@ -109,6 +112,7 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
+  allMessages: {},
 };
 
 export default NavBar;

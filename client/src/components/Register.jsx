@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import bcrypt from 'bcryptjs';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -20,7 +20,8 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Breeds from '../dummyData/dogBreed';
 
-export default function Register({user_id, setUserId}) {
+
+export default function Register({ setCurrentID, setRegister }) {
     let [page, setPage] = useState(1);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
@@ -130,7 +131,7 @@ export default function Register({user_id, setUserId}) {
                         :
                         ""
                         }
-                        
+
                         {ownerPicsNum.length >1 ?
                             <FontAwesomeIcon icon={faMinus} onClick={() => {
                                 setOwnerPicsNum(ownerPicsNum.slice(0,-1));
@@ -140,7 +141,7 @@ export default function Register({user_id, setUserId}) {
                         ""
                         }
 
-                    </div>                    
+                    </div>
                 ))}
 
 
@@ -185,7 +186,7 @@ export default function Register({user_id, setUserId}) {
                 <div className ="pictures">
                     <span>Pictures</span>
                     {dogPicsNum[num-1].map((num2)=> (
-                    
+
                     <div key={num2} className="add-photos">
                         <input type="file" id={`img${num-1}${num2-1}`} style={{display:"none"}} onChange={(e) => {
                             let bigArr= dogPics.slice(); let arr = bigArr[num-1].slice();
@@ -207,7 +208,7 @@ export default function Register({user_id, setUserId}) {
                         :
                         ""
                         }
-                        
+
                         {dogPicsNum[num-1].length >1 ?
                             <FontAwesomeIcon icon={faMinus} onClick={() => {
                                 let bigArrPics= dogPics.slice(); let arrPics = dogPics[num-1].slice();
@@ -221,7 +222,7 @@ export default function Register({user_id, setUserId}) {
                         ""
                         }
 
-                    </div>                    
+                    </div>
                 ))}
                 </div>
                 <input placeholder="Age" name="dogAge" value={dogAges[num-1]} type="number" min="0" onChange={(e) => {let arr = dogAges.slice(); arr.splice(num-1,1,e.target.value); setDogAges(arr)}}/>
@@ -303,10 +304,10 @@ export default function Register({user_id, setUserId}) {
                     setSizes(sizes.slice(0,-1));
                     setDogBios(dogBios.slice(0,-1));
                     setDogPics(dogPics.slice(0,-1));
-                    setDogPicsNum(dogPicsNum.slice(0,-1));                    
+                    setDogPicsNum(dogPicsNum.slice(0,-1));
                     }}>- Dog</button>
                 :
-                ""            
+                ""
             }
             <button className="register-button" onClick={()=>{
                 setNumDogs(numDogs.concat([numDogs.length+1]));
@@ -517,10 +518,11 @@ export default function Register({user_id, setUserId}) {
     let postInfo = () => {
         const hash=bcrypt.hashSync(password, 10);
         let promises =[];
+
         let promises2 =[];
         axios.post('/app/users', {name:owner, bio:ownerBio, email, hash, age:ownerAge, zipcode, city, searched_as})
             .then((data)=>{
-                setUserId(data.data.id);
+                setCurrentID(data.data.id);
                 return data.data.id;
             })
             .then((id)=>{
@@ -607,6 +609,10 @@ export default function Register({user_id, setUserId}) {
             })
             
             
+
+        // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
+        //axios.post dogs
+        // .then(()=> {
         //     dogPics.forEach((dog)=>{
         //         dog.forEach(file=>{
         //         //upload dog photo
@@ -649,7 +655,7 @@ export default function Register({user_id, setUserId}) {
                 validated =false;
                 alert("Age must be greater than or equal to 18")
             } else setPage(page+1)
-            
+
         } else if (page === 3) {
             for(let i=0; i<numDogs.length;i++){
                 if([dogAges[i],dogGenders[i], breeds[i], dogBios[i]].some(x => x === undefined || x === '') || dogPics[i].some(x => x === undefined || x === '')){
@@ -666,9 +672,9 @@ export default function Register({user_id, setUserId}) {
             }
             if(validated) postInfo()
         }
-        
+
     }
-    
+
     return (
         <div className="register">
             <div className="center">
@@ -738,7 +744,7 @@ export default function Register({user_id, setUserId}) {
                     <div className="login-container">
                         {inputs}
                         <div className="register-btns">
-                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:""}                        
+                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:""}
                             <button className="register-button" onClick={() => pageHandler("next")}>{page === 4 ? "Register" : "Next"} </button>
 
                         </div>
