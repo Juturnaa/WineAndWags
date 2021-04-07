@@ -13,7 +13,7 @@ const Inbox = ({
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
-    // console.log(e.target.getAttribute('name'));
+    // console.log('currentMessageId', e.target.getAttribute('name'));
     setCurrentMessageId(e.target.getAttribute('name'));
   };
 
@@ -89,7 +89,7 @@ const Inbox = ({
                     </div>
                     <div className="name-message-container" name={index} onClick={onMessageClick}>
                       {/* {console.log('allmessages at userid', allMessages[match[0].user_id])} */}
-                      <div name={index} onClick={onMessageClick} style={{fontWeight: 'bold'}}>Human name and Dog name</div>
+                      <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>Human name and Dog name</div>
                       <div>
                         {(allMessages[match[0].user_id].length !== 0)
                           ? (
@@ -106,7 +106,15 @@ const Inbox = ({
             </div>
           </div>
         )
-        : <Chat />}
+        : (
+          <Chat
+            matchesPhotos={matchesPhotos}
+            messageMode={messageMode}
+            currentMessageId={currentMessageId}
+            allMessages={allMessages}
+            onMessageClick={onMessageClick}
+          />
+        )}
     </div>
   );
 };
