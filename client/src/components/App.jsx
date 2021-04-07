@@ -74,8 +74,8 @@ const App = () => {
 
   return (
     <div>
-      <NavBar getRandomUser={getRandomUser} humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} />
-      {/* <Map /> */}
+      {/* <NavBar getRandomUser={getRandomUser} humanPhoto={humanPhoto} dogsImg={dogsImg} getRandomUser={getRandomUser} currentUser={currentUser} breeds={breeds} currentDogs={currentDogs} /> */}
+      <Map />
     </div>
   );
 };

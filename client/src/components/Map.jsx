@@ -3,22 +3,14 @@ import GoogleMapReact from 'google-map-react';
 import axios from 'axios';
 
 function Map({ location, zoomLevel }) {
-  const [parks, setParks] = React.useState([]);
+  const [places, setPlaces] = React.useState([]);
   React.useEffect(() => {
-    // axios.get('https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search', {
-    //   json: true,
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
-    //     accept: 'application/json',
-    //     'x-requested-with': 'xmlhttprequest',
-    //     'Access-Control-Allow-Origin': '*',
-    //   },
-    // }).then((res) => {
-    //   setParks(res);
-    // });
-    axios.get('localhost:3000/yelp');
-  });
+    axios.get('localhost:3000/api/yelp/92833')
+      .then((results) => {
+        setPlaces(results);
+        console.log(places);
+      });
+  }, []);
 
   function getMapBounds(map, maps, locations) {
     const bounds = new maps.LatLngBounds();
@@ -65,4 +57,4 @@ function Map({ location, zoomLevel }) {
   );
 }
 
-// export default Map;
+export default Map;

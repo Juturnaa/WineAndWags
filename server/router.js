@@ -55,15 +55,6 @@ router
   .get(controller.getSavedFilters)
   .patch(controller.updateSavedFilters);
 
-router.route('/yelp')
-  .get('/yelp', (req, res) => {
-    axios.get('https://api.yelp.com/v3/businesses/search', {
-      json: true,
-      headers: {
-        authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
-      },
-    }).then((result) => {
-      console.log(result);
-      res.send(result);
-    });
-  });
+router
+  .route('/yelp/:zip_code')
+  .get(controller.getYelpResults);

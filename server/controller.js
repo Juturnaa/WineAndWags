@@ -1,4 +1,5 @@
 const dbHelpers = require('./db/dbHelpers');
+const axios = require('axios');
 
 const controller = {
   getMyProfile: (req, res) => {
@@ -99,14 +100,30 @@ const controller = {
   // FILTERS //
   getSavedFilters: (req, res) => {
     dbHelpers.getSavedFilters(req.params.user_id, (err, results) => {
-      err ? res.status(400).send(err) : res.status(200).send(results.rows)
-    })
+      err ? res.status(400).send(err) : res.status(200).send(results.rows);
+    });
   },
   updateSavedFilters: (req, res) => {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
-      err ? res.status(404).send(err) : res.status(202).send('Updated')
-    })
-  }
+      err ? res.status(404).send(err) : res.status(202).send('Updated');
+    });
+  },
+
+  // Map //
+  getYelpResults: (req, res) => {
+    axios.get('https://api.yelp.com/v3/businesses/search', {
+      params:{
+        location: req.zip_code,
+        categories: 'dog_parks',
+      },
+      json: true,
+      headers: {
+        authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+      },
+    }).then((result) => {
+      res.send(result);
+    });
+  },
 };
 
 module.exports = controller;
