@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
-import Map from './Map';
+import Map from './Map/Map';
+import Calendar from './Messages/Calendar.jsx'
 import Register from './Register';
 
 const App = () => {
@@ -143,7 +144,6 @@ const App = () => {
           allMessages={allMessages}
         />
       </div>
-      {/* <Register /> */}
     </div>
   );
 };

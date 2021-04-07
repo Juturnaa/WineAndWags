@@ -45,7 +45,6 @@ const dbHelpers = {
       maxDistance,
       ownerAgeRange,
       ownerGenders,
-      dogGenderQuery,
     } = JSON.parse(req.query.filters);
     let qryStr;
     if (dogGenders === 'Both') {
@@ -174,6 +173,25 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+
+  //CALENDAR ------------------------------------------//
+  // getSchedule: (req,callback) =>{
+  //   const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id}`
+  //   db.query(queryStr, (err,res)=>{
+  //     callback(err,res)
+  //   })
+  // };
+  // postSchedule: (req,callback)=> {
+  //   const queryStr = `INSERT INTO waw.userSchedule(dates) VALUES (${req.params.date})WHERE user_id = ${req.params.user_id}`
+  //   db.query(queryStr, (err,res)=>{
+  //     callback(err,res)
+  //   })
+  // };
+  // postAppointment: (req,callback)=> {
+  //   const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.params.schedule_id})`
+  // }
+
+
   // PROFILE LIKES ------------------------------------//
   // getAllProfileLikes: (callback) => {
   //   const queryStr = 'SELECT * from waw.profilelikes';

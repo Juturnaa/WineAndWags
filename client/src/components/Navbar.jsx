@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import Homepage from './Homepage/Homepage';
 import EditProfile from './Homepage/EditProfile';
 import Inbox from './Messages/Inbox';
+import Map from './Map/Map';
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -21,9 +22,6 @@ const Notifications = () => (
 );
 const Messages = () => (
   <div>Messages</div>
-);
-const Map = () => (
-  <div>Map</div>
 );
 
 function NavBar({
@@ -66,12 +64,11 @@ function NavBar({
             />
           )}
         />
-        <Route exact path="/map" component={Map} />
+        <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
         <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
-
   );
 }
 
