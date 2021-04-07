@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import DatePicker from './DatePicker.jsx'
+
 
 
 const {startOfMonth, startOfWeek, endOfMonth, endOfWeek, startOfDay, addDays, isSameMonth, isSameDay, format} = require('date-fns');
@@ -110,20 +110,19 @@ return (
     <button>Cancel</button>
     <button>Ok</button>
     <div>
-    <div>
+    {/* <div>
       {hours.map((hour,hi) => (
         <div key = {hi}>{hour}</div>
       ))}
-    </div>
-    <div>
-      {minutes.map((hour,hi) => (
-        <div key = {hi}>{hour}</div>
+    </div> */}
+    {/* <div>
+      {minutes.map((min,mi) => (
+        <div key = {mi}>{min}</div>
       ))}
+    </div> */}
     </div>
-    </div>
-    <DatePicker />
-    <input type="date" value= {appt} onChange={(e)=>{console.log(e)}}/>
-    <input type="time" value= {appt} onChange={(e)=>{console.log(e)}}/>
+    {/* <input type="date" value= {appt} onChange={(e)=>{console.log(e)}}/>
+    <input type="time" value= {appt} onChange={(e)=>{console.log(e)}}/> */}
     </div>
 
     </div>

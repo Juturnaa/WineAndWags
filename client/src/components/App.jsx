@@ -5,6 +5,7 @@ import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Map from './Map';
+import Calendar from './Messages/Calendar.jsx'
 
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
@@ -117,6 +118,7 @@ const App = () => {
         matches={matches}
         matchesPhotos={matchesPhotos}
       />
+      <Calendar />
     </div>
   );
 };
