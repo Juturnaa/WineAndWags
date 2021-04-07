@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import bcrypt from 'bcryptjs';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
@@ -19,9 +20,9 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Breeds from '../dummyData/dogBreed';
 
+
 export default function Register({ setCurrentID, setRegister }) {
-    let [page, setPage] = useState(3);
-    let [user_id, setUserId] = useState();
+    let [page, setPage] = useState(1);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -45,8 +46,8 @@ export default function Register({ setCurrentID, setRegister }) {
     let [sizes, setSizes] =useState([0]);
     let [dogBios, setDogBios] =useState(['']);
     let [numDogs, setNumDogs] =useState([1]);
-    let [min_size, setMinSize] =useState('XS');
-    let [max_size, setMaxSize] =useState('XL');
+    let [min_size, setMinSize] =useState(0);
+    let [max_size, setMaxSize] =useState(4);
     let [sizePref, setSizePref] =useState([0, 4]);
     let [dog_min_age, setDogMinAge] =useState(0);
     let [dog_max_age, setDogMaxAge] =useState(20);
@@ -62,6 +63,7 @@ export default function Register({ setCurrentID, setRegister }) {
     let [owner_min_age, setOwnerMinAge] =useState(18);
     let [owner_max_age, setOwnerMaxAge] =useState(50)
     let [ownerAgePref, setOwnerAgePref] =useState([18, 50])
+    let [dogIds, setDogIds] =useState([]);
     let inputs;
     //--------------------------form styling --------------------------//
     const useStyles = makeStyles((theme) => ({
@@ -119,8 +121,12 @@ export default function Register({ setCurrentID, setRegister }) {
                 <div>Pictures</div>
                 {ownerPicsNum.map((num)=> (
                     <div key={num} className="add-photos">
-                        <input type="file" onChange={(e) => {let arr =ownerPics.slice(); arr.splice(num-1,1,e.target.files[0]); setOwnerPics(arr)}} />
-                        {ownerPicsNum.length <=4 ?
+                        <input type="file" id={`img${num-1}`} style={{display:"none"}} onChange={(e) => {let arr =ownerPics.slice(); arr.splice(num-1,1,e.target.files[0]); setOwnerPics(arr)}} />
+                        {ownerPics[num-1] === "" ?
+                            <button><label htmlFor={`img${num-1}`}>Choose File</label></button>
+                        :
+                        <div>File Chosen</div>
+                        }{ownerPicsNum.length <=4 ?
                             <FontAwesomeIcon icon={faPlus} onClick={() => {setOwnerPicsNum(ownerPicsNum.concat([ownerPicsNum.length+1])); setOwnerPics(ownerPics.concat(['']))}}/>
                         :
                         ""
@@ -182,10 +188,15 @@ export default function Register({ setCurrentID, setRegister }) {
                     {dogPicsNum[num-1].map((num2)=> (
 
                     <div key={num2} className="add-photos">
-                        <input type="file" onChange={(e) => {
+                        <input type="file" id={`img${num-1}${num2-1}`} style={{display:"none"}} onChange={(e) => {
                             let bigArr= dogPics.slice(); let arr = bigArr[num-1].slice();
                             arr.splice(num2-1,1,e.target.files[0]); bigArr[num-1] = arr;
                             setDogPics(bigArr)}} />
+                        {dogPics[num-1][num2-1] === "" ?
+                            <button><label htmlFor={`img${num-1}${num2-1}`}>Choose File</label></button>
+                        :
+                        <div>File Chosen</div>
+                        }
                         {dogPicsNum[num-1].length <4 ?
                             <FontAwesomeIcon icon={faPlus} onClick={() => {
                                 let bigArrPics= dogPics.slice(); let bigArrNum = dogPicsNum.slice();
@@ -325,7 +336,11 @@ export default function Register({ setCurrentID, setRegister }) {
                     </Typography>
                     <Slider
                         value={sizePref}
-                        onChange={(e, val) => setSizePref(val)}
+                        onChange={(e, val) => {
+                            setSizePref(val);
+                            setMinSize(val[0]);
+                            setMaxSize(val[1]);
+                        }}
                         aria-labelledby="range-slider"
                         marks={[
                             {value: 0, label:"XS"},
@@ -344,7 +359,11 @@ export default function Register({ setCurrentID, setRegister }) {
                     </Typography>
                     <Slider
                         value={dogAgePref}
-                        onChange={(e, val) => setDogAgePref(val)}
+                        onChange={(e, val) => {
+                            setDogAgePref(val);
+                            setDogMinAge(val[0]);
+                            setDogMaxAge(val[1]);
+                        }}
                         valueLabelDisplay="auto"
                         aria-labelledby="range-slider"
                         min={0}
@@ -372,9 +391,9 @@ export default function Register({ setCurrentID, setRegister }) {
                         </RadioGroup>
                     </FormControl>
                 </div>
-                <div><span>Hypoallergenic</span><input name="hypo" type="checkbox" checked={hypoPref===true} onChange={() => setHypoPreff(!hypoPref)}/></div>
+                <div><span>Hypoallergenic</span><input name="hypo" type="checkbox" checked={hypoPref===true} onChange={() => setHypoPref(!hypoPref)}/></div>
                 <div><span>Neutered/Spayed</span><input name="neutered" type="checkbox" checked={neuteredPref===true} onChange={() => setNeuteredPref(!neuteredPref)}/></div>
-                <div><span>Health Issues</span><input name="health_issues" type="checkbox" checked={healthIssuesPref===true} onChange={() => setHEalthIssuesPref(!healthIssuesPref)}/></div>
+                <div><span>Health Issues</span><input name="health_issues" type="checkbox" checked={healthIssuesPref===true} onChange={() => setHealthIssuesPref(!healthIssuesPref)}/></div>
             </div>
                 Owner
                 <div>
@@ -397,7 +416,11 @@ export default function Register({ setCurrentID, setRegister }) {
                         </Typography>
                         <Slider
                             value={ownerAgePref}
-                            onChange={(e, val) => setOwnerAgePref(val)}
+                            onChange={(e, val) => {
+                                setOwnerAgePref(val);
+                                setOwnerMinAge(val[0]);
+                                setOwnerMaxAge(val[1]);
+                            }}
                             valueLabelDisplay="auto"
                             aria-labelledby="range-slider"
                             min={18}
@@ -459,7 +482,7 @@ export default function Register({ setCurrentID, setRegister }) {
                         </Select>
                     </FormControl>
                 </div>
-                <div>
+                {/* <div>
                 <FormControl className={classes.formControl}>
                         <InputLabel id="demo-mutiple-chip-label">Preferred Breeds</InputLabel>
                         <Select
@@ -486,17 +509,110 @@ export default function Register({ setCurrentID, setRegister }) {
                         </Select>
                     </FormControl>
 
-                </div>
+                </div> */}
             </div>
         </React.Fragment>
     }
+    //--------------------------Post Info --------------------------//
 
     let postInfo = () => {
+        const hash=bcrypt.hashSync(password, 10);
         let promises =[];
+
+        let promises2 =[];
+        axios.post('/app/users', {name:owner, bio:ownerBio, email, hash, age:ownerAge, zipcode, city, searched_as})
+            .then((data)=>{
+                setCurrentID(data.data.id);
+                return data.data.id;
+            })
+            .then((id)=>{
+                ownerPics.forEach((file)=>{
+                const fd = new FormData();
+                    fd.append('image', file, file.name)
+                    axios.post(`/app/users/photos/${id}`, fd)
+                })
+                return id;
+            })
+            .then((id)=>{
+                dogs.forEach((dog, i)=>{
+                    let sizeStr;
+                    if(sizes[i]===0) sizeStr="XS";
+                    else if(sizes[i]===1) sizeStr="S";
+                    else if(sizes[i]===2) sizeStr="M";
+                    else if(sizes[i]===3) sizeStr="L";
+                    else if(sizes[i]===4) sizeStr="XL";
+                    promises.push(axios.post(`/app/dogs/${id}`,{
+                        name:dog,
+                        gender:dogGenders[i],
+                        bio: dogBios[i],
+                        hypo: hypos[i],
+                        neutered: neutereds[i],
+                        age: dogAges[i],
+                        size: sizeStr,
+                        breed: breeds[i],
+                        healthy: health_issues[i]
+                    }))
+                })
+                return id;
+            })
+            .then((id)=>{
+                let minStr;
+                let maxStr;
+                if(min_size===0) minStr="XS";
+                else if(min_size===1) minStr="S";
+                else if(min_size===2) minStr="M";
+                else if(min_size===3) minStr="L";
+                else if(min_size===4) minStr="XL";
+                if(max_size===0) maxStr="XS";
+                else if(max_size===1) maxStr="S";
+                else if(max_size===2) maxStr="M";
+                else if(max_size===3) maxStr="L";
+                else if(max_size===4) maxStr="XL";
+                let avoidStr= avoid_breeds.join();
+
+                axios.post(`/app/${id}/filters`,{
+                    min_size: minStr,
+                    max_size: maxStr,
+                    dog_min_age,
+                    dog_max_age,
+                    dog_genders,
+                    hypo: hypoPref,
+                    neutered: neuteredPref,
+                    health_issues: healthIssuesPref,
+                    avoid_breeds: avoidStr,
+                    max_dist,
+                    genders: ownerGenders,
+                    min_age:owner_min_age,
+                    max_age: owner_max_age
+                })
+                return id;
+            })
+            .then((id)=>{
+                return axios.all(promises)
+                .then(axios.spread((...responses) => {
+                    responses.forEach((response, i) => {
+                        let dog_id = response.data.id;
+                        dogPics.forEach((pics)=>{
+                            pics.forEach((file)=>{
+                                const fd = new FormData();
+                                fd.append('image', file, file.name)
+                                fd.append('owner_id', id)
+                                promises2.push(axios.post(`/app/users/my-dog/${dog_id}`, fd))
+                            })
+                        })
+                    })
+                }))
+
+            })
+            .then(()=>{
+                return axios.all(promises2);
+            })
+            
+            
+
         // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
         //axios.post dogs
         // .then(()=> {
-
         //     dogPics.forEach((dog)=>{
         //         dog.forEach(file=>{
         //         //upload dog photo
@@ -509,7 +625,6 @@ export default function Register({ setCurrentID, setRegister }) {
         //     //upload user photo
         // })
         // axios.post(`/app/users/photos/${}`, {})
-        // .then()
     }
 
     //--------------------------Page validation --------------------------//

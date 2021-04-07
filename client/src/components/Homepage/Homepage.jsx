@@ -75,7 +75,7 @@ export default function Homepage({
 
   // GET request to get the user's settings
   useEffect(() => {
-    axios.get(`http://localhost:3000/app/${currentUserID}/filters`) // should be current user id, not 1
+    axios.get(`http://localhost:3000/app/${currentUserID}/filters`)
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
@@ -144,6 +144,7 @@ export default function Homepage({
             changeOwnerGenders={changeOwnerGenders}
             close={toggleFilterModal}
             setFilterParams={setFilterParams}
+            currentUserID={currentUserID}
           />
         ) : null}
     </div>

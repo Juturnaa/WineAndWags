@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Modal from 'react-modal'
 import Calendar from './Calendar.jsx'
+// import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
   matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser,
@@ -42,6 +43,7 @@ const Chat = ({
   return (
     <div>
       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
+      <ReactNotification />
       <br />
       <br />
       <div id="chat-container">
@@ -72,7 +74,7 @@ const Chat = ({
           isOpen={calendar}
           style={customStyles}
           onRequestClose={() => {clickedCalendar(!calendar)}}>
-            <Calendar />
+            <Calendar clickedCalendar ={clickedCalendar}/>
           </Modal>
           <input type="text" onChange={handleInputChange} />
           <i className="far fa-paper-plane" onClick={onSendClick} />

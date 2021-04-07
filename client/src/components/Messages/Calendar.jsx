@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
-
+// import ReactNotification from 'react-notifications-component'
+// import { store } from 'react-notifications-component';
 
 
 const {startOfMonth, startOfWeek, endOfMonth, endOfWeek, startOfDay, addDays, isSameMonth, isSameDay, format} = require('date-fns');
 
-const Calendar = () => {
+const Calendar = (props) => {
   const [weekFull, setweekFull] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [appt, setAppt] = useState(new Date().getHours()+":"+new Date().getMinutes())
@@ -78,7 +79,34 @@ let minutes = [
  60
 ]
 
+  function clickStuff() {
+    store.addNotification({
+      title: "Appointment Made!",
+      message: "poggers",
+      type: "success",
+      insert: "bottom",
+      container: "bottom-right",
+      animationIn: ["animated", "fadeIn"], // animate.css classes that's applied
+      animationOut: ["animated", "fadeOut"], // animate.css classes that's applied
+      dismiss: {
+        duration: 3000
+      }
+    })
+    props.clickedCalendar(false)
+  }
 return (
+  // store.addNotification({
+  //   title: "Appointment Made!",
+  //   message: "poggers",
+  //   type: "success",
+  //   insert: "top",
+  //   container: "top-right",
+  //   animationIn: ["animated", "fadeIn"], // animate.css classes that's applied
+  //   animationOut: ["animated", "fadeOut"], // animate.css classes that's applied
+  //   dismiss: {
+  //     duration: 3000
+  //   }
+  // })
   <div className="currentDate">
     <h1>{format(selectedDate,"ccc")}, {format(selectedDate,"LLL")} {format(selectedDate,"do")}</h1>
   <div>
@@ -108,7 +136,10 @@ return (
     </div>
     </div>
     <button>Cancel</button>
-    <button>Ok</button>
+    <button onClick={()=>{
+      clickStuff()
+    }
+    }>Ok</button>
     <div>
     {/* <div>
       {hours.map((hour,hi) => (
@@ -124,6 +155,7 @@ return (
     {/* <input type="date" value= {appt} onChange={(e)=>{console.log(e)}}/>
     <input type="time" value= {appt} onChange={(e)=>{console.log(e)}}/> */}
     </div>
+
 
     </div>
 )

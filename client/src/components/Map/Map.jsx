@@ -27,10 +27,10 @@ const options = {
 
 Geocode.setApiKey(key);
 
-function Map() {
+function Map({ currentUser }) {
   const [places, setPlaces] = React.useState(null);
-  const [selected, setSelected] = React.useState()
-  Geocode.fromAddress('fullerton 92833').then((response) => {
+  const [selected, setSelected] = React.useState(null);
+  Geocode.fromAddress(`${currentUser.city} ${currentUser.zipcode}`).then((response) => {
     const { lat, lng } = response.results[0].geometry.location;
     center.lat = lat;
     center.lng = lng;
@@ -62,6 +62,23 @@ function Map() {
     mapRef.current = map;
   }, []);
 
+  const dblClick = (e) => {
+    axios.get('http://localhost:3000/app/yelp', {
+      params: {
+        location: {
+          latitude: e.latLng.lat(),
+          longitude: e.latLng.lng(),
+        },
+      },
+    })
+      .then((results) => {
+        console.log('results', results);
+        const filteredResults = Array.from(new Set(results.data.map((a) => a.id))).map((id) => results.data.find((a) => a.id === id));
+        setPlaces(filteredResults);
+        console.log('filtered', filteredResults);
+      }).then(() => console.log('places', places)).catch((err) => console.log(err));
+  };
+
   if (isLoaded && places) {
     return (
       <div>
@@ -72,6 +89,7 @@ function Map() {
           center={center}
           options={options}
           onLoad={onMapLoad}
+          onDblClick={dblClick}
         >
           {places.map((place) => (
             <Marker
@@ -85,6 +103,27 @@ function Map() {
               }}
             />
           ))}
+
+          {selected ? (
+            <InfoWindow
+              position={{
+                lat: selected.coordinates.latitude,
+                lng: selected.coordinates.longitude,
+              }}
+              onCloseClick={() => {
+                setSelected(null);
+              }}
+            >
+              <div>
+                <img src={`${selected.image_url}`} alt="" width="100" height="50" />
+                <h5>{selected.name}</h5>
+                <div>{`${selected.location.display_address[0]}`}</div>
+                <div>{`${selected.location.display_address[1]}`}</div>
+                <div>{selected.display_phone}</div>
+                <a href={`${selected.url}`}>Yelp Page</a>
+              </div>
+            </InfoWindow>
+          ) : null}
         </GoogleMap>
       </div>
 
