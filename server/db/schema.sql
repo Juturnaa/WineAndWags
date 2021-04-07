@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS waw.users (
   password VARCHAR(255) NOT NULL,
   age INT NOT NULL,
   zipcode VARCHAR(15) NOT NULL,
+  city VARCHAR(255) NOT NULL,
   searched_as VARCHAR(20) NOT NULL
 );
 
@@ -94,4 +95,17 @@ CREATE TABLE IF NOT EXISTS waw.filters (
   genders VARCHAR(20) NOT NULL,
   min_age INT NOT NULL,
   max_age INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS waw.userSchedule (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  dates timestamp
+);
+
+CREATE TABLE IF NOT EXISTS waw.userAppointment (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL,
+  user_id2 INT NOT NULL,
+  schedule_id INT NOT NULL
 );

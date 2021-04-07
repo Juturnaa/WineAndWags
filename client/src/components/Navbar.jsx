@@ -6,6 +6,7 @@ import {
 import PropTypes from 'prop-types';
 import Homepage from './Homepage/Homepage';
 import EditProfile from './Homepage/EditProfile';
+import Inbox from './Messages/Inbox';
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -25,16 +26,25 @@ const Map = () => (
   <div>Map</div>
 );
 
-function NavBar({ currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser }) {
+function NavBar({
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto
+}) {
   return (
     <BrowserRouter>
-      {/* part that needs to be styled */}
-      <nav>
-        <NavLink exact to="/home">Home</NavLink>
-        <NavLink exact to="/notifications">Notifications</NavLink>
-        <NavLink exact to="/messages">Messages</NavLink>
-        <NavLink exact to="/map">Map</NavLink>
-        <NavLink exact to="/editprofile">Edit Profile</NavLink>
+      <nav className='navigation-bar'>
+        <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
+        <NavLink className="nav-icon" exact to="/notifications"><i className="far fa-bell" /></NavLink>
+        <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
+        <NavLink className="nav-icon" exact to="/map"><i className="far fa-map" /></NavLink>
+        <NavLink className="nav-icon" exact to="/editprofile">
+          {humanPhoto.length ? (
+            <div
+              className="profile-thumbnail"
+              style={{ backgroundImage: `url(${humanPhoto[0].url})` }}
+            />
+          )
+            : <div className="profile-thumbnail" />}
+        </NavLink>
       </nav>
 
       {/* Routes */}
@@ -42,10 +52,22 @@ function NavBar({ currentUser, humanPhoto, breeds, dogsImg, currentDogs, getRand
         <Route exact path="/notifications" component={Notifications} />
         {' '}
         {/* delete this route if notifications is just modal not a page */}
-        <Route exact path="/messages" component={Messages} />
+        <Route
+          exact
+          path="/inbox"
+          render={() => (
+            <Inbox
+              currentUser={currentUser}
+              humanPhoto={humanPhoto}
+              dogsImg={dogsImg}
+              matches={matches}
+              matchesPhotos={matchesPhotos}
+            />
+          )}
+        />
         <Route exact path="/map" component={Map} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
-        <Route path="/*" render={() => <Homepage getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
+        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} />} />
       </Switch>
     </BrowserRouter>
 
@@ -73,6 +95,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  matches: PropTypes.arrayOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 NavBar.defaultProps = {
@@ -81,6 +108,7 @@ NavBar.defaultProps = {
   breeds: [],
   currentDogs: [],
   dogsImg: [],
+  matches: [],
 };
 
 export default NavBar;
