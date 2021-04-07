@@ -129,7 +129,7 @@ const App = () => {
 
   return (
     <div>
-      {/* <div>
+      <div>
         <NavBar
           likePhoto={likePhoto}
           likeProfile={likeProfile}
@@ -143,7 +143,7 @@ const App = () => {
           matchesPhotos={matchesPhotos}
           allMessages={allMessages}
         />
-      </div> */}
+      </div>
       <Map />
     </div>
   );
