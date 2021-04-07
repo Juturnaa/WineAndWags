@@ -40,7 +40,7 @@ const Chat = ({
         <div id="direct-messages-container">
           {/* {console.log('user messages', allMessages[matchUserId])} */}
           {allMessages[matchUserId].map((message) => (
-            <div className="direct-message-container">
+            <div className="direct-message-container" key={message.id}>
               <div className="message-body">
                 {message.body}
               </div>
