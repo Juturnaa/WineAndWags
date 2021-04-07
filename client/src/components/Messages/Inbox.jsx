@@ -7,29 +7,21 @@ const Inbox = ({
 }) => {
   // console.log('matches', matches);
   // console.log('currentUser', currentUser.id);
-  // console.log('matchesPhotos', matchesPhotos);
+  console.log('matchesPhotos', matchesPhotos);
   const [messageMode, setMessageMode] = useState(false);
-  // const [allMessages, setAllMessages] = useState([]);
+  const [currentMessageId, setCurrentMessageId] = useState(0);
 
-  // useEffect(() => {
-  //   const messages = [];
-  //   matches.map((match) => {
-  //     axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
-  //       .then((results) => {
-  //         messages.push([match.user_id, results.data]);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   });
-  //   setAllMessages(messages);
-  // }, []);
-
-  const onMessageClick = () => {
+  const onMessageClick = (e) => {
     setMessageMode(!messageMode);
+    console.log(e.target);
+    setCurrentMessageId(e.target.getAttribute('name'));
   };
 
   const renderMessageMode = () => (
     <div>
       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
+      <br />
+      <br />
       DMs HERE
     </div>
   );
@@ -42,10 +34,10 @@ const Inbox = ({
           <div>
             <div id="matches-container">
               {matchesPhotos.map((match) => (
-                <div className="match-container" key={match[0].user_id}>
+                <div className="match-container" key={match[0].user_id} name={(match[0].user_id)} onClick={onMessageClick}>
                   <span>Human and Dog</span>
                   <br />
-                  <div className="match-photos-container" onClick={onMessageClick}>
+                  <div className="match-photos-container" >
                     <img
                       className="human-photos"
                       alt="human"
@@ -63,10 +55,12 @@ const Inbox = ({
             <br />
             <br />
             <div id="messages-outer-container">
-              <div id="messages-container" onClick={onMessageClick}>
-                Message Queue ({matches.length})
+              <div id="messages-container">
+                Message Queue (
+                {matches.length}
+                )
                 {matchesPhotos.map((match) => (
-                  <div className="message-container" key={match[0].user_id}>
+                  <div className="message-container" key={match[0].user_id} name={match[0].user_id} onClick={onMessageClick}>
                     <div className="messages-photos-container">
                       <img
                         className="human-photos-small"
