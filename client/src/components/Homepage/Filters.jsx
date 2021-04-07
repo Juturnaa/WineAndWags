@@ -28,7 +28,8 @@ export default function Filters({
   maxDistance, changeMaxDistance,
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders,
-  close, setFilterParams
+  close, setFilterParams,
+  currentUserID
 }) {
 
   const breeds = [
@@ -548,10 +549,9 @@ export default function Filters({
       maxDistance,
       ownerAgeRange,
       ownerGenders
-      // preferredBreeds,
     }
-    // change 5 to current user id
-    axios.patch('/app/5/filters', values)
+
+    axios.patch(`app/${currentUserID}/filters`, values)
       .then((results) => {
         updateFilterParams()
         alert('updated preferences');

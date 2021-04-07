@@ -24,6 +24,36 @@ const Inbox = ({
     return count;
   };
 
+  const mapMatchesPhotos = () => {
+    matchesPhotos.map((match, index) => {
+      // display 6 matches at a time -> replace this with carousel
+      if (index < 6) {
+        return (
+          <div className="match-container" key={match[0].user_id}>
+            <span>Human and Dog</span>
+            <br />
+            <div className="match-photos-container">
+              <img
+                className="human-photos"
+                alt="human"
+                src={match[0].url}
+                name={index}
+                onClick={onMessageClick}
+              />
+              <img
+                className="dog-photos"
+                alt="dog"
+                src={match[1].url}
+                name={index}
+                onClick={onMessageClick}
+              />
+            </div>
+          </div>
+        );
+      }
+    })
+  }
+
   return (
     <div id="inbox-container">
       <br />
@@ -38,7 +68,8 @@ const Inbox = ({
             </span>
             <div id="matches-container">
               {matchesPhotos.map((match, index) => {
-                if (index < 7) {
+                // display 6 matches at a time -> replace this with carousel
+                if (index < 6) {
                   return (
                     <div className="match-container" key={match[0].user_id}>
                       <span>Human and Dog</span>
