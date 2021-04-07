@@ -125,7 +125,7 @@ export default function Register() {
                         :
                         ""
                         }
-                        
+
                         {ownerPicsNum.length >1 ?
                             <FontAwesomeIcon icon={faMinus} onClick={() => {
                                 setOwnerPicsNum(ownerPicsNum.slice(0,-1));
@@ -135,7 +135,7 @@ export default function Register() {
                         ""
                         }
 
-                    </div>                    
+                    </div>
                 ))}
 
 
@@ -180,7 +180,7 @@ export default function Register() {
                 <div className ="pictures">
                     <span>Pictures</span>
                     {dogPicsNum[num-1].map((num2)=> (
-                    
+
                     <div key={num2} className="add-photos">
                         <input type="file" onChange={(e) => {
                             let bigArr= dogPics.slice(); let arr = bigArr[num-1].slice();
@@ -197,7 +197,7 @@ export default function Register() {
                         :
                         ""
                         }
-                        
+
                         {dogPicsNum[num-1].length >1 ?
                             <FontAwesomeIcon icon={faMinus} onClick={() => {
                                 let bigArrPics= dogPics.slice(); let arrPics = dogPics[num-1].slice();
@@ -211,7 +211,7 @@ export default function Register() {
                         ""
                         }
 
-                    </div>                    
+                    </div>
                 ))}
                 </div>
                 <input placeholder="Age" name="dogAge" value={dogAges[num-1]} type="number" min="0" onChange={(e) => {let arr = dogAges.slice(); arr.splice(num-1,1,e.target.value); setDogAges(arr)}}/>
@@ -293,10 +293,10 @@ export default function Register() {
                     setSizes(sizes.slice(0,-1));
                     setDogBios(dogBios.slice(0,-1));
                     setDogPics(dogPics.slice(0,-1));
-                    setDogPicsNum(dogPicsNum.slice(0,-1));                    
+                    setDogPicsNum(dogPicsNum.slice(0,-1));
                     }}>- Dog</button>
                 :
-                ""            
+                ""
             }
             <button className="register-button" onClick={()=>{
                 setNumDogs(numDogs.concat([numDogs.length+1]));
@@ -496,7 +496,7 @@ export default function Register() {
         // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
         //axios.post dogs
         // .then(()=> {
-            
+
         //     dogPics.forEach((dog)=>{
         //         dog.forEach(file=>{
         //         //upload dog photo
@@ -540,7 +540,7 @@ export default function Register() {
                 validated =false;
                 alert("Age must be greater than or equal to 18")
             } else setPage(page+1)
-            
+
         } else if (page === 3) {
             for(let i=0; i<numDogs.length;i++){
                 if([dogAges[i],dogGenders[i], breeds[i], dogBios[i]].some(x => x === undefined || x === '') || dogPics[i].some(x => x === undefined || x === '')){
@@ -557,9 +557,9 @@ export default function Register() {
             }
             if(validated) postInfo()
         }
-        
+
     }
-    
+
     return (
         <div className="register">
             <div className="center">
@@ -629,7 +629,7 @@ export default function Register() {
                     <div className="login-container">
                         {inputs}
                         <div className="register-btns">
-                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:""}                        
+                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:""}
                             <button className="register-button" onClick={() => pageHandler("next")}>{page === 4 ? "Register" : "Next"} </button>
 
                         </div>
