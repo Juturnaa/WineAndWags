@@ -24,9 +24,9 @@ router.route("/users/random-profile").get(controller.getRandomProfile);
 
 // REGISTRATION ------------------------------------//
 router.route('/users')
-  .post(controller.postUser)
+  .post(controller.postUser);
 router.route('/dogs/:user')
-  .post(controller.postDog)  
+  .post(controller.postDog);
 
 // MESSAGES ------------------------------------//
 router

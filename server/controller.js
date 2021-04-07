@@ -29,9 +29,6 @@ const controller = {
     });
   },
   uploadPhotos: (req, res) => {
-    dbHelpers.uploadPhotos(req, (err, result) => {
-      if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
     singleUpload(req, res, (err) => {
       if (err) res.status(422).send(err);
       else {
