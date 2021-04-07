@@ -3,15 +3,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
-function EditHumanImage({ humanPhoto }) {
-  const [index, setIndex] = useState(0);
-
+function EditHumanImage({ humanPhoto, indexHuman, setIndexHuman }) {
   const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
+    setIndexHuman(selectedIndex);
   };
 
   return (
-    <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+    <Carousel interval={null} activeIndex={indexHuman} onSelect={handleSelect}>
       {humanPhoto.map((item, ind) => (
         <Carousel.Item key={ind}>
           <div style={{
@@ -30,10 +28,14 @@ EditHumanImage.propTypes = {
       PropTypes.any,
     ]),
   ),
+  setIndexHuman: PropTypes.func,
+  indexHuman: PropTypes.number,
 };
 
 EditHumanImage.defaultProps = {
   humanPhoto: [],
+  setIndexHuman: null,
+  indexHuman: 0,
 };
 
 export default EditHumanImage;

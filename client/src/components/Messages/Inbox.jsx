@@ -2,29 +2,27 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const Inbox = ({ matches, matchesPhotos }) => {
-  console.log('matches', matches);
-  console.log('matchesPhotos', matchesPhotos);
-  // getMatchPhotos = () => {
-  // };
+const Inbox = ({ matches, matchesPhotos }) =>
+// getMatchPhotos = () => {
+// };
 
-  // useEffect(() => {
-  //   // console.log('matches', matches);
-  //   // const fetchData = async () => {
-  //   //   const data = await getMatchPhotos();
-  //   //   setMatches(data);
-  //   const matchPhotos = [];
-  //   matches.map((match) => axios.get(`/app/users/photos/${match.user_id}`)
-  //     .then((results) => {
-  //       matchPhotos.push(results.data);
-  //     })
-  //     .catch((err) => console.log(err)));
-  //   setMatches(matchPhotos);
-  //   // };
-  //   // fetchData();
-  // }, [setMatches]);
+// useEffect(() => {
+//   // console.log('matches', matches);
+//   // const fetchData = async () => {
+//   //   const data = await getMatchPhotos();
+//   //   setMatches(data);
+//   const matchPhotos = [];
+//   matches.map((match) => axios.get(`/app/users/photos/${match.user_id}`)
+//     .then((results) => {
+//       matchPhotos.push(results.data);
+//     })
+//     .catch((err) => console.log(err)));
+//   setMatches(matchPhotos);
+//   // };
+//   // fetchData();
+// }, [setMatches]);
 
-  return (
+  (
     <div id="inbox-container">
       <br />
       <div id="matches-container">
@@ -57,8 +55,6 @@ const Inbox = ({ matches, matchesPhotos }) => {
       </div>
     </div>
   );
-};
-
 Inbox.propTypes = {
   currentUser: PropTypes.objectOf(
     PropTypes.oneOfType([

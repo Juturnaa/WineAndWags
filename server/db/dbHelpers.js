@@ -15,7 +15,6 @@ const dbHelpers = {
   // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
     const { email } = req.params;
-    console.log(email);
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',

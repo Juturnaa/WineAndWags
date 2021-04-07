@@ -7,6 +7,8 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+import { IconButton } from '@material-ui/core';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
 import AddDogModal from './AddDogModal';
@@ -46,8 +48,7 @@ function EditProfile({
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
   const [addDog, setAddDog] = useState(false);
-
-  console.log(dogImages)
+  const [indexHuman, setIndexHuman] = useState(0);
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -237,9 +238,14 @@ function EditProfile({
             <div>
               Photo:
               {' '}
-              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} />
+              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setIndexHuman={setIndexHuman} indexHuman={indexHuman} />
               <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
               <button type="button" onClick={uploadClick}>Photos</button>
+              <div>
+                <IconButton onClick={deletePhoto}>
+                  <DeleteForeverRoundedIcon variant="rounded" />
+                </IconButton>
+              </div>
             </div>
             <div>
               Name:
