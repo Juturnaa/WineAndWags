@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 35%;
+  top: 40%;
   left: 50%;
   width: 75%;
   right: auto;
@@ -17,7 +17,7 @@
 }
 
 .filter-container {
-  justify-content: center;
+  justify-content: space-around;
   display: flex;
   flex-flow: row nowrap;
 }

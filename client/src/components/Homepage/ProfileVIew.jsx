@@ -6,7 +6,7 @@ const ProfileView = ({ user, photos }) => (
     <div id="card-name">
       {user !== undefined ? user.name : null}
     </div>
-    <div style={{ display: 'flex', direction: 'row' }}>
+    <div>
       <div>
         <PhotosList photos={photos} />
       </div>

@@ -581,6 +581,22 @@ export default function Filters({
         <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon/></IconButton>
       </div>
       <div className='filter-container'>
+        <div className='owner-filters'>
+          <Typography variant="h4" gutterBottom>Owner</Typography>
+          <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
+          <Slider style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
+          <Typography variant="body1">Max distance: {maxDistance} miles</Typography>
+          <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
+          <Typography variant="body1">Genders</Typography>
+          <FormControl component="fieldset">
+            <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
+              <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
+              <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
+              <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
+            </RadioGroup>
+          </FormControl>
+          <Button variant="contained" style={{width: '10rem', marginTop: '2.5rem'}} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
+        </div>
         <div className='dog-filters'>
           <Typography variant="h4" gutterBottom>Dog</Typography>
           <Typography variant="body1">Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
@@ -633,22 +649,6 @@ export default function Filters({
               </Select>
             </FormControl>
           </div>
-        </div>
-        <div className='owner-filters'>
-          <Typography variant="h4" gutterBottom>Owner</Typography>
-          <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
-          <Slider style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
-          <Typography variant="body1">Max distance: {maxDistance} miles</Typography>
-          <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
-          <Typography variant="body1">Genders</Typography>
-          <FormControl component="fieldset">
-            <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
-              <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
-              <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
-              <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
-            </RadioGroup>
-          </FormControl>
-          <Button variant="contained" style={{width: '10rem'}} color="primary" onClick={() => saveChanges()}>Apply</Button>
         </div>
       </div>
     </div>

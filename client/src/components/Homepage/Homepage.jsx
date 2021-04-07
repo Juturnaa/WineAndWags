@@ -107,10 +107,12 @@ export default function Homepage({
   }, [currentUserID]);
 
   return (
-    <div>
-      <Button variant="contained" style={{width: '6rem', margin: '1rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
-      <ProfileView user={currentUser} photos={humanPhoto} likePhoto={likePhoto}/>
-      <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
+    <div className='homepage'>
+      <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      <div className='potential-match-view'>
+        <ProfileView user={currentUser} photos={humanPhoto} likePhoto={likePhoto}/>
+        <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
+      </div>
       <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 
       {filterModalOpen
@@ -130,7 +132,6 @@ export default function Homepage({
             changeHealthIssues={changeHealthIssues}
             avoidBreeds={avoidBreeds}
             changeAvoidedBreeds={changeAvoidedBreeds}
-          // preferredBreeds={preferredBreeds} changePreferredBreeds={changePreferredBreeds}
             maxDistance={maxDistance}
             changeMaxDistance={changeMaxDistance}
             ownerAgeRange={ownerAgeRange}
