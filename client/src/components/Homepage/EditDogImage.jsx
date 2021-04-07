@@ -3,11 +3,12 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
-function EditDogImage({ dogImages, id }) {
+function EditDogImage({ dogImages, id, setDogURL }) {
   const [index, setIndex] = useState(0);
 
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
+    setDogURL(dogImages[id][selectedIndex].id);
   };
 
   return (
@@ -31,11 +32,13 @@ EditDogImage.propTypes = {
     ]),
   ),
   id: PropTypes.number,
+  setDogURL: PropTypes.func,
 };
 
 EditDogImage.defaultProps = {
   dogImages: {},
   id: null,
+  setDogURL: null,
 };
 
 export default EditDogImage;
