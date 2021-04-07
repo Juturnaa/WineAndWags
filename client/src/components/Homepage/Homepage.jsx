@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Filters from './Filters';
 import ProfileView from './ProfileVIew';
-import DogView from './DogView'
+import DogView from './DogView';
 import LikeButton from './LikeButton';
 
-export default function Homepage({ currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto }) {
+export default function Homepage({
+  currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto,
+}) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   const [currentDogIndex, setCurrentDogIndex] = useState(0)
   useEffect(() => {
     setCurrentDog(currentDogs[currentDogIndex])
   }, [currentDogs, currentDogIndex])
+
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -21,7 +24,7 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
   const [neutered, changeNeutered] = useState(false);
   const [healthIssues, changeHealthIssues] = useState(false);
   const [avoidBreeds, changeAvoidedBreeds] = useState([]);
-  const [filterParams, setFilterParams] = useState({})
+  const [filterParams, setFilterParams] = useState({});
   // const [preferredBreeds, changePreferredBreeds] = useState([]);
 
   // Owner Filters
@@ -33,13 +36,13 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
 
   // transforming data to work with filter params for get random profile
   const getSizeRange = (min, max) => {
-    const sizes = ['XS', 'S', 'M', 'L', 'XL']
-    let result = []
+    const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+    const result = [];
     for (let i = min; i <= max; i++) {
-      result.push(`'${sizes[i]}'`)
+      result.push(`'${sizes[i]}'`);
     }
-    return result.join(',')
-  }
+    return result.join(',');
+  };
   const updateDogIndex = () => {
     if (currentDogIndex === currentDogs.length - 1) {
       setCurrentDogIndex(0)
@@ -60,10 +63,10 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
       avoidBreeds: avoidBreeds.join(','),
       maxDistance,
       ownerAgeRange,
-      ownerGenders
-    }
-    setFilterParams(params)
-  }
+      ownerGenders,
+    };
+    setFilterParams(params);
+  };
 
   // GET request to get the user's settings
   useEffect(() => {
@@ -71,13 +74,13 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
-          if (str === 'XS') return 0
-          if (str === 'S') return 1
-          if (str === 'M') return 2
-          if (str === 'L') return 3
-          if (str === 'XL') return 4
-        }
-        let filters = results.data[0];
+          if (str === 'XS') return 0;
+          if (str === 'S') return 1;
+          if (str === 'M') return 2;
+          if (str === 'L') return 3;
+          if (str === 'XL') return 4;
+        };
+        const filters = results.data[0];
         changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
         changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
         changeDogGenders(filters.dog_genders);
@@ -88,7 +91,6 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
         changeMaxDistance(filters.max_dist);
         changeOwnerAgeRange([filters.min_age, filters.max_age]);
         changeOwnerGenders(filters.genders);
-
       })
       .then(() => {
         updateFilterParams();
@@ -97,9 +99,9 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
         getRandomUser();
       })
       .catch((err) => {
-        console.error(err);
-      })
-  }, [])
+        console.error(error);
+      });
+  }, []);
 
   return (
     <div>
@@ -110,21 +112,34 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
       <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
       <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 
-      {filterModalOpen ?
-        <Filters
-          sizeRange={sizeRange} changeSizeRange={changeSizeRange}
-          dogAgeRange={dogAgeRange} changeDogAgeRange={changeDogAgeRange}
-          dogGenders={dogGenders} changeDogGenders={changeDogGenders}
-          hypoallergenic={hypoallergenic} changeHypoallergenic={changeHypoallergenic}
-          neutered={neutered} changeNeutered={changeNeutered}
-          healthIssues={healthIssues} changeHealthIssues={changeHealthIssues}
-          avoidBreeds={avoidBreeds} changeAvoidedBreeds={changeAvoidedBreeds}
+      {filterModalOpen
+        ? (
+          <Filters
+            sizeRange={sizeRange}
+            changeSizeRange={changeSizeRange}
+            dogAgeRange={dogAgeRange}
+            changeDogAgeRange={changeDogAgeRange}
+            dogGenders={dogGenders}
+            changeDogGenders={changeDogGenders}
+            hypoallergenic={hypoallergenic}
+            changeHypoallergenic={changeHypoallergenic}
+            neutered={neutered}
+            changeNeutered={changeNeutered}
+            healthIssues={healthIssues}
+            changeHealthIssues={changeHealthIssues}
+            avoidBreeds={avoidBreeds}
+            changeAvoidedBreeds={changeAvoidedBreeds}
           // preferredBreeds={preferredBreeds} changePreferredBreeds={changePreferredBreeds}
-          maxDistance={maxDistance} changeMaxDistance={changeMaxDistance}
-          ownerAgeRange={ownerAgeRange} changeOwnerAgeRange={changeOwnerAgeRange}
-          ownerGenders={ownerGenders} changeOwnerGenders={changeOwnerGenders}
-          close={toggleFilterModal} setFilterParams={setFilterParams}
-        /> : null}
+            maxDistance={maxDistance}
+            changeMaxDistance={changeMaxDistance}
+            ownerAgeRange={ownerAgeRange}
+            changeOwnerAgeRange={changeOwnerAgeRange}
+            ownerGenders={ownerGenders}
+            changeOwnerGenders={changeOwnerGenders}
+            close={toggleFilterModal}
+            setFilterParams={setFilterParams}
+          />
+        ) : null}
     </div>
-  )
+  );
 }
