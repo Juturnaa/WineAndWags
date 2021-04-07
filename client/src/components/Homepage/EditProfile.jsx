@@ -48,7 +48,9 @@ function EditProfile({
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
   const [addDog, setAddDog] = useState(false);
-  const [indexHuman, setIndexHuman] = useState(0);
+  const [humanURL, setHumanURL] = useState(0);
+  const [dogURL, setDogURL] = useState(0);
+  const [uploadDog, setUploadDog] = useState();
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -79,8 +81,8 @@ function EditProfile({
 
   const arrangeDogs = (arr) => {
     const chunk = [];
-    for (let i = 0; i < arr.length; i += 2) {
-      const myChunk = arr.slice(i, i + 2);
+    for (let i = 0; i < arr.length; i += 1) {
+      const myChunk = arr.slice(i, i + 1);
       chunk.push(myChunk);
     }
     setPages(chunk);
@@ -136,7 +138,15 @@ function EditProfile({
   };
 
   const deletePhoto = () => {
+    axios.delete(`/app/users/delete/${humanURL}`)
+      .then((results) => alert('deleted'))
+      .catch((err) => console.error(err));
+  };
 
+  const deleteDogPhoto = () => {
+    axios.delete(`/app/users/delete/${dogURL}`)
+      .then((results) => alert('deleted'))
+      .catch((err) => console.error(err));
   };
 
   const submitHuman = (e) => {
@@ -228,6 +238,15 @@ function EditProfile({
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
+  const uploadDogClick = () => {
+    const fd = new FormData();
+    fd.append('image', uploadHuman, uploadHuman.name);
+    fd.append('owner_id', 7);
+    axios.post('/app/users/my-dog/7', fd)
+      .then((results) => alert(results.data))
+      .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
+  };
+
   return (
     <div>
       <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
@@ -238,7 +257,7 @@ function EditProfile({
             <div>
               Photo:
               {' '}
-              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setIndexHuman={setIndexHuman} indexHuman={indexHuman} />
+              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} />
               <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
               <button type="button" onClick={uploadClick}>Photos</button>
               <div>
@@ -325,7 +344,14 @@ function EditProfile({
                 Photo:
                 {' '}
                 <br />
-                <EditDogImage dogImages={dogImages} id={item.id} />
+                <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} />
+                <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
+                <button type="button" onClick={uploadDogClick}>Photos</button>
+                <div>
+                  <IconButton onClick={deleteDogPhoto}>
+                    <DeleteForeverRoundedIcon variant="rounded" />
+                  </IconButton>
+                </div>
               </div>
               <div>
                 Name:

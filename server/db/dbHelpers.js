@@ -138,13 +138,13 @@ const dbHelpers = {
     const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${req.params.id}, null, '${url}')`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
-  uploadDogPhotos: (req, callback) => {
-    const { url, owner_id } = req.body;
+  uploadDogPhotos: (req, url, callback) => {
+    const { owner_id } = req.body;
     const qryStr = `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${owner_id}, ${req.params.dogid}, '${url}')`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   removePhotos: (req, callback) => {
-    const qryStr = `DELETE FROM waw.photos WHERE url=${req.params.photoid}`;
+    const qryStr = `DELETE FROM waw.photos WHERE waw.photos.id=${req.params.photoid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
 
