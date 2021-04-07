@@ -64,7 +64,7 @@ const Inbox = ({
             <br />
             <div id="messages-outer-container">
               <div id="messages-container" onClick={onMessageClick}>
-                Inbox HERE:
+                Message Queue ({matches.length})
                 {matchesPhotos.map((match) => (
                   <div className="message-container" key={match[0].user_id}>
                     <div className="messages-photos-container">
@@ -91,7 +91,7 @@ const Inbox = ({
                               {allMessages[match[0].user_id][0].body}
                             </div>
                           )
-                          : <span>Make the first move! Write your own story and say hello to the person and dog of your dreams...</span>}
+                          : <span>Make the first move! Be bold, and write your own story...</span>}
                       </div>
                     </div>
                   </div>
