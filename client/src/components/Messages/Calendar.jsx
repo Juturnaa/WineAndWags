@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import ReactNotification from 'react-notifications-component'
-import { store } from 'react-notifications-component';
+// import ReactNotification from 'react-notifications-component'
+// import { store } from 'react-notifications-component';
 
 
 const {startOfMonth, startOfWeek, endOfMonth, endOfWeek, startOfDay, addDays, isSameMonth, isSameDay, format} = require('date-fns');
