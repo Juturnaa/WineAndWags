@@ -1,7 +1,8 @@
-/* nav {
+.navigation-bar {
   background-color: #13070c;
   width: 100vw;
   height: 2.5rem;
+  display: 'flex';
   justify-content: right;
   text-align: right;
   padding: 0.5rem;
@@ -29,4 +30,4 @@
   position: absolute;
   top: 0.25rem;
   right: 0.5rem;
-} */
+}

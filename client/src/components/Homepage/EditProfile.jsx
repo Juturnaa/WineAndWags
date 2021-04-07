@@ -9,6 +9,7 @@ import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
+import AddDogModal from './AddDogModal';
 
 // implement react paginton for edit of dogs
 // need to add photos
@@ -44,6 +45,7 @@ function EditProfile({
   const [humanImg, setHumanImg] = useState([]);
   const [uploadHuman, setUploadHuman] = useState('');
   const [dogImages, setDogImages] = useState();
+  const [addDog, setAddDog] = useState(false);
 
   console.log(dogImages)
 
@@ -218,9 +220,11 @@ function EditProfile({
   };
 
   const uploadClick = () => {
-    axios.post('/app/users/photos/7', { url: `${uploadHuman}` })
+    const fd = new FormData();
+    fd.append('image', uploadHuman, uploadHuman.name);
+    axios.post('/app/users/photos/7', fd)
       .then((results) => alert(results.data))
-      .catch((err) => console.error(err));
+      .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
   return (
@@ -234,7 +238,7 @@ function EditProfile({
               Photo:
               {' '}
               <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} />
-              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.value)} />
+              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
               <button type="button" onClick={uploadClick}>Photos</button>
             </div>
             <div>
@@ -307,6 +311,8 @@ function EditProfile({
         : null}
       {dogs ? (
         <div id="editDogPage">
+          <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
+          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>

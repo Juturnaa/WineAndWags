@@ -1,4 +1,7 @@
 const dbHelpers = require('./db/dbHelpers');
+const upload = require('./file-upload');
+
+const singleUpload = upload.single('image');
 
 const controller = {
   getMyProfile: (req, res) => {
@@ -29,6 +32,14 @@ const controller = {
     dbHelpers.uploadPhotos(req, (err, result) => {
       if (err) res.status(404).send(err);
       res.status(202).send('Success!');
+    singleUpload(req, res, (err) => {
+      if (err) res.status(422).send(err);
+      else {
+        dbHelpers.uploadPhotos(req, req.file.location, (error) => {
+          if (error) res.status(404).send(error);
+          else res.status(202).send('Success!');
+        });
+      }
     });
   },
   uploadDogPhotos: (req, res) => {
@@ -138,6 +149,17 @@ const controller = {
       err ? res.status(404).send(err) : res.status(202).send('Updated');
     });
   },
+  postFilters: (req, res) => {
+    dbHelpers.postFilters(req, res);
+  },
+  // REGISTRATION //
+  postUser: (req, res) => {
+    dbHelpers.postUser(req, res);
+  },
+  postDog: (req, res) => {
+    dbHelpers.postDog(req, res);
+  },
+
 };
 
 module.exports = controller;

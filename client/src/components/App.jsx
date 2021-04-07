@@ -39,7 +39,7 @@ const App = () => {
 
   const getRandomUser = (filters) => {
     let random;
-    axios.get('/app/users/random-profile', {params: {filters}})
+    axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setCurrentUser(data.data[random]);
@@ -53,22 +53,22 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
-    axios.post(`/app/${currentUser.id}/profile-likes`, {liked_user_id: id})
+    axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
       .then((data) => {
-        alert('you have just liked them!')
+        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
-      })
+      });
   };
   const likePhoto = (photoId) => {
-    axios.post(`/app/${currentUser.id}/photo-likes`, {liked_photo_id: photoId})
-    .then((data) => {
-      alert('you have just liked them!')
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
+      .then((data) => {
+        alert('you have just liked them!');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   useEffect(() => {
     axios.all([
@@ -78,7 +78,7 @@ const App = () => {
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
-        console.log(one.data)
+        console.log(one.data);
         const human = [];
         const dogs = [];
         for (let i = 0; i < two.data.length; i++) {
