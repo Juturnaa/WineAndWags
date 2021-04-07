@@ -97,7 +97,7 @@ export default function Homepage({ currentUser, likeProfile, humanPhoto, current
         getRandomUser();
       })
       .catch((err) => {
-        console.error(error);
+        console.error(err);
       })
   }, [])
 

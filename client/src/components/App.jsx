@@ -17,6 +17,7 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
+  const [allMessages, setAllMessages] = useState([]);
 
   useEffect(() => {
     const dogsimages = [];
@@ -94,11 +95,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/app/${currentUser.id}/matches`)
-      .then((results) => {
-        setMatches(results.data);
-      })
-      .catch((err) => console.log(err));
+    if (currentUser.id) {
+      axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, [currentUser]);
 
   useEffect(() => {
@@ -111,20 +114,35 @@ const App = () => {
     setMatchesPhotos(matchPhotos);
   }, [matches]);
 
+  useEffect(() => {
+    const messages = {};
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          messages[match.user_id] = results.data;
+        })
+        .catch((err) => console.log(err));
+    });
+    setAllMessages(messages);
+  }, [matches]);
+
   return (
     <div>
-      <NavBar
-        likePhoto={likePhoto}
-        likeProfile={likeProfile}
-        humanPhoto={humanPhoto}
-        dogsImg={dogsImg}
-        getRandomUser={getRandomUser}
-        currentUser={currentUser}
-        breeds={breeds}
-        currentDogs={currentDogs}
-        matches={matches}
-        matchesPhotos={matchesPhotos}
-      />
+      <div>
+        <NavBar
+          likePhoto={likePhoto}
+          likeProfile={likeProfile}
+          humanPhoto={humanPhoto}
+          dogsImg={dogsImg}
+          getRandomUser={getRandomUser}
+          currentUser={currentUser}
+          breeds={breeds}
+          currentDogs={currentDogs}
+          matches={matches}
+          matchesPhotos={matchesPhotos}
+          allMessages={allMessages}
+        />
+      </div>
       {/* <Register /> */}
     </div>
   );
