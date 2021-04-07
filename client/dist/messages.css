@@ -123,7 +123,7 @@
 .chat-dog-photo {
   position: absolute;
   top: 55%;
-  right: 35%;
+  right: 40%;
   object-fit: cover;
   border: 1px solid darkgrey;
   border-radius: 50%;
@@ -132,9 +132,27 @@
 }
 
 #chat-names {
-  margin-left: 20px;
+  margin-left: 30px;
+  font-weight: bold;
+  font-size: larger;
 }
 
 #direct-messages-container {
 
+}
+
+.message-container {
+  display: flex;
+}
+
+.message-body {
+  justify-self: start;
+}
+
+.time-stamp {
+  justify-self: end;
+}
+
+#send-message-container {
+  display: flex;
 }

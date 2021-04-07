@@ -5,6 +5,8 @@ const Chat = ({
   matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
+  // console.log('matchUserId', matchUserId);
+  // console.log('user messages:', allMessages[matchUserId])
   return (
     <div>
       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
@@ -20,6 +22,22 @@ const Chat = ({
         <br />
         <div id="direct-messages-container">
           CHAT HERE
+          {/* {console.log('user messages', allMessages[matchUserId])} */}
+          {allMessages[matchUserId].map((message) => (
+            <div className="message-container">
+              <div className="message-body">
+                {message.body}
+              </div>
+              <div className="time-stamp">
+                {message.time_stamp}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div id="send-message-container">
+          Calendar icon HERE
+          <input />
+          Send message icon HERE
         </div>
       </div>
     </div>
@@ -38,14 +56,14 @@ Chat.propTypes = {
     ]),
   ),
   messageMode: PropTypes.bool,
-  currentMessageId: PropTypes.string,
+  currentMessageId: PropTypes.number,
 };
 
 Chat.defaultProps = {
   matchesPhotos: [],
   allMessages: {},
   messageMode: false,
-  currentMessageId: '',
+  currentMessageId: null,
 };
 
 export default Chat;

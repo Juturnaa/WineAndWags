@@ -9,28 +9,31 @@ const Inbox = ({
   // console.log('currentUser', currentUser.id);
   // console.log('matchesPhotos', matchesPhotos);
   const [messageMode, setMessageMode] = useState(false);
-  const [currentMessageId, setCurrentMessageId] = useState(0);
+  const [currentMessageId, setCurrentMessageId] = useState(null);
+  // const [matchUserId, setMatchUserId] = useState(null);
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
+    // console.log('currentMessageId type', typeof Number(e.target.getAttribute('name')));
     // console.log('currentMessageId', e.target.getAttribute('name'));
-    setCurrentMessageId(e.target.getAttribute('name'));
+    setCurrentMessageId(Number(e.target.getAttribute('name')));
+    // setMatchUserId(matchesPhotos[currentMessageId][0].user_id);
   };
 
-  const renderMessageMode = () => {
-    const matchUserId = matchesPhotos[currentMessageId][0].user_id;
-    return (
-      <div>
-        <button type="button" onClick={onMessageClick}>Back to Inbox</button>
-        <br />
-        <br />
-        DMs HERE
-        {console.log('matchesphotos', matchUserId)}
-        <img alt="human" src={matchesPhotos[currentMessageId][0].url} />
-        <img alt="dog" src={matchesPhotos[currentMessageId][1].url} />
-      </div>
-    );
-  };
+  // const renderMessageMode = () => {
+  //   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
+  //   return (
+  //     <div>
+  //       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
+  //       <br />
+  //       <br />
+  //       DMs HERE
+  //       {console.log('matchesphotos', matchUserId)}
+  //       <img alt="human" src={matchesPhotos[currentMessageId][0].url} />
+  //       <img alt="dog" src={matchesPhotos[currentMessageId][1].url} />
+  //     </div>
+  //   );
+  // };
 
   return (
     <div id="inbox-container">
@@ -93,11 +96,11 @@ const Inbox = ({
                       <div>
                         {(allMessages[match[0].user_id].length !== 0)
                           ? (
-                            <div>
+                            <div name={index} onClick={onMessageClick} >
                               {allMessages[match[0].user_id][0].body}
                             </div>
                           )
-                          : <span>Make the first move! Be bold, and write your own story...</span>}
+                          : <div name={index} onClick={onMessageClick} >Make the first move! Be bold, and write your own story...</div>}
                       </div>
                     </div>
                   </div>
@@ -106,7 +109,8 @@ const Inbox = ({
             </div>
           </div>
         )
-        : (
+        :
+        (
           <Chat
             matchesPhotos={matchesPhotos}
             messageMode={messageMode}
@@ -114,7 +118,8 @@ const Inbox = ({
             allMessages={allMessages}
             onMessageClick={onMessageClick}
           />
-        )}
+        )
+        }
     </div>
   );
 };
