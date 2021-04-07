@@ -8,6 +8,7 @@ import Map from './Map';
 import Calendar from './Messages/Calendar.jsx'
 import Register from './Register';
 
+
 const App = () => {
   const [currentUser, setCurrentUser] = useState({});
   const [currentDogs, setCurrentDogs] = useState([]);
