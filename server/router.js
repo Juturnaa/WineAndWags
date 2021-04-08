@@ -4,9 +4,13 @@ const controller = require('./controller');
 module.exports = router;
 
 router
-  .route('/users/my-profile/:email')
+  .route('/users/my-profile/:id')
   .get(controller.getMyProfile)
   .patch(controller.editOwnerProfile);
+
+router
+  .route('/users/login/:email')
+  .get(controller.verifyEmail);
 
 router
   .route('/users/photos/:id')
@@ -59,3 +63,14 @@ router
   .get(controller.getSavedFilters)
   .patch(controller.updateSavedFilters)
   .post(controller.postFilters);
+
+// MAP
+router
+  .route('/yelp')
+  .get(controller.getYelpResults);
+
+// NOTIFICATIONS------------------------------------//
+router.route('/notifications/:user_id/')
+  .get(controller.getNotif)
+  .post(controller.postNotif)
+

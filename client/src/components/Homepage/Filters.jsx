@@ -11,6 +11,14 @@ import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import BackspaceIcon from '@material-ui/icons/Backspace';
+import Geocode from 'react-geocode';
+import key from '../../../../config/googleConfig.js';
+
+Geocode.setApiKey(key);
 
 export default function Filters({
   sizeRange, changeSizeRange,
@@ -24,8 +32,52 @@ export default function Filters({
   maxDistance, changeMaxDistance,
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders,
-  close, setFilterParams
+  close, setFilterParams,
+  currentUser, currentUserID,
+  potiential
 }) {
+
+  const [myLocation, changeMyLocation] = useState([]);
+  const [zipCodes, changeZipCodes] = useState([]);
+
+  const getLocation = (city, zipcode) => {
+    Geocode.fromAddress(`${city} ${zipcode}`)
+      .then((response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        changeMyLocation([lat, lng])
+        getZipCodesInRadius(lat, lng, maxDistance);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  const getZipCodesInRadius = (lat, long, radius) => {
+    const options = {
+      method: 'GET',
+      url: 'https://vanitysoft-boundaries-io-v1.p.rapidapi.com/reaperfire/rest/v1/public/boundary/zipcode/location',
+      params: {latitude: lat, longitude: long, radius: radius},
+      headers: {
+        'x-rapidapi-key': 'b6672cd75amsh448e57b3d10e752p18a54bjsn68d05753959c',
+        'x-rapidapi-host': 'vanitysoft-boundaries-io-v1.p.rapidapi.com'
+      }
+    };
+    axios.request(options).then(function (response) {
+      let uniqueZips = [];
+      for (let item of response.data.features) {
+        if (!uniqueZips.includes(item.properties.zipCode)) {
+          uniqueZips.push(`'${item.properties.zipCode}'`)
+        }
+      }
+      changeZipCodes(uniqueZips.join(','));
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
+
+  useEffect(() => {
+    getLocation(currentUser.city, currentUser.zipcode)
+  }, [currentUser, maxDistance]) // update valid zip codes on login + whenever distance changes
 
   const breeds = [
     'Affenpinscher',
@@ -544,15 +596,14 @@ export default function Filters({
       maxDistance,
       ownerAgeRange,
       ownerGenders
-      // preferredBreeds,
     }
-    // change 5 to current user id
-    axios.patch('/app/5/filters', values)
-        .then((results) => {
-          updateFilterParams()
-          alert(results.data);
-        })
-        .catch((err) => console.error(err));
+
+    axios.patch(`app/${currentUserID}/filters`, values)
+      .then((results) => {
+        updateFilterParams()
+        alert('updated preferences');
+      })
+      .catch((err) => console.error(err));
   }
 
   const updateFilterParams = () => {
@@ -564,7 +615,7 @@ export default function Filters({
       neutered,
       healthIssues,
       avoidBreeds: avoidBreeds.join(','),
-      maxDistance,
+      zipCodes,
       ownerAgeRange,
       ownerGenders
     }
@@ -573,92 +624,79 @@ export default function Filters({
 
   return (
     <div className='filter-modal'>
-      <button onClick={() => close(false)} className='close-filters-btn'>X</button>
-      <h2>Filters</h2>
-      <div className='dog-filters'>
-        <h3>Dog</h3>
-        <p>Age Range: {dogAgeRange[0]}-{dogAgeRange[1]}</p>
-        <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={20} />
-        <p>Size Range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</p>
-        <Slider style={sliderStyle}
-          value={sizeRange}
-          onChange={(e, val) => changeSizeRange(val)}
-          marks={sizeLabels}
-          step={1}
-          min={0}
-          max={4}
-        />
-        <p>Genders</p>
-        <FormControl component="fieldset">
-          <RadioGroup row aria-label="gender" name="gender_dog" value={dogGenders} onChange={(e, val) => changeDogGenders(val)}>
-            <FormControlLabel value="M" control={<Radio />} label="Male" />
-            <FormControlLabel value="F" control={<Radio />} label="Female" />
-            <FormControlLabel value="Both" control={<Radio />} label="Both" />
-          </RadioGroup>
-        </FormControl>
-        <p>Information</p>
-        <FormControlLabel
-          control={<Checkbox checked={hypoallergenic} onChange={() => changeHypoallergenic(!hypoallergenic)} name="hypoallergenic" />}
-          label="Hypoallergenic"
-        />
-        <FormControlLabel
-          control={<Checkbox checked={neutered} onChange={() => changeNeutered(!neutered)} name="neutered" />}
-          label="Neutered/Spayed"
-        />
-        <FormControlLabel
-          control={<Checkbox checked={healthIssues} onChange={() => changeHealthIssues(!healthIssues)} name="healthIssues" />}
-          label="Health issues"
-        />
-        <p>Breeds:</p>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <p style={{marginRight: '1rem'}}>Avoid</p>
-          <FormControl>
-            <Select
-              multiple
-              value={avoidBreeds}
-              onChange={(e) => changeAvoidedBreeds(e.target.value)}
-              input={<Input />}
-              style={{marginRight: '1rem'}}
-            >
-              {breeds.map((breed) => (
-                <MenuItem key={breed} value={breed}>
-                  {breed}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          {/* <p style={{marginRight: '1rem'}}>Prefer</p>
-          <FormControl>
-            <Select
-              multiple
-              value={preferredBreeds}
-              onChange={(e) => changePreferredBreeds(e.target.value)}
-              input={<Input />}
-            >
-              {breeds.map((breed) => (
-                <MenuItem key={breed} value={breed}>
-                  {breed}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl> */}
-        </div>
+      <div>
+        <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon /></IconButton>
       </div>
-      <div className='owner-filters'>
-        <h3>Owner</h3>
-        <p>Age Range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</p>
-        <Slider style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
-        <p>Max Distance: {maxDistance} miles</p>
-        <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
-        <p>Genders</p>
-        <FormControl component="fieldset">
-          <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
-            <FormControlLabel value="M" control={<Radio />} label="Male" />
-            <FormControlLabel value="F" control={<Radio />} label="Female" />
-            <FormControlLabel value="All" control={<Radio />} label="All" />
-          </RadioGroup>
-        </FormControl>
-        <button className='apply-filters-btn' onClick={() => saveChanges()}>Apply</button>
+      <div className='filter-container'>
+        <div className='owner-filters'>
+          <Typography variant="h4" gutterBottom>Owner</Typography>
+          <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
+          <Slider style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
+          <Typography variant="body1">Max distance: {maxDistance} miles</Typography>
+          <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
+          <Typography variant="body1">Genders</Typography>
+          <FormControl component="fieldset">
+            <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
+              <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
+              <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
+              <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
+            </RadioGroup>
+          </FormControl>
+          <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
+        </div>
+        <div className='dog-filters'>
+          <Typography variant="h4" gutterBottom>Dog</Typography>
+          <Typography variant="body1">Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
+          <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={20} />
+          <Typography variant="body1">Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
+          <Slider style={sliderStyle}
+            value={sizeRange}
+            onChange={(e, val) => changeSizeRange(val)}
+            marks={sizeLabels}
+            step={1}
+            min={0}
+            max={4}
+          />
+          <Typography variant="body1">Genders</Typography>
+          <FormControl component="fieldset">
+            <RadioGroup row aria-label="gender" name="gender_dog" value={dogGenders} onChange={(e, val) => changeDogGenders(val)}>
+              <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
+              <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
+              <FormControlLabel value="Both" control={<Radio color="primary" />} label="Both" />
+            </RadioGroup>
+          </FormControl>
+          <Typography variant="body1">Information</Typography>
+          <FormControlLabel
+            control={<Checkbox color="primary" checked={hypoallergenic} onChange={() => changeHypoallergenic(!hypoallergenic)} name="hypoallergenic" />}
+            label="Hypoallergenic"
+          />
+          <FormControlLabel
+            control={<Checkbox color="primary" checked={neutered} onChange={() => changeNeutered(!neutered)} name="neutered" />}
+            label="Neutered/Spayed"
+          />
+          <FormControlLabel
+            control={<Checkbox color="primary" checked={healthIssues} onChange={() => changeHealthIssues(!healthIssues)} name="healthIssues" />}
+            label="Health issues"
+          />
+          <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <Typography variant="body1" style={{ marginRight: '1rem' }}>Avoid breeds:</Typography>
+            <FormControl>
+              <Select
+                multiple
+                value={avoidBreeds}
+                onChange={(e) => changeAvoidedBreeds(e.target.value)}
+                input={<Input />}
+                style={{ marginRight: '1rem', minWidth: 150, maxWidth: 400 }}
+              >
+                {breeds.map((breed) => (
+                  <MenuItem key={breed} value={breed}>
+                    {breed}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+        </div>
       </div>
     </div>
   )

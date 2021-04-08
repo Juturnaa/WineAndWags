@@ -4,10 +4,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
-import Map from './Map';
+import Landing from './Landing';
 import Register from './Register';
 
 const App = () => {
+  const [currentUserID, setCurrentID] = useState(7);
+  const [register, setRegister] = useState(false);
+  const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
   const [currentDogs, setCurrentDogs] = useState([]);
   const [breeds, setBreeds] = useState(breedData);
@@ -17,6 +20,14 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
+  const [editProfileBtn, setBtn] = useState(true);
+  const [allMessages, setAllMessages] = useState([]);
+
+  // potiential Match User states
+  const [potiential, setPotiential] = useState();
+  const [potientialDog, setPotientialDog] = useState();
+  const [potientialPhoto, setPotientialPhoto] = useState();
+  const [showNotifs, setShowNotifs] = useState(false)
 
   useEffect(() => {
     const dogsimages = [];
@@ -38,24 +49,38 @@ const App = () => {
   }, [dogsPhoto]);
 
   const getRandomUser = (filters) => {
+
+
+
     let random;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
-        setCurrentUser(data.data[random]);
-        setCurrentDogs(data.data[random].dogs_info);
+        setPotiential(data.data[random]);
+        setPotientialDog(data.data[random].dogs_info);
       })
       .then(() => {
         axios.get(`/app/users/photos/${random + 1}`)
           .then((data) => {
-            setHumanPhoto(data.data);
+            setPotientialPhoto(data.data);
           });
       });
   };
   const likeProfile = (id) => {
+    let myLikes;
+    axios.get(`/app/${currentUserID}/profile-likes`)
+      .then((data) => {
+        myLikes = data.data.map((likeObj) => likeObj.liked_user_id)
+        if (myLikes.includes(potiential.id)) {
+          axios.post(`/app/${currentUserID}/convos`, {recipient_id: potiential.id})
+            .then(() => {
+              alert('its a match!')
+            })
+        }
+      })
+      .catch((err) => console.log(err))
     axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
       .then((data) => {
-        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
@@ -64,16 +89,16 @@ const App = () => {
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
       .then((data) => {
-        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
       });
   };
+
   useEffect(() => {
     axios.all([
-      axios.get('/app/users/my-profile/sophiaacheong5@gmail.com'),
-      axios.get('/app/users/photos/7'),
+      axios.get(`/app/users/my-profile/${currentUserID}`),
+      axios.get(`/app/users/photos/${currentUserID}`),
     ])
       .then(axios.spread((one, two) => {
         setCurrentUser(one.data);
@@ -94,11 +119,13 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    axios.get(`/app/${currentUser.id}/matches`)
-      .then((results) => {
-        setMatches(results.data);
-      })
-      .catch((err) => console.log(err));
+    if (currentUser.id) {
+      axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+    }
   }, [currentUser]);
 
   useEffect(() => {
@@ -111,22 +138,49 @@ const App = () => {
     setMatchesPhotos(matchPhotos);
   }, [matches]);
 
+  useEffect(() => {
+    const messages = {};
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          messages[match.user_id] = results.data;
+        })
+        .catch((err) => console.log(err));
+    });
+    setAllMessages(messages);
+  }, [matches]);
+
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
   return (
-    // <div>
-    //   <NavBar
-    //     likePhoto={likePhoto}
-    //     likeProfile={likeProfile}
-    //     humanPhoto={humanPhoto}
-    //     dogsImg={dogsImg}
-    //     getRandomUser={getRandomUser}
-    //     currentUser={currentUser}
-    //     breeds={breeds}
-    //     currentDogs={currentDogs}
-    //     matches={matches}
-    //     matchesPhotos={matchesPhotos}
-    //   />
-    // </div>
-    <Register />
+    <div>
+      <NavBar
+        likePhoto={likePhoto}
+        likeProfile={likeProfile}
+        humanPhoto={humanPhoto}
+        dogsImg={dogsImg}
+        getRandomUser={getRandomUser}
+        currentUser={currentUser}
+        breeds={breeds}
+        currentDogs={currentDogs}
+        matches={matches}
+        matchesPhotos={matchesPhotos}
+        allMessages={allMessages}
+        currentUserID={currentUserID}
+        potiential={potiential}
+        potientialDog={potientialDog}
+        editProfileBtn={editProfileBtn}
+        setBtn={setBtn}
+        showNotifs={showNotifs}
+        setShowNotifs={setShowNotifs}
+      />
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const db = require('./index.js');
+const db = require("./index.js");
 
 // get my profile
 // get my photos
@@ -14,7 +14,7 @@ const db = require('./index.js');
 const dbHelpers = {
   // PROFILE ------------------------------------//
   getMyProfile: (req, res) => {
-    const { email } = req.params;
+    const { id } = req.params;
     const qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
     'name', waw.dogs.name, 'gender', waw.dogs.gender,
      'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -23,11 +23,23 @@ const dbHelpers = {
      'healthy', dogs.healthy
     )) dogs_info FROM waw.users
     LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
-    WHERE waw.users.email = '${email}' GROUP BY waw.users.id`;
+    WHERE waw.users.id = ${id} GROUP BY waw.users.id`;
     db.query(qryStr, (err, data) => {
       if (err) {
         console.log(err);
-        res.status(400).send('something went wrong with your query');
+        res.status(400).send("something went wrong with your query");
+      } else {
+        res.send(data.rows[0]);
+      }
+    });
+  },
+  verifyEmail: (req, res) => {
+    const { email } = req.params;
+    const qryStr = `SELECT * FROM waw.users WHERE email='${email}'`;
+    db.query(qryStr, (err, data) => {
+      if (err) {
+        console.log(err);
+        res.status(400).send("something went wrong with your query");
       } else {
         res.send(data.rows[0]);
       }
@@ -42,13 +54,12 @@ const dbHelpers = {
       neutered,
       healthIssues,
       avoidBreeds,
-      maxDistance,
+      zipCodes,
       ownerAgeRange,
       ownerGenders,
-      dogGenderQuery,
     } = JSON.parse(req.query.filters);
     let qryStr;
-    if (dogGenders === 'Both') {
+    if (dogGenders === "Both") {
       qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
       'name', waw.dogs.name, 'gender', waw.dogs.gender,
       'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -58,6 +69,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
+      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -76,6 +88,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
+      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -86,13 +99,11 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
-
     db.query(qryStr, (err, data) => {
       if (err) {
-        console.log(err);
-        res.status(400).send('something went wrong with your query');
+        res.status(400).send("something went wrong with your query");
       } else {
-        res.send(data.rows);
+        res.status(200).send(data.rows);
       }
     });
   },
@@ -101,7 +112,7 @@ const dbHelpers = {
       `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,
       (err, results) => {
         callback(err, results);
-      },
+      }
     );
   },
   editOwnerProfile: (req, callback) => {
@@ -156,6 +167,7 @@ const dbHelpers = {
     });
   },
   postNewConvo: (user_id, recipient_id, callback) => {
+    console.log(recipient_id);
     const queryStr = `INSERT INTO waw.convo SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
     WHERE NOT EXISTS (SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id}))`;
     db.query(queryStr, (err, res) => {
@@ -174,6 +186,24 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+
+  //CALENDAR ------------------------------------------//
+  // getSchedule: (req,callback) =>{
+  //   const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id}`
+  //   db.query(queryStr, (err,res)=>{
+  //     callback(err,res)
+  //   })
+  // };
+  // postSchedule: (req,callback)=> {
+  //   const queryStr = `INSERT INTO waw.userSchedule(dates) VALUES (${req.params.date})WHERE user_id = ${req.params.user_id}`
+  //   db.query(queryStr, (err,res)=>{
+  //     callback(err,res)
+  //   })
+  // };
+  // postAppointment: (req,callback)=> {
+  //   const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.params.schedule_id})`
+  // }
+
   // PROFILE LIKES ------------------------------------//
   // getAllProfileLikes: (callback) => {
   //   const queryStr = 'SELECT * from waw.profilelikes';
@@ -215,7 +245,7 @@ const dbHelpers = {
   },
   // FILTERS //
   getSavedFilters: (user_id, callback) => {
-    const queryStr = `SELECT * FROM waw.filters WHERE user_id=${user_id}`;
+    const queryStr = `SELECT * FROM waw.filters WHERE waw.filters.user_id=${user_id}`;
     db.query(queryStr, (err, results) => {
       callback(err, results);
     });
@@ -239,37 +269,82 @@ const dbHelpers = {
   },
   postFilters: (req, res) => {
     const {
-      min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age,
+      min_size,
+      max_size,
+      dog_min_age,
+      dog_max_age,
+      dog_genders,
+      hypo,
+      neutered,
+      health_issues,
+      avoid_breeds,
+      max_dist,
+      genders,
+      min_age,
+      max_age,
     } = req.body;
     db.query(
       `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${req.params.user_id}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_genders}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${genders}', ${min_age}, ${max_age})`,
       (err) => {
         if (err) res.send(err);
-        else res.send('posted filter');
-      },
+        else res.send("posted filter");
+      }
     );
   },
-  // REGISTRATION AND LOGIN ------------------------------------//
+  // REGISTRATION ------------------------------------//
   postUser: (req, res) => {
     const {
-      name, bio, email, hash, age, zipcode, searched_as,
+      name,
+      bio,
+      email,
+      hash,
+      age,
+      zipcode,
+      city,
+      searched_as,
     } = req.body;
     db.query(
-      `INSERT INTO waw.users("name", bio, email, "password", age, zipcode, searched_as) VALUES('${name}', '${bio}', '${email}', '${hash}', ${age}, '${zipcode}', '${searched_as}') RETURNING id`,
+      `INSERT INTO waw.users("name", bio, email, "password", age, zipcode, city, searched_as) VALUES('${name}', '${bio}', '${email}', '${hash}', ${age}, '${zipcode}', '${city}','${searched_as}') RETURNING id`,
       (err, data) => {
         if (err) res.send(err);
-        else res.send(`u${data.rows[0].id}`);
-      },
+        else res.send(data.rows[0]);
+      }
     );
   },
   postDog: (req, res) => {
     const {
-      name, gender, bio, hypo, neutered, age, size, breed, health_issues,
+      name,
+      gender,
+      bio,
+      hypo,
+      neutered,
+      age,
+      size,
+      breed,
+      healthy,
     } = req.body;
-    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${health_issues}) RETURNING id`,
-      (err) => {
+    db.query(
+      `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${healthy}) RETURNING id`,
+      (err, data) => {
         if (err) res.send(err);
-        else res.send(`u${data.rows[0].id}`);
+        else res.send(data.rows[0]);
+      }
+    );
+  },
+  // NOTIFICAITONS------------------------------------//
+  getNotif: (req, res) => {
+    db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.user_id} ORDER BY time_stamp DESC`,
+      (err,data) => {
+        if (err) res.send(err);
+        else res.send(data.rows);
+      });
+  },
+  postNotif: (req, res) => {
+    const {type, type_id, sender_name, recipient_id} = req.body;
+    db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.user_id}, '${sender_name}', ${recipient_id})`,
+      (err,data) => {
+        if (err) res.send(err);
+        else res.send('posted notification');
       });
   },
 };
