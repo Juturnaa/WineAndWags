@@ -34,7 +34,7 @@ export default function Filters({
   ownerGenders, changeOwnerGenders,
   close, setFilterParams,
   currentUser, currentUserID,
-  potiential
+  potiential,
 }) {
 
   const [myLocation, changeMyLocation] = useState([]);
@@ -58,7 +58,7 @@ export default function Filters({
       url: 'https://vanitysoft-boundaries-io-v1.p.rapidapi.com/reaperfire/rest/v1/public/boundary/zipcode/location',
       params: {latitude: lat, longitude: long, radius: radius},
       headers: {
-        'x-rapidapi-key': 'b6672cd75amsh448e57b3d10e752p18a54bjsn68d05753959c',
+        'x-rapidapi-key': 'ffb591a7abmsh204544556caf1a4p158ab3jsn0e0cf2bc1b2a',
         'x-rapidapi-host': 'vanitysoft-boundaries-io-v1.p.rapidapi.com'
       }
     };
@@ -76,8 +76,11 @@ export default function Filters({
   }
 
   useEffect(() => {
-    getLocation(currentUser.city, currentUser.zipcode)
-  }, [currentUser, maxDistance]) // update valid zip codes on login + whenever distance changes
+    if (currentUser.city && currentUser.zipcode) {
+      getLocation(currentUser.city, currentUser.zipcode)
+      updateFilterParams();
+    }
+  }, [currentUser])
 
   const breeds = [
     'Affenpinscher',
@@ -601,6 +604,7 @@ export default function Filters({
     axios.patch(`app/${currentUserID}/filters`, values)
       .then((results) => {
         updateFilterParams()
+        getLocation(currentUser.city, currentUser.zipcode) // getLocation also updates valid zip codes in max distance filter radius
         alert('updated preferences');
       })
       .catch((err) => console.error(err));

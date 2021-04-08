@@ -7,7 +7,11 @@ const pool = require('./index');
 const names = [
   'Charlie',
   'Goofie',
+<<<<<<< HEAD
   'Taquito',
+=======
+  'Takito',
+>>>>>>> dcef7530588dc5a86746bffb180252237186ba76
   'Mochi',
   'Rocky',
   'Wolfie',
@@ -20,6 +24,12 @@ const names = [
   'Chloe',
   'Ruby',
   'Shake',
+<<<<<<< HEAD
+=======
+  'Oliver',
+  'Pierre',
+  'Revan',
+>>>>>>> dcef7530588dc5a86746bffb180252237186ba76
 ];
 
 const gender = ['M', 'F'];

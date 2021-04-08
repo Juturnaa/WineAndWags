@@ -36,7 +36,6 @@ export default function Homepage({
   const [healthIssues, changeHealthIssues] = useState(false);
   const [avoidBreeds, changeAvoidedBreeds] = useState([]);
   const [filterParams, setFilterParams] = useState({});
-  // const [preferredBreeds, changePreferredBreeds] = useState([]);
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
@@ -62,8 +61,7 @@ export default function Homepage({
     }
   }
 
-
-  const updateFilterParams = () => {
+  const updateFilterParams = (zip) => {
     const params = {
       sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
       dogGenders,
@@ -72,21 +70,17 @@ export default function Homepage({
       neutered,
       healthIssues,
       avoidBreeds: avoidBreeds.join(','),
-      maxDistance,
+      zipCodes: zip,
       ownerAgeRange,
       ownerGenders,
     };
-    // setFilterParams(params);
     return params;
   };
 
-  useEffect(() => {
-    setFilterParams(updateFilterParams());
-  }, [sizeRange])
-
   // GET request to get the user's settings
   useEffect(() => {
-    axios.get(`/app/${currentUserID}/filters`)
+    if (currentUser.id) {
+      axios.get(`/app/${currentUser.id}/filters`)
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
@@ -109,14 +103,17 @@ export default function Homepage({
         changeOwnerGenders(filters.genders);
       })
       .then(() => {
-        const result = updateFilterParams();
-        setFilterParams(result);
-        getRandomUser(result);
+        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`));
+      })
+      .then(() => {
+        getRandomUser(filterParams);
       })
       .catch((err) => {
         console.error(error);
       });
-  }, [currentUserID]);
+    }
+
+  }, [currentUser]);
 
   return (
     <div className='homepage'>
