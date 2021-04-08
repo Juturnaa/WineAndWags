@@ -29,7 +29,7 @@
     z-index:1;
 }
 .unread-notif{
-    background: rgba(0, 0, 0,  0.1);
+    background: rgba(107,77,87, 0.4);
     border-radius:3px;
 }
 .unread-notif,.read-notif{
