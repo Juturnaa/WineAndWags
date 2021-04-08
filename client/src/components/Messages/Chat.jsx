@@ -84,7 +84,7 @@ const Chat = ({
           >
             <Calendar clickedCalendar={clickedCalendar} />
           </Modal>
-          <input type="text" onChange={handleInputChange} />
+          <input type="text" onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
       </div>

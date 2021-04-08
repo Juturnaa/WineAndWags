@@ -181,6 +181,7 @@
 #send-message-container {
   display: flex;
   align-items: center;
+  background-color: #EFF9F0;
   border: solid lightblue 1px;
   border-radius: 10px;
   padding-left: 10px;
