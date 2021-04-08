@@ -144,7 +144,7 @@ const App = () => {
   }
   if (register) {
     return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} />
+      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding}/>
     );
   }
   return (
