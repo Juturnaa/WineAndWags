@@ -168,6 +168,7 @@ const Inbox = ({
             allMessages={allMessages}
             onMessageClick={onMessageClick}
             currentUser={currentUser}
+            matchesInfo={matchesInfo}
           />
         )}
     </div>
