@@ -20,12 +20,13 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
-
+  const [editProfileBtn, setBtn] = useState(true);
   const [allMessages, setAllMessages] = useState([]);
 
   // potiential Match User states
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
+  const [potientialPhoto, setPotientialPhoto] = useState();
 
   useEffect(() => {
     const dogsimages = [];
@@ -57,7 +58,7 @@ const App = () => {
       .then(() => {
         axios.get(`/app/users/photos/${random + 1}`)
           .then((data) => {
-            setHumanPhoto(data.data);
+            setPotientialPhoto(data.data);
           });
       });
   };
@@ -135,15 +136,14 @@ const App = () => {
     setAllMessages(messages);
   }, [matches]);
 
-  // if (currentUserID > 0) {
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding}/>
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
   return (
     <div>
       <NavBar
@@ -161,6 +161,8 @@ const App = () => {
         currentUserID={currentUserID}
         potiential={potiential}
         potientialDog={potientialDog}
+        editProfileBtn={editProfileBtn}
+        setBtn={setBtn}
       />
     </div>
   );

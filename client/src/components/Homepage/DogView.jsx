@@ -27,10 +27,8 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex }) => {
             <div id="card-name">
                 {dog.name}
             </div>
-            <div>
-                <div>
+            <div className="photo-container">
                     <PhotosList likePhoto={likePhoto} photos={userPhotos} />
-                </div>
                 <div className="card-text" >
                     <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {dog.age} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {dog.gender} </div>  </div>
