@@ -158,6 +158,11 @@ const dbHelpers = {
     const qryStr = `DELETE FROM waw.photos WHERE waw.photos.id=${req.params.photoid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
+  updateReview: (req, callback) => {
+    const { rating } = req.body;
+    const qryStr = `UPDATE waw.dogs SET rating = ${rating} WHERE id=${req.params.dogid}`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
 
   // MESSAGES ------------------------------------//
   getAllConvos: (user_id, callback) => {
@@ -187,7 +192,7 @@ const dbHelpers = {
     });
   },
 
-  //CALENDAR ------------------------------------------//
+  // CALENDAR ------------------------------------------//
   // getSchedule: (req,callback) =>{
   //   const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id}`
   //   db.query(queryStr, (err,res)=>{
@@ -203,7 +208,25 @@ const dbHelpers = {
   // postAppointment: (req,callback)=> {
   //   const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.params.schedule_id})`
   // }
-
+  getUserDates: (req, callback) => {
+    const queryStr = `SELECT waw.userAppointment.*, waw.userSchedule.dates, waw.users.name, json_agg(jsonb_build_object('id',
+    waw.dogs.id, 'name', waw.dogs.name, 'rating', waw.dogs.rating)) dogs FROM waw.userAppointment
+    INNER JOIN waw.userSchedule ON waw.userSchedule.id = waw.userAppointment.schedule_id
+    INNER JOIN waw.users ON waw.users.id = waw.userAppointment.user_id2
+    INNER JOIN waw.dogs ON waw.dogs.owner_id = waw.userAppointment.user_id2
+    WHERE waw.userAppointment.user_id=${req.params.userid}
+    AND waw.userSchedule.dates BETWEEN CURRENT_DATE - 1 + INTERVAL '0h' AND CURRENT_DATE + INTERVAL '0h'
+    GROUP BY waw.userAppointment.id, waw.userSchedule.dates, waw.users.name`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  reviewed: (req, callback) => {
+    const queryStr = `UPDATE waw.userAppointment SET reviewed=true WHERE id=${req.params.userid}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
   // PROFILE LIKES ------------------------------------//
   // getAllProfileLikes: (callback) => {
   //   const queryStr = 'SELECT * from waw.profilelikes';
