@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const db = require("./index.js");
+const db = require('./index.js');
 
 // get my profile
 // get my photos
@@ -27,7 +27,7 @@ const dbHelpers = {
     db.query(qryStr, (err, data) => {
       if (err) {
         console.log(err);
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.send(data.rows[0]);
       }
@@ -39,7 +39,7 @@ const dbHelpers = {
     db.query(qryStr, (err, data) => {
       if (err) {
         console.log(err);
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.send(data.rows[0]);
       }
@@ -59,7 +59,7 @@ const dbHelpers = {
       ownerGenders,
     } = JSON.parse(req.query.filters);
     let qryStr;
-    if (dogGenders === "Both") {
+    if (dogGenders === 'Both') {
       qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
       'name', waw.dogs.name, 'gender', waw.dogs.gender,
       'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -101,7 +101,7 @@ const dbHelpers = {
     }
     db.query(qryStr, (err, data) => {
       if (err) {
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.status(200).send(data.rows);
       }
@@ -112,7 +112,7 @@ const dbHelpers = {
       `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,
       (err, results) => {
         callback(err, results);
-      }
+      },
     );
   },
   editOwnerProfile: (req, callback) => {
@@ -310,8 +310,8 @@ const dbHelpers = {
       `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${req.params.user_id}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_genders}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${genders}', ${min_age}, ${max_age})`,
       (err) => {
         if (err) res.send(err);
-        else res.send("posted filter");
-      }
+        else res.send('posted filter');
+      },
     );
   },
   // REGISTRATION ------------------------------------//
@@ -331,7 +331,7 @@ const dbHelpers = {
       (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows[0]);
-      }
+      },
     );
   },
   postDog: (req, res) => {
@@ -351,28 +351,30 @@ const dbHelpers = {
       (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows[0]);
-      }
+      },
     );
   },
   // NOTIFICAITONS------------------------------------//
   getNotif: (req, res) => {
     db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.id} ORDER BY time_stamp DESC`,
-      (err,data) => {
+      (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows);
       });
   },
   postNotif: (req, res) => {
-    const {type, type_id, sender_name, recipient_id} = req.body;
+    const {
+      type, type_id, sender_name, recipient_id,
+    } = req.body;
     db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
-      (err,data) => {
+      (err, data) => {
         if (err) res.send(err);
         else res.send('posted notification');
       });
   },
   updateNotif: (req, res) => {
     db.query(`UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
-      (err,data) => {
+      (err, data) => {
         if (err) res.send(err);
         else res.send('updated notification');
       });

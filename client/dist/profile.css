@@ -80,9 +80,10 @@
   position: relative;
 }
 
-.img-container img {
+#carouselProfile {
   width: 100%;
-  height: auto;
+  height: 24em;
+  margin: auto;
 }
 
 .img-container .img-btn {

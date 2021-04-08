@@ -15,10 +15,9 @@ const PhotosList = ({ photos, likePhoto }) => {
     setCurrentPhoto(value);
   };
 
-  
   return (
     <div className="img-container">
-      <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+      <Carousel id="carouselProfile" interval={null} activeIndex={index} onSelect={handleSelect}>
         {photos.map((item, ind) => (
           <Carousel.Item key={ind}>
             <div style={{
