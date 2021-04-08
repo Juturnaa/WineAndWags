@@ -156,18 +156,25 @@
 }
 
 #direct-messages-container {
-
+  width: 75%;
 }
 
-.direct-message-container {
+.messages-from-match-container {
   display: flex;
   margin: 10px;
   align-items: center;
-  /* cursor: pointer; */
-  /* border: solid lightblue 1px; */
   border-radius: 10px;
   padding: 10px;
   background-color: #DDC8C4;
+}
+
+.messages-from-user-container {
+  display: flex;
+  margin: 10px;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: grey;
 }
 
 .message-body {

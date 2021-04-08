@@ -54,7 +54,7 @@ const Inbox = ({
                   const newestMessageIndex = allMessages[match[0].user_id].length - 1;
                   if (allMessages[match[0].user_id].length !== 0) {
                     return (
-                      <div className="message-container" key={match[0].user_id} name={match[0].user_id} onClick={onMessageClick}>
+                      <div className="message-container" key={match[0].user_id} name={index} onClick={onMessageClick}>
                         <div className="messages-photos-container" name={index} onClick={onMessageClick}>
                           <img
                             className="human-photos-small"

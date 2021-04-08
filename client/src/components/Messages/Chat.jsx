@@ -60,19 +60,35 @@ const Chat = ({
         </div>
         <br />
         <br />
+
         <div id="direct-messages-container">
-          {/* {console.log('user messages', allMessages[matchUserId])} */}
-          {allMessages[matchUserId].map((message) => (
-            <div className="direct-message-container" key={message.id}>
-              <div className="message-body">
-                {message.body}
+          {allMessages[matchUserId].map((message) => {
+            // console.log('message', message)
+            if (message.sender_id === currentUserId) {
+              return (
+                <div className="messages-from-user-container" key={message.id}>
+                  <div className="message-body">
+                    {message.body}
+                  </div>
+                  <div className="time-stamp">
+                    {message.time_stamp}
+                  </div>
+                </div>
+              );
+            }
+            return (
+              <div className="messages-from-match-container" key={message.id}>
+                <div className="message-body">
+                  {message.body}
+                </div>
+                <div className="time-stamp">
+                  {message.time_stamp}
+                </div>
               </div>
-              <div className="time-stamp">
-                {message.time_stamp}
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
         <div id="send-message-container">
           <i onClick={() => { clickedCalendar(true); }} className="far fa-calendar-alt" />
           <Modal
