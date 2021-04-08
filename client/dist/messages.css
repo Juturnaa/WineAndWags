@@ -16,6 +16,11 @@
   flex-direction: column;
   align-items: center;
   position: block;
+  background-color: #DDC8C4;
+  /* background-repeat: 'no-repeat';
+  background-size: 'cover';
+  background-position: 'center';
+  height: '100%'; */
 }
 
 .match-photos-container {
@@ -42,6 +47,10 @@
   border-radius: 50%;
   height: 35px;
   width: 35px;
+}
+
+.inbox-matches-names {
+  padding-bottom: 5px;
 }
 
 /* -------------MESSAGES------------------ */
@@ -189,3 +198,27 @@ input[type=text]:focus {
   cursor: pointer;
   margin-left: 10px;
 }
+
+/* -----------CAROUSEL-------------- */
+
+/* .carousel {
+  height: 130px;
+}
+
+.carousel-control-next, .carousel-control-prev {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  width: 15%;
+  color: black;
+  text-align: center;
+  opacity: .5;
+  transition: opacity .15s ease;
+} */

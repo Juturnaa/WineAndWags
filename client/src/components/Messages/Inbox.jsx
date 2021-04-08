@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Chat from './Chat';
+import MatchesCarousel from './MatchesCarousel';
 
 const Inbox = ({
   currentUser, matches, matchesPhotos, allMessages, matchesInfo,
@@ -26,12 +27,18 @@ const Inbox = ({
 
   // const mapMatchesPhotos = () => {
   //   matchesPhotos.map((match, index) => {
-  //     // display 6 matches at a time -> replace this with carousel
+  //   // display 6 matches at a time -> replace this with carousel
   //     if (index < 6) {
   //       return (
   //         <div className="match-container" key={match[0].user_id}>
-  // {console.log('match info:', matchesInfo)}
-  //           <span>Human and Dog</span>
+  //           {/* {console.log('match info:', matchesInfo)} */}
+  //           <div>
+  //             {matchesInfo[match[0].user_id].name}
+  //             {' '}
+  //             and
+  //             {' '}
+  //             {matchesInfo[match[0].user_id].dogs_info[0].name}
+  //           </div>
   //           <br />
   //           <div className="match-photos-container">
   //             <img
@@ -52,8 +59,8 @@ const Inbox = ({
   //         </div>
   //       );
   //     }
-  //   })
-  // }
+  //   });
+  // };
 
   return (
     <div id="inbox-container">
@@ -67,13 +74,17 @@ const Inbox = ({
               {matches.length}
               )
             </span>
-            <div id="matches-container">
+            <MatchesCarousel
+              matchesPhotos={matchesPhotos}
+              matchesInfo={matchesInfo}
+              onMessageClick={onMessageClick}
+              messageQueueCount={messageQueueCount}
+            />
+            {/* <div id="matches-container">
               {matchesPhotos.map((match, index) => {
-                // display 6 matches at a time -> replace this with carousel
                 if (index < 6) {
                   return (
                     <div className="match-container" key={match[0].user_id}>
-                      {/* {console.log('match info:', matchesInfo)} */}
                       <div>
                         {matchesInfo[match[0].user_id].name}
                         {' '}
@@ -102,9 +113,7 @@ const Inbox = ({
                   );
                 }
               })}
-            </div>
-            <br />
-            <br />
+            </div> */}
             <div id="messages-outer-container">
               <div id="messages-container">
                 <span>
