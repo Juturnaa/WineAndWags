@@ -251,9 +251,11 @@ function EditProfile({
   };
 
   return (
-    <div>
-      <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
-      <button type="button" onClick={changeDogs}>EDIT MY DOG(S)</button>
+    <div id="editprofile-body">
+      <div className="btn-container">
+        <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
+        <button type="button" onClick={changeDogs}>EDIT MY DOG(S)</button>
+      </div>
       {human
         ? (
           <form id="editHuman" onSubmit={submitHuman}>
