@@ -26,7 +26,7 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo,
 }) {
   let [notifs, setNotifs] =useState([]);
   let getNotifs = () => {
@@ -47,7 +47,7 @@ function NavBar({
         <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
         <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)}><i className="far fa-map" /></NavLink>
         <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
-                
+
           {humanPhoto.length ? (
             <div
               className="profile-thumbnail"
@@ -57,7 +57,7 @@ function NavBar({
             : <div className="profile-thumbnail" />}
         </NavLink>
       </nav>
-      {showNotifs ? 
+      {showNotifs ?
         <div className="notifs">
           <div className="notifs-triangle"></div>
           <div className="notifs-title">Notifications</div>
@@ -68,7 +68,7 @@ function NavBar({
             })}
           </div>
         </div>
-      :""}  
+      :""}
       {/* Routes */}
       <Switch>
         {/* <Route exact path="/notifications" component={Notifications} /> */}
@@ -85,6 +85,7 @@ function NavBar({
               matches={matches}
               matchesPhotos={matchesPhotos}
               allMessages={allMessages}
+              matchesInfo={matchesInfo}
             />
           )}
         />
@@ -127,6 +128,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  matchesInfo: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
   setBtn: PropTypes.func,
 };
 
@@ -138,6 +144,7 @@ NavBar.defaultProps = {
   dogsImg: [],
   matches: [],
   allMessages: {},
+  matchesInfo: {},
   setBtn: null,
 };
 

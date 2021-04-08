@@ -165,6 +165,18 @@ const App = () => {
   }, [matches]);
 
   useEffect(() => {
+    const info = {};
+    matches.map((match) => {
+      axios.get(`/app/users/my-profile/${match.user_id}`)
+        .then((results) => {
+          info[results.data.id] = results.data;
+        })
+        .catch((err) => console.log(err));
+    });
+    setMatchesInfo(info);
+  }, [matches]);
+
+  useEffect(() => {
     if (appointment.length > 0) {
       setReviewModal(!reviewModal);
     }
@@ -193,6 +205,7 @@ const App = () => {
         currentDogs={currentDogs}
         matches={matches}
         matchesPhotos={matchesPhotos}
+        matchesInfo={matchesInfo}
         allMessages={allMessages}
         currentUserID={currentUserID}
         potiential={potiential}
