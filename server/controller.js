@@ -99,6 +99,12 @@ const controller = {
       },
     );
   },
+  updateReview: (req, res) => {
+    dbHelpers.updateReview(req, (err, results) => {
+      if (err) res.status(400).send(err);
+      else res.status(200).send(results);
+    });
+  },
   // CALENDAR------------------------------------//
   // getSchedule: (req,res) => {
   //   dbHelpers.getSchedule(req, (err,results)=>{
@@ -114,6 +120,18 @@ const controller = {
   //     else res.status(200).send(results.rows);
   //   });
   // },
+  getUserDates: (req, res) => {
+    dbHelpers.getUserDates(req, (err, results) => {
+      if (err) res.status(404).send(err);
+      else res.status(200).send(results.rows);
+    });
+  },
+  reviewed: (req, res) => {
+    dbHelpers.reviewed(req, (err, results) => {
+      if (err) res.status(404).send(err);
+      else res.status(200).send(results.rows);
+    });
+  },
   getProfileLikes: (req, res) => {
     dbHelpers.getProfileLikes(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);
@@ -218,7 +236,6 @@ const controller = {
   postDog: (req, res) => {
     dbHelpers.postDog(req, res);
   },
-
 };
 
 module.exports = controller;
