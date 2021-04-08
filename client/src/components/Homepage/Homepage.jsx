@@ -30,7 +30,7 @@ export default function Homepage({
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
   const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
-  const [ownerGenders, changeOwnerGenders] = useState('f');
+  const [ownerGenders, changeOwnerGenders] = useState('F');
 
   // Requests
 
@@ -70,12 +70,12 @@ export default function Homepage({
   };
 
   useEffect(() => {
-    setFilterParams(updateFilterParams())
+    setFilterParams(updateFilterParams());
   }, [sizeRange])
 
   // GET request to get the user's settings
   useEffect(() => {
-    axios.get(`http://localhost:3000/app/${currentUserID}/filters`)
+    axios.get(`/app/${currentUserID}/filters`)
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
@@ -98,7 +98,7 @@ export default function Homepage({
         changeOwnerGenders(filters.genders);
       })
       .then(() => {
-        let result = updateFilterParams();
+        const result = updateFilterParams();
         setFilterParams(result);
         getRandomUser(result);
       })
@@ -114,8 +114,8 @@ export default function Homepage({
     <div className='homepage'>
       <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
       <div className='potential-match-view'>
-        <ProfileView user={currentUser} photos={humanPhoto} likePhoto={likePhoto}/>
-        <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto}/>
+        <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
+        <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 
