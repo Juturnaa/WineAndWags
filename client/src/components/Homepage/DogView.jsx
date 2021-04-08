@@ -67,7 +67,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
                     <div className="text-component"><div className="text-component-key">Hypoallergenic: </div> <div className="text-component-value"> {dog.hypo ? 'Yes' : 'No'} </div>  </div>
                 </div>
             </div>
-            {isDisplayingSkipDogs ? <button onClick={updateDogIndex} >skip me</button> : '' }
+            {isDisplayingSkipDogs ? <button onClick={updateDogIndex} >NEXT DOG</button> : '' }
         </div>
     )
 }
