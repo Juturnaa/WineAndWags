@@ -53,9 +53,6 @@ const App = () => {
   }, [dogsPhoto]);
 
   const getRandomUser = (filters) => {
-
-
-
     let random;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
