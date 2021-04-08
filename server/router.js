@@ -80,6 +80,7 @@ router
   .patch(controller.reviewed);
 
 // NOTIFICATIONS------------------------------------//
-router.route('/notifications/:user_id/')
+router.route('/notifications/:id/')
   .get(controller.getNotif)
-  .post(controller.postNotif);
+  .post(controller.postNotif)
+  .patch(controller.updateNotif)
