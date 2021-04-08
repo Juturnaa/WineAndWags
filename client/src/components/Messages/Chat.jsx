@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Modal from 'react-modal';
@@ -66,25 +66,21 @@ const Chat = ({
             // console.log('message', message)
             if (message.sender_id === currentUserId) {
               return (
-                <div className="messages-from-user-container" key={message.id}>
-                  <div className="message-body">
+                <React.Fragment>
+                  <div className="time-stamp-user">{message.time_stamp}</div>
+                  <div className="messages-from-user-container" key={message.id}>
                     {message.body}
                   </div>
-                  <div className="time-stamp">
-                    {message.time_stamp}
-                  </div>
-                </div>
+                </React.Fragment>
               );
             }
             return (
+              <React.Fragment>
+              <div className="time-stamp-match">{message.time_stamp}</div>
               <div className="messages-from-match-container" key={message.id}>
-                <div className="message-body">
-                  {message.body}
-                </div>
-                <div className="time-stamp">
-                  {message.time_stamp}
-                </div>
+                {message.body}
               </div>
+            </React.Fragment>
             );
           })}
         </div>
