@@ -32,13 +32,16 @@
   width: 250px;
   height: 250px;
 }
+
 .profile-card {
   width: 50%;
   justify-content: flex-start;
   align-items: center;
   display: flex;
   flex-direction: column;
+  margin: 0.5%;
 }
+
 .card-text {
   margin-top: 1%;
 }
@@ -49,13 +52,23 @@
   text-align: center;
   margin-top: 1%;
   margin-bottom: 1%;
+  color: #13070C;
 }
 .text-component {
   display: flex;
   flex-direction: row;
   margin-bottom: 1%;
   width: 500px;
+  color: #13070C;
 }
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
 .text-component-value {
   margin-left: 2%;
 }
@@ -65,7 +78,6 @@
 
 .img-container {
   position: relative;
-  width: 50%;
 }
 
 .img-container img {
