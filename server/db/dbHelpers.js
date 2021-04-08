@@ -291,7 +291,7 @@ const dbHelpers = {
       }
     );
   },
-  // REGISTRATION AND LOGIN ------------------------------------//
+  // REGISTRATION ------------------------------------//
   postUser: (req, res) => {
     const {
       name,
@@ -330,6 +330,22 @@ const dbHelpers = {
         else res.send(data.rows[0]);
       }
     );
+  },
+  // NOTIFICAITONS------------------------------------//
+  getNotif: (req, res) => {
+    db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.user_id} ORDER BY time_stamp DESC`,
+      (err,data) => {
+        if (err) res.send(err);
+        else res.send(data.rows);
+      });
+  },
+  postNotif: (req, res) => {
+    const {type, type_id, sender_name, recipient_id} = req.body;
+    db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.user_id}, '${sender_name}', ${recipient_id})`,
+      (err,data) => {
+        if (err) res.send(err);
+        else res.send('posted notification');
+      });
   },
 };
 

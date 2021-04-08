@@ -68,3 +68,9 @@ router
 router
   .route('/yelp')
   .get(controller.getYelpResults);
+
+// NOTIFICATIONS------------------------------------//
+router.route('/notifications/:user_id/')
+  .get(controller.getNotif)
+  .post(controller.postNotif)
+
