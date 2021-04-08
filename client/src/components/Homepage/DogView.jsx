@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList';
-const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex }) => {
+const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDogs }) => {
   const [gender, setGender] = useState('');
   const [size, setSize] = useState('');
   useEffect(() => {
@@ -67,7 +67,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex }) => {
                     <div className="text-component"><div className="text-component-key">Hypoallergenic: </div> <div className="text-component-value"> {dog.hypo ? 'Yes' : 'No'} </div>  </div>
                 </div>
             </div>
-            <button onClick={updateDogIndex} >skip me</button>
+            {isDisplayingSkipDogs ? <button onClick={updateDogIndex} >skip me</button> : '' }
         </div>
     )
 }
