@@ -102,9 +102,6 @@ export default function Homepage({
         setFilterParams(result);
         getRandomUser(result);
       })
-      // .then(() => {
-      //   getRandomUser(filterParams);
-      // })
       .catch((err) => {
         console.error(error);
       });

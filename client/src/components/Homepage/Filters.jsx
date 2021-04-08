@@ -37,41 +37,47 @@ export default function Filters({
   potiential
 }) {
 
-  /////////
   const [myLocation, changeMyLocation] = useState([]);
-  const [matchLocation, changeMatchLocation] = useState([]);
-  const [distance, changeDistance] = useState(0)
+  const [zipCodes, changeZipCodes] = useState([]);
 
-  const getLocation = (city, zipcode, setState) => {
+  const getLocation = (city, zipcode) => {
     Geocode.fromAddress(`${city} ${zipcode}`)
       .then((response) => {
         const { lat, lng } = response.results[0].geometry.location;
-        setState([lat, lng])
+        changeMyLocation([lat, lng])
+        getZipCodesInRadius(lat, lng, maxDistance);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  const getZipCodesInRadius = (lat, long, radius) => {
+    const options = {
+      method: 'GET',
+      url: 'https://vanitysoft-boundaries-io-v1.p.rapidapi.com/reaperfire/rest/v1/public/boundary/zipcode/location',
+      params: {latitude: lat, longitude: long, radius: radius},
+      headers: {
+        'x-rapidapi-key': 'b6672cd75amsh448e57b3d10e752p18a54bjsn68d05753959c',
+        'x-rapidapi-host': 'vanitysoft-boundaries-io-v1.p.rapidapi.com'
+      }
+    };
+    axios.request(options).then(function (response) {
+      let uniqueZips = [];
+      for (let item of response.data.features) {
+        if (!uniqueZips.includes(item.properties.zipCode)) {
+          uniqueZips.push(`'${item.properties.zipCode}'`)
+        }
+      }
+      changeZipCodes(uniqueZips.join(','));
+    }).catch(function (error) {
+      console.error(error);
     });
   }
 
-  const getDistance = (lat1, lon1, lat2, lon2) => {
-    var p = 0.017453292519943295;    // Math.PI / 180
-    var c = Math.cos;
-    var a = 0.5 - c((lat2 - lat1) * p)/2 +
-            c(lat1 * p) * c(lat2 * p) *
-            (1 - c((lon2 - lon1) * p))/2;
-    changeDistance(Math.round(7917.512 * Math.asin(Math.sqrt(a)))); // 2 * R; R = 3958.756 miles, round to nearest whole mile
-  }
-
   useEffect(() => {
-    getLocation(currentUser.city, currentUser.zipcode, changeMyLocation)
-  }, [currentUser])
-
-  useEffect(() => {
-    getLocation(potiential.city, potiential.zipcode, changeMatchLocation)
-  }, [potiential])
-
-  useEffect(() => {
-    getDistance(myLocation[0], myLocation[1], matchLocation[0], matchLocation[1]);
-  }, [matchLocation])
-
-  ///////////
+    getLocation(currentUser.city, currentUser.zipcode)
+  }, [currentUser, maxDistance]) // update valid zip codes on login + whenever distance changes
 
   const breeds = [
     'Affenpinscher',
@@ -609,7 +615,7 @@ export default function Filters({
       neutered,
       healthIssues,
       avoidBreeds: avoidBreeds.join(','),
-      maxDistance,
+      zipCodes,
       ownerAgeRange,
       ownerGenders
     }
@@ -619,8 +625,7 @@ export default function Filters({
   return (
     <div className='filter-modal'>
       <div>
-        <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon/></IconButton>
-
+        <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon /></IconButton>
       </div>
       <div className='filter-container'>
         <div className='owner-filters'>
@@ -637,7 +642,7 @@ export default function Filters({
               <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
             </RadioGroup>
           </FormControl>
-          <Button variant="contained" style={{width: '10rem', marginTop: '2.5rem'}} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
+          <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
         </div>
         <div className='dog-filters'>
           <Typography variant="h4" gutterBottom>Dog</Typography>
