@@ -43,7 +43,7 @@ const Chat = ({
   return (
     <div>
       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
-      <ReactNotification />
+      {/* <ReactNotification /> */}
       <br />
       <br />
       <div id="chat-container">
