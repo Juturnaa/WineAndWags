@@ -18,10 +18,10 @@
     transform: translate(-50%, -50%);
     overflow: hidden visible;
     background-image: linear-gradient(to top right, #896A67, #967673);
+    padding-bottom: 2%;
 }
 .login-body {
     position:relative;
-    top: 10%;
 }
 
 .center .ear {
@@ -279,7 +279,7 @@
 
 .center .login-container input {
     padding: 0 20px 0 40px;
-    margin: 5px 0;
+    margin: 0 0 10px 0;
     box-shadow: none;
     outline: none;
 }

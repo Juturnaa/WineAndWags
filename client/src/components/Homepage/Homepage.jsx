@@ -12,9 +12,20 @@ export default function Homepage({
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   const [currentDogIndex, setCurrentDogIndex] = useState(0)
+  const [isDisplayingSkipDogs, setIsDisplayingSkipDogs] = useState(0)
   useEffect(() => {
+    // console.log('current dog index',currentDogIndex)
+    // console.log('current Dogs',potientialDog)
+    if (potientialDog.length > 1) {
+      setIsDisplayingSkipDogs(true)
+    } else {
+      setIsDisplayingSkipDogs(false)
+    }
     setCurrentDog(potientialDog[currentDogIndex])
   }, [potientialDog, currentDogIndex])
+  useEffect(() => {
+    setCurrentDogIndex(0)
+  }, [potientialDog])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -44,7 +55,7 @@ export default function Homepage({
     return result.join(',');
   };
   const updateDogIndex = () => {
-    if (currentDogIndex === currentDogs.length - 1) {
+    if (currentDogIndex === potientialDog.length - 1) {
       setCurrentDogIndex(0)
     } else {
       setCurrentDogIndex(currentDogIndex + 1)
@@ -102,9 +113,6 @@ export default function Homepage({
         setFilterParams(result);
         getRandomUser(result);
       })
-      // .then(() => {
-      //   getRandomUser(filterParams);
-      // })
       .catch((err) => {
         console.error(error);
       });
@@ -115,9 +123,9 @@ export default function Homepage({
       <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
-        <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
+        <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
-      <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
+      <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 
       {filterModalOpen
         ? (
@@ -145,6 +153,8 @@ export default function Homepage({
             close={toggleFilterModal}
             setFilterParams={setFilterParams}
             currentUserID={currentUserID}
+            currentUser={currentUser}
+            potiential={potiential}
           />
         ) : null}
     </div>

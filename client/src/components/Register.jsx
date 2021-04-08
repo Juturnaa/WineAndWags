@@ -22,7 +22,7 @@ import Breeds from '../dummyData/dogBreed';
 
 
 export default function Register({ setCurrentID, setRegister, setLanding }) {
-    let [page, setPage] = useState(1);
+    let [page, setPage] = useState(4);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -65,12 +65,70 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let [ownerAgePref, setOwnerAgePref] =useState([18, 50])
     let [dogIds, setDogIds] =useState([]);
     let inputs;
+    let titleText="";
+
+    if(page===1 || page ===2) titleText = "User Info";
+    else if(page === 3) titleText = "Dog Info";
+    else if(page===4) titleText = "Preferences"
     //--------------------------form styling --------------------------//
     const useStyles = makeStyles((theme) => ({
         formControl: {
             margin: theme.spacing(1),
             minWidth: 400,
             maxWidth: 400,
+        },
+        InputLabel: {
+            color: "#ddc8c4",
+            "&.Mui-focused": {
+              color: "#ddc8c4"
+            }
+        },
+        MultiSlider: {
+            thumb: {
+                background: "red",
+                "&~&": {
+                  background: "green"
+                }
+              },
+              mark: {
+                background: "black"
+              },
+              rail: {
+                background: "linear-gradient(to right, red, red 50%, green 50%, green);"
+              },
+              track: {
+                background: "orange"
+              },
+              valueLabel: {
+                "&>*": {
+                  background: "black"
+                }
+              }
+        },
+        SingleSlider:{
+            root: {
+                color: '#52af77',
+                height: 8,
+              },
+              thumb: {
+                height: 24,
+                width: 24,
+                backgroundColor: '#fff',
+                border: '2px solid currentColor',
+                marginTop: -8,
+                marginLeft: -12,
+                '&:focus, &:hover, &$active': {
+                  boxShadow: 'inherit',
+                },
+              },
+              active: {},
+              valueLabel: {
+                left: 'calc(-50% + 4px)',
+              },
+              rail: {
+                height: 8,
+                borderRadius: 4,
+              },
         },
         chips: {
             display: 'flex',
@@ -118,22 +176,22 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     } else if (page === 2) {
         inputs = <React.Fragment>
             <div className ="pictures">
-                <div>Pictures</div>
+                <span>Pictures</span>
                 {ownerPicsNum.map((num)=> (
                     <div key={num} className="add-photos">
                         <input type="file" id={`img${num-1}`} style={{display:"none"}} onChange={(e) => {let arr =ownerPics.slice(); arr.splice(num-1,1,e.target.files[0]); setOwnerPics(arr)}} />
                         {ownerPics[num-1] === "" ?
-                            <button><label htmlFor={`img${num-1}`}>Choose File</label></button>
+                            <button className="btn btn-outline-secondary file-btn"><label htmlFor={`img${num-1}`}>Choose File</label></button>
                         :
                         <div>File Chosen</div>
                         }{ownerPicsNum.length <=4 ?
-                            <FontAwesomeIcon icon={faPlus} onClick={() => {setOwnerPicsNum(ownerPicsNum.concat([ownerPicsNum.length+1])); setOwnerPics(ownerPics.concat(['']))}}/>
+                            <FontAwesomeIcon className="plus" icon={faPlus} onClick={() => {setOwnerPicsNum(ownerPicsNum.concat([ownerPicsNum.length+1])); setOwnerPics(ownerPics.concat(['']))}}/>
                         :
                         ""
                         }
 
                         {ownerPicsNum.length >1 ?
-                            <FontAwesomeIcon icon={faMinus} onClick={() => {
+                            <FontAwesomeIcon className="minus" icon={faMinus} onClick={() => {
                                 setOwnerPicsNum(ownerPicsNum.slice(0,-1));
                                 let arr2 = ownerPics.slice(); arr2.splice(num-1,1); setOwnerPics(arr2);
                             }}/>
@@ -146,28 +204,28 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
 
 
             </div>
-            <input placeholder="Age" value={ownerAge} type="number" min={18} onChange={(e) => setOwnerAge(e.target.value)}/>
+            <input className="age" placeholder="Age" value={ownerAge} type="number" min={18} onChange={(e) => setOwnerAge(e.target.value)}/>
             <div className="gender-input">
                 <FormControl component="fieldset">
-                    <FormLabel component="legend">Include me in searches for</FormLabel>
+                    <FormLabel component="legend" className={classes.InputLabel}>Include me in searches for</FormLabel>
                     <RadioGroup row value={searched_as}>
                         <FormControlLabel
                         value="M"
-                        control={<Radio color="primary" />}
+                        control={<Radio color="default" />}
                         label="M"
                         labelPlacement="bottom"
                         onClick ={()=> setSearchedAs("M")}
                         />
                         <FormControlLabel
                         value="F"
-                        control={<Radio color="primary" />}
+                        control={<Radio color="default" />}
                         label="F"
                         labelPlacement="bottom"
                         onClick ={()=> setSearchedAs("F")}
                         />
                         <FormControlLabel
                         value="Both"
-                        control={<Radio color="primary" />}
+                        control={<Radio color="default" />}
                         label="Both"
                         labelPlacement="bottom"
                         onClick ={()=> setSearchedAs("Both")}
@@ -177,12 +235,13 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             </div>
             <textarea className="bio" value={ownerBio} name="ownerBio" placeholder="Bio" onChange={(e) => setOwnerBio(e.target.value)}/>
             </React.Fragment>
+
     //--------------------------page 3 inputs --------------------------//
     } else if (page === 3) {
         inputs = <React.Fragment>
             {numDogs.map(num => (
             <React.Fragment>
-                <input name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
+                <input className="dog-name" name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
                 <div className ="pictures">
                     <span>Pictures</span>
                     {dogPicsNum[num-1].map((num2)=> (
@@ -193,12 +252,12 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                             arr.splice(num2-1,1,e.target.files[0]); bigArr[num-1] = arr;
                             setDogPics(bigArr)}} />
                         {dogPics[num-1][num2-1] === "" ?
-                            <button><label htmlFor={`img${num-1}${num2-1}`}>Choose File</label></button>
+                            <button className="btn btn-outline-secondary file-btn"><label htmlFor={`img${num-1}${num2-1}`}>Choose File</label></button>
                         :
                         <div>File Chosen</div>
                         }
                         {dogPicsNum[num-1].length <4 ?
-                            <FontAwesomeIcon icon={faPlus} onClick={() => {
+                            <FontAwesomeIcon className="plus" icon={faPlus} onClick={() => {
                                 let bigArrPics= dogPics.slice(); let bigArrNum = dogPicsNum.slice();
                                 bigArrPics[num-1]= bigArrPics[num-1].concat(['']);
                                 bigArrNum[num-1]= bigArrNum[num-1].concat([bigArrNum[num-1].length+1]);
@@ -210,7 +269,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         }
 
                         {dogPicsNum[num-1].length >1 ?
-                            <FontAwesomeIcon icon={faMinus} onClick={() => {
+                            <FontAwesomeIcon className="minus" icon={faMinus} onClick={() => {
                                 let bigArrPics= dogPics.slice(); let arrPics = dogPics[num-1].slice();
                                 let bigArrNum = dogPicsNum.slice(); let arrNum = dogPicsNum[num-1].slice();
                                 arrPics.splice(num2-1,1); bigArrPics[num-1] = arrPics;
@@ -225,21 +284,21 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                     </div>
                 ))}
                 </div>
-                <input placeholder="Age" name="dogAge" value={dogAges[num-1]} type="number" min="0" onChange={(e) => {let arr = dogAges.slice(); arr.splice(num-1,1,e.target.value); setDogAges(arr)}}/>
+                <input className="age" placeholder="Age" name="dogAge" value={dogAges[num-1]} type="number" min="0" onChange={(e) => {let arr = dogAges.slice(); arr.splice(num-1,1,e.target.value); setDogAges(arr)}}/>
                 <div className="gender-input">
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Gender</FormLabel>
+                        <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                         <RadioGroup row value={dogGenders[num-1]}>
                             <FormControlLabel
                             value="M"
-                            control={<Radio color="primary" />}
+                            control={<Radio color="default" />}
                             label="M"
                             labelPlacement="bottom"
                             onClick ={()=> {let arr = dogGenders.slice(); arr.splice(num-1,1,"M"); setDogGenders(arr)}}
                             />
                             <FormControlLabel
                             value="F"
-                            control={<Radio color="primary" />}
+                            control={<Radio color="default" />}
                             label="F"
                             labelPlacement="bottom"
                             onClick ={()=> {let arr = dogGenders.slice(); arr.splice(num-1,1,"F"); setDogGenders(arr)}}
@@ -264,14 +323,18 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                     ))}
                     </Select>
                 </FormControl>
-                <div><span>Hypoallergenic</span><input name="hypo" type="checkbox" checked={hypos[num-1]===true} onClick={() => {let arr= hypos.slice(); arr.splice(num-1,1, !hypos[num-1]); setHypos(arr)}}/></div>
-                <div><span>Neutered/Spayed</span><input name="neutered" type="checkbox" checked={neutereds[num-1]===true} onClick={() => {let arr = neutereds.slice(); arr.splice(num-1,1, !neutereds[num-1]); setNeutereds(arr)}}/></div>
-                <div><span>Health Issues</span><input name="health_issues" type="checkbox" checked={health_issues[num-1]===true} onClick={() => {let arr= health_issues.slice(); arr.splice(num-1,1, !health_issues[num-1]); setHealthIssues(arr)}}/></div>
+                <div className="bool-checkboxes">
+                    <div className="hypo"><span>Hypoallergenic</span><div><input name="hypo" type="checkbox" checked={hypos[num-1]===true} onClick={() => {let arr= hypos.slice(); arr.splice(num-1,1, !hypos[num-1]); setHypos(arr)}}/></div></div>
+                    <div className="neutered"><span>Neutered/Spayed</span><div><input name="neutered" type="checkbox" checked={neutereds[num-1]===true} onClick={() => {let arr = neutereds.slice(); arr.splice(num-1,1, !neutereds[num-1]); setNeutereds(arr)}}/></div></div>
+                    <div className="health_issues"><span>Health Issues</span><div><input name="health_issues" type="checkbox" checked={health_issues[num-1]===true} onClick={() => {let arr= health_issues.slice(); arr.splice(num-1,1, !health_issues[num-1]); setHealthIssues(arr)}}/></div></div>
+
+                </div>
                 <div style={{width: 400}}>
-                    <Typography id="track-false-slider" gutterBottom>
+                    <Typography id="track-false-slider" gutterBottom className={classes.InputLabel}>
                         Size
                     </Typography>
                     <Slider
+                        className={classes.SingleSlider}
                         track={false}
                         value={sizes[num-1]}
                         onChange={(e, val) => {let arr= sizes.slice(); arr.splice(num-1,1, val); setSizes(arr)}}
@@ -327,78 +390,110 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             </React.Fragment>
     //--------------------------page 4 inputs --------------------------//
     } else if (page === 4) {
-        inputs = <React.Fragment>
-            <div>
-                Dog
-                <div style={{width: 400}}>
-                    <Typography id="range-slider" gutterBottom>
-                        Size
-                    </Typography>
-                    <Slider
-                        value={sizePref}
-                        onChange={(e, val) => {
-                            setSizePref(val);
-                            setMinSize(val[0]);
-                            setMaxSize(val[1]);
-                        }}
-                        aria-labelledby="range-slider"
-                        marks={[
-                            {value: 0, label:"XS"},
-                            {value: 1, label:"S"},
-                            {value: 2, label: "M"},
-                            {value: 3, label: "L"},
-                            {value: 4, label: "XL"},
-                            ]}
-                        min={0}
-                        max={4}
-                    />
+        inputs = <div className="prefs">
+            <div className="dog-prefs">
+                <div className="dog-prefs-title">Dog</div>
+                <div className="prefs-content">
+                    <div style={{width: 400, marginBottom: 10}}>
+                        <Typography className={classes.InputLabel} id="range-slider" gutterBottom>
+                            Size
+                        </Typography>
+                        <Slider
+                            value={sizePref}
+                            onChange={(e, val) => {
+                                setSizePref(val);
+                                setMinSize(val[0]);
+                                setMaxSize(val[1]);
+                            }}
+                            aria-labelledby="range-slider"
+                            marks={[
+                                {value: 0, label:"XS"},
+                                {value: 1, label:"S"},
+                                {value: 2, label: "M"},
+                                {value: 3, label: "L"},
+                                {value: 4, label: "XL"},
+                                ]}
+                            min={0}
+                            max={4}
+                        />
+                    </div>
+                    <div style={{width: 400, marginBottom: 10}}>
+                        <Typography className={classes.InputLabel} id="range-slider" gutterBottom>
+                            Age
+                        </Typography>
+                        <Slider
+                            value={dogAgePref}
+                            onChange={(e, val) => {
+                                setDogAgePref(val);
+                                setDogMinAge(val[0]);
+                                setDogMaxAge(val[1]);
+                            }}
+                            valueLabelDisplay="auto"
+                            aria-labelledby="range-slider"
+                            min={0}
+                            max={20}
+                        />
+                    </div>
+                    <div className="gender-input">
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
+                            <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                <FormControlLabel
+                                value="M"
+                                control={<Radio color="default" />}
+                                label="M"
+                                labelPlacement="bottom"
+                                onClick ={()=> setDogGendersPref("M")}
+                                />
+                                <FormControlLabel
+                                value="F"
+                                control={<Radio color="default" />}
+                                label="F"
+                                labelPlacement="bottom"
+                                onClick ={()=> setDogGendersPref("F")}
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </div>
+                    <div className="bool-checkboxes">
+                        <div className="hypo"><span>Hypoallergenic</span><div><input name="hypo" type="checkbox" checked={hypoPref===true} onChange={() => setHypoPref(!hypoPref)}/></div></div>
+                        <div className="neutered"><span>Neutered/Spayed</span><div><input name="neutered" type="checkbox" checked={neuteredPref===true} onChange={() => setNeuteredPref(!neuteredPref)}/></div></div>
+                        <div className="health_issues"><span>Health Issues</span><div><input name="health_issues" type="checkbox" checked={healthIssuesPref===true} onChange={() => setHealthIssuesPref(!healthIssuesPref)}/></div></div>
+                    </div>
+                    <div>
+                        <FormControl className={classes.formControl}>
+                            <InputLabel id="demo-mutiple-chip-label">Avoid Breeds</InputLabel>
+                            <Select
+                            labelId="demo-mutiple-chip-label"
+                            id="demo-mutiple-chip"
+                            multiple
+                            value={avoid_breeds}
+                            onChange={(e) => setAvoidBreeds(e.target.value)}
+                            input={<Input id="select-multiple-chip" />}
+                            renderValue={(selected) => (
+                                <div className={classes.chips}>
+                                {selected.map((value) => (
+                                    <Chip key={value} label={value} className={classes.chip} />
+                                ))}
+                                </div>
+                            )}
+                            MenuProps={MenuProps}
+                            >
+                            {Breeds.map((name) => (
+                                <MenuItem key={name} value={name} style={getStyles(name, avoid_breeds, theme)}>
+                                {name}
+                                </MenuItem>
+                            ))}
+                            </Select>
+                        </FormControl>
+                    </div>
                 </div>
-                <div style={{width: 400}}>
-                    <Typography id="range-slider" gutterBottom>
-                        Age
-                    </Typography>
-                    <Slider
-                        value={dogAgePref}
-                        onChange={(e, val) => {
-                            setDogAgePref(val);
-                            setDogMinAge(val[0]);
-                            setDogMaxAge(val[1]);
-                        }}
-                        valueLabelDisplay="auto"
-                        aria-labelledby="range-slider"
-                        min={0}
-                        max={20}
-                    />
-                </div>
-                <div className="gender-input">
-                    <FormControl component="fieldset">
-                        <FormLabel component="legend">Gender</FormLabel>
-                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                            <FormControlLabel
-                            value="M"
-                            control={<Radio color="primary" />}
-                            label="M"
-                            labelPlacement="bottom"
-                            onClick ={()=> setDogGendersPref("M")}
-                            />
-                            <FormControlLabel
-                            value="F"
-                            control={<Radio color="primary" />}
-                            label="F"
-                            labelPlacement="bottom"
-                            onClick ={()=> setDogGendersPref("F")}
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                </div>
-                <div><span>Hypoallergenic</span><input name="hypo" type="checkbox" checked={hypoPref===true} onChange={() => setHypoPref(!hypoPref)}/></div>
-                <div><span>Neutered/Spayed</span><input name="neutered" type="checkbox" checked={neuteredPref===true} onChange={() => setNeuteredPref(!neuteredPref)}/></div>
-                <div><span>Health Issues</span><input name="health_issues" type="checkbox" checked={healthIssuesPref===true} onChange={() => setHealthIssuesPref(!healthIssuesPref)}/></div>
             </div>
-                Owner
-                <div>
-                    <div style={{width: 400}}>
-                        <Typography id="continuous-slider" gutterBottom>
+                <div className="owner-prefs">
+                <div className="owner-prefs-title">Owner</div>
+                <div className="prefs-content">
+                    <div style={{width: 400, marginBottom: 10}}>
+                        <Typography className={classes.InputLabel} id="continuous-slider" gutterBottom>
                             Distance
                         </Typography>
                         <Slider
@@ -410,8 +505,8 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                             max={20}
                         />
                     </div>
-                    <div style={{width: 400}}>
-                        <Typography id="range-slider" gutterBottom>
+                    <div style={{width: 400, marginBottom: 10}}>
+                        <Typography className={classes.InputLabel} id="range-slider" gutterBottom>
                             Age
                         </Typography>
                         <Slider
@@ -429,57 +524,30 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                     </div>
                 <div className="gender-input">
                     <FormControl component="fieldset">
-                        <FormLabel component="legend">Gender</FormLabel>
+                        <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                         <RadioGroup row aria-label="position" name="position" defaultValue="top">
                             <FormControlLabel
                             value="M"
-                            control={<Radio color="primary" />}
+                            control={<Radio color="default" />}
                             label="M"
                             labelPlacement="bottom"
                             onClick ={()=> setOwnerGenders("M")}
                             />
                             <FormControlLabel
                             value="F"
-                            control={<Radio color="primary" />}
+                            control={<Radio color="default" />}
                             label="F"
                             labelPlacement="bottom"
                             onClick ={()=> setOwnerGenders("F")}
                             />
                             <FormControlLabel
                             value="All"
-                            control={<Radio color="primary" />}
+                            control={<Radio color="default" />}
                             label="All"
                             labelPlacement="bottom"
                             onClick ={()=> setOwnerGenders("All")}
                             />
                         </RadioGroup>
-                    </FormControl>
-                </div>
-                <div>
-                    <FormControl className={classes.formControl}>
-                        <InputLabel id="demo-mutiple-chip-label">Avoid Breeds</InputLabel>
-                        <Select
-                        labelId="demo-mutiple-chip-label"
-                        id="demo-mutiple-chip"
-                        multiple
-                        value={avoid_breeds}
-                        onChange={(e) => setAvoidBreeds(e.target.value)}
-                        input={<Input id="select-multiple-chip" />}
-                        renderValue={(selected) => (
-                            <div className={classes.chips}>
-                            {selected.map((value) => (
-                                <Chip key={value} label={value} className={classes.chip} />
-                            ))}
-                            </div>
-                        )}
-                        MenuProps={MenuProps}
-                        >
-                        {Breeds.map((name) => (
-                            <MenuItem key={name} value={name} style={getStyles(name, avoid_breeds, theme)}>
-                            {name}
-                            </MenuItem>
-                        ))}
-                        </Select>
                     </FormControl>
                 </div>
                 {/* <div>
@@ -508,10 +576,11 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         ))}
                         </Select>
                     </FormControl>
-
                 </div> */}
             </div>
-        </React.Fragment>
+        </div>
+
+                </div>
     }
     //--------------------------Post Info --------------------------//
 
@@ -610,7 +679,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             .then(()=>{
                 setRegister(false)
             })
-            
+
 
         // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
         //axios.post dogs
@@ -680,6 +749,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     return (
         <div className="register">
             <div className="center">
+                <div className="upper-text">{titleText}</div>
                 <div className="ear ear--left"></div>
                 <div className="ear ear--right"></div>
                     <div className="login-body">

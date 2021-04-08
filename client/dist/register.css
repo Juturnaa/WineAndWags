@@ -1,40 +1,109 @@
+.upper-text {
+    display:flex;
+    justify-content: center;
+    /* align-items:center; */
+    font-size: 6em;
+    color:#6b4d57;
+    top:2%;
+
+}
 .pictures{
-    width:400px;
-    min-height: 100px;
     background-color: white;
     display:flex;
     flex-direction: column;
 }
+.pictures span {
+    font-size: 1.4em;
+    color:#6b4d57;
+    /* font-weight: bold; */
+}
 .add-photos{
     display:flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     margin-right: 50px;
 }
-.bio {
+.pictures, .bio {
     width:400px;
-    height: 100px;
+    min-height: 100px;
+    border-radius: 11px;
+    padding: 15px 40px;
 }
 .gender-input {
     width:400px;
     display:flex;
     flex-direction: column;
+    align-items: center;
 }
-.radios{
-    display:flex;
-}
-.radios span {
-    text-align:center;
-    border: 3px solid white;
-    display:flex;
-    flex-direction: column;
-    width:100px;
-}
-.radios input {
-    position:relative;
-    align-self: center;
-}
+
 .register-btns {
     display:flex;
     flex-direction: row;
+}
+.file-btn{
+    flex-grow:2;
+}
+.file-btn label{
+    margin-bottom:0;
+}
+.plus, .file-btn {
+    margin-right:5px;
+}
+.pictures, .age, .dog-name {
+    margin-bottom: 10px;
+}
+.bio {
+    margin-top:10px;
+}
+
+.plus{
+    color:#6b4d57;
+}
+.minus{
+    color:#243946;
+}
+/* .bool-checkboxes input[type="checkbox"]:checked:after {
+    background-color:#ddc8c4;
+} */
+/* .hypo, .neutered,.health_issues {
+    background-color:#ddc8c4;
+    flex-shrink: 2;
+    
+}*/
+.bool-checkboxes {
+    display:flex;
+    flex-direction: column;
+    justify-content: center
+}
+.hypo, .neutered,.health_issues{
+    display:flex;
+    justify-content: space-between;
+    width:400px;
+    font-size: 1.3em;
+    color:#ddc8c4;
+}
+.hypo div, .neutered div,.health_issues div{
+    width:50px;
+    position:relative;
+    left:-170px;
+}
+.prefs {
+    display:flex;
+}
+.owner-prefs, .dog-prefs {
+    margin: 0 10px;
+}
+.prefs-content{
+    display:flex;
+    flex-direction: column;
+    padding: 0 40px;
+}
+.dog-prefs-title, .owner-prefs-title {
+    font-size: 2em;
+    color:#6b4d57;
+    background:white;
+    font-weight:bold;
+    padding: 10px 40px;
+    border-radius: 20px;
+    margin-bottom: 10px;
 }
