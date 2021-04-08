@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS waw.notifications (
   time_stamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   sender_id INT NOT NULL,
   sender_name VARCHAR(255) NOT NULL,
-  recipient_id INT NOT NULL
+  recipient_id INT NOT NULL,
+  read BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE IF NOT EXISTS waw.comments (
