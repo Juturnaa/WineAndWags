@@ -113,9 +113,6 @@ export default function Homepage({
         setFilterParams(result);
         getRandomUser(result);
       })
-      // .then(() => {
-      //   getRandomUser(filterParams);
-      // })
       .catch((err) => {
         console.error(error);
       });
@@ -156,6 +153,8 @@ export default function Homepage({
             close={toggleFilterModal}
             setFilterParams={setFilterParams}
             currentUserID={currentUserID}
+            currentUser={currentUser}
+            potiential={potiential}
           />
         ) : null}
     </div>
