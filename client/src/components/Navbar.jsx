@@ -25,16 +25,16 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn,
 }) {
   return (
     <BrowserRouter>
       <nav className='navigation-bar'>
-        <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
-        <NavLink className="nav-icon" exact to="/notifications"><i className="far fa-bell" /></NavLink>
-        <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
-        <NavLink className="nav-icon" exact to="/map"><i className="far fa-map" /></NavLink>
-        <NavLink className="nav-icon" exact to="/editprofile">
+        <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
+        <NavLink className="nav-icon" exact to="/notifications" onClick={() => setBtn(true)}><i className="far fa-bell" /></NavLink>
+        <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
+        <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)}><i className="far fa-map" /></NavLink>
+        <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
           {humanPhoto.length ? (
             <div
               className="profile-thumbnail"
@@ -65,7 +65,7 @@ function NavBar({
           )}
         />
         <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} />} />
+        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} editProfileBtn={editProfileBtn} setBtn={setBtn} />} />
         <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
       </Switch>
     </BrowserRouter>
@@ -103,6 +103,7 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  setBtn: PropTypes.func,
 };
 
 NavBar.defaultProps = {
@@ -113,6 +114,7 @@ NavBar.defaultProps = {
   dogsImg: [],
   matches: [],
   allMessages: {},
+  setBtn: null,
 };
 
 export default NavBar;

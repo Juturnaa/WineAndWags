@@ -20,7 +20,7 @@ import AddDogModal from './AddDogModal';
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 function EditProfile({
-  currentUser, dogsImg, breeds, humanPhoto,
+  currentUser, dogsImg, breeds, humanPhoto, editProfileBtn, setBtn,
 }) {
   const [human, setHuman] = useState(false);
   const [dogs, setDogs] = useState(false);
@@ -104,11 +104,13 @@ function EditProfile({
   const changeHuman = () => {
     setHuman(true);
     setDogs(false);
+    setBtn(false);
   };
 
   const changeDogs = () => {
     setHuman(false);
     setDogs(true);
+    setBtn(false);
   };
 
   const dogValueChange = (e) => {
@@ -252,7 +254,7 @@ function EditProfile({
 
   return (
     <div id="editprofile-body">
-      <div className="btn-container">
+      <div className={editProfileBtn ? "btn-container" : "btn-container-after"}>
         <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
         <button type="button" onClick={changeDogs}>EDIT MY DOG(S)</button>
       </div>

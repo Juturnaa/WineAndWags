@@ -20,7 +20,7 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
-
+  const [editProfileBtn, setBtn] = useState(true);
   const [allMessages, setAllMessages] = useState([]);
 
   // potiential Match User states
@@ -161,6 +161,8 @@ const App = () => {
         currentUserID={currentUserID}
         potiential={potiential}
         potientialDog={potientialDog}
+        editProfileBtn={editProfileBtn}
+        setBtn={setBtn}
       />
     </div>
   );
