@@ -31,6 +31,7 @@ const App = () => {
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
   const [potientialPhoto, setPotientialPhoto] = useState();
+  const [showNotifs, setShowNotifs] = useState(false)
 
   useEffect(() => {
     const dogsimages = [];
@@ -52,6 +53,9 @@ const App = () => {
   }, [dogsPhoto]);
 
   const getRandomUser = (filters) => {
+
+
+
     let random;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
@@ -67,9 +71,20 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
+    let myLikes;
+    axios.get(`/app/${currentUserID}/profile-likes`)
+      .then((data) => {
+        myLikes = data.data.map((likeObj) => likeObj.liked_user_id)
+        if (myLikes.includes(potiential.id)) {
+          axios.post(`/app/${currentUserID}/convos`, {recipient_id: potiential.id})
+            .then(() => {
+              alert('its a match!')
+            })
+        }
+      })
+      .catch((err) => console.log(err))
     axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
       .then((data) => {
-        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
@@ -78,7 +93,6 @@ const App = () => {
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
       .then((data) => {
-        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
@@ -185,6 +199,8 @@ const App = () => {
         potientialDog={potientialDog}
         editProfileBtn={editProfileBtn}
         setBtn={setBtn}
+        showNotifs={showNotifs}
+        setShowNotifs={setShowNotifs}
       />
     </div>
   );

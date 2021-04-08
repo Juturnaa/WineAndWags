@@ -78,3 +78,8 @@ router
   .route('/dates/:userid')
   .get(controller.getUserDates)
   .patch(controller.reviewed);
+
+// NOTIFICATIONS------------------------------------//
+router.route('/notifications/:user_id/')
+  .get(controller.getNotif)
+  .post(controller.postNotif);

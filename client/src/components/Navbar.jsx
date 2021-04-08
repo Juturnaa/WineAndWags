@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter, Route, Switch, NavLink,
 } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Homepage from './Homepage/Homepage';
 import EditProfile from './Homepage/EditProfile';
 import Inbox from './Messages/Inbox';
 import Map from './Map/Map';
+import axios from 'axios';
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -25,16 +26,28 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs
 }) {
+  let [notifs, setNotifs] =useState([]);
+  let getNotifs = () => {
+    axios.get(`/app/notifications/${currentUserID}`)
+    .then(data=> {
+      console.log(data.data)
+      setNotifs(data.data)
+    })
+  }
+  useEffect(()=>{
+    if(showNotifs) getNotifs()
+  },[showNotifs])
   return (
     <BrowserRouter>
       <nav className='navigation-bar'>
         <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
-        <NavLink className="nav-icon" exact to="/notifications" onClick={() => setBtn(true)}><i className="far fa-bell" /></NavLink>
+        <NavLink className="nav-icon" exact to="/notifications" onClick={() => {setShowNotifs(!showNotifs); setBtn(true)}}><i className="far fa-bell" /></NavLink>
         <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
         <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)}><i className="far fa-map" /></NavLink>
         <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
+                
           {humanPhoto.length ? (
             <div
               className="profile-thumbnail"
@@ -44,10 +57,21 @@ function NavBar({
             : <div className="profile-thumbnail" />}
         </NavLink>
       </nav>
-
+      {showNotifs ? 
+        <div className="notifs">
+          <div className="notifs-triangle"></div>
+          <div className="notifs-title">Notifications</div>
+          <div className="notifs-content">
+            {notifs.map((notif, i)=> {
+              if(notif.type==="photoLike") return <div>{notif.sender_name} liked your photo</div>
+              else if(notif.type==="message") return <div>{notif.sender_name} sent you a message</div>
+            })}
+          </div>
+        </div>
+      :""}  
       {/* Routes */}
       <Switch>
-        <Route exact path="/notifications" component={Notifications} />
+        {/* <Route exact path="/notifications" component={Notifications} /> */}
         {' '}
         {/* delete this route if notifications is just modal not a page */}
         <Route
