@@ -25,43 +25,6 @@ const Inbox = ({
     return count;
   };
 
-  // const mapMatchesPhotos = () => {
-  //   matchesPhotos.map((match, index) => {
-  //   // display 6 matches at a time -> replace this with carousel
-  //     if (index < 6) {
-  //       return (
-  //         <div className="match-container" key={match[0].user_id}>
-  //           {/* {console.log('match info:', matchesInfo)} */}
-  //           <div>
-  //             {matchesInfo[match[0].user_id].name}
-  //             {' '}
-  //             and
-  //             {' '}
-  //             {matchesInfo[match[0].user_id].dogs_info[0].name}
-  //           </div>
-  //           <br />
-  //           <div className="match-photos-container">
-  //             <img
-  //               className="human-photos"
-  //               alt="human"
-  //               src={match[0].url}
-  //               name={index}
-  //               onClick={onMessageClick}
-  //             />
-  //             <img
-  //               className="dog-photos"
-  //               alt="dog"
-  //               src={match[1].url}
-  //               name={index}
-  //               onClick={onMessageClick}
-  //             />
-  //           </div>
-  //         </div>
-  //       );
-  //     }
-  //   });
-  // };
-
   return (
     <div id="inbox-container">
       <br />
@@ -80,40 +43,6 @@ const Inbox = ({
               onMessageClick={onMessageClick}
               messageQueueCount={messageQueueCount}
             />
-            {/* <div id="matches-container">
-              {matchesPhotos.map((match, index) => {
-                if (index < 6) {
-                  return (
-                    <div className="match-container" key={match[0].user_id}>
-                      <div>
-                        {matchesInfo[match[0].user_id].name}
-                        {' '}
-                        and
-                        {' '}
-                        {matchesInfo[match[0].user_id].dogs_info[0].name}
-                      </div>
-                      <br />
-                      <div className="match-photos-container">
-                        <img
-                          className="human-photos"
-                          alt="human"
-                          src={match[0].url}
-                          name={index}
-                          onClick={onMessageClick}
-                        />
-                        <img
-                          className="dog-photos"
-                          alt="dog"
-                          src={match[1].url}
-                          name={index}
-                          onClick={onMessageClick}
-                        />
-                      </div>
-                    </div>
-                  );
-                }
-              })}
-            </div> */}
             <div id="messages-outer-container">
               <div id="messages-container">
                 <span>
@@ -143,7 +72,6 @@ const Inbox = ({
                           />
                         </div>
                         <div className="name-message-container" name={index} onClick={onMessageClick}>
-                          {/* {console.log('allmessages at userid', allMessages[match[0].user_id])} */}
                           <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
                             {matchesInfo[match[0].user_id].name}
                             {' '}
