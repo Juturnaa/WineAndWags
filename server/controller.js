@@ -243,6 +243,9 @@ const controller = {
   postNotif: (req, res) => {
     dbHelpers.postNotif(req, res);
   },
+  updateNotif: (req, res) => {
+    dbHelpers.updateNotif(req, res);
+  }
 
 };
 
