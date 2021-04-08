@@ -98,7 +98,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                         <input className="username" type="text" autoComplete="on" placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
                         <input className="password" type="password" autoComplete="off" placeholder="Password" onChange={(e)=>setPassword(e.target.value)}/>
                         <button className="login-button" onClick={()=>handleLogin()}>Log in </button>
-                        <button className="register-button">Register </button>
+                        <button className="register-button" onClick={()=>{setRegister(true); setLanding(false)}}>Register </button>
                     </div>
 
                     </React.Fragment>

@@ -8,7 +8,6 @@ import Landing from './Landing';
 import Register from './Register';
 
 const App = () => {
-
   const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
@@ -81,8 +80,6 @@ const App = () => {
       });
   };
 
-
-
   useEffect(() => {
     axios.all([
       axios.get(`/app/users/my-profile/${currentUserID}`),
@@ -144,7 +141,7 @@ const App = () => {
   // }
   // if (register) {
   //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} />
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding}/>
   //   );
   // }
   return (
