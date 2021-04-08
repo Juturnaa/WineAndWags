@@ -7,7 +7,21 @@ import {
   Marker,
   InfoWindow,
 } from '@react-google-maps/api';
-import key from '../../../../config/googleConfig.js';
+
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+
+import {
+  Combobox,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from '@reach/combobox';
+import '@reach/combobox/styles.css';
+
+import key from '../../../../config/googleConfig';
 import mapStyles from './mapStyles';
 
 const libraries = ['places'];
@@ -106,10 +120,49 @@ function Map({ currentUser }) {
     );
   }
 
+  function Search() {
+    const {
+      ready,
+      value,
+      suggestions: { status, data },
+      setValue,
+      ClearSuggestion,
+    } = usePlacesAutocomplete({
+      requestOptions: {
+        location: { lat: () => center.lat, lng: () => center.lng },
+        radius: 200000,
+      },
+    });
+
+    return (
+      <div className="search">
+        <Combobox onSelect={(address) => {
+          console.log(address);
+        }}
+        >
+          <ComboboxInput
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            disabled={!ready}
+            placeholder="Enter and Address"
+          />
+          <ComboboxPopover>
+            {status === 'OK' && data.map(({ id, description }) => (
+              <ComboboxOption key={id} value={description} />
+            ))}
+          </ComboboxPopover>
+        </Combobox>
+      </div>
+    );
+  }
+
   if (isLoaded && places) {
     return (
       <div>
         Dog parks and Dog beaches
+        <Search />
         <Locate panTo={panTo} />
         <GoogleMap
           mapContainerStyle={mapContainerStyle}
