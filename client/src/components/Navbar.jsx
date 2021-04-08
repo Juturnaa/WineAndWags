@@ -32,8 +32,14 @@ function NavBar({
   let getNotifs = () => {
     axios.get(`/app/notifications/${currentUserID}`)
     .then(data=> {
-      console.log(data.data)
       setNotifs(data.data)
+    })
+  }
+  let updateNotif = (notif_id) =>{
+    axios.patch(`/app/notifications/${notif_id}`)
+    .then(() => {
+      getNotifs();
+      console.log("updated")
     })
   }
   useEffect(()=>{
@@ -63,8 +69,11 @@ function NavBar({
           <div className="notifs-title">Notifications</div>
           <div className="notifs-content">
             {notifs.map((notif, i)=> {
-              if(notif.type==="photoLike") return <div>{notif.sender_name} liked your photo</div>
-              else if(notif.type==="message") return <div>{notif.sender_name} sent you a message</div>
+              let txt;
+              if(notif.type==="photoLike") txt =" liked your photo";
+              else if(notif.type==="message") txt = " sent you a message";
+              if(notif.read) return <div className="read-notif">{notif.sender_name}{txt}</div>
+              else return <div className="unread-notif" onClick={()=>updateNotif(notif.id)}>{notif.sender_name}{txt}</div>
             })}
           </div>
         </div>
