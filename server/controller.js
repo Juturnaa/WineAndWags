@@ -218,6 +218,13 @@ const controller = {
   postDog: (req, res) => {
     dbHelpers.postDog(req, res);
   },
+  //Notificiation//
+  getNotif: (req, res) => {
+    dbHelpers.getNotif(req,res);
+  },
+  postNotif: (req, res) => {
+    dbHelpers.postNotif(req,res);
+  },
 
 };
 

@@ -41,13 +41,14 @@ CREATE TABLE IF NOT EXISTS waw.profileLikes (
   liked_user_id INT NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS waw.notification (
+CREATE TABLE IF NOT EXISTS waw.notifications (
   id SERIAL PRIMARY KEY,
+  type VARCHAR(20) NOT NULL,
   type_id INT NOT NULL,
   time_stamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
   sender_id INT NOT NULL,
-  recipient_id INT NOT NULL,
-  type VARCHAR(20) NOT NULL
+  sender_name VARCHAR(255) NOT NULL,
+  recipient_id INT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS waw.comments (

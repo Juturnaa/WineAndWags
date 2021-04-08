@@ -1,0 +1,27 @@
+.notifs{
+    position:absolute;
+    /* background: #ddc8c4; */
+    background: #fff;
+    display:flex;
+    flex-direction: column;
+    right: 7px;
+    width: 400px;
+    padding:10px;
+    z-index: 1;
+    border-radius: 3px;
+    color: #6b4d57;
+}
+.notifs-title{
+    font-weight: bold;
+}
+.notifs-triangle {
+    position:absolute;
+    right:143px;
+    top:-5px;
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;    
+    border-bottom: 5px solid white;
+    z-index:1;
+  }

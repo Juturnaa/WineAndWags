@@ -27,6 +27,7 @@ const App = () => {
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
   const [potientialPhoto, setPotientialPhoto] = useState();
+  const [showNotifs, setShowNotifs] = useState(false)
 
   useEffect(() => {
     const dogsimages = [];
@@ -163,6 +164,8 @@ const App = () => {
         potientialDog={potientialDog}
         editProfileBtn={editProfileBtn}
         setBtn={setBtn}
+        showNotifs={showNotifs}
+        setShowNotifs={setShowNotifs}
       />
     </div>
   );
