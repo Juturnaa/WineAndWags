@@ -6,9 +6,9 @@ const dogPhotos = ['https://images.dog.ceo//breeds//cattledog-australian//IMG_36
 
 const seed = () => {
   function setPhotos(value) {
-    const dogPhoto = dogPhotos[Math.floor(Math.random() * profilePhotos.length)];
     for (let i = 1; i <= value.length; i++) {
       console.log(i);
+      const dogPhoto = dogPhotos[Math.floor(Math.random() * profilePhotos.length)];
       if (i % 2 === 0) {
         db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${value[i - 1].owner_id}, ${value[i - 1].id}, '${dogPhoto}')`);
         db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${value[i - 1].owner_id}, ${value[i - 1].id}, '${dogPhoto}')`);
