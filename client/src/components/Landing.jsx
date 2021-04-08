@@ -105,8 +105,10 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                 :
 
                     <div className="content">
-                        <h2>Wine and Wags</h2>
-                        <h2>Wine and Wags</h2>
+                        <div className="title">
+                            <h2>Wine and Wags</h2>
+                            <h2>Wine and Wags</h2>
+                        </div>
 
                         <span>Find love in someone unknown with the doggy they own</span>
                         <div className="landing-btns">
