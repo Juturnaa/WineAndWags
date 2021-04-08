@@ -21,7 +21,7 @@ import RadioGroup from '@material-ui/core/RadioGroup';
 import Breeds from '../dummyData/dogBreed';
 
 
-export default function Register({ setCurrentID, setRegister }) {
+export default function Register({ setCurrentID, setRegister, setLanding }) {
     let [page, setPage] = useState(1);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
@@ -607,7 +607,9 @@ export default function Register({ setCurrentID, setRegister }) {
             .then(()=>{
                 return axios.all(promises2);
             })
-            
+            .then(()=>{
+                setRegister(false)
+            })
             
 
         // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
@@ -744,7 +746,7 @@ export default function Register({ setCurrentID, setRegister }) {
                     <div className="login-container">
                         {inputs}
                         <div className="register-btns">
-                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:""}
+                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:<button className="login-button" onClick={()=> setLanding(true)}>Back</button>}
                             <button className="register-button" onClick={() => pageHandler("next")}>{page === 4 ? "Register" : "Next"} </button>
 
                         </div>
