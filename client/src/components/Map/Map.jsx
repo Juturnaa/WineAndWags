@@ -15,6 +15,7 @@ import usePlacesAutocomplete, {
 
 import {
   Combobox,
+  ComboboxInput,
   ComboboxPopover,
   ComboboxList,
   ComboboxOption,
@@ -44,26 +45,33 @@ Geocode.setApiKey(key);
 function Map({ currentUser }) {
   const [places, setPlaces] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
-  Geocode.fromAddress(`${currentUser.city} ${currentUser.zipcode}`).then((response) => {
-    const { lat, lng } = response.results[0].geometry.location;
-    center.lat = lat;
-    center.lng = lng;
-  });
-  React.useEffect(() => {
+
+  function getPlaces(lat, lng) {
     axios.get('http://localhost:3000/app/yelp', {
       params: {
         location: {
-          latitude: center.lat,
-          longitude: center.lng,
+          latitude: lat,
+          longitude: lng,
         },
       },
     })
       .then((results) => {
         console.log('results', results);
-        const filteredResults = Array.from(new Set(results.data.map((a) => a.id))).map((id) => results.data.find((a) => a.id === id));
+        const filteredResults = Array.from(new Set(
+          results.data.map((a) => a.id),
+        )).map((id) => results.data.find((a) => a.id === id));
         setPlaces(filteredResults);
         console.log('filtered', filteredResults);
       }).then(() => console.log('places', places)).catch((err) => console.log(err));
+  }
+
+  React.useEffect(() => {
+    Geocode.fromAddress(`${currentUser.city} ${currentUser.zipcode}`).then((response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      center.lat = lat;
+      center.lng = lng;
+      getPlaces(center.lat, center.lng);
+    });
   }, []);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -82,20 +90,7 @@ function Map({ currentUser }) {
   }, []);
 
   const dblClick = (e) => {
-    axios.get('http://localhost:3000/app/yelp', {
-      params: {
-        location: {
-          latitude: e.latLng.lat(),
-          longitude: e.latLng.lng(),
-        },
-      },
-    })
-      .then((results) => {
-        console.log('results', results);
-        const filteredResults = Array.from(new Set(results.data.map((a) => a.id))).map((id) => results.data.find((a) => a.id === id));
-        setPlaces(filteredResults);
-        console.log('filtered', filteredResults);
-      }).then(() => console.log('places', places)).catch((err) => console.log(err));
+    getPlaces(e.latLng.lat(), e.latLng.lng());
   };
 
   function Locate({ panTo }) {
@@ -110,6 +105,7 @@ function Map({ currentUser }) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               });
+              getPlaces(position.coords.latitude, position.coords.longitude);
             },
             () => null,
           );
@@ -126,7 +122,7 @@ function Map({ currentUser }) {
       value,
       suggestions: { status, data },
       setValue,
-      ClearSuggestion,
+      clearSuggestions,
     } = usePlacesAutocomplete({
       requestOptions: {
         location: { lat: () => center.lat, lng: () => center.lng },
@@ -136,9 +132,19 @@ function Map({ currentUser }) {
 
     return (
       <div className="search">
-        <Combobox onSelect={(address) => {
-          console.log(address);
-        }}
+        <Combobox
+          onSelect={async (address) => {
+            setValue(address, false);
+            clearSuggestions();
+            try {
+              const results = await getGeocode({ address });
+              const { lat, lng } = await getLatLng(results[0]);
+              panTo({ lat, lng });
+              getPlaces(lat, lng);
+            } catch (error) {
+              console.log('error!');
+            }
+          }}
         >
           <ComboboxInput
             value={value}
@@ -149,9 +155,11 @@ function Map({ currentUser }) {
             placeholder="Enter and Address"
           />
           <ComboboxPopover>
-            {status === 'OK' && data.map(({ id, description }) => (
-              <ComboboxOption key={id} value={description} />
-            ))}
+            <ComboboxList>
+              {status === 'OK' && data.map(({ id, description }) => (
+                <ComboboxOption key={id} value={description} />
+              ))}
+            </ComboboxList>
           </ComboboxPopover>
         </Combobox>
       </div>
