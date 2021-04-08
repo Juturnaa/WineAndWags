@@ -15,6 +15,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import BackspaceIcon from '@material-ui/icons/Backspace';
+import Geocode from 'react-geocode';
+import key from '../../../../config/googleConfig.js';
+
+Geocode.setApiKey(key);
 
 export default function Filters({
   sizeRange, changeSizeRange,
@@ -29,8 +33,45 @@ export default function Filters({
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders,
   close, setFilterParams,
-  currentUserID
+  currentUser, currentUserID,
+  potiential
 }) {
+
+  /////////
+  const [myLocation, changeMyLocation] = useState([]);
+  const [matchLocation, changeMatchLocation] = useState([]);
+  const [distance, changeDistance] = useState(0)
+
+  const getLocation = (city, zipcode, setState) => {
+    Geocode.fromAddress(`${city} ${zipcode}`)
+      .then((response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        setState([lat, lng])
+    });
+  }
+
+  const getDistance = (lat1, lon1, lat2, lon2) => {
+    var p = 0.017453292519943295;    // Math.PI / 180
+    var c = Math.cos;
+    var a = 0.5 - c((lat2 - lat1) * p)/2 +
+            c(lat1 * p) * c(lat2 * p) *
+            (1 - c((lon2 - lon1) * p))/2;
+    changeDistance(Math.round(7917.512 * Math.asin(Math.sqrt(a)))); // 2 * R; R = 3958.756 miles, round to nearest whole mile
+  }
+
+  useEffect(() => {
+    getLocation(currentUser.city, currentUser.zipcode, changeMyLocation)
+  }, [currentUser])
+
+  useEffect(() => {
+    getLocation(potiential.city, potiential.zipcode, changeMatchLocation)
+  }, [potiential])
+
+  useEffect(() => {
+    getDistance(myLocation[0], myLocation[1], matchLocation[0], matchLocation[1]);
+  }, [matchLocation])
+
+  ///////////
 
   const breeds = [
     'Affenpinscher',
@@ -579,6 +620,7 @@ export default function Filters({
     <div className='filter-modal'>
       <div>
         <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon/></IconButton>
+
       </div>
       <div className='filter-container'>
         <div className='owner-filters'>

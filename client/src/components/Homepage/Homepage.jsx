@@ -145,6 +145,8 @@ export default function Homepage({
             close={toggleFilterModal}
             setFilterParams={setFilterParams}
             currentUserID={currentUserID}
+            currentUser={currentUser}
+            potiential={potiential}
           />
         ) : null}
     </div>
