@@ -26,6 +26,7 @@ const App = () => {
   // potiential Match User states
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
+  const [potientialPhoto, setPotientialPhoto] = useState();
 
   useEffect(() => {
     const dogsimages = [];
@@ -57,7 +58,7 @@ const App = () => {
       .then(() => {
         axios.get(`/app/users/photos/${random + 1}`)
           .then((data) => {
-            setHumanPhoto(data.data);
+            setPotientialPhoto(data.data);
           });
       });
   };
@@ -135,15 +136,14 @@ const App = () => {
     setAllMessages(messages);
   }, [matches]);
 
-  // if (currentUserID > 0) {
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding}/>
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
   return (
     <div>
       <NavBar
