@@ -166,6 +166,7 @@
   border-radius: 10px;
   padding: 10px;
   background-color: #DDC8C4;
+  width: max-content;
 }
 
 .messages-from-user-container {
@@ -175,6 +176,8 @@
   border-radius: 10px;
   padding: 10px;
   background-color: grey;
+  width: max-content;
+  align-self: flex-end;
 }
 
 .message-body {
@@ -196,11 +199,12 @@
   padding-top: 5px;
   padding-bottom: 5px;
   margin-top: 10px;
+  width: 75%;
 }
 
 input[type=text] {
   border: none;
-  width: 540px;
+  width: 700px;
 }
 input[type=text]:focus {
   outline: none;
