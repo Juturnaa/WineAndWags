@@ -15,6 +15,10 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import BackspaceIcon from '@material-ui/icons/Backspace';
+import Geocode from 'react-geocode';
+import key from '../../../../config/googleConfig.js';
+
+Geocode.setApiKey(key);
 
 export default function Filters({
   sizeRange, changeSizeRange,
@@ -29,8 +33,54 @@ export default function Filters({
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders,
   close, setFilterParams,
-  currentUserID
+  currentUser, currentUserID,
+  potiential,
 }) {
+
+  const [myLocation, changeMyLocation] = useState([]);
+  const [zipCodes, changeZipCodes] = useState([]);
+
+  const getLocation = (city, zipcode) => {
+    Geocode.fromAddress(`${city} ${zipcode}`)
+      .then((response) => {
+        const { lat, lng } = response.results[0].geometry.location;
+        changeMyLocation([lat, lng])
+        getZipCodesInRadius(lat, lng, maxDistance);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
+  const getZipCodesInRadius = (lat, long, radius) => {
+    const options = {
+      method: 'GET',
+      url: 'https://vanitysoft-boundaries-io-v1.p.rapidapi.com/reaperfire/rest/v1/public/boundary/zipcode/location',
+      params: {latitude: lat, longitude: long, radius: radius},
+      headers: {
+        'x-rapidapi-key': 'ffb591a7abmsh204544556caf1a4p158ab3jsn0e0cf2bc1b2a',
+        'x-rapidapi-host': 'vanitysoft-boundaries-io-v1.p.rapidapi.com'
+      }
+    };
+    axios.request(options).then(function (response) {
+      let uniqueZips = [];
+      for (let item of response.data.features) {
+        if (!uniqueZips.includes(item.properties.zipCode)) {
+          uniqueZips.push(`'${item.properties.zipCode}'`)
+        }
+      }
+      changeZipCodes(uniqueZips.join(','));
+    }).catch(function (error) {
+      console.error(error);
+    });
+  }
+
+  useEffect(() => {
+    if (currentUser.city && currentUser.zipcode) {
+      getLocation(currentUser.city, currentUser.zipcode)
+      updateFilterParams();
+    }
+  }, [currentUser])
 
   const breeds = [
     'Affenpinscher',
@@ -554,6 +604,7 @@ export default function Filters({
     axios.patch(`app/${currentUserID}/filters`, values)
       .then((results) => {
         updateFilterParams()
+        getLocation(currentUser.city, currentUser.zipcode) // getLocation also updates valid zip codes in max distance filter radius
         alert('updated preferences');
       })
       .catch((err) => console.error(err));
@@ -568,7 +619,7 @@ export default function Filters({
       neutered,
       healthIssues,
       avoidBreeds: avoidBreeds.join(','),
-      maxDistance,
+      zipCodes,
       ownerAgeRange,
       ownerGenders
     }
@@ -578,7 +629,7 @@ export default function Filters({
   return (
     <div className='filter-modal'>
       <div>
-        <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon/></IconButton>
+        <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon /></IconButton>
       </div>
       <div className='filter-container'>
         <div className='owner-filters'>
@@ -595,7 +646,7 @@ export default function Filters({
               <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
             </RadioGroup>
           </FormControl>
-          <Button variant="contained" style={{width: '10rem', marginTop: '2.5rem'}} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
+          <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
         </div>
         <div className='dog-filters'>
           <Typography variant="h4" gutterBottom>Dog</Typography>

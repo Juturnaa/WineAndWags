@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable max-len */
 /* eslint-disable no-plusplus */
 import React, { useState, useEffect } from 'react';
@@ -6,6 +7,7 @@ import NavBar from './Navbar';
 import breedData from '../dummyData/dogBreed';
 import Landing from './Landing';
 import Register from './Register';
+import ReviewModal from './Homepage/ReviewModal';
 
 const App = () => {
   const [currentUserID, setCurrentID] = useState(7);
@@ -22,11 +24,14 @@ const App = () => {
   const [matchesPhotos, setMatchesPhotos] = useState([]);
   const [editProfileBtn, setBtn] = useState(true);
   const [allMessages, setAllMessages] = useState([]);
+  const [appointment, setAppointment] = useState([]);
+  const [reviewModal, setReviewModal] = useState(false);
 
   // potiential Match User states
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
   const [potientialPhoto, setPotientialPhoto] = useState();
+  const [showNotifs, setShowNotifs] = useState(false)
 
   useEffect(() => {
     const dogsimages = [];
@@ -63,9 +68,20 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
+    let myLikes;
+    axios.get(`/app/${currentUserID}/profile-likes`)
+      .then((data) => {
+        myLikes = data.data.map((likeObj) => likeObj.liked_user_id)
+        if (myLikes.includes(potiential.id)) {
+          axios.post(`/app/${currentUserID}/convos`, {recipient_id: potiential.id})
+            .then(() => {
+              alert('its a match!')
+            })
+        }
+      })
+      .catch((err) => console.log(err))
     axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
       .then((data) => {
-        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
@@ -74,7 +90,6 @@ const App = () => {
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
       .then((data) => {
-        alert('you have just liked them!');
       })
       .catch((err) => {
         console.log(err);
@@ -85,12 +100,14 @@ const App = () => {
     axios.all([
       axios.get(`/app/users/my-profile/${currentUserID}`),
       axios.get(`/app/users/photos/${currentUserID}`),
+      axios.get(`/app/dates/${currentUserID}`),
     ])
-      .then(axios.spread((one, two) => {
+      .then(axios.spread((one, two, three) => {
         setCurrentUser(one.data);
         setCurrentDogs(one.data.dogs_info);
         const human = [];
         const dogs = [];
+        let fixedAppt = three.data;
         for (let i = 0; i < two.data.length; i++) {
           if (two.data[i].dog_id === null) {
             human.push(two.data[i]);
@@ -98,8 +115,16 @@ const App = () => {
             dogs.push(two.data[i]);
           }
         }
+        if (three.data.length > 0) {
+          for (let i = 0; i < three.data.length; i++) {
+            if (three.data[i].reviewed) {
+              fixedAppt = fixedAppt.slice(0, i).concat(fixedAppt.slice(i + 1, three.data.length));
+            }
+          }
+        }
         setHumanPhoto(human);
         setDogsPhoto(dogs);
+        setAppointment(fixedAppt);
       }))
       .catch((err) => console.error(err));
   }, []);
@@ -136,6 +161,24 @@ const App = () => {
     setAllMessages(messages);
   }, [matches]);
 
+  useEffect(() => {
+    const info = {};
+    matches.map((match) => {
+      axios.get(`/app/users/my-profile/${match.user_id}`)
+        .then((results) => {
+          info[results.data.id] = results.data;
+        })
+        .catch((err) => console.log(err));
+    });
+    setMatchesInfo(info);
+  }, [matches]);
+
+  useEffect(() => {
+    if (appointment.length > 0) {
+      setReviewModal(!reviewModal);
+    }
+  }, [appointment]);
+
   // if (landing) {
   //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
   // }
@@ -144,8 +187,10 @@ const App = () => {
   //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
   //   );
   // }
+
   return (
     <div>
+      {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
       <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
@@ -157,12 +202,15 @@ const App = () => {
         currentDogs={currentDogs}
         matches={matches}
         matchesPhotos={matchesPhotos}
+        matchesInfo={matchesInfo}
         allMessages={allMessages}
         currentUserID={currentUserID}
         potiential={potiential}
         potientialDog={potientialDog}
         editProfileBtn={editProfileBtn}
         setBtn={setBtn}
+        showNotifs={showNotifs}
+        setShowNotifs={setShowNotifs}
       />
     </div>
   );

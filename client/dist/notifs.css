@@ -1,0 +1,38 @@
+.notifs{
+    position:absolute;
+    /* background: #ddc8c4; */
+    background: #fff;
+    display:flex;
+    flex-direction: column;
+    right: 7px;
+    width: 300px;
+    padding:10px;
+    z-index: 5;
+    border-radius: 4px;
+    color: #6b4d57;
+    border-right: 1px solid #6b4d57;
+    border-left: 1px solid #6b4d57;
+    border-bottom: 1px solid #6b4d57;
+}
+.notifs-title{
+    font-weight: bold;
+}
+.notifs-triangle {
+    position:absolute;
+    right:143px;
+    top:-5px;
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;    
+    border-bottom: 5px solid white;
+    z-index:1;
+}
+.unread-notif{
+    background: rgba(0, 0, 0,  0.1);
+    border-radius:3px;
+}
+.unread-notif,.read-notif{
+    margin: 7px 10px 0 10px;
+    padding:5px;
+}

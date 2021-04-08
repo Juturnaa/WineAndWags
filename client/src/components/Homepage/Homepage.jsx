@@ -12,9 +12,20 @@ export default function Homepage({
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   const [currentDogIndex, setCurrentDogIndex] = useState(0)
+  const [isDisplayingSkipDogs, setIsDisplayingSkipDogs] = useState(0)
   useEffect(() => {
+    // console.log('current dog index',currentDogIndex)
+    // console.log('current Dogs',potientialDog)
+    if (potientialDog.length > 1) {
+      setIsDisplayingSkipDogs(true)
+    } else {
+      setIsDisplayingSkipDogs(false)
+    }
     setCurrentDog(potientialDog[currentDogIndex])
   }, [potientialDog, currentDogIndex])
+  useEffect(() => {
+    setCurrentDogIndex(0)
+  }, [potientialDog])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -25,7 +36,6 @@ export default function Homepage({
   const [healthIssues, changeHealthIssues] = useState(false);
   const [avoidBreeds, changeAvoidedBreeds] = useState([]);
   const [filterParams, setFilterParams] = useState({});
-  // const [preferredBreeds, changePreferredBreeds] = useState([]);
 
   // Owner Filters
   const [maxDistance, changeMaxDistance] = useState(10); // miles
@@ -44,15 +54,14 @@ export default function Homepage({
     return result.join(',');
   };
   const updateDogIndex = () => {
-    if (currentDogIndex === currentDogs.length - 1) {
+    if (currentDogIndex === potientialDog.length - 1) {
       setCurrentDogIndex(0)
     } else {
       setCurrentDogIndex(currentDogIndex + 1)
     }
   }
 
-
-  const updateFilterParams = () => {
+  const updateFilterParams = (zip) => {
     const params = {
       sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
       dogGenders,
@@ -61,21 +70,17 @@ export default function Homepage({
       neutered,
       healthIssues,
       avoidBreeds: avoidBreeds.join(','),
-      maxDistance,
+      zipCodes: zip,
       ownerAgeRange,
       ownerGenders,
     };
-    // setFilterParams(params);
     return params;
   };
 
-  useEffect(() => {
-    setFilterParams(updateFilterParams());
-  }, [sizeRange])
-
   // GET request to get the user's settings
   useEffect(() => {
-    axios.get(`/app/${currentUserID}/filters`)
+    if (currentUser.id) {
+      axios.get(`/app/${currentUser.id}/filters`)
       .then((results) => {
         // modal slider for dog sizes works by number not strings
         const sizeToNumberValue = (str) => {
@@ -98,26 +103,26 @@ export default function Homepage({
         changeOwnerGenders(filters.genders);
       })
       .then(() => {
-        const result = updateFilterParams();
-        setFilterParams(result);
-        getRandomUser(result);
+        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`));
       })
-      // .then(() => {
-      //   getRandomUser(filterParams);
-      // })
+      .then(() => {
+        getRandomUser(filterParams);
+      })
       .catch((err) => {
         console.error(error);
       });
-  }, [currentUserID]);
+    }
+
+  }, [currentUser]);
 
   return (
     <div className='homepage'>
       <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
-        <DogView updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
+        <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
-      <LikeButton likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
+      <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 
       {filterModalOpen
         ? (
@@ -145,6 +150,8 @@ export default function Homepage({
             close={toggleFilterModal}
             setFilterParams={setFilterParams}
             currentUserID={currentUserID}
+            currentUser={currentUser}
+            potiential={potiential}
           />
         ) : null}
     </div>

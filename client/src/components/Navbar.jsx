@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BrowserRouter, Route, Switch, NavLink,
 } from 'react-router-dom';
@@ -8,6 +8,7 @@ import Homepage from './Homepage/Homepage';
 import EditProfile from './Homepage/EditProfile';
 import Inbox from './Messages/Inbox';
 import Map from './Map/Map';
+import axios from 'axios';
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -25,16 +26,34 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo,
 }) {
+  let [notifs, setNotifs] =useState([]);
+  let getNotifs = () => {
+    axios.get(`/app/notifications/${currentUserID}`)
+    .then(data=> {
+      setNotifs(data.data)
+    })
+  }
+  let updateNotif = (notif_id) =>{
+    axios.patch(`/app/notifications/${notif_id}`)
+    .then(() => {
+      getNotifs();
+      console.log("updated")
+    })
+  }
+  useEffect(()=>{
+    if(showNotifs) getNotifs()
+  },[showNotifs])
   return (
     <BrowserRouter>
       <nav className='navigation-bar'>
         <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
-        <NavLink className="nav-icon" exact to="/notifications" onClick={() => setBtn(true)}><i className="far fa-bell" /></NavLink>
+        <NavLink className="nav-icon" exact to="/notifications" onClick={() => {setShowNotifs(!showNotifs); setBtn(true)}}><i className="far fa-bell" /></NavLink>
         <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
         <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)}><i className="far fa-map" /></NavLink>
         <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
+
           {humanPhoto.length ? (
             <div
               className="profile-thumbnail"
@@ -44,10 +63,24 @@ function NavBar({
             : <div className="profile-thumbnail" />}
         </NavLink>
       </nav>
-
+      {showNotifs ?
+        <div className="notifs">
+          <div className="notifs-triangle"></div>
+          <div className="notifs-title">Notifications</div>
+          <div className="notifs-content">
+            {notifs.map((notif, i)=> {
+              let txt;
+              if(notif.type==="photoLike") txt =" liked your photo";
+              else if(notif.type==="message") txt = " sent you a message";
+              if(notif.read) return <div className="read-notif">{notif.sender_name}{txt}</div>
+              else return <div className="unread-notif" onClick={()=>updateNotif(notif.id)}>{notif.sender_name}{txt}</div>
+            })}
+          </div>
+        </div>
+      :""}
       {/* Routes */}
       <Switch>
-        <Route exact path="/notifications" component={Notifications} />
+        {/* <Route exact path="/notifications" component={Notifications} /> */}
         {' '}
         {/* delete this route if notifications is just modal not a page */}
         <Route
@@ -61,6 +94,7 @@ function NavBar({
               matches={matches}
               matchesPhotos={matchesPhotos}
               allMessages={allMessages}
+              matchesInfo={matchesInfo}
             />
           )}
         />
@@ -103,6 +137,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  matchesInfo: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
   setBtn: PropTypes.func,
 };
 
@@ -114,6 +153,7 @@ NavBar.defaultProps = {
   dogsImg: [],
   matches: [],
   allMessages: {},
+  matchesInfo: {},
   setBtn: null,
 };
 
