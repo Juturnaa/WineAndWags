@@ -103,6 +103,7 @@ const dbHelpers = {
       if (err) {
         res.status(400).send("something went wrong with your query");
       } else {
+        console.log(data.rows);
         res.status(200).send(data.rows);
       }
     });
@@ -356,19 +357,23 @@ const dbHelpers = {
   },
   // NOTIFICAITONS------------------------------------//
   getNotif: (req, res) => {
-    db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.user_id} ORDER BY time_stamp DESC`,
-      (err,data) => {
+    db.query(
+      `SELECT * FROM waw.notifications where recipient_id=${req.params.user_id} ORDER BY time_stamp DESC`,
+      (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows);
-      });
+      }
+    );
   },
   postNotif: (req, res) => {
-    const {type, type_id, sender_name, recipient_id} = req.body;
-    db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.user_id}, '${sender_name}', ${recipient_id})`,
-      (err,data) => {
+    const { type, type_id, sender_name, recipient_id } = req.body;
+    db.query(
+      `INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.user_id}, '${sender_name}', ${recipient_id})`,
+      (err, data) => {
         if (err) res.send(err);
-        else res.send('posted notification');
-      });
+        else res.send("posted notification");
+      }
+    );
   },
 };
 

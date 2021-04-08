@@ -27,6 +27,10 @@ export default function Homepage({
     setCurrentDogIndex(0)
   }, [potientialDog])
 
+  useEffect(() => {
+    
+  }, [filterParams])
+
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
   const [dogAgeRange, changeDogAgeRange] = useState([0, 20]);
@@ -61,7 +65,7 @@ export default function Homepage({
     }
   }
 
-  const updateFilterParams = (zip) => {
+  const updateFilterParams = (zip, cb) => {
     const params = {
       sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
       dogGenders,
@@ -73,6 +77,9 @@ export default function Homepage({
       zipCodes: zip,
       ownerAgeRange,
       ownerGenders,
+    };
+    if (cb) {
+      cb(params)
     };
     return params;
   };
@@ -103,16 +110,12 @@ export default function Homepage({
         changeOwnerGenders(filters.genders);
       })
       .then(() => {
-        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`));
-      })
-      .then(() => {
-        getRandomUser(filterParams);
+        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`, getRandomUser));
       })
       .catch((err) => {
-        console.error(error);
+        console.error(err);
       });
     }
-
   }, [currentUser]);
 
   return (
