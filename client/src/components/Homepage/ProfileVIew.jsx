@@ -23,60 +23,61 @@ const ProfileView = ({ user, photos }) => {
       url: 'https://i.insider.com/5b02f5ba1ae6621b008b48a6?width=700',
     },
   ];
+
   return (
     <div className="profile-card">
-    <div id="card-name">
-      {user !== undefined ? user.name : null}
-    </div>
-    <div>
+      <div id="card-name">
+        {user !== undefined ? user.name : null}
+      </div>
       <div>
-        <PhotosList photos={userPhotos} />
-      </div>
-      <div className="card-text">
-        <div className="text-component">
-          {' '}
-          <div className="text-component-key">City: </div>
-          {' '}
-          <div className="text-component-value">
+        <div>
+          <PhotosList photos={userPhotos} />
+        </div>
+        <div className="card-text">
+          <div className="text-component">
             {' '}
-            {user !== undefined ? user.zipcode : null}
+            <div className="text-component-key">City: </div>
+            {' '}
+            <div className="text-component-value">
+              {' '}
+              {user !== undefined ? user.zipcode : null}
+              {' '}
+            </div>
             {' '}
           </div>
-          {' '}
-        </div>
-        <div className="text-component">
-          {' '}
-          <div className="text-component-key">Gender: </div>
-          {' '}
-          <div className="text-component-value">
+          <div className="text-component">
             {' '}
-            {user.searched_as}
+            <div className="text-component-key">Gender: </div>
             {' '}
-          </div>
-          {' '}
-        </div>
-        <div className="text-component">
-          <div className="text-component-key">Age: </div>
-          {' '}
-          <div className="text-component-value">
-            {' '}
-            {user !== undefined ? user.age : null}
+            <div className="text-component-value">
+              {' '}
+              {user !== undefined ? user.searched_as : null}
+              {' '}
+            </div>
             {' '}
           </div>
-        </div>
-        <div className="text-component">
-          <div className="text-component-key">About Me: </div>
-          {' '}
-          <div className="text-component-value">
+          <div className="text-component">
+            <div className="text-component-key">Age: </div>
             {' '}
-            {user !== undefined ? user.bio : null}
+            <div className="text-component-value">
+              {' '}
+              {user !== undefined ? user.age : null}
+              {' '}
+            </div>
+          </div>
+          <div className="text-component">
+            <div className="text-component-key">About Me: </div>
             {' '}
+            <div className="text-component-value">
+              {' '}
+              {user !== undefined ? user.bio : null}
+              {' '}
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  )
-}
+  );
+};
 
 export default ProfileView;

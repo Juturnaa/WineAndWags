@@ -8,7 +8,6 @@ import Landing from './Landing';
 import Register from './Register';
 
 const App = () => {
-
   const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
@@ -80,8 +79,6 @@ const App = () => {
         console.log(err);
       });
   };
-
-
 
   useEffect(() => {
     axios.all([
