@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Chat from './Chat';
 
 const Inbox = ({
-  currentUser, matches, matchesPhotos, allMessages,
+  currentUser, matches, matchesPhotos, allMessages, matchesInfo,
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
@@ -24,35 +24,36 @@ const Inbox = ({
     return count;
   };
 
-  const mapMatchesPhotos = () => {
-    matchesPhotos.map((match, index) => {
-      // display 6 matches at a time -> replace this with carousel
-      if (index < 6) {
-        return (
-          <div className="match-container" key={match[0].user_id}>
-            <span>Human and Dog</span>
-            <br />
-            <div className="match-photos-container">
-              <img
-                className="human-photos"
-                alt="human"
-                src={match[0].url}
-                name={index}
-                onClick={onMessageClick}
-              />
-              <img
-                className="dog-photos"
-                alt="dog"
-                src={match[1].url}
-                name={index}
-                onClick={onMessageClick}
-              />
-            </div>
-          </div>
-        );
-      }
-    })
-  }
+  // const mapMatchesPhotos = () => {
+  //   matchesPhotos.map((match, index) => {
+  //     // display 6 matches at a time -> replace this with carousel
+  //     if (index < 6) {
+  //       return (
+  //         <div className="match-container" key={match[0].user_id}>
+  // {console.log('match info:', matchesInfo)}
+  //           <span>Human and Dog</span>
+  //           <br />
+  //           <div className="match-photos-container">
+  //             <img
+  //               className="human-photos"
+  //               alt="human"
+  //               src={match[0].url}
+  //               name={index}
+  //               onClick={onMessageClick}
+  //             />
+  //             <img
+  //               className="dog-photos"
+  //               alt="dog"
+  //               src={match[1].url}
+  //               name={index}
+  //               onClick={onMessageClick}
+  //             />
+  //           </div>
+  //         </div>
+  //       );
+  //     }
+  //   })
+  // }
 
   return (
     <div id="inbox-container">
@@ -72,7 +73,14 @@ const Inbox = ({
                 if (index < 6) {
                   return (
                     <div className="match-container" key={match[0].user_id}>
-                      <span>Human and Dog</span>
+                      {/* {console.log('match info:', matchesInfo)} */}
+                      <div>
+                        {matchesInfo[match[0].user_id].name}
+                        {' '}
+                        and
+                        {' '}
+                        {matchesInfo[match[0].user_id].dogs_info[0].name}
+                      </div>
                       <br />
                       <div className="match-photos-container">
                         <img
@@ -127,7 +135,13 @@ const Inbox = ({
                         </div>
                         <div className="name-message-container" name={index} onClick={onMessageClick}>
                           {/* {console.log('allmessages at userid', allMessages[match[0].user_id])} */}
-                          <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>Human name and Dog name</div>
+                          <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
+                            {matchesInfo[match[0].user_id].name}
+                            {' '}
+                            and
+                            {' '}
+                            {matchesInfo[match[0].user_id].dogs_info[0].name}
+                          </div>
                           <div>
                             {(allMessages[match[0].user_id].length !== 0)
                               ? (
@@ -191,6 +205,11 @@ Inbox.propTypes = {
       PropTypes.any,
     ]),
   ),
+  matchesInfo: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 Inbox.defaultProps = {
@@ -200,6 +219,7 @@ Inbox.defaultProps = {
   matches: [],
   matchesPhotos: [],
   allMessages: {},
+  matchesInfo: {},
 };
 
 export default Inbox;

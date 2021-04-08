@@ -25,7 +25,7 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, matchesInfo,
 }) {
   return (
     <BrowserRouter>
@@ -61,6 +61,7 @@ function NavBar({
               matches={matches}
               matchesPhotos={matchesPhotos}
               allMessages={allMessages}
+              matchesInfo={matchesInfo}
             />
           )}
         />
@@ -103,6 +104,11 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
+  matchesInfo: PropTypes.objectOf(
+    PropTypes.oneOfType([
+      PropTypes.any,
+    ]),
+  ),
 };
 
 NavBar.defaultProps = {
@@ -113,6 +119,7 @@ NavBar.defaultProps = {
   dogsImg: [],
   matches: [],
   allMessages: {},
+  matchesInfo: {},
 };
 
 export default NavBar;

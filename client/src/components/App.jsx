@@ -135,6 +135,18 @@ const App = () => {
     setAllMessages(messages);
   }, [matches]);
 
+  useEffect(() => {
+    const info = {};
+    matches.map((match) => {
+      axios.get(`/app/users/my-profile/${match.user_id}`)
+        .then((results) => {
+          info[results.data.id] = results.data;
+        })
+        .catch((err) => console.log(err));
+    });
+    setMatchesInfo(info);
+  }, [matches]);
+
   // if (currentUserID > 0) {
   // if (landing) {
   //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
@@ -157,6 +169,7 @@ const App = () => {
         currentDogs={currentDogs}
         matches={matches}
         matchesPhotos={matchesPhotos}
+        matchesInfo={matchesInfo}
         allMessages={allMessages}
         currentUserID={currentUserID}
         potiential={potiential}
