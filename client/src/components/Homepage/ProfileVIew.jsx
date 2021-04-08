@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList.jsx';
 
-const ProfileView = ({ user, photos }) => {
+const ProfileView = ({ user, photos, likePhoto }) => {
   const [gender, setGender] = useState('');
   useEffect(() => {
     if (user) {
@@ -43,7 +43,7 @@ const ProfileView = ({ user, photos }) => {
         {user !== undefined ? user.name : null}
       </div>
       <div className="photo-container">
-        <PhotosList photos={userPhotos} />
+        <PhotosList photos={userPhotos} likePhoto={likePhoto} />
         <div className="card-text">
           <div className="text-component">
             {' '}
