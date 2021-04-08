@@ -28,7 +28,7 @@ const Messages = () => (
 function NavBar({
   currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo,
 }) {
-  let [notifs, setNotifs] =useState([]);
+  let [notifs, setNotifs] = useState([]);
   let getNotifs = () => {
     axios.get(`/app/notifications/${currentUserID}`)
     .then(data=> {
@@ -47,13 +47,18 @@ function NavBar({
   },[showNotifs])
   return (
     <BrowserRouter>
-      <nav className='navigation-bar'>
-        <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
-        <NavLink className="nav-icon" exact to="/notifications" onClick={() => {setShowNotifs(!showNotifs); setBtn(true)}}><i className="far fa-bell" /></NavLink>
-        <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
-        <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)}><i className="far fa-map" /></NavLink>
-        <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
-
+      <div className="navbar-title-content">
+        <div className="navbar-title">
+          <h2>Wine and Wags</h2>
+          <h2>Wine and Wags</h2>
+        </div>
+      </div>
+        <nav className='navigation-bar'>
+          <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
+          <NavLink className="nav-icon" exact to="/notifications" onClick={() => { setShowNotifs(!showNotifs); setBtn(true) }}><i className="far fa-bell" /></NavLink>
+          <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
+          <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)} style={{marginRight: '2.5rem'}}><i className="far fa-map" /></NavLink>
+          <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
           {humanPhoto.length ? (
             <div
               className="profile-thumbnail"
@@ -75,39 +80,39 @@ function NavBar({
               if(notif.read) return <div className="read-notif">{notif.sender_name}{txt}</div>
               else return <div className="unread-notif" onClick={()=>updateNotif(notif.id)}>{notif.sender_name}{txt}</div>
             })}
+
           </div>
-        </div>
-      :""}
-      {/* Routes */}
-      <Switch>
-        {/* <Route exact path="/notifications" component={Notifications} /> */}
-        {' '}
-        {/* delete this route if notifications is just modal not a page */}
-        <Route
-          exact
-          path="/inbox"
-          render={() => (
-            <Inbox
-              currentUser={currentUser}
-              humanPhoto={humanPhoto}
-              dogsImg={dogsImg}
-              matches={matches}
-              matchesPhotos={matchesPhotos}
-              allMessages={allMessages}
-              matchesInfo={matchesInfo}
-            />
-          )}
-        />
-        <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} editProfileBtn={editProfileBtn} setBtn={setBtn} />} />
-        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
-      </Switch>
+          : ""}
+        {/* Routes */}
+        <Switch>
+          {/* <Route exact path="/notifications" component={Notifications} /> */}
+          {' '}
+          {/* delete this route if notifications is just modal not a page */}
+          <Route
+            exact
+            path="/inbox"
+            render={() => (
+              <Inbox
+                currentUser={currentUser}
+                humanPhoto={humanPhoto}
+                dogsImg={dogsImg}
+                matches={matches}
+                matchesPhotos={matchesPhotos}
+                allMessages={allMessages}
+                matchesInfo={matchesInfo}
+              />
+            )}
+          />
+          <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
+          <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} editProfileBtn={editProfileBtn} setBtn={setBtn} />} />
+          <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
+        </Switch>
     </BrowserRouter>
   );
 }
 
 NavBar.propTypes = {
-  currentUser: PropTypes.objectOf(
+        currentUser: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -146,7 +151,7 @@ NavBar.propTypes = {
 };
 
 NavBar.defaultProps = {
-  currentUser: {},
+        currentUser: {},
   humanPhoto: [],
   breeds: [],
   currentDogs: [],
