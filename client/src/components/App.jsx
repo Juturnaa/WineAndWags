@@ -101,8 +101,6 @@ const App = () => {
         sender_name: potiential.name
       })
       .catch((err) => console.log(err))
-
-
   };
 
   useEffect(() => {
