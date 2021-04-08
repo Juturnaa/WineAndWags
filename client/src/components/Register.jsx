@@ -576,12 +576,11 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         ))}
                         </Select>
                     </FormControl>
-
                 </div> */}
             </div>
         </div>
-                    
-                </div>                    
+
+                </div>
     }
     //--------------------------Post Info --------------------------//
 
@@ -680,7 +679,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             .then(()=>{
                 setRegister(false)
             })
-            
+
 
         // axios.post('/app/users', {name:owner, dog, email, password, zipcode})
         //axios.post dogs
