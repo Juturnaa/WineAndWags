@@ -147,7 +147,7 @@ const password = "password";
 const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 const seedUsers = () => {
-  for (let i = 0; i < 27; i++) {
+  for (let i = 0; i < 1000; i++) {
     const name = names[getRandom(0, names.length)];
     const gender = genders[getRandom(0, genders.length)];
     const bio = bios[getRandom(0, bios.length)];
