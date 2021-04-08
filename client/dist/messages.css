@@ -167,7 +167,7 @@
   align-items: center;
   border-radius: 10px;
   padding: 10px;
-  background-color: #DDC8C4;
+  background-color: #ecc9c1;
   width: max-content;
 }
 
@@ -177,7 +177,7 @@
   align-items: center;
   border-radius: 10px;
   padding: 10px;
-  background-color: grey;
+  background-color: rgb(241, 240, 240);
   width: max-content;
   align-self: flex-end;
 }
