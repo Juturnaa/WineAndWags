@@ -82,6 +82,10 @@
   background-color: #DDC8C4;
 }
 
+.message-container:focus {
+  outline: 0px;
+}
+
 .messages-photos-container {
   display: flex;
   width: 100px;
