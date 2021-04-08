@@ -53,9 +53,6 @@ const App = () => {
   }, [dogsPhoto]);
 
   const getRandomUser = (filters) => {
-
-
-
     let random;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
@@ -97,6 +94,15 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
+      axios.post(`/app/notifications/${currentUser.id}`, {
+        type: 'photoLike',
+        type_id: photoId,
+        recipient_id: potiential.id,
+        sender_name: potiential.name
+      })
+      .catch((err) => console.log(err))
+
+
   };
 
   useEffect(() => {
