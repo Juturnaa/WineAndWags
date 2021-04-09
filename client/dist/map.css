@@ -5,12 +5,13 @@
   right: 1rem;
   top: 5rem;
   font-size: 3rem;
-  z-index: 10;
+  z-index: 2;
 }
 
 .search {
   position: absolute;
   left: 1rem;
   top: 5rem;
-  z-index:10;
+  z-index:2;
 }
+

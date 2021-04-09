@@ -29,6 +29,7 @@ const libraries = ['places'];
 const mapContainerStyle = {
   width: '100vw',
   height: '95vh',
+  overflow: 'hidden',
 };
 const center = {
   lat: 33.870350,
@@ -179,6 +180,7 @@ function Map({ currentUser }) {
         >
           {places.map((place) => (
             <Marker
+              className="marker"
               key={place.id}
               position={{
                 lat: place.coordinates.latitude,
