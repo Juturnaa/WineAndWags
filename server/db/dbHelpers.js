@@ -103,7 +103,6 @@ const dbHelpers = {
       if (err) {
         res.status(400).send("something went wrong with your query");
       } else {
-        console.log(data.rows);
         res.status(200).send(data.rows);
       }
     });
