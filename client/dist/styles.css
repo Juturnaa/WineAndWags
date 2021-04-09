@@ -3,6 +3,11 @@
         margin-left:20vw;
     }
 }
+@media only screen and (max-width: 1000px) {
+    .prefs{
+        flex-direction: column;
+    }
+}
 @media only screen and (max-width: 800px) {
     .navbar-title {
         margin-left:2vw;
