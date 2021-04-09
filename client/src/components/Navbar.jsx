@@ -9,6 +9,7 @@ import EditProfile from './Homepage/EditProfile';
 import Inbox from './Messages/Inbox';
 import Map from './Map/Map';
 import axios from 'axios';
+import { SignalCellularConnectedNoInternet4BarRounded } from '@material-ui/icons';
 
 // https://reactrouter.com/web/api/Redirect may need to use <Redirect> once logins are setup
 // example:
@@ -29,10 +30,14 @@ function NavBar({
   currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo,
 }) {
   let [notifs, setNotifs] = useState([]);
+  let [unread, setUnread] = useState(0);
   let getNotifs = () => {
     axios.get(`/app/notifications/${currentUserID}`)
     .then(data=> {
-      setNotifs(data.data)
+      let counter =0;
+      data.data.forEach(result => {if(!result.read) counter++})
+      setNotifs(data.data);
+      setUnread(counter);
     })
   }
   let updateNotif = (notif_id) =>{
@@ -42,6 +47,10 @@ function NavBar({
       console.log("updated")
     })
   }
+  useEffect(()=>{
+    getNotifs()
+  },[])
+
   useEffect(()=>{
     if(showNotifs) getNotifs()
   },[showNotifs])
@@ -68,6 +77,12 @@ function NavBar({
             : <div className="profile-thumbnail" />}
         </NavLink>
       </nav>
+      {unread > 0 ?
+        <div className="notifs-icon">
+          <div className="notifs-circle">{unread}</div>
+        </div>
+      : ""
+      }
       {showNotifs ?
         <div className="notifs">
           <div className="notifs-triangle"></div>
@@ -82,7 +97,8 @@ function NavBar({
             })}
 
           </div>
-          : ""}
+        </div>
+        : ""}
         {/* Routes */}
         <Switch>
           {/* <Route exact path="/notifications" component={Notifications} /> */}
