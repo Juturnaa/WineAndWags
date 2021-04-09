@@ -4,10 +4,15 @@ import Chat from './Chat';
 import MatchesCarousel from './MatchesCarousel';
 
 const Inbox = ({
-  currentUser, matches, matchesPhotos, allMessages, matchesInfo,
+  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount,
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
+
+  const sessionMatches = JSON.parse(sessionStorage.getItem('matches'));
+  const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
+  const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
+  const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
@@ -34,12 +39,14 @@ const Inbox = ({
           <div>
             <span>
               Match Queue (
-              {matches.length}
+              {sessionMatches.length}
               )
             </span>
             <MatchesCarousel
-              matchesPhotos={matchesPhotos}
-              matchesInfo={matchesInfo}
+              // matchesPhotos={matchesPhotos}
+              matchesPhotos={sessionMatchesPhotos}
+              // matchesInfo={matchesInfo}
+              matchesInfo={sessionMatchesInfo}
               onMessageClick={onMessageClick}
               messageQueueCount={messageQueueCount}
             />
@@ -50,9 +57,9 @@ const Inbox = ({
                   {messageQueueCount()}
                   )
                 </span>
-                {matchesPhotos.map((match, index) => {
-                  const newestMessageIndex = allMessages[match[0].user_id].length - 1;
-                  if (allMessages[match[0].user_id].length !== 0) {
+                {sessionMatchesPhotos.map((match, index) => {
+                  const newestMessageIndex = sessionAllMessages[match[0].user_id].length - 1;
+                  if (sessionAllMessages[match[0].user_id].length !== 0) {
                     return (
                       <div className="message-container" key={match[0].user_id} name={index} onClick={onMessageClick}>
                         <div className="messages-photos-container" name={index} onClick={onMessageClick}>
@@ -73,17 +80,17 @@ const Inbox = ({
                         </div>
                         <div className="name-message-container" name={index} onClick={onMessageClick}>
                           <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
-                            {matchesInfo[match[0].user_id].name}
+                            {sessionMatchesInfo[match[0].user_id].name}
                             {' '}
                             and
                             {' '}
-                            {matchesInfo[match[0].user_id].dogs_info[0].name}
+                            {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
                           </div>
                           <div>
-                            {(allMessages[match[0].user_id].length !== 0)
+                            {(sessionAllMessages[match[0].user_id].length !== 0)
                               ? (
                                 <div name={index} onClick={onMessageClick}>
-                                  {allMessages[match[0].user_id][newestMessageIndex].body}
+                                  {sessionAllMessages[match[0].user_id][newestMessageIndex].body}
                                 </div>
                               )
                               : <div name={index} onClick={onMessageClick}>Make the first move! Be bold, and write your own story...</div>}
@@ -99,13 +106,15 @@ const Inbox = ({
         )
         : (
           <Chat
-            matchesPhotos={matchesPhotos}
+            matchesPhotos={sessionMatchesPhotos}
             messageMode={messageMode}
             currentMessageId={currentMessageId}
-            allMessages={allMessages}
+            allMessages={sessionAllMessages}
             onMessageClick={onMessageClick}
             currentUser={currentUser}
-            matchesInfo={matchesInfo}
+            matchesInfo={sessionMatchesInfo}
+            setMessageCount={setMessageCount}
+            messageCount={messageCount}
           />
         )}
     </div>

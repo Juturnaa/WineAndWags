@@ -27,7 +27,7 @@ import Map from './Map/Map';
 // </Route>
 
 function NavBar({
-  currentUser, potientialDogsImg, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, showNotifs, setShowNotifs, matchesInfo,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -60,7 +60,6 @@ function NavBar({
     axios.patch(`/app/notifications/${notif_id}`)
       .then(() => {
         getNotifs();
-        console.log('updated');
       });
   };
   useEffect(() => {
@@ -68,7 +67,7 @@ function NavBar({
   }, []);
 
   return (
-    <BrowserRouter>      
+    <BrowserRouter>
       <nav className="navigation-bar">
         <div className="navbar-title-content">
           <div className="navbar-title">
@@ -78,10 +77,10 @@ function NavBar({
         </div>
         <div className="nav-icons">
           <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
-          <button style={{ background: 'none', border: 'none' }} className="nav-icon" onBlur={()=> setShowNotifs(false)} onClick={() => setShowNotifs(!showNotifs)}><i className="far fa-bell" /></button>
+          <button style={{ background: 'none', border: 'none' }} className="notif-icon nav-icon" onBlur={(e)=> e.target.className === "notif-icon nav-icon" ? setShowNotifs(true) : setShowNotification(false)} onClick={() => setShowNotifs(!showNotifs)}><i className="far fa-bell" /></button>
           <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
           <NavLink className="nav-icon" exact to="/map"><i className="far fa-map" /></NavLink>
-          <a className="nav-icon" onClick={() => setEdit(!edit)} onBlur={()=> setEdit(false)}>
+          <a className="nav-icon" onClick={() => setEdit(!edit)} onBlur={() => setEdit(false)}>
             {humanPhoto.length ? (
               <div
                 className="profile-thumbnail"
@@ -94,14 +93,14 @@ function NavBar({
             ? (
               <div style={{ padding: '1.5em' }}>
                 <div id="editNav">
-                <div id="editNav-triangle" />
+                  <div id="editNav-triangle" />
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
                 </div>
               </div>
             )
             : null}
-          
+
         </div>
       </nav>
       {unread > 0
@@ -121,6 +120,7 @@ function NavBar({
                 let txt;
                 if (notif.type === 'photoLike') txt = ' liked your photo';
                 else if (notif.type === 'message') txt = ' sent you a message';
+                else if (notif.type === 'appointment') txt = 'date planned';
                 if (notif.read) {
                   return (
                     <div className="read-notif">
@@ -158,7 +158,7 @@ function NavBar({
           )}
         />
         <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} />} />
+        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} currentUserID={currentUserID} />} />
         <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDogsImg={potientialDogsImg} potientialDog={potientialDog || ''} />} />
       </Switch>
     </BrowserRouter>

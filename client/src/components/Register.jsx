@@ -547,6 +547,13 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                                 labelPlacement="bottom"
                                 onClick ={()=> setDogGendersPref("F")}
                                 />
+                                <FormControlLabel
+                                value="Both"
+                                control={<Radio color="default" />}
+                                label="Both"
+                                labelPlacement="bottom"
+                                onClick ={()=> setDogGendersPref("Both")}
+                                />
                             </RadioGroup>
                         </FormControl>
                     </div>

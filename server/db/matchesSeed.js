@@ -10,7 +10,7 @@ function randomInt() {
   return Math.floor(Math.random() * (200)) + 1;
 }
 
-//------PROFILELIKES SEED FOR USER IDS 1-200 ONLY-------- //
+// ------PROFILELIKES SEED FOR USER IDS 1-200 ONLY-------- //
 for (let i = 1; i <= 200; i++) {
   db.query(`INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${i}, ${randomInt()}
   WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${i} AND liked_user_id in (${randomInt()}))`);
@@ -35,7 +35,7 @@ for (let i = 1; i <= 200; i++) {
 }
 
 // -----------MATCHES FOR USER_ID 7------------ //
-for (let i = 8; i <= 20; i++) {
+for (let i = 8; i <= 40; i++) {
   // USER_ID 7 LIKES:
   db.query(`INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${7}, ${i}
   WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${7} AND liked_user_id in (${i}))`);

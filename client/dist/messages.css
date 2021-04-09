@@ -158,7 +158,7 @@
 #direct-messages-container {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 75%;
 }
 
 .messages-from-match-container {
@@ -186,14 +186,16 @@
 
 .time-stamp-match {
   /* justify-self: end; */
-  font-size: 11px;
+  font-size: 9px;
   padding-top: 3px;
+  margin-bottom: 6px;
 }
 
 .time-stamp-user {
   align-self: flex-end;
-  font-size: 11px;
+  font-size: 9px;
   padding-top: 3px;
+  margin-bottom: 6px;
 }
 
 #send-message-container {
@@ -210,13 +212,14 @@
   width: 75%;
 }
 
-input[type=text] {
+.send-message-input {
   border: none;
   width: 700px;
 }
-input[type=text]:focus {
+
+.send-message-input:focus {
   outline: none;
-}
+} */
 
 .fa-calendar-alt {
   cursor: pointer;
