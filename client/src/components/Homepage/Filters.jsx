@@ -15,12 +15,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
-import Geocode from 'react-geocode';
-import key from '../../../../config/googleConfig.js';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import breeds from '../../dummyData/dogBreed';
-
-Geocode.setApiKey(key);
 
 export default function Filters({
   sizeRange, changeSizeRange,
@@ -36,53 +32,9 @@ export default function Filters({
   ownerGenders, changeOwnerGenders,
   close, setFilterParams,
   currentUser, currentUserID,
-  potiential, showAlert
+  potiential, showAlert,
+  zipCodes, changeZipCodes
 }) {
-
-  const [myLocation, changeMyLocation] = useState([]);
-  const [zipCodes, changeZipCodes] = useState(["91741"]);
-
-  const getLocation = (city, zipcode) => {
-    Geocode.fromAddress(`${city} ${zipcode}`)
-      .then((response) => {
-        const { lat, lng } = response.results[0].geometry.location;
-        changeMyLocation([lat, lng])
-        getZipCodesInRadius(lat, lng, maxDistance);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }
-
-  const getZipCodesInRadius = (lat, long, radius) => {
-    const options = {
-      method: 'GET',
-      url: 'https://vanitysoft-boundaries-io-v1.p.rapidapi.com/reaperfire/rest/v1/public/boundary/zipcode/location',
-      params: { latitude: lat, longitude: long, radius: radius },
-      headers: {
-        'x-rapidapi-key': 'ffb591a7abmsh204544556caf1a4p158ab3jsn0e0cf2bc1b2a',
-        'x-rapidapi-host': 'vanitysoft-boundaries-io-v1.p.rapidapi.com'
-      }
-    };
-    axios.request(options).then(function (response) {
-      let uniqueZips = [];
-      for (let item of response.data.features) {
-        if (!uniqueZips.includes(item.properties.zipCode)) {
-          uniqueZips.push(`'${item.properties.zipCode}'`)
-        }
-      }
-      changeZipCodes(uniqueZips.join(','));
-    }).catch(function (error) {
-      console.error(error);
-    });
-  }
-
-  useEffect(() => {
-    if (currentUser.city && currentUser.zipcode) {
-      getLocation(currentUser.city, currentUser.zipcode)
-      updateFilterParams();
-    }
-  }, [currentUser])
 
   // XS, S, M, L, XL
   const sizeLabels = [
@@ -153,7 +105,6 @@ export default function Filters({
     axios.patch(`app/${currentUserID}/filters`, values)
       .then((results) => {
         updateFilterParams()
-        getLocation(currentUser.city, currentUser.zipcode) // getLocation also updates valid zip codes in max distance filter radius
         close(false);
         showAlert(true);
       })
@@ -161,19 +112,35 @@ export default function Filters({
   }
 
   const updateFilterParams = () => {
-    const params = {
-      sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
-      dogGenders,
-      dogAgeRange,
-      hypoallergenic,
-      neutered,
-      healthIssues,
-      avoidBreeds: avoidBreeds.join(','),
-      zipCodes,
-      ownerAgeRange,
-      ownerGenders
+    // request for zip codes based on currentUser zip and maxDistance slider
+    const options = {
+      method: 'GET',
+      url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
+      params: { zipcode: currentUser.zipcode, maximumradius: maxDistance, key: 'HQH2IMXH3DL9TC616NNR' }
     }
-    setFilterParams(params)
+    axios.request(options)
+      .then((response) => {
+        let uniqueZips = [];
+        for (let item of response.data.DataList) {
+          if (!uniqueZips.includes(item.Code)) {
+            uniqueZips.push(`'${item.Code}'`)
+          }
+        }
+        changeZipCodes(uniqueZips.join(','));
+        const params = {
+          sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
+          dogGenders,
+          dogAgeRange,
+          hypoallergenic,
+          neutered,
+          healthIssues,
+          avoidBreeds: avoidBreeds.join(','),
+          zipCodes: uniqueZips.join(','),
+          ownerAgeRange,
+          ownerGenders
+        }
+        setFilterParams(params)
+      })
   }
 
   const theme = createMuiTheme({
