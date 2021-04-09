@@ -231,18 +231,18 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
 
   return (
     <div>
-      {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
+      {/* {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null} */}
       <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
