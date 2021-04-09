@@ -35,7 +35,7 @@ export default function Filters({
   ownerGenders, changeOwnerGenders,
   close, setFilterParams,
   currentUser, currentUserID,
-  potiential,
+  potiential, showAlert
 }) {
 
   const [myLocation, changeMyLocation] = useState([]);
@@ -607,7 +607,7 @@ export default function Filters({
         updateFilterParams()
         getLocation(currentUser.city, currentUser.zipcode) // getLocation also updates valid zip codes in max distance filter radius
         close(false);
-        alert('updated preferences');
+        showAlert(true);
       })
       .catch((err) => console.error(err));
   }
@@ -642,33 +642,34 @@ export default function Filters({
   return (
     <div className='filter-modal'>
       <ThemeProvider theme={theme}>
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
           <IconButton onClick={() => close(false)} color="secondary" aria-label="close-filter-modal"><CancelIcon /></IconButton>
         </div>
         <div className='filter-modal-inner'>
           <div className='owner-filters'>
             <Typography variant="h4" gutterBottom>Owner</Typography>
-            <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
+            <Typography variant="overline" display="block" gutterBottom>Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
             <Slider color="primary" style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
-            <Typography variant="body1">Max distance: {maxDistance} miles</Typography>
+            <Typography variant="overline" display="block" gutterBottom>Max distance: {maxDistance} miles</Typography>
             <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
-            <Typography variant="body1">Genders</Typography>
-            <FormControl component="fieldset">
-              <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
-                <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
-                <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
-                <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
-              </RadioGroup>
-            </FormControl>
-
+            <div style={{ padding: 0, marginTop: '1.25rem' }}>
+              <Typography variant="overline" display="block" gutterBottom>Genders</Typography>
+              <FormControl component="fieldset">
+                <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
+                  <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
+                  <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
+                  <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
+                </RadioGroup>
+              </FormControl>
+            </div>
             <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
 
           </div>
           <div className='dog-filters'>
             <Typography variant="h4" gutterBottom>Dog</Typography>
-            <Typography variant="body1">Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
+            <Typography variant="overline" display="block" gutterBottom>Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
             <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={20} />
-            <Typography variant="body1">Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
+            <Typography variant="overline" display="block" gutterBottom>Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
             <Slider style={sliderStyle}
               value={sizeRange}
               onChange={(e, val) => changeSizeRange(val)}
@@ -677,7 +678,7 @@ export default function Filters({
               min={0}
               max={4}
             />
-            <Typography variant="body1">Genders</Typography>
+            <Typography variant="overline" display="block" gutterBottom>Genders</Typography>
             <FormControl component="fieldset">
               <RadioGroup row aria-label="gender" name="gender_dog" value={dogGenders} onChange={(e, val) => changeDogGenders(val)}>
                 <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
@@ -685,7 +686,7 @@ export default function Filters({
                 <FormControlLabel value="Both" control={<Radio color="primary" />} label="Both" />
               </RadioGroup>
             </FormControl>
-            <Typography variant="body1">Information</Typography>
+            <Typography variant="overline" display="block" gutterBottom>Information</Typography>
             <FormControlLabel
               control={<Checkbox color="primary" checked={hypoallergenic} onChange={() => changeHypoallergenic(!hypoallergenic)} name="hypoallergenic" />}
               label="Hypoallergenic"
@@ -699,7 +700,7 @@ export default function Filters({
               label="Health issues"
             />
             <div style={{ display: 'flex', flexDirection: 'row' }}>
-              <Typography variant="body1" style={{ marginRight: '1rem' }}>Avoid breeds:</Typography>
+              <Typography variant="overline" display="block" gutterBottom style={{ marginRight: '1rem' }}>Avoid breeds:</Typography>
               <FormControl>
                 <Select
                   multiple
