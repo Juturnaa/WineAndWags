@@ -63,7 +63,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let [owner_min_age, setOwnerMinAge] =useState(18);
     let [owner_max_age, setOwnerMaxAge] =useState(100)
     let [ownerAgePref, setOwnerAgePref] =useState([18, 100])
-    let [dogIds, setDogIds] =useState([]);
+    let [error, setError] =useState(false);
     let inputs;
     let titleText="";
 
@@ -219,7 +219,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             </div>
             <input className="age" placeholder="Age" value={ownerAge} type="number" min={18} onChange={(e) => setOwnerAge(e.target.value)}/>
             <div className="gender-input">
-                <FormControl component="fieldset">
+                <FormControl component="fieldset" error={error}>
                     <FormLabel component="legend" className={classes.InputLabel}>Include me in searches for</FormLabel>
                     <RadioGroup row value={searched_as}>
                         <FormControlLabel
@@ -299,7 +299,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                 </div>
                 <input className="age" placeholder="Age" name="dogAge" value={dogAges[num-1]} type="number" min="0" onChange={(e) => {let arr = dogAges.slice(); arr.splice(num-1,1,e.target.value); setDogAges(arr)}}/>
                 <div className="gender-input">
-                    <FormControl component="fieldset">
+                    <FormControl component="fieldset" error={error}>
                         <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                         <RadioGroup row value={dogGenders[num-1]}>
                             <FormControlLabel
@@ -319,7 +319,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         </RadioGroup>
                     </FormControl>
                 </div>
-                <FormControl required className={classes.formControl}>
+                <FormControl error={error} className={classes.formControl}>
                     <InputLabel htmlFor="age-native-required">Breed</InputLabel>
                     <Select
                     native
@@ -457,7 +457,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         />
                     </div>
                     <div className="gender-input">
-                        <FormControl component="fieldset">
+                        <FormControl component="fieldset" error={error}>
                             <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                 <FormControlLabel
@@ -530,7 +530,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                             />
                     </div>
                     <div className="gender-input">
-                        <FormControl component="fieldset">
+                        <FormControl component="fieldset" error={error}>
                             <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                 <FormControlLabel
