@@ -14,9 +14,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import BackspaceIcon from '@material-ui/icons/Backspace';
+import CancelIcon from '@material-ui/icons/Cancel';
 import Geocode from 'react-geocode';
 import key from '../../../../config/googleConfig.js';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 Geocode.setApiKey(key);
 
@@ -56,7 +57,7 @@ export default function Filters({
     const options = {
       method: 'GET',
       url: 'https://vanitysoft-boundaries-io-v1.p.rapidapi.com/reaperfire/rest/v1/public/boundary/zipcode/location',
-      params: {latitude: lat, longitude: long, radius: radius},
+      params: { latitude: lat, longitude: long, radius: radius },
       headers: {
         'x-rapidapi-key': 'ffb591a7abmsh204544556caf1a4p158ab3jsn0e0cf2bc1b2a',
         'x-rapidapi-host': 'vanitysoft-boundaries-io-v1.p.rapidapi.com'
@@ -626,82 +627,98 @@ export default function Filters({
     setFilterParams(params)
   }
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#EFF9F0"
+      },
+      secondary: {
+        main: "#13070C"
+      }
+    },
+  });
+
   return (
     <div className='filter-modal'>
-      <div>
-        <IconButton onClick={() => close(false)} color="primary" aria-label="close-filter-modal"><BackspaceIcon /></IconButton>
-      </div>
-      <div className='filter-container'>
-        <div className='owner-filters'>
-          <Typography variant="h4" gutterBottom>Owner</Typography>
-          <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
-          <Slider style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
-          <Typography variant="body1">Max distance: {maxDistance} miles</Typography>
-          <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
-          <Typography variant="body1">Genders</Typography>
-          <FormControl component="fieldset">
-            <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
-              <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
-              <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
-              <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
-            </RadioGroup>
-          </FormControl>
-          <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
+       <div className='arrowhead'/>
+      <ThemeProvider theme={theme}>
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <IconButton onClick={() => close(false)} color="secondary" aria-label="close-filter-modal"><CancelIcon /></IconButton>
         </div>
-        <div className='dog-filters'>
-          <Typography variant="h4" gutterBottom>Dog</Typography>
-          <Typography variant="body1">Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
-          <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={20} />
-          <Typography variant="body1">Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
-          <Slider style={sliderStyle}
-            value={sizeRange}
-            onChange={(e, val) => changeSizeRange(val)}
-            marks={sizeLabels}
-            step={1}
-            min={0}
-            max={4}
-          />
-          <Typography variant="body1">Genders</Typography>
-          <FormControl component="fieldset">
-            <RadioGroup row aria-label="gender" name="gender_dog" value={dogGenders} onChange={(e, val) => changeDogGenders(val)}>
-              <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
-              <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
-              <FormControlLabel value="Both" control={<Radio color="primary" />} label="Both" />
-            </RadioGroup>
-          </FormControl>
-          <Typography variant="body1">Information</Typography>
-          <FormControlLabel
-            control={<Checkbox color="primary" checked={hypoallergenic} onChange={() => changeHypoallergenic(!hypoallergenic)} name="hypoallergenic" />}
-            label="Hypoallergenic"
-          />
-          <FormControlLabel
-            control={<Checkbox color="primary" checked={neutered} onChange={() => changeNeutered(!neutered)} name="neutered" />}
-            label="Neutered/Spayed"
-          />
-          <FormControlLabel
-            control={<Checkbox color="primary" checked={healthIssues} onChange={() => changeHealthIssues(!healthIssues)} name="healthIssues" />}
-            label="Health issues"
-          />
-          <div style={{ display: 'flex', flexDirection: 'row' }}>
-            <Typography variant="body1" style={{ marginRight: '1rem' }}>Avoid breeds:</Typography>
-            <FormControl>
-              <Select
-                multiple
-                value={avoidBreeds}
-                onChange={(e) => changeAvoidedBreeds(e.target.value)}
-                input={<Input />}
-                style={{ marginRight: '1rem', minWidth: 150, maxWidth: 400 }}
-              >
-                {breeds.map((breed) => (
-                  <MenuItem key={breed} value={breed}>
-                    {breed}
-                  </MenuItem>
-                ))}
-              </Select>
+        <div className='filter-container'>
+          <div className='owner-filters'>
+            <Typography variant="h4" gutterBottom>Owner</Typography>
+            <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
+            <Slider color="primary" style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
+            <Typography variant="body1">Max distance: {maxDistance} miles</Typography>
+            <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
+            <Typography variant="body1">Genders</Typography>
+            <FormControl component="fieldset">
+              <RadioGroup row aria-label="gender" name="gender_owner" value={ownerGenders} onChange={(e, val) => changeOwnerGenders(val)}>
+                <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
+                <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
+                <FormControlLabel value="All" control={<Radio color="primary" />} label="All" />
+              </RadioGroup>
             </FormControl>
+
+            <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
+
+          </div>
+          <div className='dog-filters'>
+            <Typography variant="h4" gutterBottom>Dog</Typography>
+            <Typography variant="body1">Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
+            <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={20} />
+            <Typography variant="body1">Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
+            <Slider style={sliderStyle}
+              value={sizeRange}
+              onChange={(e, val) => changeSizeRange(val)}
+              marks={sizeLabels}
+              step={1}
+              min={0}
+              max={4}
+            />
+            <Typography variant="body1">Genders</Typography>
+            <FormControl component="fieldset">
+              <RadioGroup row aria-label="gender" name="gender_dog" value={dogGenders} onChange={(e, val) => changeDogGenders(val)}>
+                <FormControlLabel value="M" control={<Radio color="primary" />} label="Male" />
+                <FormControlLabel value="F" control={<Radio color="primary" />} label="Female" />
+                <FormControlLabel value="Both" control={<Radio color="primary" />} label="Both" />
+              </RadioGroup>
+            </FormControl>
+            <Typography variant="body1">Information</Typography>
+            <FormControlLabel
+              control={<Checkbox color="primary" checked={hypoallergenic} onChange={() => changeHypoallergenic(!hypoallergenic)} name="hypoallergenic" />}
+              label="Hypoallergenic"
+            />
+            <FormControlLabel
+              control={<Checkbox color="primary" checked={neutered} onChange={() => changeNeutered(!neutered)} name="neutered" />}
+              label="Neutered/Spayed"
+            />
+            <FormControlLabel
+              control={<Checkbox color="primary" checked={healthIssues} onChange={() => changeHealthIssues(!healthIssues)} name="healthIssues" />}
+              label="Health issues"
+            />
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+              <Typography variant="body1" style={{ marginRight: '1rem' }}>Avoid breeds:</Typography>
+              <FormControl>
+                <Select
+                  multiple
+                  value={avoidBreeds}
+                  onChange={(e) => changeAvoidedBreeds(e.target.value)}
+                  input={<Input />}
+                  style={{ marginRight: '1rem', minWidth: 150, maxWidth: 400 }}
+                >
+                  {breeds.map((breed) => (
+                    <MenuItem key={breed} value={breed}>
+                      {breed}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </div>
           </div>
         </div>
-      </div>
+      </ThemeProvider>
     </div>
   )
 }
