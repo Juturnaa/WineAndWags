@@ -117,6 +117,7 @@ const App = () => {
       .catch((err) => console.log(err));
     axios.post(`/app/${id}/profile-likes`, { liked_user_id: currentUser.id })
       .then((data) => {
+        updateMatches();
       })
       .catch((err) => {
         console.log(err);
@@ -171,6 +172,17 @@ const App = () => {
       }))
       .catch((err) => console.error(err));
   }, []);
+
+
+  const updateMatches = () => {
+    axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+  };
+
+
 
   useEffect(() => {
     if (currentUser.id) {
@@ -234,7 +246,7 @@ const App = () => {
   return (
     <div>
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-      {/* <NavBar
+      <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto || ''}
@@ -253,10 +265,10 @@ const App = () => {
         potientialDogsImg={potientialDogsImg}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
-      /> */}
-      <ContextProvider>
+      />
+      {/* <ContextProvider>
         <Video />
-      </ContextProvider>
+      </ContextProvider> */}
     </div>
   );
 };
