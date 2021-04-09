@@ -2,15 +2,13 @@
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: 40%;
-  left: 50%;
-  width: 75%;
+  top: 12%;
+  left: 0.5%;
+  width: 50%;
   right: auto;
   bottom: auto;
-  transform: translate(-50%, -50%);
   z-index: 100;
-  background-color: rgb(245, 245, 245);
-  border: 2px solid #13070c;
+  background-color: rgba(221, 200, 196, 0.94);
   border-radius: 0.25rem;
   padding-bottom: 1%;
   color: #13070c;
@@ -34,4 +32,15 @@
 
 button:hover {
   cursor: pointer;
+}
+
+.arrowhead {
+  display: block;
+  width: 0px;
+  height: 0px;
+  border: 15px solid transparent;
+  border-bottom-color: rgba(221, 200, 196, 0.94);
+  border-top-width: 0px;
+  margin-top: -14px;
+  margin-left: 1px;
 }

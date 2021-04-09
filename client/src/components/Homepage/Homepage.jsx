@@ -5,6 +5,7 @@ import ProfileView from './ProfileVIew';
 import DogView from './DogView';
 import LikeButton from './LikeButton';
 import Button from '@material-ui/core/Button';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Homepage({
   currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
@@ -118,9 +119,22 @@ export default function Homepage({
     }
   }, [currentUser]);
 
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#EFF9F0"
+      },
+      secondary: {
+        main: "#13070C"
+      }
+    },
+  });
+
   return (
     <div className='homepage'>
-      <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      <ThemeProvider theme={theme}>
+        <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      </ThemeProvider>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
         <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />

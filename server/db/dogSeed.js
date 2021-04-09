@@ -23,6 +23,25 @@ const names = [
   "Oliver",
   "Pierre",
   "Revan",
+  "Charlie",
+  "Goofie",
+  "Taquito",
+  "Takito",
+  "Mochi",
+  "Rocky",
+  "Wolfie",
+  "Alpha",
+  "Kun",
+  "Michael",
+  "Jake",
+  "Hyungjoo",
+  "Cloud",
+  "Chloe",
+  "Ruby",
+  "Shake",
+  "Oliver",
+  "Pierre",
+  "Revan",
 ];
 
 const gender = ["M", "F"];
@@ -524,21 +543,33 @@ const dogSeed = function (
     age.push(i);
   }
 
-  for (let i = 1; i < 50001; i++) {
+  for (let i = 0; i < 1000; i++) {
+    console.log(i);
     const name = names[random(names.length)];
     const gen = gender[random(gender.length)];
     const bi = bio[random(bio.length)];
     const hyp = hypo[random(hypo.length)];
     const neu = neutered[random(neutered.length)];
     const rate = rating[random(rating.length)];
-    const owner = owner_id[i];
     const ag = age[random(age.length)];
     const si = size[random(size.length)];
     const bre = breed[random(breed.length)];
     const health = healthy[random(healthy.length)];
-    pool.query(
-      `INSERT INTO waw.dogs(id, name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES (DEFAULT, '${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner}, ${ag}, '${si}', '${bre}', ${health})`
-    );
+    if (i % 2 === 0) {
+      pool.query(
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+      );
+    } else {
+      pool.query(
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+      );
+      pool.query(
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+      );
+      pool.query(
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+      );
+    }
   }
 };
 
