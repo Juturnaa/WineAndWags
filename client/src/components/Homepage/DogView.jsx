@@ -55,7 +55,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
                 {dog.name}
             </div>
             <div className="photo-container">
-                    <PhotosList likePhoto={likePhoto} photos={userPhotos} />
+                    <PhotosList likePhoto={likePhoto} photos={dogPhotos} />
                 <div className="card-text" >
                     <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {dog.age} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {gender} </div>  </div>
