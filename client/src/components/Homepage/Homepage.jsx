@@ -8,15 +8,13 @@ import Button from '@material-ui/core/Button';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Homepage({
-  currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
+  currentUser, likeProfile, humanPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
 }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   const [currentDogIndex, setCurrentDogIndex] = useState(0)
   const [isDisplayingSkipDogs, setIsDisplayingSkipDogs] = useState(0)
   useEffect(() => {
-    // console.log('current dog index',currentDogIndex)
-    // console.log('current Dogs',potientialDog)
     if (potientialDog.length > 1) {
       setIsDisplayingSkipDogs(true)
     } else {
@@ -130,7 +128,7 @@ export default function Homepage({
       </ThemeProvider>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
-        <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
+        <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
 

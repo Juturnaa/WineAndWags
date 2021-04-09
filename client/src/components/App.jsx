@@ -22,7 +22,6 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
-  const [editProfileBtn, setBtn] = useState(true);
   const [allMessages, setAllMessages] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [reviewModal, setReviewModal] = useState(false);
@@ -30,7 +29,9 @@ const App = () => {
   // potiential Match User states
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
-  const [potientialPhoto, setPotientialPhoto] = useState();
+  const [potientialPhoto, setPotientialPhoto] = useState([]);
+  const [potientialDogsPhoto, setPotientialDogPhoto] = useState([]);
+  const [potientialDogsImg, setPotientialDogsImg] = useState([])
   const [showNotifs, setShowNotifs] = useState(false)
 
   useEffect(() => {
@@ -52,18 +53,51 @@ const App = () => {
     setDogsImg(dogsimages);
   }, [dogsPhoto]);
 
+  useEffect(() => {
+    const dogsimages = [];
+    const store = [];
+    if (potientialDogsPhoto.length > 0) {
+      for (let i = 0; i < potientialDogsPhoto.length; i++) {
+        const ind = store.indexOf(potientialDogsPhoto[i].dog_id);
+        if (ind > -1) {
+          dogsimages[ind][potientialDogsPhoto[i].dog_id].push(potientialDogsPhoto[i]);
+        } else {
+          const dogsKey = {};
+          dogsKey[potientialDogsPhoto[i].dog_id] = [potientialDogsPhoto[i]];
+          dogsimages.push(dogsKey);
+          store.push(potientialDogsPhoto[i].dog_id);
+        }
+      }
+    }
+    setPotientialDogsImg(dogsimages);
+  }, [potientialDogsPhoto]);
+
+
+
   const getRandomUser = (filters) => {
     let random;
+    let uId;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setPotiential(data.data[random]);
+        uId = data.data[random].id
         setPotientialDog(data.data[random].dogs_info);
       })
       .then(() => {
-        axios.get(`/app/users/photos/${random + 1}`)
+        axios.get(`/app/users/photos/${uId}`)
           .then((data) => {
-            setPotientialPhoto(data.data);
+            const human = [];
+            const dogs = [];
+            for (let i = 0; i < data.data.length; i++) {
+              if (data.data[i].dog_id === null) {
+                human.push(data.data[i]);
+              } else {
+                dogs.push(data.data[i]);
+              }
+            }
+            setPotientialPhoto(human);
+            setPotientialDogPhoto(dogs)
           });
       });
   };
@@ -201,7 +235,7 @@ const App = () => {
       <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
-        humanPhoto={humanPhoto}
+        humanPhoto={humanPhoto || ''}
         dogsImg={dogsImg}
         getRandomUser={getRandomUser}
         currentUser={currentUser}
@@ -214,8 +248,7 @@ const App = () => {
         currentUserID={currentUserID}
         potiential={potiential}
         potientialDog={potientialDog}
-        editProfileBtn={editProfileBtn}
-        setBtn={setBtn}
+        potientialDogsImg={potientialDogsImg}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
       />
