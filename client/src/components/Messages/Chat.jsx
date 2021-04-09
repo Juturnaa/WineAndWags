@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Modal from 'react-modal'
-import Calendar from './Calendar.jsx'
+import Modal from 'react-modal';
+import Calendar from './Calendar.jsx';
 // import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
-  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser,
+  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
   const [inputValue, setInputValue] = useState('');
-  const [calendar, clickedCalendar] = useState(false)
+  const [calendar, clickedCalendar] = useState(false);
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -41,7 +41,7 @@ const Chat = ({
   };
 
   const onSendClick = (e) => {
-    console.log('clicked')
+    console.log('clicked');
     axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
       message: inputValue,
     })
@@ -61,23 +61,41 @@ const Chat = ({
         <div id="chat-images-container">
           <img className="chat-human-photo" alt="human" src={matchesPhotos[currentMessageId][0].url} />
           <img className="chat-dog-photo" alt="dog" src={matchesPhotos[currentMessageId][1].url} />
-          <div id="chat-names">Human and Dog</div>
+          <div id="chat-names">
+            {matchesInfo[matchUserId].name}
+            {' '}
+            and
+            {' '}
+            {matchesInfo[matchUserId].dogs_info[0].name}
+          </div>
         </div>
         <br />
         <br />
+
         <div id="direct-messages-container">
-          {/* {console.log('user messages', allMessages[matchUserId])} */}
-          {allMessages[matchUserId].map((message) => (
-            <div className="direct-message-container" key={message.id}>
-              <div className="message-body">
+          {allMessages[matchUserId].map((message) => {
+            // console.log('message', message)
+            if (message.sender_id === currentUserId) {
+              return (
+                <React.Fragment>
+                  <div className="messages-from-user-container" key={message.id}>
+                    {message.body}
+                  </div>
+                  <div className="time-stamp-user">{message.to_char}</div>
+                </React.Fragment>
+              );
+            }
+            return (
+              <React.Fragment>
+              <div className="messages-from-match-container" key={message.id}>
                 {message.body}
               </div>
-              <div className="time-stamp">
-                {message.time_stamp}
-              </div>
-            </div>
-          ))}
+              <div className="time-stamp-match">{message.to_char}</div>
+            </React.Fragment>
+            );
+          })}
         </div>
+
         <div id="send-message-container">
           <i onClick={()=>{clickedCalendar(true)}}className="far fa-calendar-alt" />
           <Modal widgetname="related-products"
@@ -87,7 +105,7 @@ const Chat = ({
           onRequestClose={() => {clickedCalendar(!calendar)}}>
             <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId}/>
           </Modal>
-          <input type="text" onChange={handleInputChange} />
+          <input type="text" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
       </div>
@@ -97,11 +115,6 @@ const Chat = ({
 
 Chat.propTypes = {
   matchesPhotos: PropTypes.arrayOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  allMessages: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -117,7 +130,6 @@ Chat.propTypes = {
 
 Chat.defaultProps = {
   matchesPhotos: [],
-  allMessages: {},
   messageMode: false,
   currentMessageId: null,
   currentUser: {},

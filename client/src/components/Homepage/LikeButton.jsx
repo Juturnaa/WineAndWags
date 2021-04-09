@@ -1,17 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import Button from '@material-ui/core/Button';
+import React from 'react';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import NotInterestedIcon from '@material-ui/icons/NotInterested';
+import { makeStyles } from "@material-ui/core/styles";
 
 
-const LikeButton = ({ getRandomUser, filterParams, likeProfile }) => {
-    // we still need to pass down the id of the user whos profile we are viewing. NOT the user that is logged in
+const useStyles = makeStyles(theme => ({
+    customHoverFocus: {
+      color: '#DDC8C4',
+      "&:hover": { color: "#EFF9F0" }
+    },
+    customHoverFocus2: {
+        color: 'red',
+        "&:hover": { color: "#EFF9F0" }
+      }
+  }));
+
+const LikeButton = ({ user, getRandomUser, filterParams, likeProfile }) => {
+    const classes = useStyles();
+
     return (
-        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}} >
-            <Button variant="contained" style={{width: '10rem', height: '2.5rem'}} color="primary" onClick={() =>  getRandomUser(filterParams)}>Skip</Button>
-            <div className='heart' onClick={() => {
-                likeProfile(5);
+        <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', marginTop: '0%'}} >
+            <div className="like-buttons" ><NotInterestedIcon className={classes.customHoverFocus2} style={{ fontSize: '100px' }} onClick={() =>  getRandomUser(filterParams)}  /></div>
+            <div className="like-buttons" style={{marginLeft: '1%'}}><FavoriteIcon className={classes.customHoverFocus} style={{ fontSize: '100px', marginLeft: '2%' }}  onClick={() => {
+                likeProfile(user.id);
                 getRandomUser(filterParams)
-            }}  ></div>
+            }} /></div>            
         </div>
     )
 }

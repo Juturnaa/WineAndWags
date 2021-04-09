@@ -22,6 +22,10 @@ router
   .patch(controller.editDogProfile)
   .post(controller.uploadDogPhotos);
 
+router
+  .route('/ratings/:dogid')
+  .patch(controller.updateReview);
+
 router.route('/users/delete/:photoid').delete(controller.removePhotos);
 
 router.route('/users/random-profile').get(controller.getRandomProfile);
@@ -80,3 +84,15 @@ router
 router
   .route('/yelp')
   .get(controller.getYelpResults);
+
+// ------------ CALENDAR ---------------- //
+router
+  .route('/dates/:userid')
+  .get(controller.getUserDates)
+  .patch(controller.reviewed);
+
+// NOTIFICATIONS------------------------------------//
+router.route('/notifications/:id/')
+  .get(controller.getNotif)
+  .post(controller.postNotif)
+  .patch(controller.updateNotif)

@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList.jsx';
 
-const ProfileView = ({ user, photos }) => {
+const ProfileView = ({ user, photos, likePhoto }) => {
+  const [gender, setGender] = useState('');
+  useEffect(() => {
+    if (user) {
+      if (user.searched_as === 'M') {
+        setGender('Male')
+      } else if (user.searched_as === 'F') {
+        setGender('Female')
+      } else {
+        setGender('Non-Binary')
+      }
+    }
+  }, [user])
+
   const userPhotos = [
     {
       id: 1,
@@ -30,7 +43,7 @@ const ProfileView = ({ user, photos }) => {
         {user !== undefined ? user.name : null}
       </div>
       <div className="photo-container">
-        <PhotosList photos={userPhotos} />
+        <PhotosList photos={photos || ''} likePhoto={likePhoto} />
         <div className="card-text">
           <div className="text-component">
             {' '}
@@ -38,7 +51,7 @@ const ProfileView = ({ user, photos }) => {
             {' '}
             <div className="text-component-value">
               {' '}
-              {user !== undefined ? user.zipcode : null}
+              {user !== undefined ? user.city : null}
               {' '}
             </div>
             {' '}
@@ -49,7 +62,7 @@ const ProfileView = ({ user, photos }) => {
             {' '}
             <div className="text-component-value">
               {' '}
-              {user !== undefined ? user.searched_as : null}
+              {user !== undefined ? gender : null}
               {' '}
             </div>
             {' '}

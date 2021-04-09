@@ -7,13 +7,30 @@ import {
   Marker,
   InfoWindow,
 } from '@react-google-maps/api';
-import key from '../../../../config/googleConfig.js';
+
+import usePlacesAutocomplete, {
+  getGeocode,
+  getLatLng,
+} from 'use-places-autocomplete';
+
+import {
+  Combobox,
+  ComboboxInput,
+  ComboboxPopover,
+  ComboboxList,
+  ComboboxOption,
+} from '@reach/combobox';
+import '@reach/combobox/styles.css';
+
+import key from '../../../../config/googleConfig';
 import mapStyles from './mapStyles';
+
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const libraries = ['places'];
 const mapContainerStyle = {
   width: '100vw',
-  height: '100vh',
+  height: 'calc(100vh - 3.5rem)',
 };
 const center = {
   lat: 33.870350,
@@ -30,26 +47,31 @@ Geocode.setApiKey(key);
 function Map({ currentUser }) {
   const [places, setPlaces] = React.useState(null);
   const [selected, setSelected] = React.useState(null);
-  Geocode.fromAddress(`${currentUser.city} ${currentUser.zipcode}`).then((response) => {
-    const { lat, lng } = response.results[0].geometry.location;
-    center.lat = lat;
-    center.lng = lng;
-  });
-  React.useEffect(() => {
+
+  function getPlaces(lat, lng) {
     axios.get('http://localhost:3000/app/yelp', {
       params: {
         location: {
-          latitude: center.lat,
-          longitude: center.lng,
+          latitude: lat,
+          longitude: lng,
         },
       },
     })
       .then((results) => {
-        console.log('results', results);
-        const filteredResults = Array.from(new Set(results.data.map((a) => a.id))).map((id) => results.data.find((a) => a.id === id));
+        const filteredResults = Array.from(new Set(
+          results.data.map((a) => a.id),
+        )).map((id) => results.data.find((a) => a.id === id));
         setPlaces(filteredResults);
-        console.log('filtered', filteredResults);
-      }).then(() => console.log('places', places)).catch((err) => console.log(err));
+      }).catch((err) => console.log(err));
+  }
+
+  React.useEffect(() => {
+    Geocode.fromAddress(`${currentUser.city} ${currentUser.zipcode}`).then((response) => {
+      const { lat, lng } = response.results[0].geometry.location;
+      center.lat = lat;
+      center.lng = lng;
+      getPlaces(center.lat, center.lng);
+    });
   }, []);
 
   const { isLoaded, loadError } = useLoadScript({
@@ -68,20 +90,7 @@ function Map({ currentUser }) {
   }, []);
 
   const dblClick = (e) => {
-    axios.get('http://localhost:3000/app/yelp', {
-      params: {
-        location: {
-          latitude: e.latLng.lat(),
-          longitude: e.latLng.lng(),
-        },
-      },
-    })
-      .then((results) => {
-        console.log('results', results);
-        const filteredResults = Array.from(new Set(results.data.map((a) => a.id))).map((id) => results.data.find((a) => a.id === id));
-        setPlaces(filteredResults);
-        console.log('filtered', filteredResults);
-      }).then(() => console.log('places', places)).catch((err) => console.log(err));
+    getPlaces(e.latLng.lat(), e.latLng.lng());
   };
 
   function Locate({ panTo }) {
@@ -96,6 +105,7 @@ function Map({ currentUser }) {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
               });
+              getPlaces(position.coords.latitude, position.coords.longitude);
             },
             () => null,
           );
@@ -106,58 +116,111 @@ function Map({ currentUser }) {
     );
   }
 
-  if (isLoaded && places) {
+  function Search() {
+    const {
+      ready,
+      value,
+      suggestions: { status, data },
+      setValue,
+      clearSuggestions,
+    } = usePlacesAutocomplete({
+      requestOptions: {
+        location: { lat: () => center.lat, lng: () => center.lng },
+        radius: 200000,
+      },
+    });
+
     return (
-      <div>
-        Dog parks and Dog beaches
-        <Locate panTo={panTo} />
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          zoom={11}
-          center={center}
-          options={options}
-          onLoad={onMapLoad}
-          onDblClick={dblClick}
+      <div className="search">
+        <Combobox
+          onSelect={async (address) => {
+            setValue(address, false);
+            clearSuggestions();
+            try {
+              const results = await getGeocode({ address });
+              const { lat, lng } = await getLatLng(results[0]);
+              panTo({ lat, lng });
+              getPlaces(lat, lng);
+            } catch (error) {
+              console.log('error!');
+            }
+          }}
         >
-          {places.map((place) => (
-            <Marker
-              key={place.id}
-              position={{
-                lat: place.coordinates.latitude,
-                lng: place.coordinates.longitude,
-              }}
-              onClick={() => {
-                setSelected(place);
-              }}
-            />
-          ))}
-
-          {selected ? (
-            <InfoWindow
-              position={{
-                lat: selected.coordinates.latitude,
-                lng: selected.coordinates.longitude,
-              }}
-              onCloseClick={() => {
-                setSelected(null);
-              }}
-            >
-              <div>
-                <img src={`${selected.image_url}`} alt="" width="100" height="50" />
-                <h5>{selected.name}</h5>
-                <div>{`${selected.location.display_address[0]}`}</div>
-                <div>{`${selected.location.display_address[1]}`}</div>
-                <div>{selected.display_phone}</div>
-                <a href={`${selected.url}`}>Yelp Page</a>
-              </div>
-            </InfoWindow>
-          ) : null}
-        </GoogleMap>
+          <ComboboxInput
+            value={value}
+            onChange={(e) => {
+              setValue(e.target.value);
+            }}
+            disabled={!ready}
+            placeholder="Enter an Address"
+          />
+          <ComboboxPopover>
+            <ComboboxList>
+              {status === 'OK' && data.map(({ id, description }) => (
+                <ComboboxOption key={id} value={description} />
+              ))}
+            </ComboboxList>
+          </ComboboxPopover>
+        </Combobox>
       </div>
-
     );
   }
-  return null;
+
+
+  return (
+    <div>
+      {isLoaded && places ?
+        <React.Fragment>
+          <Search />
+          <Locate panTo={panTo} />
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={11}
+            center={center}
+            options={options}
+            onLoad={onMapLoad}
+            onDblClick={dblClick}
+          >
+            {places.map((place) => (
+              <Marker
+                key={place.id}
+                position={{
+                  lat: place.coordinates.latitude,
+                  lng: place.coordinates.longitude,
+                }}
+                onClick={() => {
+                  setSelected(place);
+                }}
+              />
+            ))}
+
+            {selected ? (
+              <InfoWindow
+                position={{
+                  lat: selected.coordinates.latitude,
+                  lng: selected.coordinates.longitude,
+                }}
+                onCloseClick={() => {
+                  setSelected(null);
+                }}
+              >
+                <div>
+                  <img src={`${selected.image_url}`} alt="" width="100" height="50" />
+                  <h5>{selected.name}</h5>
+                  <div>{`${selected.location.display_address[0]}`}</div>
+                  <div>{`${selected.location.display_address[1]}`}</div>
+                  <div>{selected.display_phone}</div>
+                  <a href={`${selected.url}`}>Yelp Page</a>
+                </div>
+              </InfoWindow>
+            ) : null}
+          </GoogleMap>
+        </React.Fragment>
+        : <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh'}}><CircularProgress color="secondary" /></div>
+      }
+    </div>
+  );
+
 }
 
 export default Map;

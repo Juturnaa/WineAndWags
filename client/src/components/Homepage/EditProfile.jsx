@@ -8,22 +8,35 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
-import { IconButton } from '@material-ui/core';
+import { IconButton, Input, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
 import AddDogModal from './AddDogModal';
 
-// implement react paginton for edit of dogs
-// need to add photos
-// switch raw auto complete code to react library
 // need to consider MUTT dogs
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
+const useStyles = makeStyles({
+  upload: {
+    display: 'flex',
+    width: '50%',
+    border: 0,
+    fontSize: '1.1rem',
+  },
+  trash: {
+    fontSize: '2.5rem',
+  },
+  uploadBtn: {
+    fontSize: '1.1rem',
+  },
+});
+
 function EditProfile({
-  currentUser, dogsImg, breeds, humanPhoto, editProfileBtn, setBtn,
+  currentUser, dogsImg, breeds, humanPhoto, human, dogs,
 }) {
-  const [human, setHuman] = useState(false);
-  const [dogs, setDogs] = useState(false);
+  const classes = useStyles();
   const [humanValue, setHumanValue] = useState({
     name: '', gender: '', bio: '', email: '', password: '', age: '', zipcode: '', searched_as: '',
   });
@@ -99,18 +112,6 @@ function EditProfile({
   const changePages = (e, value) => {
     setDogPage(value);
     setDogID(dogPages[value - 1][0].id);
-  };
-
-  const changeHuman = () => {
-    setHuman(true);
-    setDogs(false);
-    setBtn(false);
-  };
-
-  const changeDogs = () => {
-    setHuman(false);
-    setDogs(true);
-    setBtn(false);
   };
 
   const dogValueChange = (e) => {
@@ -254,90 +255,99 @@ function EditProfile({
 
   return (
     <div id="editprofile-body">
-      <div className={editProfileBtn ? "btn-container" : "btn-container-after"}>
-        <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
-        <button type="button" onClick={changeDogs}>EDIT MY DOG(S)</button>
-      </div>
       {human
         ? (
           <form id="editHuman" onSubmit={submitHuman}>
-            <div>
-              Photo:
-              {' '}
-              <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} />
-              <input type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
-              <button type="button" onClick={uploadClick}>Photos</button>
-              <div>
-                <IconButton onClick={deletePhoto}>
-                  <DeleteForeverRoundedIcon variant="rounded" />
-                </IconButton>
+            <div id="editProfile-container">
+              <div className="humanEdit">
+                <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} />
+                <div style={{ display: 'flex', flexFlow: 'row nowrap' }}>
+                  <Input className={classes.upload} type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
+                  <div className="trashbutton">
+                    <IconButton onClick={deletePhoto}>
+                      <DeleteForeverRoundedIcon className={classes.trash} variant="rounded" />
+                    </IconButton>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button className={classes.uploadBtn} type="button" variant="outlined" onClick={uploadClick}>
+                    <CloudUploadIcon />
+                    {' '}
+                    &nbsp;
+                    Upload Photo
+                  </Button>
+                </div>
+              </div>
+              <div className="humanEdit2">
+                <div>
+                  Name:
+                  {' '}
+                  <br />
+                  <input type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
+                </div>
+                <div>
+                  Gender:
+                  {' '}
+                  <br />
+                  Male
+                  {' '}
+                  <input type="radio" name="gender" value="m" onChange={humanValueChange} />
+                  Female
+                  {' '}
+                  <input type="radio" name="gender" value="f" onChange={humanValueChange} />
+                  Non-Binary
+                  {' '}
+                  <input type="radio" name="gender" value="nb" onChange={humanValueChange} />
+                </div>
+                <div>
+                  Bio:
+                  {' '}
+                  <br />
+                  <textarea rows="4" cols="50" name="bio" placeholder={currentUser.bio} onChange={humanValueChange} />
+                </div>
+                <div>
+                  E-mail:
+                  {' '}
+                  <br />
+                  <input type="text" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
+                </div>
+                <div>
+                  Password:
+                  {' '}
+                  <br />
+                  <input type="text" name="password" onChange={humanValueChange} />
+                </div>
+                <div>
+                  Age:
+                  {' '}
+                  <br />
+                  <input type="text" name="age" placeholder={currentUser.age} onChange={humanValueChange} />
+                </div>
+                <div>
+                  Zipcode:
+                  {' '}
+                  <br />
+                  <input type="text" name="zipcode" placeholder={currentUser.zipcode} onChange={humanValueChange} />
+                </div>
+                <div>
+                  Search as:
+                  {' '}
+                  <br />
+                  Male
+                  {' '}
+                  <input type="radio" name="searched_as" value="m" onChange={humanValueChange} />
+                  Female
+                  {' '}
+                  <input type="radio" name="searched_as" value="f" onChange={humanValueChange} />
+                  Non-Binary
+                  {' '}
+                  <input type="radio" name="searched_as" value="nb" onChange={humanValueChange} />
+                </div>
               </div>
             </div>
             <div>
-              Name:
-              {' '}
-              <br />
-              <input type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
+              <button type="submit">Save changes</button>
             </div>
-            <div>
-              Gender:
-              {' '}
-              <br />
-              Male
-              {' '}
-              <input type="radio" name="gender" value="m" onChange={humanValueChange} />
-              Female
-              {' '}
-              <input type="radio" name="gender" value="f" onChange={humanValueChange} />
-              Non-Binary
-              {' '}
-              <input type="radio" name="gender" value="nb" onChange={humanValueChange} />
-            </div>
-            <div>
-              Bio:
-              {' '}
-              <br />
-              <textarea rows="4" cols="50" name="bio" placeholder={currentUser.bio} onChange={humanValueChange} />
-            </div>
-            <div>
-              E-mail:
-              {' '}
-              <br />
-              <input type="text" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
-            </div>
-            <div>
-              Password:
-              {' '}
-              <br />
-              <input type="text" name="password" onChange={humanValueChange} />
-            </div>
-            <div>
-              Age:
-              {' '}
-              <br />
-              <input type="text" name="age" placeholder={currentUser.age} onChange={humanValueChange} />
-            </div>
-            <div>
-              Zipcode:
-              {' '}
-              <br />
-              <input type="text" name="zipcode" placeholder={currentUser.zipcode} onChange={humanValueChange} />
-            </div>
-            <div>
-              Search as:
-              {' '}
-              <br />
-              Male
-              {' '}
-              <input type="radio" name="searched_as" value="m" onChange={humanValueChange} />
-              Female
-              {' '}
-              <input type="radio" name="searched_as" value="f" onChange={humanValueChange} />
-              Non-Binary
-              {' '}
-              <input type="radio" name="searched_as" value="nb" onChange={humanValueChange} />
-            </div>
-            <button type="submit">Save changes</button>
           </form>
         )
         : null}
@@ -345,7 +355,7 @@ function EditProfile({
         <div id="editDogPage">
           <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
           {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
-          {dogPages[currentDogPg - 1].map((item, index) => (
+          {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>
                 Photo:
@@ -353,7 +363,7 @@ function EditProfile({
                 <br />
                 <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
                 <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
-                <button type="button" onClick={uploadDogClick}>Photos</button>
+                <button type="button" onClick={uploadDogClick}>Upload Photo</button>
                 <div>
                   <IconButton onClick={deleteDogPhoto}>
                     <DeleteForeverRoundedIcon variant="rounded" />
@@ -436,11 +446,6 @@ function EditProfile({
                 {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
                   ? <div> No options found! </div>
                   : null}
-                {/* <select name="breed" onChange={dogValueChange}>
-                  {breeds.map((itemBreed, index) => (
-                    <option key={index} value={itemBreed} name="breed">{itemBreed}</option>
-                  ))}
-                </select> */}
               </div>
               <div>
                 Healthy
@@ -449,7 +454,7 @@ function EditProfile({
               </div>
               <button type="submit">Save changes</button>
             </form>
-          ))}
+          )) : null }
           <Pagination count={dogPages.length} variant="outlined" page={currentDogPg} onChange={changePages} />
         </div>
       ) : null}

@@ -54,10 +54,11 @@ const dbHelpers = {
       neutered,
       healthIssues,
       avoidBreeds,
-      maxDistance,
+      zipCodes,
       ownerAgeRange,
       ownerGenders,
     } = JSON.parse(req.query.filters);
+    // AND waw.users.zipcode IN (${zipCodes})
     let qryStr;
     if (dogGenders === 'Both') {
       qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
@@ -97,6 +98,7 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
+
     db.query(qryStr, (err, data) => {
       if (err) {
         res.status(400).send('something went wrong with your query');
@@ -156,6 +158,11 @@ const dbHelpers = {
     const qryStr = `DELETE FROM waw.photos WHERE waw.photos.id=${req.params.photoid}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
+  updateReview: (req, callback) => {
+    const { rating } = req.body;
+    const qryStr = `UPDATE waw.dogs SET rating = ${rating} WHERE id=${req.params.dogid}`;
+    db.query(qryStr, (err, results) => callback(err, results));
+  },
 
   // MESSAGES ------------------------------------//
   getAllConvos: (user_id, callback) => {
@@ -165,6 +172,7 @@ const dbHelpers = {
     });
   },
   postNewConvo: (user_id, recipient_id, callback) => {
+    console.log(recipient_id);
     const queryStr = `INSERT INTO waw.convo SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
     WHERE NOT EXISTS (SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id}))`;
     db.query(queryStr, (err, res) => {
@@ -172,7 +180,7 @@ const dbHelpers = {
     });
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
-    const queryStr = `SELECT * FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
+    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MM AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
@@ -281,7 +289,19 @@ const dbHelpers = {
   },
   postFilters: (req, res) => {
     const {
-      min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age
+      min_size,
+      max_size,
+      dog_min_age,
+      dog_max_age,
+      dog_genders,
+      hypo,
+      neutered,
+      health_issues,
+      avoid_breeds,
+      max_dist,
+      genders,
+      min_age,
+      max_age,
     } = req.body;
     db.query(
       `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${req.params.user_id}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_genders}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${genders}', ${min_age}, ${max_age})`,
@@ -291,10 +311,17 @@ const dbHelpers = {
       },
     );
   },
-  // REGISTRATION AND LOGIN ------------------------------------//
+  // REGISTRATION ------------------------------------//
   postUser: (req, res) => {
     const {
-      name, bio, email, hash, age, zipcode, city, searched_as,
+      name,
+      bio,
+      email,
+      hash,
+      age,
+      zipcode,
+      city,
+      searched_as,
     } = req.body;
     db.query(
       `INSERT INTO waw.users("name", bio, email, "password", age, zipcode, city, searched_as) VALUES('${name}', '${bio}', '${email}', '${hash}', ${age}, '${zipcode}', '${city}','${searched_as}') RETURNING id`,
@@ -306,13 +333,51 @@ const dbHelpers = {
   },
   postDog: (req, res) => {
     const {
-      name, gender, bio, hypo, neutered, age, size, breed, healthy,
+      name,
+      gender,
+      bio,
+      hypo,
+      neutered,
+      age,
+      size,
+      breed,
+      healthy,
     } = req.body;
-    db.query(`INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${healthy}) RETURNING id`,
-      (err,data) => {
+    db.query(
+      `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${healthy}) RETURNING id`,
+      (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows[0]);
-      });
+      },
+    );
+  },
+  // NOTIFICAITONS------------------------------------//
+  getNotif: (req, res) => {
+    db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.id} ORDER BY time_stamp DESC`,
+      (err, data) => {
+        if (err) res.send(err);
+        else res.send(data.rows);
+      }
+    );
+  },
+  postNotif: (req, res) => {
+    const {
+      type, type_id, sender_name, recipient_id,
+    } = req.body;
+    db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
+      (err, data) => {
+        if (err) res.send(err);
+        else res.send("posted notification");
+      }
+    );
+  },
+  updateNotif: (req, res) => {
+    db.query(`UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
+      (err, data) => {
+        if (err) res.send(err);
+        else res.send("updated notification");
+      }
+    );
   },
 };
 
