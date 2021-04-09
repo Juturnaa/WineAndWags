@@ -33,10 +33,14 @@ const useStyles = makeStyles({
   uploadBtn: {
     fontSize: '1.1rem',
   },
+  page: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
 });
 
 function EditProfile({
-  currentUser, dogsImg, breeds, humanPhoto, human, dogs,
+  currentUser, dogsImg, breeds, humanPhoto, human, dogs, currentUserID,
 }) {
   const classes = useStyles();
   const [humanValue, setHumanValue] = useState({
@@ -44,13 +48,14 @@ function EditProfile({
   });
   const [dogValue, setDogValue] = useState({
     name: '',
-    gender: '',
     bio: '',
     rating: '',
     owner_id: '',
     age: '',
     size: '',
     breed: '',
+    city: '',
+    searched_as: '',
   });
   const [hypoallergenic, setHypo] = useState();
   const [neutered, setNeutered] = useState();
@@ -192,7 +197,7 @@ function EditProfile({
         }
       }
       // hardcoded the end point
-      axios.patch('/app/users/my-profile/sophiaacheong5@gmail.com', newValues)
+      axios.patch(`/app/users/my-profile/${currentUserID}`, newValues)
         .then((results) => alert(results.data))
         .catch((err) => console.error(err));
     } else if (!result && !resultAge && !resultZip) {
@@ -227,8 +232,7 @@ function EditProfile({
       newValues.neutered = neutered;
       newValues.healthy = healthy;
       newValues.owner_id = currentUser.id;
-      // hardcoded the end point
-      axios.patch('/app/users/my-dog/43', newValues)
+      axios.patch(`/app/users/my-dog/${dogID}`, newValues)
         .then((results) => alert(results.data))
         .catch((err) => console.error(err));
     }
@@ -255,7 +259,7 @@ function EditProfile({
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
-  console.log(humanValue);
+  console.log(dogValue);
 
   return (
     <div id="editprofile-body">
@@ -285,79 +289,46 @@ function EditProfile({
               <div className="humanEdit2">
                 <Form.Row>
                   <Form.Group as={Col}>
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
-                    {/* <input type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} /> */}
+                    <Form.Label className="text-center">Name</Form.Label>
+                    <Form.Control as="input" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
                   </Form.Group>
                   <Form.Group as={Col}>
-                    <Form.Label>Gender</Form.Label>
-                    <Form.Check type="radio" label="Male" name="gender" value="M" onChange={humanValueChange} />
-                    <Form.Check type="radio" label="Female" name="gender" value="F" onChange={humanValueChange} />
-                    <Form.Check type="radio" label="Non-Binary" name="gender" value="All" onChange={humanValueChange} />
+                    <Form.Label className="text-center">Age</Form.Label>
+                    <Form.Control as="input" name="age" placeholder={currentUser.age} onChange={humanValueChange} />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label className="text-center">Gender</Form.Label>
+                    <Form.Check type="radio" label="Male" name="searched_as" value="M" onChange={humanValueChange} />
+                    <Form.Check type="radio" label="Female" name="searched_as" value="F" onChange={humanValueChange} />
+                    <Form.Check type="radio" label="Non-Binary" name="searched_as" value="All" onChange={humanValueChange} />
                   </Form.Group>
                 </Form.Row>
-                {/* <div>
-                  Gender:
-                  {' '}
-                  <br />
-                  Male
-                  {' '}
-                  <input type="radio" name="gender" value="m" onChange={humanValueChange} />
-                  Female
-                  {' '}
-                  <input type="radio" name="gender" value="f" onChange={humanValueChange} />
-                  Non-Binary
-                  {' '}
-                  <input type="radio" name="gender" value="nb" onChange={humanValueChange} />
-                </div> */}
-                <div>
-                  Bio:
-                  {' '}
-                  <br />
-                  <textarea rows="4" cols="50" name="bio" placeholder={currentUser.bio} onChange={humanValueChange} />
-                </div>
-                <div>
-                  E-mail:
-                  {' '}
-                  <br />
-                  <input type="text" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
-                </div>
-                <div>
-                  Password:
-                  {' '}
-                  <br />
-                  <input type="text" name="password" onChange={humanValueChange} />
-                </div>
-                <div>
-                  Age:
-                  {' '}
-                  <br />
-                  <input type="text" name="age" placeholder={currentUser.age} onChange={humanValueChange} />
-                </div>
-                <div>
-                  Zipcode:
-                  {' '}
-                  <br />
-                  <input type="text" name="zipcode" placeholder={currentUser.zipcode} onChange={humanValueChange} />
-                </div>
-                <div>
-                  Search as:
-                  {' '}
-                  <br />
-                  Male
-                  {' '}
-                  <input type="radio" name="searched_as" value="m" onChange={humanValueChange} />
-                  Female
-                  {' '}
-                  <input type="radio" name="searched_as" value="f" onChange={humanValueChange} />
-                  Non-Binary
-                  {' '}
-                  <input type="radio" name="searched_as" value="nb" onChange={humanValueChange} />
-                </div>
+                <Form.Group>
+                  <Form.Label>Bio</Form.Label>
+                  <Form.Control as="textarea" rows={4} col={50} name="bio" placeholder={currentUser.bio} onChange={humanValueChange} />
+                </Form.Group>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label>E-mail</Form.Label>
+                    <Form.Control as="input" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label>Password</Form.Label>
+                    <Form.Control as="input" name="password" onChange={humanValueChange} />
+                  </Form.Group>
+                </Form.Row>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label>City</Form.Label>
+                    <Form.Control as="input" name="city" placeholder={currentUser.city} onChange={humanValueChange} />
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label>Zipcode</Form.Label>
+                    <Form.Control as="input" name="zipcode" placeholder={currentUser.zipcode} onChange={humanValueChange} />
+                  </Form.Group>
+                </Form.Row>
+                <Button className={classes.uploadBtn} type="submit">Save changes</Button>
               </div>
-            </div>
-            <div>
-              <button type="submit">Save changes</button>
             </div>
           </Form>
         )
@@ -370,7 +341,7 @@ function EditProfile({
           {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
             <div id="editDog-container">
-              <form id="editDog-form" onSubmit={submitDog} key={index}>
+              <Form id="editDog-form" onSubmit={submitDog} key={index}>
                 <div className="dogForm-inputs">
                   <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
                   <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
@@ -381,97 +352,72 @@ function EditProfile({
                     </IconButton>
                   </div>
                 </div>
-                <div className="dogForm-inputs">
-                  <div>
-                    Name:
-                    {' '}
-                    <br />
-                    <input type="text" name="name" placeholder={item.name} onChange={dogValueChange} />
-                  </div>
-                  <div>
-                    Gender:
-                    {' '}
-                    <br />
-                    Male
-                    {' '}
-                    <input type="radio" name="gender" value="M" onChange={dogValueChange} />
-                    Female
-                    {' '}
-                    <input type="radio" name="gender" value="F" onChange={dogValueChange} />
-                  </div>
-                  <div>
-                    Bio
-                    {' '}
-                    <br />
-                    <textarea name="bio" rows="4" cols="50" placeholder={item.bio} onChange={dogValueChange} />
-                  </div>
-                  <div>
-                    Hypo
-                    {' '}
-                    <input type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
-                  </div>
-                  <div>
-                    Neutered/Spayed
-                    {' '}
-                    <input type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
-                  </div>
-                  <div>
-                    Age
-                    {' '}
-                    <br />
-                    <input type="text" name="age" placeholder={item.age} onChange={dogValueChange} />
-                  </div>
-                  <div>
-                    Size ...input examples under the inputs
-                    {' '}
-                    <br />
-                    XS
-                    {' '}
-                    <input type="radio" name="size" value="XS" onChange={dogValueChange} />
-                    S
-                    {' '}
-                    <input type="radio" name="size" value="S" onChange={dogValueChange} />
-                    M
-                    {' '}
-                    <input type="radio" name="size" value="M" onChange={dogValueChange} />
-                    L
-                    {' '}
-                    <input type="radio" name="size" value="L" onChange={dogValueChange} />
-                    XL
-                    {' '}
-                    <input type="radio" name="size" value="XL" onChange={dogValueChange} />
-                  </div>
-                  <div>
-                    Breeds
-                    {' '}
-                    <br />
-                    <input list="dogBreeds" type="text" name="breed" onChange={filterChange} />
-                    {breedFilterOptions !== undefined && breedFilterOptions.length > 0
-                      ? (
-                        <datalist id="dogBreeds">
-                          {breedFilterOptions.map((breedItem, ind) => (
-                            <option key={ind} value={breedItem}>{breedItem}</option>
-                          ))}
-                        </datalist>
-                      )
-                      : null }
-                    {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
-                      ? <div> No options found! </div>
-                      : null}
-                  </div>
-                  <div>
-                    Healthy
-                    {' '}
-                    <input type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
-                  </div>
+                <div className="dogForm-inputs2">
+                  <Form.Row>
+                    <Form.Group as={Col}>
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control as="input" name="name" placeholder={item.name} onChange={dogValueChange} />
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                      <Form.Label>Gender</Form.Label>
+                      <Form.Check type="radio" name="gender" label="Male" value="M" onChange={dogValueChange} />
+                      <Form.Check type="radio" name="gender" label="Female" value="F" onChange={dogValueChange} />
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Group>
+                    <Form.Label>Bio</Form.Label>
+                    <Form.Control as="textarea" name="bio" rows={5} cols={50} placeholder={item.bio} onChange={dogValueChange} />
+                  </Form.Group>
+                  <Form.Row>
+                    <Form.Group as={Col}>
+                      <Form.Label>Hypoallergenic</Form.Label>
+                      <Form.Check type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                      <Form.Label>Neutered/Spayed</Form.Label>
+                      <Form.Check type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                      <Form.Label>Health Issues</Form.Label>
+                      <Form.Check type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Row>
+                    <Form.Group as={Col}>
+                      <Form.Label>Age</Form.Label>
+                      <Form.Control as="input" name="age" placeholder={item.age} onChange={dogValueChange} />
+                    </Form.Group>
+                    <Form.Group as={Col}>
+                      <Form.Label>Breed</Form.Label>
+                      <Form.Control list="dogBreeds" type="input" name="breed" onChange={filterChange} />
+                      {breedFilterOptions !== undefined && breedFilterOptions.length > 0
+                        ? (
+                          <datalist id="dogBreeds">
+                            {breedFilterOptions.map((breedItem, ind) => (
+                              <option key={ind} value={breedItem}>{breedItem}</option>
+                            ))}
+                          </datalist>
+                        )
+                        : null }
+                      {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
+                        ? <div> No options found! </div>
+                        : null}
+                    </Form.Group>
+                  </Form.Row>
+                  <Form.Group>
+                    <Form.Label>Size</Form.Label>
+                    <Form.Check type="radio" name="size" label="XS" value="XS" onChange={dogValueChange} />
+                    <Form.Check type="radio" name="size" label="S" value="S" onChange={dogValueChange} />
+                    <Form.Check type="radio" name="size" label="M" value="M" onChange={dogValueChange} />
+                    <Form.Check type="radio" name="size" label="L" value="L" onChange={dogValueChange} />
+                    <Form.Check type="radio" name="size" label="XL" value="XL" onChange={dogValueChange} />
+                  </Form.Group>
+                  <Button className={classes.uploadBtn} type="submit">Save changes</Button>
                 </div>
-              </form>
-              <div style={{ display: 'inline-flex', justifyContent: 'center' }}>
-                <button type="submit">Save changes</button>
-              </div>
+              </Form>
             </div>
           )) : null }
-          <Pagination count={dogPages.length} variant="outlined" page={currentDogPg} onChange={changePages} />
+          <Pagination color="primary" className={classes.page} size="large" count={dogPages.length} variant="outlined" page={currentDogPg} onChange={changePages} />
         </div>
       ) : null}
     </div>

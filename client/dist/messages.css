@@ -210,13 +210,13 @@
   width: 75%;
 }
 
-input[type=text] {
+/* input[type=text] {
   border: none;
   width: 700px;
 }
 input[type=text]:focus {
   outline: none;
-}
+} */
 
 .fa-calendar-alt {
   cursor: pointer;
