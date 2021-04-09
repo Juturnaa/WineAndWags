@@ -30,7 +30,7 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, showNotifs, setShowNotifs, matchesInfo,
+  currentUser, potientialDogsImg, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, showNotifs, setShowNotifs, matchesInfo,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -142,9 +142,6 @@ function NavBar({
         : ''}
       {/* Routes */}
       <Switch>
-        {/* <Route exact path="/notifications" component={Notifications} /> */}
-        {' '}
-        {/* delete this route if notifications is just modal not a page */}
         <Route
           exact
           path="/inbox"

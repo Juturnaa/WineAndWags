@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList';
-const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDogs }) => {
+const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDogs, potientialDogsImg }) => {
   const [gender, setGender] = useState('');
   const [size, setSize] = useState('');
+  const [currentDogsPhotos, setCurrentDogsPhotos] = useState()
   useEffect(() => {
     if (dog) {
       if (dog.gender === 'M') {
@@ -28,6 +29,24 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
     }
 
   }, [dog])
+  
+  useEffect(() => {
+    if (potientialDogsImg && dog.id) {
+      transformPhotos(potientialDogsImg)
+    }
+  }, [potientialDogsImg, dog])
+
+  const transformPhotos = (photos) => {
+    let newPhotos = [];
+    for (let i = 0; i < photos.length; i++) {
+      if (photos[i][dog.id]) {
+        newPhotos.push(photos[i][dog.id][0])
+      }
+    }
+    setCurrentDogsPhotos(newPhotos)
+  }
+
+
     const userPhotos = [
         {
           id: 1,
@@ -55,7 +74,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
                 {dog.name}
             </div>
             <div className="photo-container">
-                    <PhotosList likePhoto={likePhoto} photos={userPhotos} />
+                    <PhotosList likePhoto={likePhoto} photos={currentDogsPhotos || ''} />
                 <div className="card-text" >
                     <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {dog.age} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {gender} </div>  </div>

@@ -27,10 +27,11 @@ const App = () => {
   const [reviewModal, setReviewModal] = useState(false);
 
   // potiential Match User states
-  const [potiential, setPotiential] = useState();
-  const [potientialDog, setPotientialDog] = useState();
-  const [potientialPhoto, setPotientialPhoto] = useState();
-  const [showNotifs, setShowNotifs] = useState(false);
+
+  const [potientialPhoto, setPotientialPhoto] = useState([]);
+  const [potientialDogsPhoto, setPotientialDogPhoto] = useState([]);
+  const [potientialDogsImg, setPotientialDogsImg] = useState([])
+  const [showNotifs, setShowNotifs] = useState(false)
 
   useEffect(() => {
     const dogsimages = [];
@@ -51,18 +52,51 @@ const App = () => {
     setDogsImg(dogsimages);
   }, [dogsPhoto]);
 
+  useEffect(() => {
+    const dogsimages = [];
+    const store = [];
+    if (potientialDogsPhoto.length > 0) {
+      for (let i = 0; i < potientialDogsPhoto.length; i++) {
+        const ind = store.indexOf(potientialDogsPhoto[i].dog_id);
+        if (ind > -1) {
+          dogsimages[ind][potientialDogsPhoto[i].dog_id].push(potientialDogsPhoto[i]);
+        } else {
+          const dogsKey = {};
+          dogsKey[potientialDogsPhoto[i].dog_id] = [potientialDogsPhoto[i]];
+          dogsimages.push(dogsKey);
+          store.push(potientialDogsPhoto[i].dog_id);
+        }
+      }
+    }
+    setPotientialDogsImg(dogsimages);
+  }, [potientialDogsPhoto]);
+
+
+
   const getRandomUser = (filters) => {
     let random;
+    let uId;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setPotiential(data.data[random]);
+        uId = data.data[random].id
         setPotientialDog(data.data[random].dogs_info);
       })
       .then(() => {
-        axios.get(`/app/users/photos/${random + 1}`)
+        axios.get(`/app/users/photos/${uId}`)
           .then((data) => {
-            setPotientialPhoto(data.data);
+            const human = [];
+            const dogs = [];
+            for (let i = 0; i < data.data.length; i++) {
+              if (data.data[i].dog_id === null) {
+                human.push(data.data[i]);
+              } else {
+                dogs.push(data.data[i]);
+              }
+            }
+            setPotientialPhoto(human);
+            setPotientialDogPhoto(dogs)
           });
       });
   };
@@ -213,6 +247,7 @@ const App = () => {
         currentUserID={currentUserID}
         potiential={potiential}
         potientialDog={potientialDog}
+        potientialDogsImg={potientialDogsImg}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
       />
