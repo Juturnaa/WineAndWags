@@ -58,7 +58,6 @@ const dbHelpers = {
       ownerAgeRange,
       ownerGenders,
     } = JSON.parse(req.query.filters);
-    // AND waw.users.zipcode IN (${zipCodes})
     let qryStr;
     if (dogGenders === 'Both') {
       qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
@@ -70,6 +69,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
+      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -88,6 +88,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
+      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -118,7 +119,6 @@ const dbHelpers = {
   editOwnerProfile: (req, callback) => {
     const {
       name,
-      gender,
       bio,
       email,
       password,
@@ -126,7 +126,7 @@ const dbHelpers = {
       zipcode,
       searched_as,
     } = req.body;
-    const qryStr = `UPDATE waw.users SET name='${name}', gender='${gender}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE email='${req.params.email}'`;
+    const qryStr = `UPDATE waw.users SET name='${name}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE id=${req.params.id}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   editDogProfile: (req, callback) => {
@@ -180,7 +180,7 @@ const dbHelpers = {
     });
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
-    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MM AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
+    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MI AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})) ORDER BY time_stamp ASC`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
@@ -223,6 +223,25 @@ const dbHelpers = {
     db.query(queryStr, (err,res)=>{
       callback(err,res)
     })
+  },
+  getUserDates: (req, callback) => {
+    const queryStr = `SELECT waw.userAppointment.*, waw.userSchedule.dates, waw.users.name, json_agg(jsonb_build_object('id',
+    waw.dogs.id, 'name', waw.dogs.name, 'rating', waw.dogs.rating)) dogs FROM waw.userAppointment
+    INNER JOIN waw.userSchedule ON waw.userSchedule.id = waw.userAppointment.schedule_id
+    INNER JOIN waw.users ON waw.users.id = waw.userAppointment.user_id2
+    INNER JOIN waw.dogs ON waw.dogs.owner_id = waw.userAppointment.user_id2
+    WHERE waw.userAppointment.user_id=${req.params.userid}
+    AND waw.userSchedule.dates BETWEEN CURRENT_DATE - 1 + INTERVAL '0h' AND CURRENT_DATE + INTERVAL '0h'
+    GROUP BY waw.userAppointment.id, waw.userSchedule.dates, waw.users.name`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  reviewed: (req, callback) => {
+    const queryStr = `UPDATE waw.userAppointment SET reviewed=true WHERE id=${req.params.userid}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
   },
   // PROFILE LIKES ------------------------------------//
   // getAllProfileLikes: (callback) => {

@@ -44,6 +44,7 @@ export default function Homepage({
   const [maxDistance, changeMaxDistance] = useState(10); // miles
   const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
   const [ownerGenders, changeOwnerGenders] = useState('F');
+  const [zipCodes, changeZipCodes] = useState([]);
 
   const [alert, showAlert] = useState(false); // instead of using alert()
   useEffect(() => {
@@ -86,20 +87,6 @@ export default function Homepage({
             if (str === 'XL') return 4;
           };
           const filters = results.data[0];
-          const params = {
-            sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
-            dogGenders: filters.dog_genders,
-            dogAgeRange: [filters.dog_min_age, filters.dog_max_age],
-            hypoallergenic: filters.hypo,
-            neutered: filters.neutered,
-            healthIssues: filters.health_issues,
-            avoidBreeds: filters.avoid_breeds,
-            ownerAgeRange: [filters.min_age, filters.max_age],
-            ownerGenders: filters.genders,
-            zipCodes: '',
-          }
-          setFilterParams(params);
-          getRandomUser(params);
           changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
           changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
           changeDogGenders(filters.dog_genders);
@@ -110,6 +97,40 @@ export default function Homepage({
           changeMaxDistance(filters.max_dist);
           changeOwnerAgeRange([filters.min_age, filters.max_age]);
           changeOwnerGenders(filters.genders);
+
+          // request for zip codes based on currentUser zip and filters.max_dist, then use them as params and state
+          const options = {
+            method: 'GET',
+            url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
+            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'HQH2IMXH3DL9TC616NNR' }
+          }
+          axios.request(options)
+            .then((response) => {
+              let uniqueZips = [];
+              for (let item of response.data.DataList) {
+                if (!uniqueZips.includes(item.Code)) {
+                  uniqueZips.push(`'${item.Code}'`)
+                }
+              }
+              changeZipCodes(uniqueZips.join(','));
+              const params = {
+                sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
+                dogGenders: filters.dog_genders,
+                dogAgeRange: [filters.dog_min_age, filters.dog_max_age],
+                hypoallergenic: filters.hypo,
+                neutered: filters.neutered,
+                healthIssues: filters.health_issues,
+                avoidBreeds: filters.avoid_breeds,
+                ownerAgeRange: [filters.min_age, filters.max_age],
+                ownerGenders: filters.genders,
+                zipCodes: uniqueZips.join(',')
+              }
+              setFilterParams(params);
+              getRandomUser(params);
+            })
+            .catch((err) => {
+              console.error(err)
+            })
         })
         .catch((err) => {
           console.error(err);
@@ -172,10 +193,11 @@ export default function Homepage({
               currentUser={currentUser}
               potiential={potiential}
               showAlert={showAlert}
+              zipCodes={zipCodes}
+              changeZipCodes={changeZipCodes}
             />
           </div>
         ) : null}
-
     </div>
   );
 }

@@ -132,6 +132,7 @@ let minutes = [
     axios.post(`app/${props.currentUserId}/schedule`, {
       "dates": new Date(minutest).toISOString()
     })
+    })
     .then(()=>{getSchedule()})
     .then(()=>{props.clickedCalendar(false)})
     .err(()=>{console.log('err')})
@@ -146,9 +147,17 @@ let minutes = [
       axios.put(`app/${props.matchUserId}/schedule`,{
         "id": d.id
       })
+    .then(()=>{
+      axios.post(`/notifications/${props.currentUserId}/`,{
+        "type":"appointment",
+        "type_id":d.id,
+        "sender_name":props.currentUser.name,
+        "recipient_id": props.matchUserId
+      })
+      .err((err)=>{console.log(err)})
     })
     .then(()=>{getMatchSchedule()})
-    .then(()=>{alert('nice')})
+    .then(()=>{alert('Appointment made')})
     .err(()=>{console.log('err')})
   }
 
