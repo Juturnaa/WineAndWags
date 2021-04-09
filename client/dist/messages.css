@@ -212,11 +212,11 @@
   width: 75%;
 }
 
-input[type=text] {
+/* .send-message-input {
   border: none;
   width: 700px;
-}
-input[type=text]:focus {
+} */
+.send-message-input:focus {
   outline: none;
 }
 

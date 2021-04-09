@@ -108,7 +108,7 @@ const Chat = ({
           onRequestClose={() => {clickedCalendar(!calendar)}}>
             <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId}/>
           </Modal>
-          <input type="text" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
+          <input type="text" className="send-message-input" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0', border: 'none', width: '700px' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
       </div>
