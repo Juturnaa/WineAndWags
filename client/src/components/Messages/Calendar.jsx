@@ -132,7 +132,6 @@ let minutes = [
     axios.post(`app/${props.currentUserId}/schedule`, {
       "dates": new Date(minutest).toISOString()
     })
-    })
     .then(()=>{getSchedule()})
     .then(()=>{props.clickedCalendar(false)})
     .err(()=>{console.log('err')})
@@ -147,6 +146,7 @@ let minutes = [
       axios.put(`app/${props.matchUserId}/schedule`,{
         "id": d.id
       })
+    })
     .then(()=>{
       axios.post(`/notifications/${props.currentUserId}/`,{
         "type":"appointment",
@@ -161,16 +161,6 @@ let minutes = [
     .err(()=>{console.log('err')})
   }
 
-
-  let yourSchedule =()=>{
-    if(schedule.length >0){
-      schedule.map((d,i)=>{
-        if (isSameDay(selectedDate,new Date(schedule[i].dates))){
-        return <p key={i}>{d.dates}</p>
-        }
-      })
-    }
-  }
 
   // function clickOk() {
   //   // store.addNotification({
