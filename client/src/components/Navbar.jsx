@@ -68,7 +68,7 @@ function NavBar({
   }, []);
 
   return (
-    <BrowserRouter>      
+    <BrowserRouter>
       <nav className="navigation-bar">
         <div className="navbar-title-content">
           <div className="navbar-title">
@@ -101,7 +101,7 @@ function NavBar({
               </div>
             )
             : null}
-          
+
         </div>
       </nav>
       {unread > 0
@@ -121,6 +121,7 @@ function NavBar({
                 let txt;
                 if (notif.type === 'photoLike') txt = ' liked your photo';
                 else if (notif.type === 'message') txt = ' sent you a message';
+                else if (notif.type === 'appointment') txt = 'date planned';
                 if (notif.read) {
                   return (
                     <div className="read-notif">
