@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { makeStyles } from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles(theme => ({
+    customHoverFocus: {
+      color: '#DDC8C4',
+      "&:hover": { color: "#EFF9F0" }
+    }
+  }));
+
+
+
 const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDogs, potientialDogsImg }) => {
+  const classes = useStyles();
   const [gender, setGender] = useState('');
   const [size, setSize] = useState('');
   const [currentDogsPhotos, setCurrentDogsPhotos] = useState()
@@ -69,8 +83,9 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
       ];
     return (
         <div className="profile-card" >
-            <div id="card-name">
+            <div style={{display: 'flex', flexDirection: 'row'}} id="card-name">
                 {dog.name}
+                {isDisplayingSkipDogs ?  <div><ArrowForwardIcon className={classes.customHoverFocus} style={{ fontSize: '50px', marginLeft: '50%', marginTop: '1%' }} onClick={updateDogIndex}/></div>  : '' }
             </div>
             <div className="photo-container">
                     <PhotosList likePhoto={likePhoto} photos={currentDogsPhotos || ''} />
@@ -80,14 +95,15 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
                     <div className="text-component"><div className="text-component-key">Breed: </div> <div className="text-component-value"> {dog.breed} </div></div>
                     <div className="text-component"><div className="text-component-key">About Me: </div> <div className="text-component-value"> {dog.bio} </div></div>
                     <div className="text-component"><div className="text-component-key">Size: </div> <div className="text-component-value"> {size} </div></div>
-                    <div className="text-component"><div className="text-component-key">Healthy: </div> <div className="text-component-value"> {dog.healthy ? 'Healthy as can be!' : 'Could Be better..'} </div>  </div>
+                    <div className="text-component"><div className="text-component-key">Health: </div> <div className="text-component-value"> {dog.healthy ? 'Healthy as can be!' : 'Could be better..'} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Neutered: </div> <div className="text-component-value"> {dog.neutered ? 'Yes' : 'No'} </div>   </div>
                     <div className="text-component"><div className="text-component-key">Hypoallergenic: </div> <div className="text-component-value"> {dog.hypo ? 'Yes' : 'No'} </div>  </div>
                 </div>
             </div>
-            {isDisplayingSkipDogs ? <button onClick={updateDogIndex} >NEXT DOG</button> : '' }
+            
         </div>
     )
 }
 
 export default DogView;
+

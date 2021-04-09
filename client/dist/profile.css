@@ -1,49 +1,21 @@
-.heart {
-  position: relative;
-  width: 100px;
-  height: 90px;
-  margin-top: 10px;
-}
-
-.heart::before,
-.heart::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  width: 52px;
-  height: 80px;
-  border-radius: 50px 50px 0 0;
-  background: red;
-}
-
-.heart::before {
-  left: 50px;
-  transform: rotate(-45deg);
-  transform-origin: 0 100%;
-}
-
-.heart::after {
-  left: 0;
-  transform: rotate(45deg);
-  transform-origin: 100% 100%;
-}
-
 .profile-pic {
   width: 250px;
   height: 250px;
 }
 
 .profile-card {
-  width: 50%;
+  width: 19%;
   justify-content: flex-start;
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 0.5%;
+  margin-left: 19%;
 }
 
 .card-text {
-  margin-top: 1%;
+  background-color: #ddc8c4;
+  border-radius: 2%;
+  margin-top: 5%;
 }
 
 #card-name {
@@ -53,13 +25,16 @@
   margin-top: 1%;
   margin-bottom: 1%;
   color: #13070c;
+  margin-left: 31%;
 }
 .text-component {
   display: flex;
   flex-direction: row;
   margin-bottom: 1%;
-  width: 500px;
   color: #13070c;
+  width: 500px;
+  margin-left: 4%;
+  margin-top: 2%;
 }
 
 .photo-container {
@@ -71,6 +46,7 @@
 
 .text-component-value {
   margin-left: 2%;
+  width: 75%;
 }
 .text-component-key {
   font-weight: bold;
@@ -102,5 +78,8 @@
 }
 
 .img-container .img-btn:hover {
-  background-color: #ffc0cb;
+  background-color: #ddc8c4;
+  background-image: url("heart.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
 }
