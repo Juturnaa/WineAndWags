@@ -39,7 +39,7 @@ export default function Filters({
 }) {
 
   const [myLocation, changeMyLocation] = useState([]);
-  const [zipCodes, changeZipCodes] = useState([]);
+  const [zipCodes, changeZipCodes] = useState(["91741"]);
 
   const getLocation = (city, zipcode) => {
     Geocode.fromAddress(`${city} ${zipcode}`)

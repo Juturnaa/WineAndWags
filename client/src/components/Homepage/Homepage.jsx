@@ -28,6 +28,10 @@ export default function Homepage({
     setCurrentDogIndex(0)
   }, [potientialDog])
 
+  useEffect(() => {
+    
+  }, [filterParams])
+
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
   const [dogAgeRange, changeDogAgeRange] = useState([0, 20]);
