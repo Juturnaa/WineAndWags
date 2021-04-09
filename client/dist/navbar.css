@@ -13,6 +13,7 @@
   font-size: 1.25rem !important;
   color: #eff9f0 !important;
   transition-duration: 0.25s !important;
+  margin-top: 0.3em;
 }
 
 .nav-icon:hover {
@@ -31,6 +32,7 @@
   position: absolute !important;
   top: 0.25rem !important;
   right: 0.5rem !important;
+  margin-top: 0.3em;
 }
 
 #editNav {
@@ -53,15 +55,14 @@
 }
 
 #editNav-triangle {
-  position: absolute;
-  right: 143px;
-  top: -5px;
+  margin-top: -0.3em;
+  margin-left: 10em;
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
-  border-bottom: 5px solid #EFF9F0;
-  z-index: 1;
+  border-bottom: 5px solid white;
+  z-index: 5;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');

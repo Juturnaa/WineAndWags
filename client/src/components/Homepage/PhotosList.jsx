@@ -20,7 +20,7 @@ const PhotosList = ({ photos, likePhoto }) => {
         ? (
           <div>
             {' '}
-            <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+            <Carousel id="carouselProfile" interval={null} activeIndex={index} onSelect={handleSelect}>
               {photos.map((item, ind) => (
                 <Carousel.Item key={ind}>
                   <div style={{

@@ -31,7 +31,7 @@ function NavBar({
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
-  const [human, setHuman] = useState(false);
+  const [human, setHuman] = useState(true);
   const [dogs, setDogs] = useState(false);
   const [unread, setUnread] = useState(0);
 
@@ -77,7 +77,7 @@ function NavBar({
       </div>
       <nav className="navigation-bar">
         <NavLink className="nav-icon" exact to="/home" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-home" /></NavLink>
-        <button style={{ background: 'none', border: 'none' }} className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setBtn(true); }}><i className="far fa-bell" /></button>
+        <button style={{ background: 'none', border: 'none' }} className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setEdit(false); }}><i className="far fa-bell" /></button>
         <NavLink className="nav-icon" exact to="/inbox" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-envelope" /></NavLink>
         <NavLink className="nav-icon" exact to="/map" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-map" /></NavLink>
         <a className="nav-icon" onClick={() => { setEdit(!edit); setShowNotifs(false); }}>
@@ -92,8 +92,8 @@ function NavBar({
         {edit
           ? (
             <div style={{ padding: '1.5em' }}>
-              <div id="editNav-triangle" />
               <div id="editNav">
+              <div id="editNav-triangle" />
                 <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                 <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
               </div>
@@ -156,7 +156,7 @@ function NavBar({
         />
         <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} />} />
-        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
+        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDogsImg={potientialDogsImg} potientialDog={potientialDog || ''} />} />
       </Switch>
     </BrowserRouter>
   );
