@@ -106,7 +106,7 @@ const Chat = ({
           isOpen={calendar}
           style={customStyles}
           onRequestClose={() => {clickedCalendar(!calendar)}}>
-            <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId}/>
+            <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId} currentUser={currentUser}/>
           </Modal>
           <input type="text" className="send-message-input" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0', border: 'none', width: '700px' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
