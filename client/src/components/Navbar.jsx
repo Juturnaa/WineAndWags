@@ -153,16 +153,6 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
   setBtn: PropTypes.func,
 };
 
@@ -173,8 +163,6 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
-  allMessages: {},
-  matchesInfo: {},
   setBtn: null,
 };
 
