@@ -68,8 +68,7 @@ function NavBar({
   }, []);
 
   return (
-    <BrowserRouter>
-      
+    <BrowserRouter>      
       <nav className="navigation-bar">
         <div className="navbar-title-content">
           <div className="navbar-title">
