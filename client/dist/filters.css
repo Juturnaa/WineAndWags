@@ -1,23 +1,35 @@
 .filter-modal {
   display: flex;
   flex-direction: column;
-  position: absolute;
-  top: 12%;
-  left: 0.5%;
-  width: 50%;
+  width: 100%;
+  height: auto;
   right: auto;
   bottom: auto;
-  z-index: 100;
   background-color: rgba(221, 200, 196, 0.94);
   border-radius: 0.25rem;
   padding-bottom: 1%;
   color: #13070c;
 }
 
-.filter-container {
-  justify-content: space-around;
+.filter-modal-inner {
+  justify-content: center;
   display: flex;
   flex-flow: row nowrap;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 6.25rem;
+  left: 0.5%;
+  width: 50%;
+  right: auto;
+  bottom: auto;
+  z-index: 100;
+  border-radius: 0.1rem;
+  padding-bottom: 1%;
+  color: #13070c;
 }
 
 .dog-filters {
@@ -35,12 +47,12 @@ button:hover {
 }
 
 .arrowhead {
-  display: block;
-  width: 0px;
-  height: 0px;
-  border: 15px solid transparent;
-  border-bottom-color: rgba(221, 200, 196, 0.94);
-  border-top-width: 0px;
-  margin-top: -14px;
-  margin-left: 1px;
+  position: relative;
+  margin-top: 0.2rem;
+  margin-left: 2.75rem;
+  width: 0;
+  height: 0;
+  border-left: 0.5rem solid transparent;
+  border-right: 0.5rem solid transparent;
+  border-bottom: 0.5rem solid rgba(221, 200, 196, 0.94);
 }

@@ -131,37 +131,40 @@ export default function Homepage({
         <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
-
       {filterModalOpen
         ? (
-          <Filters
-            sizeRange={sizeRange}
-            changeSizeRange={changeSizeRange}
-            dogAgeRange={dogAgeRange}
-            changeDogAgeRange={changeDogAgeRange}
-            dogGenders={dogGenders}
-            changeDogGenders={changeDogGenders}
-            hypoallergenic={hypoallergenic}
-            changeHypoallergenic={changeHypoallergenic}
-            neutered={neutered}
-            changeNeutered={changeNeutered}
-            healthIssues={healthIssues}
-            changeHealthIssues={changeHealthIssues}
-            avoidBreeds={avoidBreeds}
-            changeAvoidedBreeds={changeAvoidedBreeds}
-            maxDistance={maxDistance}
-            changeMaxDistance={changeMaxDistance}
-            ownerAgeRange={ownerAgeRange}
-            changeOwnerAgeRange={changeOwnerAgeRange}
-            ownerGenders={ownerGenders}
-            changeOwnerGenders={changeOwnerGenders}
-            close={toggleFilterModal}
-            setFilterParams={setFilterParams}
-            currentUserID={currentUserID}
-            currentUser={currentUser}
-            potiential={potiential}
-          />
+          <div className='filter-container'>
+            <div className='arrowhead'></div>
+            <Filters
+              sizeRange={sizeRange}
+              changeSizeRange={changeSizeRange}
+              dogAgeRange={dogAgeRange}
+              changeDogAgeRange={changeDogAgeRange}
+              dogGenders={dogGenders}
+              changeDogGenders={changeDogGenders}
+              hypoallergenic={hypoallergenic}
+              changeHypoallergenic={changeHypoallergenic}
+              neutered={neutered}
+              changeNeutered={changeNeutered}
+              healthIssues={healthIssues}
+              changeHealthIssues={changeHealthIssues}
+              avoidBreeds={avoidBreeds}
+              changeAvoidedBreeds={changeAvoidedBreeds}
+              maxDistance={maxDistance}
+              changeMaxDistance={changeMaxDistance}
+              ownerAgeRange={ownerAgeRange}
+              changeOwnerAgeRange={changeOwnerAgeRange}
+              ownerGenders={ownerGenders}
+              changeOwnerGenders={changeOwnerGenders}
+              close={toggleFilterModal}
+              setFilterParams={setFilterParams}
+              currentUserID={currentUserID}
+              currentUser={currentUser}
+              potiential={potiential}
+            />
+          </div>
         ) : null}
+
     </div>
   );
 }

@@ -606,6 +606,7 @@ export default function Filters({
       .then((results) => {
         updateFilterParams()
         getLocation(currentUser.city, currentUser.zipcode) // getLocation also updates valid zip codes in max distance filter radius
+        close(false);
         alert('updated preferences');
       })
       .catch((err) => console.error(err));
@@ -640,12 +641,11 @@ export default function Filters({
 
   return (
     <div className='filter-modal'>
-       <div className='arrowhead'/>
       <ThemeProvider theme={theme}>
         <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end'}}>
           <IconButton onClick={() => close(false)} color="secondary" aria-label="close-filter-modal"><CancelIcon /></IconButton>
         </div>
-        <div className='filter-container'>
+        <div className='filter-modal-inner'>
           <div className='owner-filters'>
             <Typography variant="h4" gutterBottom>Owner</Typography>
             <Typography variant="body1">Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
