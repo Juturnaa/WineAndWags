@@ -19,7 +19,7 @@
 }
 .notifs-triangle {
     position:absolute;
-    right:143px;
+    left:77px;
     top:-5px;
     width: 0; 
     height: 0; 
@@ -36,3 +36,23 @@
     margin: 7px 10px 0 10px;
     padding:5px;
 }
+
+.notifs-icon{
+    position:absolute;
+    right: 206px;
+    top: 7px;
+    z-index:3;
+}
+.notifs-circle {
+    /* position:absolute; */
+    width: 15px;
+    height: 15px;
+    background: crimson;
+    border-radius: 50%;
+    color:white;
+    display:flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: .7em;
+    font-weight: bold;
+  }
