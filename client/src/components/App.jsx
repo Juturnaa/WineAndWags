@@ -242,7 +242,7 @@ const App = () => {
   return (
     <div>
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-      {/* <NavBar
+      <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto || ''}
@@ -264,10 +264,10 @@ const App = () => {
         setMessageCount={setMessageCount}
         messageCount={messageCount}
       />
-      /> */}
-      <ContextProvider>
+      />
+      {/* <ContextProvider>
         <Video />
-      </ContextProvider>
+      </ContextProvider> */}
     </div>
   );
 };

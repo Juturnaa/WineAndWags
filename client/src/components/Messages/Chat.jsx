@@ -56,52 +56,48 @@ const Chat = ({
 
   return (
     <div>
-      {allMessages
-        ? (
-          <div>
-            <button type="button" onClick={onMessageClick}>Back to Inbox</button>
-            {/* <ReactNotification /> */}
-            <br />
-            <br />
-            <div id="chat-container">
-              <div id="chat-images-container">
-                <img className="chat-human-photo" alt="human" src={matchesPhotos[currentMessageId][0].url} />
-                <img className="chat-dog-photo" alt="dog" src={matchesPhotos[currentMessageId][1].url} />
-                <div id="chat-names">
-                  {matchesInfo[matchUserId].name}
-                  {' '}
-                  and
-                  {' '}
-                  {matchesInfo[matchUserId].dogs_info[0].name}
-                </div>
-              </div>
-              <br />
-              <br />
+      <button type="button" onClick={onMessageClick}>Back to Inbox</button>
+      {/* <ReactNotification /> */}
+      <br />
+      <br />
+      <div id="chat-container">
+        <div id="chat-images-container">
+          <img className="chat-human-photo" alt="human" src={matchesPhotos[currentMessageId][0].url} />
+          <img className="chat-dog-photo" alt="dog" src={matchesPhotos[currentMessageId][1].url} />
+          <div id="chat-names">
+            {matchesInfo[matchUserId].name}
+            {' '}
+            and
+            {' '}
+            {matchesInfo[matchUserId].dogs_info[0].name}
+          </div>
+        </div>
+        <br />
+        <br />
 
-              <div id="direct-messages-container">
-                {/* {console.log('allMessages test on click: ', matchUserId)} */}
-                {allMessages[matchUserId].map((message) => {
-                  // console.log('message', message)
-                  if (message.sender_id === currentUserId) {
-                    return (
-                      <React.Fragment>
-                        <div className="messages-from-user-container" key={message.id}>
+        <div id="direct-messages-container">
+          {allMessages[matchUserId].map((message) => {
+            // console.log('message', message)
+            if (message.sender_id === currentUserId) {
+              return (
+                <React.Fragment>
+                  <div className="messages-from-user-container" key={message.id}>
+                    {message.body}
+                  </div>
+                  <div className="time-stamp-user">{message.to_char}</div>
+                </React.Fragment>
+              );
+            }
+            return (
+              <React.Fragment>
+              <div className="messages-from-match-container" key={message.id}>
                 {message.body}
               </div>
-                        <div className="time-stamp-user">{message.to_char}</div>
-                      </React.Fragment>
-                    );
-                  }
-                  return (
-                    <React.Fragment>
-                      <div className="messages-from-match-container" key={message.id}>
-              {message.body}
-            </div>
-                      <div className="time-stamp-match">{message.to_char}</div>
-                    </React.Fragment>
-                  );
-                })}
-              </div>
+              <div className="time-stamp-match">{message.to_char}</div>
+            </React.Fragment>
+            );
+          })}
+        </div>
 
         <div id="send-message-container">
           <i onClick={()=>{clickedCalendar(true)}}className="far fa-calendar-alt" />
