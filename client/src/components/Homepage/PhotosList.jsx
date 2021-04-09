@@ -18,22 +18,24 @@ const PhotosList = ({ photos, likePhoto }) => {
   
   return (
     <div className="img-container">
-      <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
-        {photos.map((item, ind) => (
-          <Carousel.Item key={ind}>
-            <div style={{
-              backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%',
-            }}
-            />
-          </Carousel.Item>
-        ))}
-      </Carousel>
-      {/* <img className="profile-pic" src={userPhotos[currentPhoto - 1].url} />
-      <Pagination count={userPhotos.length} variant="outlined" page={currentPhoto} onChange={changePages} /> */}
-      <PhotoLikeButton photoId={photos[index].id} likePhoto={likePhoto} />
-      {/* {userPhotos[currentPhoto].map((photo) => (
-                <img className="profile-pic" key={photo.id} src={photo.url} />
-            ))} */}
+      {photos[0] ?
+      <div> <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+      {photos.map((item, ind) => (
+        <Carousel.Item key={ind}>
+          <div style={{
+            backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%',
+          }}
+          />
+        </Carousel.Item>
+      ))}
+    </Carousel>
+    <PhotoLikeButton photoId={photos[index].id} likePhoto={likePhoto} />
+    </div>
+    :
+    null
+    }
+      
+
     </div>
   );
 };

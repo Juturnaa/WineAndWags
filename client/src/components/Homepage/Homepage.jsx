@@ -5,6 +5,7 @@ import ProfileView from './ProfileVIew';
 import DogView from './DogView';
 import LikeButton from './LikeButton';
 import Button from '@material-ui/core/Button';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Homepage({
   currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
@@ -26,6 +27,10 @@ export default function Homepage({
   useEffect(() => {
     setCurrentDogIndex(0)
   }, [potientialDog])
+
+  useEffect(() => {
+    
+  }, [filterParams])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -61,7 +66,7 @@ export default function Homepage({
     }
   }
 
-  const updateFilterParams = (zip) => {
+  const updateFilterParams = (zip, cb) => {
     const params = {
       sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
       dogGenders,
@@ -73,6 +78,9 @@ export default function Homepage({
       zipCodes: zip,
       ownerAgeRange,
       ownerGenders,
+    };
+    if (cb) {
+      cb(params)
     };
     return params;
   };
@@ -103,21 +111,30 @@ export default function Homepage({
         changeOwnerGenders(filters.genders);
       })
       .then(() => {
-        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`));
-      })
-      .then(() => {
-        getRandomUser(filterParams);
+        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`, getRandomUser));
       })
       .catch((err) => {
-        console.error(error);
+        console.error(err);
       });
     }
-
   }, [currentUser]);
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#EFF9F0"
+      },
+      secondary: {
+        main: "#13070C"
+      }
+    },
+  });
 
   return (
     <div className='homepage'>
-      <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      <ThemeProvider theme={theme}>
+        <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      </ThemeProvider>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
         <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
