@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 // import ReactNotification from 'react-notifications-component'
 // import { store } from 'react-notifications-component';
+import axios from 'axios'
 
 
 const {startOfMonth, startOfWeek, endOfMonth, endOfWeek, startOfDay, addDays, isSameMonth, isSameDay, format} = require('date-fns');
@@ -9,6 +10,13 @@ const Calendar = (props) => {
   const [weekFull, setweekFull] = useState(false)
   const [selectedDate, setSelectedDate] = useState(new Date())
   const [appt, setAppt] = useState(new Date().getHours()+":"+new Date().getMinutes())
+  const [schedule, setSchedule]= useState([])
+  const [matchSchedule,setmatchSchedule]= useState([])
+  const [hourst, setHourst]= useState(new Date())
+  const [minutest, setMinutest]= useState(new Date())
+  const [ampm, setampm] = useState('')
+
+
 
   function takeWeek(start = new Date()) {
     let date = startOfWeek(startOfDay(start));
@@ -60,14 +68,31 @@ const Calendar = (props) => {
 const data = takeMonth(selectedDate)();
 
 function dayColor(day){
+  let color = "day"
+  if(schedule.length >0){
+    schedule.forEach((d,i)=>{
+      if (isSameDay(day,new Date(schedule[i].dates))){
+        return color = "today"
+      }
+    })
+  }
+  if(matchSchedule.length >0){
+    matchSchedule.forEach((d,i)=>{
+      if (isSameDay(day,new Date(matchSchedule[i].dates))){
+        return color = "matchSchedules"
+      }
+    })
+  }
   if (!isSameMonth(day, selectedDate)) {
-    return "day2"
+    return color = "day2"
   }
   if(isSameDay(day,selectedDate)) {
-    return "daySelected"
+    return color ="daySelected"
   }
-  if (isSameDay(day,new Date())){return "today"}
-  return "day"
+  if (isSameDay(day,new Date())){
+    return color = "today"
+  }
+  return color
 }
 let hours = [1,2,3,4,5,6,7,8,9,10,11,12]
 let minutes = [
@@ -79,21 +104,81 @@ let minutes = [
  60
 ]
 
-  function clickStuff() {
-    store.addNotification({
-      title: "Appointment Made!",
-      message: "poggers",
-      type: "success",
-      insert: "bottom",
-      container: "bottom-right",
-      animationIn: ["animated", "fadeIn"], // animate.css classes that's applied
-      animationOut: ["animated", "fadeOut"], // animate.css classes that's applied
-      dismiss: {
-        duration: 3000
-      }
-    })
-    props.clickedCalendar(false)
+  useEffect(()=>{
+    getSchedule()
+    getMatchSchedule()
+  },[props.currentUserId, props.matchUserId])
+
+  let getSchedule =()=> {
+    if(props.currentUserId){
+      axios.get(`/app/${props.currentUserId}/schedule/`)
+      .then((results)=>{
+        setSchedule(results.data)
+      })
+    }
   }
+  let getMatchSchedule = ()=>{
+    if(props.matchUserId){
+      axios.get(`/app/${props.matchUserId}/schedule/`)
+      .then((results)=>{
+        setmatchSchedule(results.data)
+      })
+    }
+  }
+
+  let postSchedule= ()=>{
+    if(!isSameDay(selectedDate, new Date(minutest))){alert('set time')}
+    else{
+    axios.post(`app/${props.currentUserId}/schedule`, {
+      "dates": new Date(minutest).toISOString()
+    })
+    .then(()=>{getSchedule()})
+    .then(()=>{props.clickedCalendar(false)})
+    .err(()=>{console.log('err')})
+  }
+  }
+  //I should flip put and post so it's faster
+  let postAppointment = (d)=>{
+    axios.post(`app/${props.currentUserId}/appointment/${props.matchUserId}`,{
+      "schedule_id": d.id
+    })
+    .then(()=>{
+      axios.put(`app/${props.matchUserId}/schedule`,{
+        "id": d.id
+      })
+    })
+    .then(()=>{getMatchSchedule()})
+    .then(()=>{alert('nice')})
+    .err(()=>{console.log('err')})
+  }
+
+
+  let yourSchedule =()=>{
+    if(schedule.length >0){
+      schedule.map((d,i)=>{
+        if (isSameDay(selectedDate,new Date(schedule[i].dates))){
+        return <p key={i}>{d.dates}</p>
+        }
+      })
+    }
+  }
+
+  // function clickOk() {
+  //   // store.addNotification({
+  //   //   title: "Appointment Made!",
+  //   //   message: "poggers",
+  //   //   type: "success",
+  //   //   insert: "bottom",
+  //   //   container: "bottom-right",
+  //   //   animationIn: ["animated", "fadeIn"], // animate.css classes that's applied
+  //   //   animationOut: ["animated", "fadeOut"], // animate.css classes that's applied
+  //   //   dismiss: {
+  //   //     duration: 3000
+  //   //   }
+  //   // })
+  //   postSchedule()
+
+  // }
 return (
   // store.addNotification({
   //   title: "Appointment Made!",
@@ -106,27 +191,27 @@ return (
   //   dismiss: {
   //     duration: 3000
   //   }
-  // })
+  // })<h1>{format(hourst, 'hh')}: {format(minutest,'mm')} {ampm? ampm: format(new Date(),'a')}</h1>
   <div className="currentDate">
-    <h1>{format(selectedDate,"ccc")}, {format(selectedDate,"LLL")} {format(selectedDate,"do")}</h1>
   <div>
-    <div style={{display:"flex"}}>
-    <button onClick={()=>{setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth()-1, 1))}}>prev</button>
+    <div className="topCalendar">
+    <i className="fas fa-angle-left" style={{fontSize:"36px",paddingTop:"5px"}} onClick={()=>{setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth()-1, 1))}}/>
     <h1>{format(selectedDate,"MMMM")} {format(selectedDate,"yyyy")}</h1>
-    <button onClick={()=>{setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1))}}>next</button>
-
+    <i className="fas fa-angle-right" style={{fontSize:"36px",paddingTop:"5px"}} onClick={()=>{setSelectedDate(new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1))}}/>
+    <h1 style={{textAlign:"right"}}>{format(selectedDate,"LLL")} {format(selectedDate,"do")} {format(hourst, 'hh')}: {format(minutest,'mm')} {ampm? ampm: format(new Date(),'a')}</h1>
     </div>
 
   <div className="weeks">
     <div className ="week">
       <WeekNames />
-      {console.log(new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1))}
+      {/* {console.log(new Date(selectedDate.getFullYear(), selectedDate.getMonth()+1))} */}
       { <div>
       {data.map( (week,i)=>(
           <div className="weekGrid" key={i}>
             {week.map((day, index)=>(
               <div onClick={()=> setSelectedDate(day)} className= {dayColor(day)} key={index}>
                 {format(day, 'dd')}
+
               </div>
             ))}
           </div>
@@ -134,29 +219,61 @@ return (
         </div>
       }
     </div>
+    {/* TIME STUFF */}
+    <div className="TimeSchedule">
+    <div style={{textAlign:'center'}}>
+      {matchSchedule.length>0? <h1>Available slots</h1>:null}
+      <div>{matchSchedule.map((d,id)=>(
+        <div key= {id}>
+          {format(new Date(d.dates),"Pp")} <button onClick={()=>{postAppointment(d)}}>Select</button>
+          </div>
+      ))}
+      </div>
     </div>
-    <button>Cancel</button>
-    <button onClick={()=>{
-      clickStuff()
-    }
-    }>Ok</button>
-    <div>
-    {/* <div>
+    <div style={{display:"flex",justifyContent:"space-around"}}><h2>Hours</h2> <h2>Minutes</h2></div>
+    <div className="Time">
+    <ul className="hoursTime">
       {hours.map((hour,hi) => (
-        <div key = {hi}>{hour}</div>
+        <li className ="indvTime" role='button' onClick={()=>{if(ampm === "PM") {setHourst(selectedDate.setHours(hour+12))} else {setHourst(selectedDate.setHours(hour))}}} key = {hi}>{hour}</li>
       ))}
-    </div> */}
-    {/* <div>
+    </ul>
+    <ul className="minutesTime">
       {minutes.map((min,mi) => (
-        <div key = {mi}>{min}</div>
+        <li className ="indvTime" role='button' onClick={()=>{setMinutest(selectedDate.setMinutes(min))}} key = {mi}>{min}</li>
       ))}
-    </div> */}
+    </ul>
+    <ul>
+      <li role='button' onClick={()=>{if(ampm=== 'PM'){setMinutest(minutest+43200)}setampm('AM')}}>
+        AM
+      </li>
+      <li role='button' onClick={()=>{if(ampm=== 'AM'){setMinutest(minutest-43200)}setampm('PM')}}>
+        PM
+      </li>
+    </ul>
+
     </div>
+
+    </div>
+
+        {/* TIME STUFF */}
+    </div>
+    <div className='alignbutton'>
+    <button className="calButton" onClick={()=>{props.clickedCalendar(false)}}>Cancel</button>
+    <button className="calButton" onClick={()=>{postSchedule()}}>Ok</button>
+    </div>
+
     {/* <input type="date" value= {appt} onChange={(e)=>{console.log(e)}}/>
     <input type="time" value= {appt} onChange={(e)=>{console.log(e)}}/> */}
     </div>
-
-
+    {/* <div>
+      <h1>Available slots</h1>
+      <p>{matchSchedule.map((d,id)=>(
+        <div key= {id}>
+          {format(new Date(d.dates),"Pp")} <button onClick={()=>{postAppointment(d)}}>Select</button>
+          </div>
+      ))}
+      </p>
+    </div> */}
     </div>
 )
 

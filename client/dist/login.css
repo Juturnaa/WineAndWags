@@ -187,11 +187,11 @@
 }
 
 .center .hands .hand--left.hide {
-    transform: translate(2px, -155px) rotate(-160deg);
+    transform: translate(20px, -153px) rotate(-160deg);
 }
 
 .center .hands .hand--left.peek {
-    transform: translate(0px, -120px) rotate(-160deg);
+    transform: translate(20px, -120px) rotate(-160deg);
 }
 
 .center .hands .hand--right {
@@ -199,7 +199,7 @@
 }
 
 .center .hands .hand--right.hide {
-    transform: translate(-6px, -155px) rotate(160deg);
+    transform: translate(-28px, -153px) rotate(160deg);
 }
 
 .center .hands .hand--right.peek {
