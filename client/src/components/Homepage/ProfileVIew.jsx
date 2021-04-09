@@ -43,7 +43,7 @@ const ProfileView = ({ user, photos, likePhoto }) => {
         {user !== undefined ? user.name : null}
       </div>
       <div className="photo-container">
-        <PhotosList photos={userPhotos} likePhoto={likePhoto} />
+        <PhotosList photos={photos || ''} likePhoto={likePhoto} />
         <div className="card-text">
           <div className="text-component">
             {' '}
