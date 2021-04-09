@@ -28,6 +28,7 @@ const App = () => {
   const [allMessages, setAllMessages] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [reviewModal, setReviewModal] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
 
   // potiential Match User states
   const [potiential, setPotiential] = useState();
@@ -177,6 +178,7 @@ const App = () => {
       axios.get(`/app/${currentUser.id}/matches`)
         .then((results) => {
           setMatches(results.data);
+          window.sessionStorage.setItem('matches', JSON.stringify(results.data));
         })
         .catch((err) => console.log(err));
     }
@@ -202,7 +204,7 @@ const App = () => {
         .catch((err) => console.log(err));
     });
     setAllMessages(messages);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     const info = {};
@@ -222,19 +224,25 @@ const App = () => {
     }
   }, [appointment]);
 
-  // if (landing) {
-  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  // }
-  // if (register) {
-  //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-  //   );
-  // }
+  // ------SETTING MATCH INFO TO SESSION STORAGE------ //
+  window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+  window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+  window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  // ------------------------------------------------- //
+
+  if (landing) {
+    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  }
+  if (register) {
+    return (
+      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+    );
+  }
 
   return (
     <div>
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-      {/* <NavBar
+      <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto || ''}
@@ -253,10 +261,13 @@ const App = () => {
         potientialDogsImg={potientialDogsImg}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
-      /> */}
-      <ContextProvider>
+        setMessageCount={setMessageCount}
+        messageCount={messageCount}
+      />
+      />
+      {/* <ContextProvider>
         <Video />
-      </ContextProvider>
+      </ContextProvider> */}
     </div>
   );
 };

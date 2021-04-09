@@ -27,7 +27,7 @@ import Map from './Map/Map';
 // </Route>
 
 function NavBar({
-  currentUser, potientialDogsImg, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, showNotifs, setShowNotifs, matchesInfo,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -68,7 +68,7 @@ function NavBar({
   }, []);
 
   return (
-    <BrowserRouter>      
+    <BrowserRouter>
       <nav className="navigation-bar">
         <div className="navbar-title-content">
           <div className="navbar-title">
@@ -78,10 +78,10 @@ function NavBar({
         </div>
         <div className="nav-icons">
           <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
-          <button style={{ background: 'none', border: 'none' }} className="nav-icon" onBlur={()=> setShowNotifs(false)} onClick={() => setShowNotifs(!showNotifs)}><i className="far fa-bell" /></button>
+          <button style={{ background: 'none', border: 'none' }} className="nav-icon" onBlur={() => setShowNotifs(false)} onClick={() => setShowNotifs(!showNotifs)}><i className="far fa-bell" /></button>
           <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
           <NavLink className="nav-icon" exact to="/map"><i className="far fa-map" /></NavLink>
-          <a className="nav-icon" onClick={() => setEdit(!edit)} onBlur={()=> setEdit(false)}>
+          <a className="nav-icon" onClick={() => setEdit(!edit)} onBlur={() => setEdit(false)}>
             {humanPhoto.length ? (
               <div
                 className="profile-thumbnail"
@@ -94,14 +94,14 @@ function NavBar({
             ? (
               <div style={{ padding: '1.5em' }}>
                 <div id="editNav">
-                <div id="editNav-triangle" />
+                  <div id="editNav-triangle" />
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
                 </div>
               </div>
             )
             : null}
-          
+
         </div>
       </nav>
       {unread > 0
