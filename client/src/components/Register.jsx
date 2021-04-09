@@ -5,7 +5,7 @@ import bcrypt from 'bcryptjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
@@ -22,7 +22,7 @@ import Breeds from '../dummyData/dogBreed';
 
 
 export default function Register({ setCurrentID, setRegister, setLanding }) {
-    let [page, setPage] = useState(4);
+    let [page, setPage] = useState(1);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -83,53 +83,6 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
               color: "#ddc8c4"
             }
         },
-        MultiSlider: {
-            thumb: {
-                background: "red",
-                "&~&": {
-                  background: "green"
-                }
-              },
-              mark: {
-                background: "black"
-              },
-              rail: {
-                background: "linear-gradient(to right, red, red 50%, green 50%, green);"
-              },
-              track: {
-                background: "orange"
-              },
-              valueLabel: {
-                "&>*": {
-                  background: "black"
-                }
-              }
-        },
-        SingleSlider:{
-            root: {
-                color: '#52af77',
-                height: 8,
-              },
-              thumb: {
-                height: 24,
-                width: 24,
-                backgroundColor: '#fff',
-                border: '2px solid currentColor',
-                marginTop: -8,
-                marginLeft: -12,
-                '&:focus, &:hover, &$active': {
-                  boxShadow: 'inherit',
-                },
-              },
-              active: {},
-              valueLabel: {
-                left: 'calc(-50% + 4px)',
-              },
-              rail: {
-                height: 8,
-                borderRadius: 4,
-              },
-        },
         chips: {
             display: 'flex',
             flexWrap: 'wrap',
@@ -141,6 +94,66 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             marginTop: theme.spacing(3),
         },
     }));
+    const SingleSlider = withStyles({
+        root: {
+          color: "#6b4d57",
+          height: 8,
+        },
+        thumb: {
+          height: 24,
+          width: 24,
+          backgroundColor: '#fff',
+          border: '2px solid currentColor',
+          marginTop: -8,
+          marginLeft: -12,
+        },
+        active: {},
+        valueLabel: {
+          left: 'calc(-50% + 4px)',
+        },
+        track: {
+          height: 8,
+          borderRadius: 4,
+        },
+        rail: {
+          height: 8,
+          borderRadius: 4,
+        },
+      })(Slider);
+      const MultiSlider = withStyles({
+        root: {
+            color: "#6b4d57",
+            height: 8,
+        },
+        thumb: {
+          height: 24,
+          width: 24,
+          backgroundColor: '#fff',
+          border: '2px solid currentColor',
+          marginTop: -8,
+          marginLeft: -12,
+          '& .bar': {
+            // display: inline-block !important;
+            height: 9,
+            width: 1,
+            backgroundColor: 'currentColor',
+            marginLeft: 1,
+            marginRight: 1,
+          },
+        },
+        active: {},
+        valueLabel: {
+            left: 'calc(-50% + 4px)',
+          },
+        track: {
+            height: 8,
+            borderRadius: 4,
+        },
+        rail: {
+            height: 8,
+            borderRadius: 4,
+          },
+      })(Slider);
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -324,16 +337,34 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                     </Select>
                 </FormControl>
                 <div className="bool-checkboxes">
-                    <div className="hypo"><span>Hypoallergenic</span><div><input name="hypo" type="checkbox" checked={hypos[num-1]===true} onClick={() => {let arr= hypos.slice(); arr.splice(num-1,1, !hypos[num-1]); setHypos(arr)}}/></div></div>
-                    <div className="neutered"><span>Neutered/Spayed</span><div><input name="neutered" type="checkbox" checked={neutereds[num-1]===true} onClick={() => {let arr = neutereds.slice(); arr.splice(num-1,1, !neutereds[num-1]); setNeutereds(arr)}}/></div></div>
-                    <div className="health_issues"><span>Health Issues</span><div><input name="health_issues" type="checkbox" checked={health_issues[num-1]===true} onClick={() => {let arr= health_issues.slice(); arr.splice(num-1,1, !health_issues[num-1]); setHealthIssues(arr)}}/></div></div>
+                    <label className="hypo">
+                        <span>Hypoallergenic</span>
+                        <div className="checkboxes-container">
+                            <input name="hypo" type="checkbox" checked={hypos[num-1]===true} onClick={() => {let arr= hypos.slice(); arr.splice(num-1,1, !hypos[num-1]); setHypos(arr)}}/>
+                            <div className="checkmark"></div>
+                        </div>
+                    </label>
+                    <label className="neutered">
+                        <span>Neutered/Spayed</span>
+                        <div className="checkboxes-container">
+                            <input name="neutered" type="checkbox" checked={neutereds[num-1]===true} onClick={() => {let arr = neutereds.slice(); arr.splice(num-1,1, !neutereds[num-1]); setNeutereds(arr)}}/>
+                            <div className="checkmark"></div>
+                        </div>
+                    </label>
+                    <label className="health_issues">
+                        <span>Health Issues</span>
+                        <div className="checkboxes-container">
+                            <input name="health_issues" type="checkbox" checked={health_issues[num-1]===true} onClick={() => {let arr= health_issues.slice(); arr.splice(num-1,1, !health_issues[num-1]); setHealthIssues(arr)}}/>
+                            <div className="checkmark"></div>
+                        </div>
+                    </label>
 
                 </div>
                 <div style={{width: 400}}>
                     <Typography id="track-false-slider" gutterBottom className={classes.InputLabel}>
                         Size
                     </Typography>
-                    <Slider
+                    <MultiSlider
                         className={classes.SingleSlider}
                         track={false}
                         value={sizes[num-1]}
@@ -398,7 +429,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         <Typography className={classes.InputLabel} id="range-slider" gutterBottom>
                             Size
                         </Typography>
-                        <Slider
+                        <MultiSlider
                             value={sizePref}
                             onChange={(e, val) => {
                                 setSizePref(val);
@@ -421,7 +452,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         <Typography className={classes.InputLabel} id="range-slider" gutterBottom>
                             Age
                         </Typography>
-                        <Slider
+                        <MultiSlider
                             value={dogAgePref}
                             onChange={(e, val) => {
                                 setDogAgePref(val);
@@ -456,9 +487,28 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         </FormControl>
                     </div>
                     <div className="bool-checkboxes">
-                        <div className="hypo"><span>Hypoallergenic</span><div><input name="hypo" type="checkbox" checked={hypoPref===true} onChange={() => setHypoPref(!hypoPref)}/></div></div>
-                        <div className="neutered"><span>Neutered/Spayed</span><div><input name="neutered" type="checkbox" checked={neuteredPref===true} onChange={() => setNeuteredPref(!neuteredPref)}/></div></div>
-                        <div className="health_issues"><span>Health Issues</span><div><input name="health_issues" type="checkbox" checked={healthIssuesPref===true} onChange={() => setHealthIssuesPref(!healthIssuesPref)}/></div></div>
+                        <div className="hypo">
+                            <label className="checkboxes-container">
+                                <span>Hypoallergenic</span>
+                                <input name="hypo" type="checkbox" checked={hypoPref===true} onChange={() => setHypoPref(!hypoPref)}/>
+                                <div className="checkmark"></div>
+
+                            </label>
+                        </div>
+                        <div className="neutered">
+                            <label className="checkboxes-container">
+                                <span>Neutered/Spayed</span>
+                                <input name="neutered" type="checkbox" checked={neuteredPref===true} onChange={() => setNeuteredPref(!neuteredPref)}/>
+                                <div className="checkmark"></div>
+                            </label>
+                        </div>
+                        <div className="health_issues">
+                            <label className="checkboxes-container">
+                                <span>Health Issues</span>
+                                <input name="health_issues" type="checkbox" checked={healthIssuesPref===true} onChange={() => setHealthIssuesPref(!healthIssuesPref)}/>
+                                <div className="checkmark"></div>
+                            </label>
+                        </div>
                     </div>
                     <div>
                         <FormControl className={classes.formControl}>
@@ -496,7 +546,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         <Typography className={classes.InputLabel} id="continuous-slider" gutterBottom>
                             Distance
                         </Typography>
-                        <Slider
+                        <SingleSlider
                             value={max_dist}
                             onChange={(e, val) => setMaxDist(val)}
                             valueLabelDisplay="auto"
@@ -509,7 +559,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         <Typography className={classes.InputLabel} id="range-slider" gutterBottom>
                             Age
                         </Typography>
-                        <Slider
+                        <MultiSlider
                             value={ownerAgePref}
                             onChange={(e, val) => {
                                 setOwnerAgePref(val);

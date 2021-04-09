@@ -8,6 +8,7 @@ import {
 import Dropdown from 'react-bootstrap/Dropdown';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { SignalCellularConnectedNoInternet4BarRounded } from '@material-ui/icons';
 import Homepage from './Homepage/Homepage';
 import EditProfile from './Homepage/EditProfile';
 import Inbox from './Messages/Inbox';
@@ -69,6 +70,12 @@ function NavBar({
 
   return (
     <BrowserRouter>
+      <div className="navbar-title-content">
+        <div className="navbar-title">
+          <h2>Wine and Wags</h2>
+          <h2>Wine and Wags</h2>
+        </div>
+      </div>
       <nav className="navigation-bar">
         <NavLink className="nav-icon" exact to="/home" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-home" /></NavLink>
         <NavLink className="nav-icon" exact to="/notifications" onClick={() => { setShowNotifs(!showNotifs); setEdit(false); }}><i className="far fa-bell" /></NavLink>

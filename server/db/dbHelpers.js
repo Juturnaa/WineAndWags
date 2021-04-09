@@ -58,6 +58,7 @@ const dbHelpers = {
       ownerAgeRange,
       ownerGenders,
     } = JSON.parse(req.query.filters);
+    // AND waw.users.zipcode IN (${zipCodes})
     let qryStr;
     if (dogGenders === 'Both') {
       qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
@@ -69,7 +70,6 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
-      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -88,7 +88,6 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
-      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -180,7 +179,7 @@ const dbHelpers = {
     });
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
-    const queryStr = `SELECT * FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
+    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MM AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
@@ -360,7 +359,8 @@ const dbHelpers = {
       (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows);
-      });
+      }
+    );
   },
   postNotif: (req, res) => {
     const {
@@ -369,15 +369,17 @@ const dbHelpers = {
     db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
       (err, data) => {
         if (err) res.send(err);
-        else res.send('posted notification');
-      });
+        else res.send("posted notification");
+      }
+    );
   },
   updateNotif: (req, res) => {
     db.query(`UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
       (err, data) => {
         if (err) res.send(err);
-        else res.send('updated notification');
-      });
+        else res.send("updated notification");
+      }
+    );
   },
 };
 

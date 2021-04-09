@@ -5,6 +5,7 @@ import ProfileView from './ProfileVIew';
 import DogView from './DogView';
 import LikeButton from './LikeButton';
 import Button from '@material-ui/core/Button';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Homepage({
   currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
@@ -26,6 +27,10 @@ export default function Homepage({
   useEffect(() => {
     setCurrentDogIndex(0)
   }, [potientialDog])
+
+  useEffect(() => {
+    
+  }, [filterParams])
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -53,6 +58,7 @@ export default function Homepage({
     }
     return result.join(',');
   };
+
   const updateDogIndex = () => {
     if (currentDogIndex === potientialDog.length - 1) {
       setCurrentDogIndex(0)
@@ -61,63 +67,67 @@ export default function Homepage({
     }
   }
 
-  const updateFilterParams = (zip) => {
-    const params = {
-      sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
-      dogGenders,
-      dogAgeRange,
-      hypoallergenic,
-      neutered,
-      healthIssues,
-      avoidBreeds: avoidBreeds.join(','),
-      zipCodes: zip,
-      ownerAgeRange,
-      ownerGenders,
-    };
-    return params;
-  };
-
   // GET request to get the user's settings
   useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/filters`)
-      .then((results) => {
-        // modal slider for dog sizes works by number not strings
-        const sizeToNumberValue = (str) => {
-          if (str === 'XS') return 0;
-          if (str === 'S') return 1;
-          if (str === 'M') return 2;
-          if (str === 'L') return 3;
-          if (str === 'XL') return 4;
-        };
-        const filters = results.data[0];
-        changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
-        changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
-        changeDogGenders(filters.dog_genders);
-        changeHypoallergenic(filters.hypo);
-        changeNeutered(filters.neutered);
-        changeHealthIssues(filters.health_issues);
-        changeAvoidedBreeds([filters.avoid_breeds]);
-        changeMaxDistance(filters.max_dist);
-        changeOwnerAgeRange([filters.min_age, filters.max_age]);
-        changeOwnerGenders(filters.genders);
-      })
-      .then(() => {
-        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`));
-      })
-      .then(() => {
-        getRandomUser(filterParams);
-      })
-      .catch((err) => {
-        console.error(error);
-      });
+        .then((results) => {
+          // modal slider for dog sizes works by number not strings
+          const sizeToNumberValue = (str) => {
+            if (str === 'XS') return 0;
+            if (str === 'S') return 1;
+            if (str === 'M') return 2;
+            if (str === 'L') return 3;
+            if (str === 'XL') return 4;
+          };
+          const filters = results.data[0];
+          const params = {
+            sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
+            dogGenders: filters.dog_genders,
+            dogAgeRange: [filters.dog_min_age, filters.dog_max_age],
+            hypoallergenic: filters.hypo,
+            neutered: filters.neutered,
+            healthIssues: filters.health_issues,
+            avoidBreeds: filters.avoid_breeds,
+            ownerAgeRange: [filters.min_age, filters.max_age],
+            ownerGenders: filters.genders,
+            zipCodes: '',
+          }
+          setFilterParams(params);
+          getRandomUser(params);
+          changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
+          changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
+          changeDogGenders(filters.dog_genders);
+          changeHypoallergenic(filters.hypo);
+          changeNeutered(filters.neutered);
+          changeHealthIssues(filters.health_issues);
+          changeAvoidedBreeds([filters.avoid_breeds]);
+          changeMaxDistance(filters.max_dist);
+          changeOwnerAgeRange([filters.min_age, filters.max_age]);
+          changeOwnerGenders(filters.genders);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-
   }, [currentUser]);
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#EFF9F0"
+      },
+      secondary: {
+        main: "#13070C"
+      }
+    },
+  });
 
   return (
     <div className='homepage'>
-      <Button variant="contained" style={{width: '6rem', margin: '0.5rem'}} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      <ThemeProvider theme={theme}>
+        <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+      </ThemeProvider>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
         <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />

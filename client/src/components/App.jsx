@@ -93,6 +93,13 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
+      axios.post(`/app/notifications/${currentUser.id}`, {
+        type: 'photoLike',
+        type_id: photoId,
+        recipient_id: potiential.id,
+        sender_name: potiential.name
+      })
+      .catch((err) => console.log(err))
   };
 
   useEffect(() => {
