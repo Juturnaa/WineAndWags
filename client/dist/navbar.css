@@ -1,17 +1,24 @@
 .navigation-bar {
-  background-color: #13070c;
+  background-color: #243946;
   width: 100vw;
   height: 3.5rem;
-  display: 'flex';
-  justify-content: right;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
   text-align: right;
   padding: 0.5rem;
+}
+
+.nav-icons {
+  min-width:fit-content;
+  border: 3px solid white;
+
 }
 
 .nav-icon {
   margin-right: 1.5rem !important;
   font-size: 1.25rem !important;
-  color: #eff9f0 !important;
+  color: #eff9f0;
   transition-duration: 0.25s !important;
   margin-top: 0.3em;
 }
@@ -67,26 +74,25 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
 .navbar-title{
-    position:absolute;
-    display:flex;
-    justify-content:center;
-    top: -2px;
-    width:100vw;
-}
-.navbar-title-content span, .navbar-title-content h2, .upper-text{
-    font-family:'Lobster', sans-serif;
     position:relative;
+    width:400px;
+    height: 50px;
+    top:-10px;
+  border: 3px solid white;
 }
-.navbar-title-content h2 {
+.navbar-title-content h2{
+    font-family:'Lobster', sans-serif;
     position:absolute;
     font-size: 2.75em;
+  border: 3px solid white;
+
 }
 .navbar-title-content h2:nth-child(1) {
     color:transparent;
-    -webkit-text-stroke: 2px #6b4d57;
+    -webkit-text-stroke: 2px #ddc8c4;
 }
 .navbar-title-content h2:nth-child(2) {
-    color:#6b4d57;
+    color:#ddc8c4;
     animation: water 4s ease-in-out infinite;
 }
 @keyframes water {
@@ -113,4 +119,14 @@
 .navbar-title-content span{
     color:#ddc8c4;
     font-size: 2.5em;
+}
+@media only screen and (max-width: 1200px) {
+  .navbar-title-content h2 {
+    /* left:20vw; */
+  }
+}
+@media only screen and (max-width: 800px) {
+  .navbar-title-content h2 {
+    /* left:10vw; */
+  }
 }
