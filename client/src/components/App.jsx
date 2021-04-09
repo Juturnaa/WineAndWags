@@ -27,7 +27,8 @@ const App = () => {
   const [reviewModal, setReviewModal] = useState(false);
 
   // potiential Match User states
-
+  const [potiential, setPotiential] = useState();
+  const [potientialDog, setPotientialDog] = useState();
   const [potientialPhoto, setPotientialPhoto] = useState([]);
   const [potientialDogsPhoto, setPotientialDogPhoto] = useState([]);
   const [potientialDogsImg, setPotientialDogsImg] = useState([])
