@@ -6,7 +6,6 @@ import PhotoLikeButton from './PhotoLikeButton';
 const PhotosList = ({ photos, likePhoto }) => {
   const [index, setIndex] = useState(0);
   const [currentPhoto, setCurrentPhoto] = useState(1);
-
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
   };
@@ -41,3 +40,6 @@ const PhotosList = ({ photos, likePhoto }) => {
 };
 
 export default PhotosList;
+
+
+// [{[{}]}, {[{}]}, {[{}]}, {[{}]}]
