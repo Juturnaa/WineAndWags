@@ -86,6 +86,7 @@ function NavBar({
         {edit
           ? (
             <div style={{ padding: '1.5em' }}>
+              <div id="editNav-triangle" />
               <div id="editNav">
                 <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                 <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>

@@ -35,7 +35,7 @@
 
 #editNav {
   position: absolute;
-  background: #EFF9F0;
+  background: white;
   display: flex;
   flex-direction: column;
   right: 1em;
@@ -45,4 +45,16 @@
   border-right: 1px solid #6b4d57;
   border-left: 1px solid #6b4d57;
   border-bottom: 1px solid #6b4d57;
+}
+
+#editNav-triangle {
+  position: absolute;
+  right: 143px;
+  top: -5px;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #EFF9F0;
+  z-index: 1;
 }
