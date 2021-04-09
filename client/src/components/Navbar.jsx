@@ -121,6 +121,7 @@ function NavBar({
                 let txt;
                 if (notif.type === 'photoLike') txt = ' liked your photo';
                 else if (notif.type === 'message') txt = ' sent you a message';
+                else if (notif.type === 'appointment') txt = 'date planned';
                 if (notif.read) {
                   return (
                     <div className="read-notif">
