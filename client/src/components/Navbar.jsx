@@ -82,6 +82,7 @@ function NavBar({
             })}
 
           </div>
+        </div>
           : ""}
         {/* Routes */}
         <Switch>
