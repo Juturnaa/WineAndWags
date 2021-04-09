@@ -98,7 +98,7 @@ function NavBar({
 
           </div>
         </div>
-        : ""}
+          : ""}
         {/* Routes */}
         <Switch>
           {/* <Route exact path="/notifications" component={Notifications} /> */}
