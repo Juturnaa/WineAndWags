@@ -60,7 +60,6 @@ function NavBar({
     axios.patch(`/app/notifications/${notif_id}`)
       .then(() => {
         getNotifs();
-        console.log('updated');
       });
   };
   useEffect(() => {
@@ -78,7 +77,7 @@ function NavBar({
         </div>
         <div className="nav-icons">
           <NavLink className="nav-icon" exact to="/home"><i className="fas fa-home" /></NavLink>
-          <button style={{ background: 'none', border: 'none' }} className="nav-icon" onBlur={() => setShowNotifs(false)} onClick={() => setShowNotifs(!showNotifs)}><i className="far fa-bell" /></button>
+          <button style={{ background: 'none', border: 'none' }} className="notif-icon nav-icon" onBlur={(e)=> e.target.className === "notif-icon nav-icon" ? setShowNotifs(true) : setShowNotification(false)} onClick={() => setShowNotifs(!showNotifs)}><i className="far fa-bell" /></button>
           <NavLink className="nav-icon" exact to="/inbox"><i className="far fa-envelope" /></NavLink>
           <NavLink className="nav-icon" exact to="/map"><i className="far fa-map" /></NavLink>
           <a className="nav-icon" onClick={() => setEdit(!edit)} onBlur={() => setEdit(false)}>
