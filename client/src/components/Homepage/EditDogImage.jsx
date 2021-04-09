@@ -14,7 +14,7 @@ function EditDogImage({
   };
 
   return (
-    <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+    <Carousel className="editCarousel" interval={null} activeIndex={index} onSelect={handleSelect}>
       {dogImages[id].map((item, ind) => (
         <Carousel.Item key={ind}>
           <div style={{

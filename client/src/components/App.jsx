@@ -31,8 +31,8 @@ const App = () => {
   const [potientialDog, setPotientialDog] = useState();
   const [potientialPhoto, setPotientialPhoto] = useState([]);
   const [potientialDogsPhoto, setPotientialDogPhoto] = useState([]);
-  const [potientialDogsImg, setPotientialDogsImg] = useState([])
-  const [showNotifs, setShowNotifs] = useState(false)
+  const [potientialDogsImg, setPotientialDogsImg] = useState([]);
+  const [showNotifs, setShowNotifs] = useState(false);
 
   useEffect(() => {
     const dogsimages = [];
@@ -72,8 +72,6 @@ const App = () => {
     setPotientialDogsImg(dogsimages);
   }, [potientialDogsPhoto]);
 
-
-
   const getRandomUser = (filters) => {
     let random;
     let uId;
@@ -81,7 +79,7 @@ const App = () => {
       .then((data) => {
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setPotiential(data.data[random]);
-        uId = data.data[random].id
+        uId = data.data[random].id;
         setPotientialDog(data.data[random].dogs_info);
       })
       .then(() => {
@@ -97,7 +95,7 @@ const App = () => {
               }
             }
             setPotientialPhoto(human);
-            setPotientialDogPhoto(dogs)
+            setPotientialDogPhoto(dogs);
           });
       });
   };
@@ -105,15 +103,15 @@ const App = () => {
     let myLikes;
     axios.get(`/app/${currentUserID}/profile-likes`)
       .then((data) => {
-        myLikes = data.data.map((likeObj) => likeObj.liked_user_id)
+        myLikes = data.data.map((likeObj) => likeObj.liked_user_id);
         if (myLikes.includes(potiential.id)) {
-          axios.post(`/app/${currentUserID}/convos`, {recipient_id: potiential.id})
+          axios.post(`/app/${currentUserID}/convos`, { recipient_id: potiential.id })
             .then(() => {
-              alert('its a match!')
-            })
+              alert('its a match!');
+            });
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
     axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
       .then((data) => {
       })
@@ -128,13 +126,13 @@ const App = () => {
       .catch((err) => {
         console.log(err);
       });
-      axios.post(`/app/notifications/${currentUser.id}`, {
-        type: 'photoLike',
-        type_id: photoId,
-        recipient_id: potiential.id,
-        sender_name: potiential.name
-      })
-      .catch((err) => console.log(err))
+    axios.post(`/app/notifications/${currentUser.id}`, {
+      type: 'photoLike',
+      type_id: photoId,
+      recipient_id: potiential.id,
+      sender_name: potiential.name,
+    })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
