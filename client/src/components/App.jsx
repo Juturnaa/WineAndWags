@@ -142,6 +142,7 @@ const App = () => {
       axios.get(`/app/${currentUser.id}/matches`)
         .then((results) => {
           setMatches(results.data);
+          window.sessionStorage.setItem('matches', JSON.stringify(results.data));
         })
         .catch((err) => console.log(err));
     }
@@ -167,7 +168,7 @@ const App = () => {
         .catch((err) => console.log(err));
     });
     setAllMessages(messages);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     const info = {};
@@ -187,14 +188,20 @@ const App = () => {
     }
   }, [appointment]);
 
-  // if (landing) {
-  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  // }
-  // if (register) {
-  //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-  //   );
-  // }
+  // ------SETTING MATCH INFO TO SESSION STORAGE------ //
+  window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+  window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+  window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  // ------------------------------------------------- //
+
+  if (landing) {
+    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  }
+  if (register) {
+    return (
+      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+    );
+  }
 
   return (
     <div>
