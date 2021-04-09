@@ -20,15 +20,6 @@ import Map from './Map/Map';
 //  {loggedIn ? <Redirect to="/home" /> : <LandingPage />}
 // </Route>
 
-// replace these with imports of the actual components/pages when they're ready
-
-const Notifications = () => (
-  <div>Notifications</div>
-);
-const Messages = () => (
-  <div>Messages</div>
-);
-
 function NavBar({
   currentUser, potientialDogsImg, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, showNotifs, setShowNotifs, matchesInfo,
 }) {
