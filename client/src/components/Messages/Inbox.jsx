@@ -138,16 +138,6 @@ Inbox.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
 };
 
 Inbox.defaultProps = {
@@ -156,8 +146,6 @@ Inbox.defaultProps = {
   humanPhoto: [],
   matches: [],
   matchesPhotos: [],
-  allMessages: {},
-  matchesInfo: {},
 };
 
 export default Inbox;

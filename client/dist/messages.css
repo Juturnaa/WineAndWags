@@ -163,7 +163,7 @@
 
 .messages-from-match-container {
   display: flex;
-  margin: 10px;
+  /* margin: 10px; */
   align-items: center;
   border-radius: 10px;
   padding: 10px;
@@ -174,7 +174,7 @@
 
 .messages-from-user-container {
   display: flex;
-  margin: 10px;
+  /* margin: 10px; */
   align-items: center;
   border-radius: 10px;
   padding: 10px;
@@ -186,10 +186,14 @@
 
 .time-stamp-match {
   /* justify-self: end; */
+  font-size: 11px;
+  padding-top: 3px;
 }
 
 .time-stamp-user {
   align-self: flex-end;
+  font-size: 11px;
+  padding-top: 3px;
 }
 
 #send-message-container {

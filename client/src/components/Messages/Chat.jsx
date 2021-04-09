@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Modal from 'react-modal';
@@ -67,19 +67,19 @@ const Chat = ({
             if (message.sender_id === currentUserId) {
               return (
                 <React.Fragment>
-                  <div className="time-stamp-user">{message.time_stamp}</div>
                   <div className="messages-from-user-container" key={message.id}>
                     {message.body}
                   </div>
+                  <div className="time-stamp-user">{message.to_char}</div>
                 </React.Fragment>
               );
             }
             return (
               <React.Fragment>
-              <div className="time-stamp-match">{message.time_stamp}</div>
               <div className="messages-from-match-container" key={message.id}>
                 {message.body}
               </div>
+              <div className="time-stamp-match">{message.to_char}</div>
             </React.Fragment>
             );
           })}
@@ -110,19 +110,9 @@ Chat.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
   messageMode: PropTypes.bool,
   currentMessageId: PropTypes.number,
   currentUser: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -131,11 +121,9 @@ Chat.propTypes = {
 
 Chat.defaultProps = {
   matchesPhotos: [],
-  allMessages: {},
   messageMode: false,
   currentMessageId: null,
   currentUser: {},
-  matchesInfo: {},
 };
 
 export default Chat;
