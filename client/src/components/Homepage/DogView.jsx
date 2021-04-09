@@ -29,7 +29,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
     }
 
   }, [dog])
-  
+
   useEffect(() => {
     if (potientialDogsImg && dog.id) {
       transformPhotos(potientialDogsImg)
@@ -45,7 +45,6 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
     }
     setCurrentDogsPhotos(newPhotos)
   }
-
 
     const userPhotos = [
         {

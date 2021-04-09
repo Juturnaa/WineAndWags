@@ -27,7 +27,7 @@ export default function Homepage({
   }, [potientialDog])
 
   useEffect(() => {
-    
+
   }, [filterParams])
 
   // Dog Filters
