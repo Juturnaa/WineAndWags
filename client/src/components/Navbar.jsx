@@ -64,7 +64,7 @@ function NavBar({
       </div>
         <nav className='navigation-bar'>
           <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
-          <NavLink className="nav-icon" exact to="/notifications" onClick={() => { setShowNotifs(!showNotifs); setBtn(true) }}><i className="far fa-bell" /></NavLink>
+          <button style={{background: 'none', border: 'none'}}className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setBtn(true) }}><i className="far fa-bell" /></button>
           <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
           <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)} style={{marginRight: '2.5rem'}}><i className="far fa-map" /></NavLink>
           <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
@@ -101,9 +101,6 @@ function NavBar({
           : ""}
         {/* Routes */}
         <Switch>
-          {/* <Route exact path="/notifications" component={Notifications} /> */}
-          {' '}
-          {/* delete this route if notifications is just modal not a page */}
           <Route
             exact
             path="/inbox"
