@@ -10,12 +10,14 @@ import { Pagination } from '@material-ui/lab';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import { IconButton, Input, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
 import AddDogModal from './AddDogModal';
 
-// need to consider MUTT dogs
+// have to click humans to show dogs..
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 const useStyles = makeStyles({
@@ -253,11 +255,13 @@ function EditProfile({
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
+  console.log(humanValue);
+
   return (
     <div id="editprofile-body">
       {human
         ? (
-          <form id="editHuman" onSubmit={submitHuman}>
+          <Form id="editHuman" onSubmit={submitHuman}>
             <div id="editProfile-container">
               <div className="humanEdit">
                 <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} />
@@ -279,13 +283,20 @@ function EditProfile({
                 </div>
               </div>
               <div className="humanEdit2">
-                <div>
-                  Name:
-                  {' '}
-                  <br />
-                  <input type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
-                </div>
-                <div>
+                <Form.Row>
+                  <Form.Group as={Col}>
+                    <Form.Label>Name</Form.Label>
+                    <Form.Control type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} />
+                    {/* <input type="text" name="name" placeholder={currentUser.name} onChange={humanValueChange} /> */}
+                  </Form.Group>
+                  <Form.Group as={Col}>
+                    <Form.Label>Gender</Form.Label>
+                    <Form.Check type="radio" label="Male" name="gender" value="M" onChange={humanValueChange} />
+                    <Form.Check type="radio" label="Female" name="gender" value="F" onChange={humanValueChange} />
+                    <Form.Check type="radio" label="Non-Binary" name="gender" value="All" onChange={humanValueChange} />
+                  </Form.Group>
+                </Form.Row>
+                {/* <div>
                   Gender:
                   {' '}
                   <br />
@@ -298,7 +309,7 @@ function EditProfile({
                   Non-Binary
                   {' '}
                   <input type="radio" name="gender" value="nb" onChange={humanValueChange} />
-                </div>
+                </div> */}
                 <div>
                   Bio:
                   {' '}
@@ -348,112 +359,117 @@ function EditProfile({
             <div>
               <button type="submit">Save changes</button>
             </div>
-          </form>
+          </Form>
         )
         : null}
       {dogs ? (
         <div id="editDogPage">
-          <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
+          <div>
+            <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
+          </div>
           {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
-            <form id="editDog" onSubmit={submitDog} key={index}>
-              <div>
-                Photo:
-                {' '}
-                <br />
-                <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
-                <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
-                <button type="button" onClick={uploadDogClick}>Upload Photo</button>
-                <div>
-                  <IconButton onClick={deleteDogPhoto}>
-                    <DeleteForeverRoundedIcon variant="rounded" />
-                  </IconButton>
+            <div id="editDog-container">
+              <form id="editDog-form" onSubmit={submitDog} key={index}>
+                <div className="dogForm-inputs">
+                  <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
+                  <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
+                  <button type="button" onClick={uploadDogClick}>Upload Photo</button>
+                  <div>
+                    <IconButton onClick={deleteDogPhoto}>
+                      <DeleteForeverRoundedIcon variant="rounded" />
+                    </IconButton>
+                  </div>
                 </div>
+                <div className="dogForm-inputs">
+                  <div>
+                    Name:
+                    {' '}
+                    <br />
+                    <input type="text" name="name" placeholder={item.name} onChange={dogValueChange} />
+                  </div>
+                  <div>
+                    Gender:
+                    {' '}
+                    <br />
+                    Male
+                    {' '}
+                    <input type="radio" name="gender" value="M" onChange={dogValueChange} />
+                    Female
+                    {' '}
+                    <input type="radio" name="gender" value="F" onChange={dogValueChange} />
+                  </div>
+                  <div>
+                    Bio
+                    {' '}
+                    <br />
+                    <textarea name="bio" rows="4" cols="50" placeholder={item.bio} onChange={dogValueChange} />
+                  </div>
+                  <div>
+                    Hypo
+                    {' '}
+                    <input type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
+                  </div>
+                  <div>
+                    Neutered/Spayed
+                    {' '}
+                    <input type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
+                  </div>
+                  <div>
+                    Age
+                    {' '}
+                    <br />
+                    <input type="text" name="age" placeholder={item.age} onChange={dogValueChange} />
+                  </div>
+                  <div>
+                    Size ...input examples under the inputs
+                    {' '}
+                    <br />
+                    XS
+                    {' '}
+                    <input type="radio" name="size" value="XS" onChange={dogValueChange} />
+                    S
+                    {' '}
+                    <input type="radio" name="size" value="S" onChange={dogValueChange} />
+                    M
+                    {' '}
+                    <input type="radio" name="size" value="M" onChange={dogValueChange} />
+                    L
+                    {' '}
+                    <input type="radio" name="size" value="L" onChange={dogValueChange} />
+                    XL
+                    {' '}
+                    <input type="radio" name="size" value="XL" onChange={dogValueChange} />
+                  </div>
+                  <div>
+                    Breeds
+                    {' '}
+                    <br />
+                    <input list="dogBreeds" type="text" name="breed" onChange={filterChange} />
+                    {breedFilterOptions !== undefined && breedFilterOptions.length > 0
+                      ? (
+                        <datalist id="dogBreeds">
+                          {breedFilterOptions.map((breedItem, ind) => (
+                            <option key={ind} value={breedItem}>{breedItem}</option>
+                          ))}
+                        </datalist>
+                      )
+                      : null }
+                    {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
+                      ? <div> No options found! </div>
+                      : null}
+                  </div>
+                  <div>
+                    Healthy
+                    {' '}
+                    <input type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
+                  </div>
+                </div>
+              </form>
+              <div style={{ display: 'inline-flex', justifyContent: 'center' }}>
+                <button type="submit">Save changes</button>
               </div>
-              <div>
-                Name:
-                {' '}
-                <br />
-                <input type="text" name="name" placeholder={item.name} onChange={dogValueChange} />
-              </div>
-              <div>
-                Gender:
-                {' '}
-                <br />
-                Male
-                {' '}
-                <input type="radio" name="gender" value="M" onChange={dogValueChange} />
-                Female
-                {' '}
-                <input type="radio" name="gender" value="F" onChange={dogValueChange} />
-              </div>
-              <div>
-                Bio
-                {' '}
-                <br />
-                <textarea name="bio" rows="4" cols="50" placeholder={item.bio} onChange={dogValueChange} />
-              </div>
-              <div>
-                Hypo
-                {' '}
-                <input type="checkbox" name="hypo" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
-              </div>
-              <div>
-                Neutered/Spayed
-                {' '}
-                <input type="checkbox" name="neutered" checked={neutered} onChange={() => setNeutered(!neutered)} />
-              </div>
-              <div>
-                Age
-                {' '}
-                <br />
-                <input type="text" name="age" placeholder={item.age} onChange={dogValueChange} />
-              </div>
-              <div>
-                Size ...input examples under the inputs
-                {' '}
-                <br />
-                XS
-                {' '}
-                <input type="radio" name="size" value="XS" onChange={dogValueChange} />
-                S
-                {' '}
-                <input type="radio" name="size" value="S" onChange={dogValueChange} />
-                M
-                {' '}
-                <input type="radio" name="size" value="M" onChange={dogValueChange} />
-                L
-                {' '}
-                <input type="radio" name="size" value="L" onChange={dogValueChange} />
-                XL
-                {' '}
-                <input type="radio" name="size" value="XL" onChange={dogValueChange} />
-              </div>
-              <div>
-                Breeds
-                {' '}
-                <br />
-                <input list="dogBreeds" type="text" name="breed" onChange={filterChange} />
-                {breedFilterOptions !== undefined && breedFilterOptions.length > 0
-                  ? (
-                    <datalist id="dogBreeds">
-                      {breedFilterOptions.map((breedItem, ind) => (
-                        <option key={ind} value={breedItem}>{breedItem}</option>
-                      ))}
-                    </datalist>
-                  )
-                  : null }
-                {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
-                  ? <div> No options found! </div>
-                  : null}
-              </div>
-              <div>
-                Healthy
-                {' '}
-                <input type="checkbox" name="healthy" checked={healthy} onChange={() => setHealthy(!healthy)} />
-              </div>
-              <button type="submit">Save changes</button>
-            </form>
+            </div>
           )) : null }
           <Pagination count={dogPages.length} variant="outlined" page={currentDogPg} onChange={changePages} />
         </div>

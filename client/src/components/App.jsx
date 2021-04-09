@@ -229,7 +229,7 @@ const App = () => {
 
   return (
     <div>
-      {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
+      {/* {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null} */}
       <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
