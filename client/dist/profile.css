@@ -13,11 +13,11 @@
 }
 
 .card-text {
-  background-color: #ddc8c4;
-  border-radius: 2%;
+  background-color: #eff9f0;
   margin-top: 5%;
+  border: solid 1px #13070c;
+  border-radius: 2%;
 }
-
 #card-name {
   font-size: 36px;
   font-weight: bold;

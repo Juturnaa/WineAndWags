@@ -113,7 +113,7 @@ const App = () => {
         }
       })
       .catch((err) => console.log(err));
-    axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
+    axios.post(`/app/${id}/profile-likes`, { liked_user_id: currentUser.id })
       .then((data) => {
       })
       .catch((err) => {
@@ -137,6 +137,7 @@ const App = () => {
   };
 
   useEffect(() => {
+    console.log('logged in', currentUserID)
     axios.all([
       axios.get(`/app/users/my-profile/${currentUserID}`),
       axios.get(`/app/users/photos/${currentUserID}`),
