@@ -28,7 +28,7 @@ import mapStyles from './mapStyles';
 const libraries = ['places'];
 const mapContainerStyle = {
   width: '100vw',
-  height: '100vh',
+  height: '95vh',
 };
 const center = {
   lat: 33.870350,
@@ -56,13 +56,11 @@ function Map({ currentUser }) {
       },
     })
       .then((results) => {
-        console.log('results', results);
         const filteredResults = Array.from(new Set(
           results.data.map((a) => a.id),
         )).map((id) => results.data.find((a) => a.id === id));
         setPlaces(filteredResults);
-        console.log('filtered', filteredResults);
-      }).then(() => console.log('places', places)).catch((err) => console.log(err));
+      }).catch((err) => console.log(err));
   }
 
   React.useEffect(() => {
@@ -152,7 +150,7 @@ function Map({ currentUser }) {
               setValue(e.target.value);
             }}
             disabled={!ready}
-            placeholder="Enter and Address"
+            placeholder="Enter an Address"
           />
           <ComboboxPopover>
             <ComboboxList>
@@ -169,7 +167,6 @@ function Map({ currentUser }) {
   if (isLoaded && places) {
     return (
       <div>
-        Dog parks and Dog beaches
         <Search />
         <Locate panTo={panTo} />
         <GoogleMap
