@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable camelcase */
 /* eslint-disable no-plusplus */
-const db = require("./index.js");
+const db = require('./index.js');
 
 // get my profile
 // get my photos
@@ -27,7 +27,7 @@ const dbHelpers = {
     db.query(qryStr, (err, data) => {
       if (err) {
         console.log(err);
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.send(data.rows[0]);
       }
@@ -39,7 +39,7 @@ const dbHelpers = {
     db.query(qryStr, (err, data) => {
       if (err) {
         console.log(err);
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.send(data.rows[0]);
       }
@@ -58,9 +58,8 @@ const dbHelpers = {
       ownerAgeRange,
       ownerGenders,
     } = JSON.parse(req.query.filters);
-    // AND waw.users.zipcode IN (${zipCodes})
     let qryStr;
-    if (dogGenders === "Both") {
+    if (dogGenders === 'Both') {
       qryStr = `SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
       'name', waw.dogs.name, 'gender', waw.dogs.gender,
       'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
@@ -70,6 +69,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
+      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -88,6 +88,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
+      AND waw.users.zipcode IN (${zipCodes})
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -98,9 +99,10 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
+
     db.query(qryStr, (err, data) => {
       if (err) {
-        res.status(400).send("something went wrong with your query");
+        res.status(400).send('something went wrong with your query');
       } else {
         res.status(200).send(data.rows);
       }
@@ -111,7 +113,7 @@ const dbHelpers = {
       `SELECT * FROM waw.photos WHERE waw.photos.user_id=${req.params.id}`,
       (err, results) => {
         callback(err, results);
-      }
+      },
     );
   },
   editOwnerProfile: (req, callback) => {
@@ -191,22 +193,38 @@ const dbHelpers = {
     });
   },
 
-  // CALENDAR ------------------------------------------//
-  // getSchedule: (req,callback) =>{
-  //   const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id}`
-  //   db.query(queryStr, (err,res)=>{
-  //     callback(err,res)
-  //   })
-  // };
-  // postSchedule: (req,callback)=> {
-  //   const queryStr = `INSERT INTO waw.userSchedule(dates) VALUES (${req.params.date})WHERE user_id = ${req.params.user_id}`
-  //   db.query(queryStr, (err,res)=>{
-  //     callback(err,res)
-  //   })
-  // };
-  // postAppointment: (req,callback)=> {
-  //   const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.params.schedule_id})`
-  // }
+  //CALENDAR ------------------------------------------//
+  getSchedule: (req,callback) =>{
+    const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id} AND selected = FALSE`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  postSchedule: (req,callback)=> {
+    const queryStr = `INSERT INTO waw.userSchedule(dates,user_id) VALUES ('${req.body.dates}', ${req.params.user_id})`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  putScheduleMatched: (req,callback)=>{
+    const queryStr = `UPDATE waw.userSchedule SET selected=true WHERE id= ${req.body.id}`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  getAppointment: (req,callback)=>{
+    const queryStr = `SELECT * FROM waw.userAppointment INNER JOIN waw.userSchedule ON waw.userSchedule.id = waw.userAppointment.schedule_id
+                      WHERE waw.userAppointment.user_id= ${req.params.user_id} AND waw.userAppointment.user_id2 = ${req.params.user_id2}`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  postAppointment: (req,callback)=> {
+    const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id,reviewed) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.body.schedule_id}, false)`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
   getUserDates: (req, callback) => {
     const queryStr = `SELECT waw.userAppointment.*, waw.userSchedule.dates, waw.users.name, json_agg(jsonb_build_object('id',
     waw.dogs.id, 'name', waw.dogs.name, 'rating', waw.dogs.rating)) dogs FROM waw.userAppointment
@@ -309,8 +327,8 @@ const dbHelpers = {
       `INSERT INTO waw.filters(user_id, min_size, max_size, dog_min_age, dog_max_age, dog_genders, hypo, neutered, health_issues, avoid_breeds, max_dist, genders, min_age, max_age) VALUES(${req.params.user_id}, '${min_size}', '${max_size}', ${dog_min_age}, ${dog_max_age}, '${dog_genders}', ${hypo}, ${neutered}, ${health_issues}, '${avoid_breeds}', ${max_dist}, '${genders}', ${min_age}, ${max_age})`,
       (err) => {
         if (err) res.send(err);
-        else res.send("posted filter");
-      }
+        else res.send('posted filter');
+      },
     );
   },
   // REGISTRATION ------------------------------------//
@@ -330,7 +348,7 @@ const dbHelpers = {
       (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows[0]);
-      }
+      },
     );
   },
   postDog: (req, res) => {
@@ -350,13 +368,12 @@ const dbHelpers = {
       (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows[0]);
-      }
+      },
     );
   },
   // NOTIFICAITONS------------------------------------//
   getNotif: (req, res) => {
-    db.query(
-      `SELECT * FROM waw.notifications where recipient_id=${req.params.id} ORDER BY time_stamp DESC`,
+    db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.id} ORDER BY time_stamp DESC`,
       (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows);
@@ -364,9 +381,10 @@ const dbHelpers = {
     );
   },
   postNotif: (req, res) => {
-    const { type, type_id, sender_name, recipient_id } = req.body;
-    db.query(
-      `INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
+    const {
+      type, type_id, sender_name, recipient_id,
+    } = req.body;
+    db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
       (err, data) => {
         if (err) res.send(err);
         else res.send("posted notification");
@@ -374,8 +392,7 @@ const dbHelpers = {
     );
   },
   updateNotif: (req, res) => {
-    db.query(
-      `UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
+    db.query(`UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
       (err, data) => {
         if (err) res.send(err);
         else res.send("updated notification");

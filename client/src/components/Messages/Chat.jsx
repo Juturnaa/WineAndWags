@@ -19,16 +19,27 @@ const Chat = ({
     setInputValue(e.target.value);
   };
 
+  useEffect(() => {
+    if (calendar) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [calendar]);
+
   const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      zIndex: 12,
-    },
+    content : {
+      top                   : '50%',
+      left                  : '50%',
+      right                 : 'auto',
+      bottom                : 'auto',
+      height: "44em",
+      width: "60em",
+      marginRight           : '-50%',
+      transform             : 'translate(-50%, -50%)',
+      background            : "#EFF9F0",
+      zIndex: 12
+    }
   };
 
   const onSendClick = (e) => {
@@ -92,24 +103,19 @@ const Chat = ({
                 })}
               </div>
 
-              <div id="send-message-container">
-                <i onClick={() => { clickedCalendar(true); }} className="far fa-calendar-alt" />
-                <Modal
-                  widgetname="related-products"
-                  ariaHideApp={false}
-                  isOpen={calendar}
-                  style={customStyles}
-                  onRequestClose={() => { clickedCalendar(!calendar); }}
-                >
-                  <Calendar clickedCalendar={clickedCalendar} />
-                </Modal>
-                <input type="text" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
-                <i className="far fa-paper-plane" onClick={onSendClick} />
-              </div>
-            </div>
-          </div>
-        )
-        : null}
+        <div id="send-message-container">
+          <i onClick={()=>{clickedCalendar(true)}}className="far fa-calendar-alt" />
+          <Modal widgetname="related-products"
+          ariaHideApp={false}
+          isOpen={calendar}
+          style={customStyles}
+          onRequestClose={() => {clickedCalendar(!calendar)}}>
+            <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId}/>
+          </Modal>
+          <input type="text" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
+          <i className="far fa-paper-plane" onClick={onSendClick} />
+        </div>
+      </div>
     </div>
   );
 };

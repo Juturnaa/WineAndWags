@@ -8,15 +8,13 @@ import Button from '@material-ui/core/Button';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Homepage({
-  currentUser, likeProfile, humanPhoto, currentDogs, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
+  currentUser, likeProfile, humanPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
 }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
   const [currentDogIndex, setCurrentDogIndex] = useState(0)
   const [isDisplayingSkipDogs, setIsDisplayingSkipDogs] = useState(0)
   useEffect(() => {
-    // console.log('current dog index',currentDogIndex)
-    // console.log('current Dogs',potientialDog)
     if (potientialDog.length > 1) {
       setIsDisplayingSkipDogs(true)
     } else {
@@ -29,7 +27,7 @@ export default function Homepage({
   }, [potientialDog])
 
   useEffect(() => {
-    
+
   }, [filterParams])
 
   // Dog Filters
@@ -46,6 +44,14 @@ export default function Homepage({
   const [maxDistance, changeMaxDistance] = useState(10); // miles
   const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
   const [ownerGenders, changeOwnerGenders] = useState('F');
+  const [zipCodes, changeZipCodes] = useState([]);
+
+  const [alert, showAlert] = useState(false); // instead of using alert()
+  useEffect(() => {
+    if (alert) {
+      setTimeout(() => { showAlert(false) }, 3000);
+    }
+  }, [alert])
 
   // Requests
 
@@ -81,20 +87,6 @@ export default function Homepage({
             if (str === 'XL') return 4;
           };
           const filters = results.data[0];
-          const params = {
-            sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
-            dogGenders: filters.dog_genders,
-            dogAgeRange: [filters.dog_min_age, filters.dog_max_age],
-            hypoallergenic: filters.hypo,
-            neutered: filters.neutered,
-            healthIssues: filters.health_issues,
-            avoidBreeds: filters.avoid_breeds,
-            ownerAgeRange: [filters.min_age, filters.max_age],
-            ownerGenders: filters.genders,
-            zipCodes: '',
-          }
-          setFilterParams(params);
-          getRandomUser(params);
           changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
           changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
           changeDogGenders(filters.dog_genders);
@@ -105,6 +97,40 @@ export default function Homepage({
           changeMaxDistance(filters.max_dist);
           changeOwnerAgeRange([filters.min_age, filters.max_age]);
           changeOwnerGenders(filters.genders);
+
+          // request for zip codes based on currentUser zip and filters.max_dist, then use them as params and state
+          const options = {
+            method: 'GET',
+            url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
+            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'HQH2IMXH3DL9TC616NNR' }
+          }
+          axios.request(options)
+            .then((response) => {
+              let uniqueZips = [];
+              for (let item of response.data.DataList) {
+                if (!uniqueZips.includes(item.Code)) {
+                  uniqueZips.push(`'${item.Code}'`)
+                }
+              }
+              changeZipCodes(uniqueZips.join(','));
+              const params = {
+                sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
+                dogGenders: filters.dog_genders,
+                dogAgeRange: [filters.dog_min_age, filters.dog_max_age],
+                hypoallergenic: filters.hypo,
+                neutered: filters.neutered,
+                healthIssues: filters.health_issues,
+                avoidBreeds: filters.avoid_breeds,
+                ownerAgeRange: [filters.min_age, filters.max_age],
+                ownerGenders: filters.genders,
+                zipCodes: uniqueZips.join(',')
+              }
+              setFilterParams(params);
+              getRandomUser(params);
+            })
+            .catch((err) => {
+              console.error(err)
+            })
         })
         .catch((err) => {
           console.error(err);
@@ -125,44 +151,52 @@ export default function Homepage({
 
   return (
     <div className='homepage'>
-      <ThemeProvider theme={theme}>
-        <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
-      </ThemeProvider>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+        </ThemeProvider>
+        {alert ? <div className='filter-alert'>UPDATED PREFERENCES</div> : null}
+      </div>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
-        <DogView isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
+        <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
-
       {filterModalOpen
         ? (
-          <Filters
-            sizeRange={sizeRange}
-            changeSizeRange={changeSizeRange}
-            dogAgeRange={dogAgeRange}
-            changeDogAgeRange={changeDogAgeRange}
-            dogGenders={dogGenders}
-            changeDogGenders={changeDogGenders}
-            hypoallergenic={hypoallergenic}
-            changeHypoallergenic={changeHypoallergenic}
-            neutered={neutered}
-            changeNeutered={changeNeutered}
-            healthIssues={healthIssues}
-            changeHealthIssues={changeHealthIssues}
-            avoidBreeds={avoidBreeds}
-            changeAvoidedBreeds={changeAvoidedBreeds}
-            maxDistance={maxDistance}
-            changeMaxDistance={changeMaxDistance}
-            ownerAgeRange={ownerAgeRange}
-            changeOwnerAgeRange={changeOwnerAgeRange}
-            ownerGenders={ownerGenders}
-            changeOwnerGenders={changeOwnerGenders}
-            close={toggleFilterModal}
-            setFilterParams={setFilterParams}
-            currentUserID={currentUserID}
-            currentUser={currentUser}
-            potiential={potiential}
-          />
+          <div className='filter-container'>
+            <div className='arrowhead'></div>
+            <Filters
+              sizeRange={sizeRange}
+              changeSizeRange={changeSizeRange}
+              dogAgeRange={dogAgeRange}
+              changeDogAgeRange={changeDogAgeRange}
+              dogGenders={dogGenders}
+              changeDogGenders={changeDogGenders}
+              hypoallergenic={hypoallergenic}
+              changeHypoallergenic={changeHypoallergenic}
+              neutered={neutered}
+              changeNeutered={changeNeutered}
+              healthIssues={healthIssues}
+              changeHealthIssues={changeHealthIssues}
+              avoidBreeds={avoidBreeds}
+              changeAvoidedBreeds={changeAvoidedBreeds}
+              maxDistance={maxDistance}
+              changeMaxDistance={changeMaxDistance}
+              ownerAgeRange={ownerAgeRange}
+              changeOwnerAgeRange={changeOwnerAgeRange}
+              ownerGenders={ownerGenders}
+              changeOwnerGenders={changeOwnerGenders}
+              close={toggleFilterModal}
+              setFilterParams={setFilterParams}
+              currentUserID={currentUserID}
+              currentUser={currentUser}
+              potiential={potiential}
+              showAlert={showAlert}
+              zipCodes={zipCodes}
+              changeZipCodes={changeZipCodes}
+            />
+          </div>
         ) : null}
     </div>
   );

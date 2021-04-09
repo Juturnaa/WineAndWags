@@ -1,8 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import PhotosList from './PhotosList';
-const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDogs }) => {
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+import { makeStyles } from "@material-ui/core/styles";
+
+
+const useStyles = makeStyles(theme => ({
+    customHoverFocus: {
+      color: '#DDC8C4',
+      "&:hover": { color: "#EFF9F0" }
+    }
+  }));
+
+
+
+const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDogs, potientialDogsImg }) => {
+  const classes = useStyles();
   const [gender, setGender] = useState('');
   const [size, setSize] = useState('');
+  const [currentDogsPhotos, setCurrentDogsPhotos] = useState()
   useEffect(() => {
     if (dog) {
       if (dog.gender === 'M') {
@@ -28,6 +43,23 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
     }
 
   }, [dog])
+
+  useEffect(() => {
+    if (potientialDogsImg && dog.id) {
+      transformPhotos(potientialDogsImg)
+    }
+  }, [potientialDogsImg, dog])
+
+  const transformPhotos = (photos) => {
+    let newPhotos = [];
+    for (let i = 0; i < photos.length; i++) {
+      if (photos[i][dog.id]) {
+        newPhotos.push(photos[i][dog.id][0])
+      }
+    }
+    setCurrentDogsPhotos(newPhotos)
+  }
+
     const userPhotos = [
         {
           id: 1,
@@ -51,25 +83,27 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
       ];
     return (
         <div className="profile-card" >
-            <div id="card-name">
+            <div style={{display: 'flex', flexDirection: 'row'}} id="card-name">
                 {dog.name}
+                {isDisplayingSkipDogs ?  <div><ArrowForwardIcon className={classes.customHoverFocus} style={{ fontSize: '50px', marginLeft: '50%', marginTop: '1%' }} onClick={updateDogIndex}/></div>  : '' }
             </div>
             <div className="photo-container">
-                    <PhotosList likePhoto={likePhoto} photos={userPhotos} />
+                    <PhotosList likePhoto={likePhoto} photos={currentDogsPhotos || ''} />
                 <div className="card-text" >
                     <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {dog.age} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {gender} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Breed: </div> <div className="text-component-value"> {dog.breed} </div></div>
                     <div className="text-component"><div className="text-component-key">About Me: </div> <div className="text-component-value"> {dog.bio} </div></div>
                     <div className="text-component"><div className="text-component-key">Size: </div> <div className="text-component-value"> {size} </div></div>
-                    <div className="text-component"><div className="text-component-key">Healthy: </div> <div className="text-component-value"> {dog.healthy ? 'Healthy as can be!' : 'Could Be better..'} </div>  </div>
+                    <div className="text-component"><div className="text-component-key">Health: </div> <div className="text-component-value"> {dog.healthy ? 'Healthy as can be!' : 'Could be better..'} </div>  </div>
                     <div className="text-component"><div className="text-component-key">Neutered: </div> <div className="text-component-value"> {dog.neutered ? 'Yes' : 'No'} </div>   </div>
                     <div className="text-component"><div className="text-component-key">Hypoallergenic: </div> <div className="text-component-value"> {dog.hypo ? 'Yes' : 'No'} </div>  </div>
                 </div>
             </div>
-            {isDisplayingSkipDogs ? <button onClick={updateDogIndex} >NEXT DOG</button> : '' }
+            
         </div>
     )
 }
 
 export default DogView;
+
