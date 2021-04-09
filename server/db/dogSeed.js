@@ -79,7 +79,7 @@ const dogSeed = function (
   rating,
   size,
   breed,
-  healthy
+  healthy,
 ) {
   const owner_id = [];
   for (let i = 1; i <= 1000; i++) {
@@ -93,29 +93,19 @@ const dogSeed = function (
 
   for (let i = 0; i < 1000; i++) {
     console.log(i);
-    const name = names[random(names.length)];
-    const gen = gender[random(gender.length)];
-    const bi = bio[random(bio.length)];
-    const hyp = hypo[random(hypo.length)];
-    const neu = neutered[random(neutered.length)];
-    const rate = rating[random(rating.length)];
-    const ag = age[random(age.length)];
-    const si = size[random(size.length)];
-    const bre = breed[random(breed.length)];
-    const health = healthy[random(healthy.length)];
     if (i % 2 === 0) {
       pool.query(
-        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${names[random(names.length)]}', '${gender[random(gender.length)]}', '${bio[random(bio.length)]}', ${hypo[random(hypo.length)]}, ${neutered[random(neutered.length)]}, ${rating[random(rating.length)]}, ${owner_id[i]}, ${age[random(age.length)]}, '${size[random(size.length)]}', '${breed[random(breed.length)]}', ${healthy[random(healthy.length)]})`
       );
     } else {
       pool.query(
-        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${names[random(names.length)]}', '${gender[random(gender.length)]}', '${bio[random(bio.length)]}', ${hypo[random(hypo.length)]}, ${neutered[random(neutered.length)]}, ${rating[random(rating.length)]}, ${owner_id[i]}, ${age[random(age.length)]}, '${size[random(size.length)]}', '${breed[random(breed.length)]}', ${healthy[random(healthy.length)]})`
       );
       pool.query(
-        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${names[random(names.length)]}', '${gender[random(gender.length)]}', '${bio[random(bio.length)]}', ${hypo[random(hypo.length)]}, ${neutered[random(neutered.length)]}, ${rating[random(rating.length)]}, ${owner_id[i]}, ${age[random(age.length)]}, '${size[random(size.length)]}', '${breed[random(breed.length)]}', ${healthy[random(healthy.length)]})`
       );
       pool.query(
-        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gen}', '${bi}', ${hyp}, ${neu}, ${rate}, ${owner_id[i]}, ${ag}, '${si}', '${bre}', ${health})`
+        `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${names[random(names.length)]}', '${gender[random(gender.length)]}', '${bio[random(bio.length)]}', ${hypo[random(hypo.length)]}, ${neutered[random(neutered.length)]}, ${rating[random(rating.length)]}, ${owner_id[i]}, ${age[random(age.length)]}, '${size[random(size.length)]}', '${breed[random(breed.length)]}', ${healthy[random(healthy.length)]})`
       );
     }
   }

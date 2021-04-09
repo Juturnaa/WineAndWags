@@ -119,7 +119,6 @@ const dbHelpers = {
   editOwnerProfile: (req, callback) => {
     const {
       name,
-      gender,
       bio,
       email,
       password,
@@ -127,7 +126,7 @@ const dbHelpers = {
       zipcode,
       searched_as,
     } = req.body;
-    const qryStr = `UPDATE waw.users SET name='${name}', gender='${gender}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE email='${req.params.email}'`;
+    const qryStr = `UPDATE waw.users SET name='${name}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE id=${req.params.id}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   editDogProfile: (req, callback) => {

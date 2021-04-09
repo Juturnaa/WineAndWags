@@ -139,8 +139,9 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
+  /// logs in as number 7 when registering
+
   useEffect(() => {
-    console.log('logged in', currentUserID)
     axios.all([
       axios.get(`/app/users/my-profile/${currentUserID}`),
       axios.get(`/app/users/photos/${currentUserID}`),
@@ -230,18 +231,18 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
 
   return (
     <div>
-      {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
+      {/* {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null} */}
       <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
@@ -263,7 +264,6 @@ const App = () => {
         setShowNotifs={setShowNotifs}
         setMessageCount={setMessageCount}
         messageCount={messageCount}
-      />
       />
       {/* <ContextProvider>
         <Video />
