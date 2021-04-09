@@ -17,7 +17,7 @@
 }
 
 .nav-icon:hover {
-  color: #ddc8c4;
+  color: #ddc8c4 !important;
   cursor: pointer;
 }
 

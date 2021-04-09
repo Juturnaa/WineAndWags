@@ -25,6 +25,8 @@ import '@reach/combobox/styles.css';
 import key from '../../../../config/googleConfig';
 import mapStyles from './mapStyles';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 const libraries = ['places'];
 const mapContainerStyle = {
   width: '100vw',
@@ -164,58 +166,61 @@ function Map({ currentUser }) {
     );
   }
 
-  if (isLoaded && places) {
-    return (
-      <div>
-        <Search />
-        <Locate panTo={panTo} />
-        <GoogleMap
-          mapContainerStyle={mapContainerStyle}
-          zoom={11}
-          center={center}
-          options={options}
-          onLoad={onMapLoad}
-          onDblClick={dblClick}
-        >
-          {places.map((place) => (
-            <Marker
-              key={place.id}
-              position={{
-                lat: place.coordinates.latitude,
-                lng: place.coordinates.longitude,
-              }}
-              onClick={() => {
-                setSelected(place);
-              }}
-            />
-          ))}
 
-          {selected ? (
-            <InfoWindow
-              position={{
-                lat: selected.coordinates.latitude,
-                lng: selected.coordinates.longitude,
-              }}
-              onCloseClick={() => {
-                setSelected(null);
-              }}
-            >
-              <div>
-                <img src={`${selected.image_url}`} alt="" width="100" height="50" />
-                <h5>{selected.name}</h5>
-                <div>{`${selected.location.display_address[0]}`}</div>
-                <div>{`${selected.location.display_address[1]}`}</div>
-                <div>{selected.display_phone}</div>
-                <a href={`${selected.url}`}>Yelp Page</a>
-              </div>
-            </InfoWindow>
-          ) : null}
-        </GoogleMap>
-      </div>
+  return (
+    <div>
+      {isLoaded && places ?
+        <React.Fragment>
+          <Search />
+          <Locate panTo={panTo} />
+          <GoogleMap
+            mapContainerStyle={mapContainerStyle}
+            zoom={11}
+            center={center}
+            options={options}
+            onLoad={onMapLoad}
+            onDblClick={dblClick}
+          >
+            {places.map((place) => (
+              <Marker
+                key={place.id}
+                position={{
+                  lat: place.coordinates.latitude,
+                  lng: place.coordinates.longitude,
+                }}
+                onClick={() => {
+                  setSelected(place);
+                }}
+              />
+            ))}
 
-    );
-  }
-  return null;
+            {selected ? (
+              <InfoWindow
+                position={{
+                  lat: selected.coordinates.latitude,
+                  lng: selected.coordinates.longitude,
+                }}
+                onCloseClick={() => {
+                  setSelected(null);
+                }}
+              >
+                <div>
+                  <img src={`${selected.image_url}`} alt="" width="100" height="50" />
+                  <h5>{selected.name}</h5>
+                  <div>{`${selected.location.display_address[0]}`}</div>
+                  <div>{`${selected.location.display_address[1]}`}</div>
+                  <div>{selected.display_phone}</div>
+                  <a href={`${selected.url}`}>Yelp Page</a>
+                </div>
+              </InfoWindow>
+            ) : null}
+          </GoogleMap>
+        </React.Fragment>
+        : <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh'}}><CircularProgress color="secondary" /></div>
+      }
+    </div>
+  );
+
 }
 
 export default Map;
