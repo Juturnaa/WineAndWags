@@ -36,6 +36,7 @@ function NavBar({
   const [edit, setEdit] = useState(false);
   const [human, setHuman] = useState(false);
   const [dogs, setDogs] = useState(false);
+  const [unread, setUnread] = useState(0);
 
   const changeHuman = () => {
     setHuman(true);
@@ -52,10 +53,12 @@ function NavBar({
   const getNotifs = () => {
     axios.get(`/app/notifications/${currentUserID}`)
       .then((data) => {
+        let counter = 0;
+        data.data.forEach((result) => { if (!result.read) counter++; });
         setNotifs(data.data);
+        setUnread(counter);
       });
   };
-
   const updateNotif = (notif_id) => {
     axios.patch(`/app/notifications/${notif_id}`)
       .then(() => {
@@ -63,10 +66,9 @@ function NavBar({
         console.log('updated');
       });
   };
-
   useEffect(() => {
-    if (showNotifs) getNotifs();
-  }, [showNotifs]);
+    getNotifs();
+  }, []);
 
   return (
     <BrowserRouter>
@@ -76,21 +78,12 @@ function NavBar({
           <h2>Wine and Wags</h2>
         </div>
       </div>
-<<<<<<< HEAD
       <nav className="navigation-bar">
         <NavLink className="nav-icon" exact to="/home" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-home" /></NavLink>
-        <NavLink className="nav-icon" exact to="/notifications" onClick={() => { setShowNotifs(!showNotifs); setEdit(false); }}><i className="far fa-bell" /></NavLink>
+        <button style={{ background: 'none', border: 'none' }} className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setBtn(true); }}><i className="far fa-bell" /></button>
         <NavLink className="nav-icon" exact to="/inbox" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-envelope" /></NavLink>
         <NavLink className="nav-icon" exact to="/map" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-map" /></NavLink>
         <a className="nav-icon" onClick={() => { setEdit(!edit); setShowNotifs(false); }}>
-=======
-        <nav className='navigation-bar'>
-          <NavLink className="nav-icon" exact to="/home" onClick={() => setBtn(true)}><i className="fas fa-home" /></NavLink>
-          <button style={{background: 'none', border: 'none'}}className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setBtn(true) }}><i className="far fa-bell" /></button>
-          <NavLink className="nav-icon" exact to="/inbox" onClick={() => setBtn(true)}><i className="far fa-envelope" /></NavLink>
-          <NavLink className="nav-icon" exact to="/map" onClick={() => setBtn(true)} style={{marginRight: '2.5rem'}}><i className="far fa-map" /></NavLink>
-          <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setBtn(true)}>
->>>>>>> 11908755cae7bd2258f7a2da22233e135e7ecc22
           {humanPhoto.length ? (
             <div
               className="profile-thumbnail"
@@ -111,6 +104,13 @@ function NavBar({
           )
           : null}
       </nav>
+      {unread > 0
+        ? (
+          <div className="notifs-icon">
+            <div className="notifs-circle">{unread}</div>
+          </div>
+        )
+        : ''}
       {showNotifs
         ? (
           <div className="notifs">
@@ -138,7 +138,6 @@ function NavBar({
               })}
             </div>
           </div>
-<<<<<<< HEAD
         )
         : ''}
       {/* Routes */}
@@ -165,31 +164,6 @@ function NavBar({
         <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} />} />
         <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
       </Switch>
-=======
-        </div>
-          : ""}
-        {/* Routes */}
-        <Switch>
-          <Route
-            exact
-            path="/inbox"
-            render={() => (
-              <Inbox
-                currentUser={currentUser}
-                humanPhoto={humanPhoto}
-                dogsImg={dogsImg}
-                matches={matches}
-                matchesPhotos={matchesPhotos}
-                allMessages={allMessages}
-                matchesInfo={matchesInfo}
-              />
-            )}
-          />
-          <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
-          <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} editProfileBtn={editProfileBtn} setBtn={setBtn} />} />
-          <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} humanPhoto={humanPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDog={potientialDog || ''} />} />
-        </Switch>
->>>>>>> 11908755cae7bd2258f7a2da22233e135e7ecc22
     </BrowserRouter>
   );
 }
@@ -248,7 +222,6 @@ NavBar.defaultProps = {
   matchesInfo: {},
 };
 
-<<<<<<< HEAD
 export default NavBar;
 
 { /* <NavLink className="nav-icon" exact to="/editprofile" onClick={() => setEdit(true)}> */ }
@@ -260,6 +233,3 @@ export default NavBar;
   )
     : <div className="profile-thumbnail" />} */ }
 { /* </NavLink> */ }
-=======
-export default NavBar;
->>>>>>> 11908755cae7bd2258f7a2da22233e135e7ecc22
