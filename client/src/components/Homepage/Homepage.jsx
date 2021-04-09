@@ -58,6 +58,7 @@ export default function Homepage({
     }
     return result.join(',');
   };
+
   const updateDogIndex = () => {
     if (currentDogIndex === potientialDog.length - 1) {
       setCurrentDogIndex(0)
@@ -66,56 +67,48 @@ export default function Homepage({
     }
   }
 
-  const updateFilterParams = (zip, cb) => {
-    const params = {
-      sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
-      dogGenders,
-      dogAgeRange,
-      hypoallergenic,
-      neutered,
-      healthIssues,
-      avoidBreeds: avoidBreeds.join(','),
-      zipCodes: zip,
-      ownerAgeRange,
-      ownerGenders,
-    };
-    if (cb) {
-      cb(params)
-    };
-    return params;
-  };
-
   // GET request to get the user's settings
   useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/filters`)
-      .then((results) => {
-        // modal slider for dog sizes works by number not strings
-        const sizeToNumberValue = (str) => {
-          if (str === 'XS') return 0;
-          if (str === 'S') return 1;
-          if (str === 'M') return 2;
-          if (str === 'L') return 3;
-          if (str === 'XL') return 4;
-        };
-        const filters = results.data[0];
-        changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
-        changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
-        changeDogGenders(filters.dog_genders);
-        changeHypoallergenic(filters.hypo);
-        changeNeutered(filters.neutered);
-        changeHealthIssues(filters.health_issues);
-        changeAvoidedBreeds([filters.avoid_breeds]);
-        changeMaxDistance(filters.max_dist);
-        changeOwnerAgeRange([filters.min_age, filters.max_age]);
-        changeOwnerGenders(filters.genders);
-      })
-      .then(() => {
-        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`, getRandomUser));
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+        .then((results) => {
+          // modal slider for dog sizes works by number not strings
+          const sizeToNumberValue = (str) => {
+            if (str === 'XS') return 0;
+            if (str === 'S') return 1;
+            if (str === 'M') return 2;
+            if (str === 'L') return 3;
+            if (str === 'XL') return 4;
+          };
+          const filters = results.data[0];
+          const params = {
+            sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
+            dogGenders: filters.dog_genders,
+            dogAgeRange: [filters.dog_min_age, filters.dog_max_age],
+            hypoallergenic: filters.hypo,
+            neutered: filters.neutered,
+            healthIssues: filters.health_issues,
+            avoidBreeds: filters.avoid_breeds,
+            ownerAgeRange: [filters.min_age, filters.max_age],
+            ownerGenders: filters.genders,
+            zipCodes: '',
+          }
+          setFilterParams(params);
+          getRandomUser(params);
+          changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
+          changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
+          changeDogGenders(filters.dog_genders);
+          changeHypoallergenic(filters.hypo);
+          changeNeutered(filters.neutered);
+          changeHealthIssues(filters.health_issues);
+          changeAvoidedBreeds([filters.avoid_breeds]);
+          changeMaxDistance(filters.max_dist);
+          changeOwnerAgeRange([filters.min_age, filters.max_age]);
+          changeOwnerGenders(filters.genders);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }, [currentUser]);
 
