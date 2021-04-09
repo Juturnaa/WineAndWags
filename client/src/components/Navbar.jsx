@@ -79,7 +79,7 @@ function NavBar({
       <nav className="navigation-bar">
         <NavLink className="nav-icon" exact to="/home" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-home" /></NavLink>
         <NavLink className="nav-icon" exact to="/notifications" onClick={() => { setShowNotifs(!showNotifs); setEdit(false); }}><i className="far fa-bell" /></NavLink>
-        <NavLink className="nav-icon" exact to="/inbox" onClick={() => setEdit(false)}><i className="far fa-envelope" /></NavLink>
+        <NavLink className="nav-icon" exact to="/inbox" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-envelope" /></NavLink>
         <NavLink className="nav-icon" exact to="/map" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-map" /></NavLink>
         <a className="nav-icon" onClick={() => { setEdit(!edit); setShowNotifs(false); }}>
           {humanPhoto.length ? (

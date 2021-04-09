@@ -333,7 +333,7 @@ function EditProfile({
           {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
-              <div>
+              <div> {console.log('hi')}
                 Photo:
                 {' '}
                 <br />
