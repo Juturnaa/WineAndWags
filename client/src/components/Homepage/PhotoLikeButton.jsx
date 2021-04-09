@@ -4,7 +4,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const PhotoLikeButton = ({ photoId, likePhoto }) => {
     return (
-        <button className="img-btn" onClick={() => likePhoto(photoId)} >LIKE</button>
+        <button className="img-btn" onClick={() => likePhoto(photoId)} >♥</button>
     )
 };
 
