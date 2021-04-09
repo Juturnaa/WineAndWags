@@ -31,8 +31,7 @@ import mapStyles from './mapStyles';
 const libraries = ['places'];
 const mapContainerStyle = {
   width: '100vw',
-  height: '95vh',
-  overflow: 'hidden',
+  height: 'calc(100vh - 3.5rem)',
 };
 const center = {
   lat: 33.870350,

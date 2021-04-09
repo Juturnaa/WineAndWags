@@ -8,6 +8,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
     let [login, setLogin] = useState(false);
     let [email, setEmail] =useState('');
     let [password, setPassword] =useState('');
+    let [inputting, setInputting]=useState('');
 
     let handleLogin = () => {
         axios.get(`/app/users/login/${email}`)
@@ -33,7 +34,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                     <div className="login-body">
                     {login ?
                     <React.Fragment>
-                        <div className="face">
+                        <div className="face" style={inputting==='username'? {'--rotate-head':`${-Math.min(email.length-16, 19)}deg`}: {'--rotate-head':'0deg'}}>
 
                         <div className="eyes">
                             <div className="eye eye--left">
@@ -57,7 +58,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                                     fill="none" strokeWidth="3" strokeLinecap="square" strokeMiterlimit="3"></path>
                             </svg>
                             <div className="mouth-hole"></div>
-                            <div className="tongue breath">
+                            <div className={inputting === 'password'? "tongue": "tongue breath"}>
                                 <div className="tongue-top"></div>
                                 <div className="line"></div>
                                 <div className="median"></div>
@@ -65,7 +66,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                         </div>
                     </div>
                     <div className="hands">
-                        <div className="hand hand--left">
+                        <div className={inputting === 'password' ? "hand hand--left hide": "hand hand--left"}>
                             <div className="finger">
                                 <div className="bone"></div>
                                 <div className="nail"></div>
@@ -79,7 +80,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                                 <div className="nail"></div>
                             </div>
                         </div>
-                        <div className="hand hand--right">
+                        <div className={inputting === 'password' ? "hand hand--right hide": "hand hand--right"}>
                             <div className="finger">
                                 <div className="bone"></div>
                                 <div className="nail"></div>
@@ -95,8 +96,8 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                         </div>
                     </div>
                     <div className="login-container">
-                        <input className="username" type="text" autoComplete="on" placeholder="Email" onChange={(e)=>setEmail(e.target.value)}/>
-                        <input className="password" type="password" autoComplete="off" placeholder="Password" onChange={(e)=>setPassword(e.target.value)}/>
+                        <input className="username" type="text" autoComplete="on" placeholder="Email" onFocus={()=> setInputting('username')} onBlur={()=> setInputting('')} onChange={(e)=>setEmail(e.target.value)}/>
+                        <input className="password" type="password" autoComplete="off" placeholder="Password" onFocus={()=>setInputting('password')} onBlur={()=> setInputting('')} onChange={(e)=>setPassword(e.target.value)}/>
                         <button className="login-button" onClick={()=>handleLogin()}>Log in </button>
                         <button className="register-button" onClick={()=>{setRegister(true); setLanding(false)}}>Register </button>
                     </div>
