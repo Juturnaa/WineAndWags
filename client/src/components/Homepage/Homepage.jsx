@@ -45,6 +45,13 @@ export default function Homepage({
   const [ownerAgeRange, changeOwnerAgeRange] = useState([20, 50]);
   const [ownerGenders, changeOwnerGenders] = useState('F');
 
+  const [alert, showAlert] = useState(false); // instead of using alert()
+  useEffect(() => {
+    if (alert) {
+      setTimeout(() => { showAlert(false) }, 3000);
+    }
+  }, [alert])
+
   // Requests
 
   // transforming data to work with filter params for get random profile
@@ -123,45 +130,52 @@ export default function Homepage({
 
   return (
     <div className='homepage'>
-      <ThemeProvider theme={theme}>
-        <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
-      </ThemeProvider>
+      <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <ThemeProvider theme={theme}>
+          <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
+        </ThemeProvider>
+        {alert ? <div className='filter-alert'>UPDATED PREFERENCES</div> : null}
+      </div>
       <div className='potential-match-view'>
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
         <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
-
       {filterModalOpen
         ? (
-          <Filters
-            sizeRange={sizeRange}
-            changeSizeRange={changeSizeRange}
-            dogAgeRange={dogAgeRange}
-            changeDogAgeRange={changeDogAgeRange}
-            dogGenders={dogGenders}
-            changeDogGenders={changeDogGenders}
-            hypoallergenic={hypoallergenic}
-            changeHypoallergenic={changeHypoallergenic}
-            neutered={neutered}
-            changeNeutered={changeNeutered}
-            healthIssues={healthIssues}
-            changeHealthIssues={changeHealthIssues}
-            avoidBreeds={avoidBreeds}
-            changeAvoidedBreeds={changeAvoidedBreeds}
-            maxDistance={maxDistance}
-            changeMaxDistance={changeMaxDistance}
-            ownerAgeRange={ownerAgeRange}
-            changeOwnerAgeRange={changeOwnerAgeRange}
-            ownerGenders={ownerGenders}
-            changeOwnerGenders={changeOwnerGenders}
-            close={toggleFilterModal}
-            setFilterParams={setFilterParams}
-            currentUserID={currentUserID}
-            currentUser={currentUser}
-            potiential={potiential}
-          />
+          <div className='filter-container'>
+            <div className='arrowhead'></div>
+            <Filters
+              sizeRange={sizeRange}
+              changeSizeRange={changeSizeRange}
+              dogAgeRange={dogAgeRange}
+              changeDogAgeRange={changeDogAgeRange}
+              dogGenders={dogGenders}
+              changeDogGenders={changeDogGenders}
+              hypoallergenic={hypoallergenic}
+              changeHypoallergenic={changeHypoallergenic}
+              neutered={neutered}
+              changeNeutered={changeNeutered}
+              healthIssues={healthIssues}
+              changeHealthIssues={changeHealthIssues}
+              avoidBreeds={avoidBreeds}
+              changeAvoidedBreeds={changeAvoidedBreeds}
+              maxDistance={maxDistance}
+              changeMaxDistance={changeMaxDistance}
+              ownerAgeRange={ownerAgeRange}
+              changeOwnerAgeRange={changeOwnerAgeRange}
+              ownerGenders={ownerGenders}
+              changeOwnerGenders={changeOwnerGenders}
+              close={toggleFilterModal}
+              setFilterParams={setFilterParams}
+              currentUserID={currentUserID}
+              currentUser={currentUser}
+              potiential={potiential}
+              showAlert={showAlert}
+            />
+          </div>
         ) : null}
+
     </div>
   );
 }
