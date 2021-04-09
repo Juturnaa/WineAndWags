@@ -28,6 +28,10 @@ export default function Homepage({
     setCurrentDogIndex(0)
   }, [potientialDog])
 
+  useEffect(() => {
+    
+  }, [filterParams])
+
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
   const [dogAgeRange, changeDogAgeRange] = useState([0, 20]);
@@ -62,7 +66,7 @@ export default function Homepage({
     }
   }
 
-  const updateFilterParams = (zip) => {
+  const updateFilterParams = (zip, cb) => {
     const params = {
       sizeRange: getSizeRange(sizeRange[0], sizeRange[1]),
       dogGenders,
@@ -75,6 +79,9 @@ export default function Homepage({
       ownerAgeRange,
       ownerGenders,
     };
+    if (cb) {
+      cb(params)
+    };
     return params;
   };
 
@@ -82,38 +89,34 @@ export default function Homepage({
   useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/filters`)
-        .then((results) => {
-          // modal slider for dog sizes works by number not strings
-          const sizeToNumberValue = (str) => {
-            if (str === 'XS') return 0;
-            if (str === 'S') return 1;
-            if (str === 'M') return 2;
-            if (str === 'L') return 3;
-            if (str === 'XL') return 4;
-          };
-          const filters = results.data[0];
-          changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
-          changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
-          changeDogGenders(filters.dog_genders);
-          changeHypoallergenic(filters.hypo);
-          changeNeutered(filters.neutered);
-          changeHealthIssues(filters.health_issues);
-          changeAvoidedBreeds([filters.avoid_breeds]);
-          changeMaxDistance(filters.max_dist);
-          changeOwnerAgeRange([filters.min_age, filters.max_age]);
-          changeOwnerGenders(filters.genders);
-        })
-        .then(() => {
-          setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`));
-        })
-        .then(() => {
-          getRandomUser(filterParams);
-        })
-        .catch((err) => {
-          console.error(error);
-        });
+      .then((results) => {
+        // modal slider for dog sizes works by number not strings
+        const sizeToNumberValue = (str) => {
+          if (str === 'XS') return 0;
+          if (str === 'S') return 1;
+          if (str === 'M') return 2;
+          if (str === 'L') return 3;
+          if (str === 'XL') return 4;
+        };
+        const filters = results.data[0];
+        changeSizeRange([sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)]);
+        changeDogAgeRange([filters.dog_min_age, filters.dog_max_age]);
+        changeDogGenders(filters.dog_genders);
+        changeHypoallergenic(filters.hypo);
+        changeNeutered(filters.neutered);
+        changeHealthIssues(filters.health_issues);
+        changeAvoidedBreeds([filters.avoid_breeds]);
+        changeMaxDistance(filters.max_dist);
+        changeOwnerAgeRange([filters.min_age, filters.max_age]);
+        changeOwnerGenders(filters.genders);
+      })
+      .then(() => {
+        setFilterParams(updateFilterParams(`'${currentUser.zipcode}'`, getRandomUser));
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     }
-
   }, [currentUser]);
 
   const theme = createMuiTheme({

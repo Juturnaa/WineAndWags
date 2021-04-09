@@ -356,26 +356,32 @@ const dbHelpers = {
   },
   // NOTIFICAITONS------------------------------------//
   getNotif: (req, res) => {
-    db.query(`SELECT * FROM waw.notifications where recipient_id=${req.params.id} ORDER BY time_stamp DESC`,
-      (err,data) => {
+    db.query(
+      `SELECT * FROM waw.notifications where recipient_id=${req.params.id} ORDER BY time_stamp DESC`,
+      (err, data) => {
         if (err) res.send(err);
         else res.send(data.rows);
-      });
+      }
+    );
   },
   postNotif: (req, res) => {
-    const {type, type_id, sender_name, recipient_id} = req.body;
-    db.query(`INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
-      (err,data) => {
+    const { type, type_id, sender_name, recipient_id } = req.body;
+    db.query(
+      `INSERT INTO waw.notifications("type", type_id, sender_id, sender_name, recipient_id) VALUES ('${type}', ${type_id}, ${req.params.id}, '${sender_name}', ${recipient_id})`,
+      (err, data) => {
         if (err) res.send(err);
-        else res.send('posted notification');
-      });
+        else res.send("posted notification");
+      }
+    );
   },
   updateNotif: (req, res) => {
-    db.query(`UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
-      (err,data) => {
+    db.query(
+      `UPDATE waw.notifications SET read=true WHERE id=${req.params.id}`,
+      (err, data) => {
         if (err) res.send(err);
-        else res.send('updated notification');
-      });
+        else res.send("updated notification");
+      }
+    );
   },
 };
 

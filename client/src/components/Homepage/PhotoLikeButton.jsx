@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 
 const PhotoLikeButton = ({ photoId, likePhoto }) => {
