@@ -30,7 +30,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const libraries = ['places'];
 const mapContainerStyle = {
   width: '100vw',
-  height: '95vh',
+  height: 'calc(100vh - 3.5rem)',
 };
 const center = {
   lat: 33.870350,
