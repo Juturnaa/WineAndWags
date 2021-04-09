@@ -60,19 +60,31 @@ const Chat = ({
         </div>
         <br />
         <br />
+
         <div id="direct-messages-container">
-          {/* {console.log('user messages', allMessages[matchUserId])} */}
-          {allMessages[matchUserId].map((message) => (
-            <div className="direct-message-container" key={message.id}>
-              <div className="message-body">
+          {allMessages[matchUserId].map((message) => {
+            // console.log('message', message)
+            if (message.sender_id === currentUserId) {
+              return (
+                <React.Fragment>
+                  <div className="messages-from-user-container" key={message.id}>
+                    {message.body}
+                  </div>
+                  <div className="time-stamp-user">{message.to_char}</div>
+                </React.Fragment>
+              );
+            }
+            return (
+              <React.Fragment>
+              <div className="messages-from-match-container" key={message.id}>
                 {message.body}
               </div>
-              <div className="time-stamp">
-                {message.time_stamp}
-              </div>
-            </div>
-          ))}
+              <div className="time-stamp-match">{message.to_char}</div>
+            </React.Fragment>
+            );
+          })}
         </div>
+
         <div id="send-message-container">
           <i onClick={() => { clickedCalendar(true); }} className="far fa-calendar-alt" />
           <Modal
@@ -84,7 +96,7 @@ const Chat = ({
           >
             <Calendar clickedCalendar={clickedCalendar} />
           </Modal>
-          <input type="text" onChange={handleInputChange} />
+          <input type="text" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
       </div>
@@ -98,19 +110,9 @@ Chat.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
   messageMode: PropTypes.bool,
   currentMessageId: PropTypes.number,
   currentUser: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
     PropTypes.oneOfType([
       PropTypes.any,
     ]),
@@ -119,11 +121,9 @@ Chat.propTypes = {
 
 Chat.defaultProps = {
   matchesPhotos: [],
-  allMessages: {},
   messageMode: false,
   currentMessageId: null,
   currentUser: {},
-  matchesInfo: {},
 };
 
 export default Chat;

@@ -180,7 +180,7 @@ const dbHelpers = {
     });
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
-    const queryStr = `SELECT * FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
+    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MM AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
