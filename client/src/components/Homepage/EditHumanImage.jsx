@@ -12,7 +12,7 @@ function EditHumanImage({ humanPhoto, setHumanURL }) {
   };
 
   return (
-    <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+    <Carousel className="editCarousel" interval={null} activeIndex={index} onSelect={handleSelect}>
       {humanPhoto.map((item, ind) => (
         <Carousel.Item key={ind} value={item.url}>
           <div
