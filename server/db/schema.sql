@@ -102,7 +102,8 @@ CREATE TABLE IF NOT EXISTS waw.filters (
 CREATE TABLE IF NOT EXISTS waw.userSchedule (
   id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
-  dates timestamp
+  dates TIMESTAMPTZ NOT NULL,
+  selected BOOLEAN
 );
 
 CREATE TABLE IF NOT EXISTS waw.userAppointment (
