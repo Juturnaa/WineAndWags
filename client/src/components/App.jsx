@@ -8,6 +8,8 @@ import breedData from '../dummyData/dogBreed';
 import Landing from './Landing';
 import Register from './Register';
 import ReviewModal from './Homepage/ReviewModal';
+import { ContextProvider } from './Video/SocketContext';
+import Video from './Video/Video';
 
 
 const App = () => {
@@ -232,7 +234,7 @@ const App = () => {
   return (
     <div>
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-      <NavBar
+      {/* <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto || ''}
@@ -251,7 +253,10 @@ const App = () => {
         potientialDogsImg={potientialDogsImg}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
-      />
+      /> */}
+      <ContextProvider>
+        <Video />
+      </ContextProvider>
     </div>
   );
 };

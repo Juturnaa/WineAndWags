@@ -21,11 +21,12 @@ import {
   ComboboxOption,
 } from '@reach/combobox';
 import '@reach/combobox/styles.css';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import key from '../../../../config/googleConfig';
 import mapStyles from './mapStyles';
 
-import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const libraries = ['places'];
 const mapContainerStyle = {
@@ -166,10 +167,9 @@ function Map({ currentUser }) {
     );
   }
 
-
   return (
     <div>
-      {isLoaded && places ?
+      {isLoaded && places ? (
         <React.Fragment>
           <Search />
           <Locate panTo={panTo} />
@@ -216,6 +216,7 @@ function Map({ currentUser }) {
             ) : null}
           </GoogleMap>
         </React.Fragment>
+      )
         : <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100vw', height: '100vh'}}><CircularProgress color="secondary" /></div>
       }
     </div>
