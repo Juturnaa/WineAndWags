@@ -17,13 +17,6 @@ body {
     background: #896A67;
 }
 
-.btn-container {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .btn-container-after {
     display: flex;
     justify-content: center;

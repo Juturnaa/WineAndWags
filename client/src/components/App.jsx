@@ -22,7 +22,6 @@ const App = () => {
   const [matches, setMatches] = useState([]);
   const [matchesInfo, setMatchesInfo] = useState([]);
   const [matchesPhotos, setMatchesPhotos] = useState([]);
-  const [editProfileBtn, setBtn] = useState(true);
   const [allMessages, setAllMessages] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [reviewModal, setReviewModal] = useState(false);
@@ -31,7 +30,7 @@ const App = () => {
   const [potiential, setPotiential] = useState();
   const [potientialDog, setPotientialDog] = useState();
   const [potientialPhoto, setPotientialPhoto] = useState();
-  const [showNotifs, setShowNotifs] = useState(false)
+  const [showNotifs, setShowNotifs] = useState(false);
 
   useEffect(() => {
     const dogsimages = [];
@@ -194,7 +193,7 @@ const App = () => {
       <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
-        humanPhoto={humanPhoto}
+        humanPhoto={humanPhoto || ''}
         dogsImg={dogsImg}
         getRandomUser={getRandomUser}
         currentUser={currentUser}
@@ -207,8 +206,6 @@ const App = () => {
         currentUserID={currentUserID}
         potiential={potiential}
         potientialDog={potientialDog}
-        editProfileBtn={editProfileBtn}
-        setBtn={setBtn}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
       />

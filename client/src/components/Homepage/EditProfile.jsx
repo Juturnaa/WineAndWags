@@ -20,10 +20,8 @@ import AddDogModal from './AddDogModal';
 // for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 function EditProfile({
-  currentUser, dogsImg, breeds, humanPhoto, editProfileBtn, setBtn,
+  currentUser, dogsImg, breeds, humanPhoto, human, dogs,
 }) {
-  const [human, setHuman] = useState(false);
-  const [dogs, setDogs] = useState(false);
   const [humanValue, setHumanValue] = useState({
     name: '', gender: '', bio: '', email: '', password: '', age: '', zipcode: '', searched_as: '',
   });
@@ -99,18 +97,6 @@ function EditProfile({
   const changePages = (e, value) => {
     setDogPage(value);
     setDogID(dogPages[value - 1][0].id);
-  };
-
-  const changeHuman = () => {
-    setHuman(true);
-    setDogs(false);
-    setBtn(false);
-  };
-
-  const changeDogs = () => {
-    setHuman(false);
-    setDogs(true);
-    setBtn(false);
   };
 
   const dogValueChange = (e) => {
@@ -254,10 +240,10 @@ function EditProfile({
 
   return (
     <div id="editprofile-body">
-      <div className={editProfileBtn ? "btn-container" : "btn-container-after"}>
+      {/* <div className="btn-container-after">
         <button type="button" onClick={changeHuman}>EDIT MYSELF</button>
         <button type="button" onClick={changeDogs}>EDIT MY DOG(S)</button>
-      </div>
+      </div> */}
       {human
         ? (
           <form id="editHuman" onSubmit={submitHuman}>
@@ -345,7 +331,7 @@ function EditProfile({
         <div id="editDogPage">
           <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
           {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
-          {dogPages[currentDogPg - 1].map((item, index) => (
+          {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
             <form id="editDog" onSubmit={submitDog} key={index}>
               <div>
                 Photo:
@@ -436,11 +422,6 @@ function EditProfile({
                 {breedFilterOptions !== undefined && breedFilterOptions.length === 0 && dogValue.breed.length > 0
                   ? <div> No options found! </div>
                   : null}
-                {/* <select name="breed" onChange={dogValueChange}>
-                  {breeds.map((itemBreed, index) => (
-                    <option key={index} value={itemBreed} name="breed">{itemBreed}</option>
-                  ))}
-                </select> */}
               </div>
               <div>
                 Healthy
@@ -449,7 +430,7 @@ function EditProfile({
               </div>
               <button type="submit">Save changes</button>
             </form>
-          ))}
+          )) : null }
           <Pagination count={dogPages.length} variant="outlined" page={currentDogPg} onChange={changePages} />
         </div>
       ) : null}

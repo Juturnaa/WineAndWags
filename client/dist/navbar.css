@@ -9,25 +9,40 @@
 }
 
 .nav-icon {
-  margin-right: 1.5rem;
-  font-size: 1.25rem;
-  color: #eff9f0;
-  transition-duration: 0.25s;
+  margin-right: 1.5rem !important;
+  font-size: 1.25rem !important;
+  color: #eff9f0 !important;
+  transition-duration: 0.25s !important;
 }
 
 .nav-icon:hover {
   color: #ddc8c4;
+  cursor: pointer;
 }
 
 .profile-thumbnail {
-  height: 2rem;
-  width: 2rem;
-  border: none;
-  border-radius: 50%;
-  background-position: 50% 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
+  height: 2rem !important;
+  width: 2rem !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background-position: 50% 50% !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  position: absolute !important;
+  top: 0.25rem !important;
+  right: 0.5rem !important;
+}
+
+#editNav {
   position: absolute;
-  top: 0.25rem;
-  right: 0.5rem;
+  background: #EFF9F0;
+  display: flex;
+  flex-direction: column;
+  right: 1em;
+  z-index: 5;
+  border-radius: 4px;
+  color: #6b4d57;
+  border-right: 1px solid #6b4d57;
+  border-left: 1px solid #6b4d57;
+  border-bottom: 1px solid #6b4d57;
 }
