@@ -185,23 +185,37 @@ const dbHelpers = {
   },
 
   //CALENDAR ------------------------------------------//
-  // getSchedule: (req,callback) =>{
-  //   const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id}`
-  //   db.query(queryStr, (err,res)=>{
-  //     callback(err,res)
-  //   })
-  // };
-  // postSchedule: (req,callback)=> {
-  //   const queryStr = `INSERT INTO waw.userSchedule(dates) VALUES (${req.params.date})WHERE user_id = ${req.params.user_id}`
-  //   db.query(queryStr, (err,res)=>{
-  //     callback(err,res)
-  //   })
-  // };
-  // postAppointment: (req,callback)=> {
-  //   const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.params.schedule_id})`
-  // }
-
-
+  getSchedule: (req,callback) =>{
+    const queryStr = `SELECT * FROM waw.userSchedule WHERE user_id = ${req.params.user_id} AND selected = FALSE`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  postSchedule: (req,callback)=> {
+    const queryStr = `INSERT INTO waw.userSchedule(dates,user_id) VALUES ('${req.body.dates}', ${req.params.user_id})`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  putScheduleMatched: (req,callback)=>{
+    const queryStr = `UPDATE waw.userSchedule SET selected=true WHERE id= ${req.body.id}`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  getAppointment: (req,callback)=>{
+    const queryStr = `SELECT * FROM waw.userAppointment INNER JOIN waw.userSchedule ON waw.userSchedule.id = waw.userAppointment.schedule_id
+                      WHERE waw.userAppointment.user_id= ${req.params.user_id} AND waw.userAppointment.user_id2 = ${req.params.user_id2}`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
+  postAppointment: (req,callback)=> {
+    const queryStr = `INSERT INTO waw.userAppointment(user_id, user_id2,schedule_id,reviewed) VALUES (${req.params.user_id}, ${req.params.user_id2}, ${req.body.schedule_id}, false)`
+    db.query(queryStr, (err,res)=>{
+      callback(err,res)
+    })
+  },
   // PROFILE LIKES ------------------------------------//
   // getAllProfileLikes: (callback) => {
   //   const queryStr = 'SELECT * from waw.profilelikes';

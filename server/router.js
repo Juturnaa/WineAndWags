@@ -43,6 +43,18 @@ router
   .get(controller.getConvoMessages)
   .post(controller.postMessage);
 
+//CALENDAR -----------------------------------------//
+router
+  .route('/:user_id/schedule')
+  .get(controller.getSchedule)
+  .post(controller.postSchedule)
+  .put(controller.putScheduleMatched);
+
+router
+  .route('/:user_id/appointment/:user_id2')
+  .get(controller.getAppointment)
+  .post(controller.postAppointment);
+
 // PROFILE LIKES ------------------------------------//
 // router
 //   .route('/profile-likes')

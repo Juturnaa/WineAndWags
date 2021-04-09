@@ -100,13 +100,38 @@ const controller = {
     );
   },
   // CALENDAR------------------------------------//
-  // getSchedule: (req,res) => {
-  //   dbHelpers.getSchedule(req, (err,results)=>{
-  //     if(err) res.status(400).send(err);
-  //     else res.status(200).send("Got Schedule")
-  //     }
-  //   )
-  // }
+  getSchedule: (req,res) => {
+    dbHelpers.getSchedule(req, (err,results)=>{
+      if(err) res.status(400).send(err);
+      res.status(200).send(results.rows)
+      }
+    )
+  },
+  postSchedule: (req,res)=>{
+    dbHelpers.postSchedule(req,(err,results)=>{
+      if(err) res.status(400).send(err);
+      res.status(200).send(results.rows)
+    })
+  },
+  putScheduleMatched: (req,res)=>{
+    dbHelpers.putScheduleMatched(req,(err,results)=>{
+      if(err) res.status(400).send(err);
+      res.status(200).send(results.rows)
+    })
+  },
+  getAppointment: (req,res) => {
+    dbHelpers.getAppointment(req, (err,results)=>{
+      if(err) res.status(400).send(err);
+      res.status(200).send(results.rows)
+      }
+    )
+  },
+  postAppointment:(req,res)=>{
+    dbHelpers.postAppointment(req,(err,results)=>{
+      if(err) res.status(400).send(err);
+      res.status(200).send(results.rows)
+    })
+  },
   // PROFILE LIKES AND MATCHES------------------------------------//
   // getAllProfileLikes: (req, res) => {
   //   dbHelpers.getAllProfileLikes((err, results) => {
@@ -114,6 +139,7 @@ const controller = {
   //     else res.status(200).send(results.rows);
   //   });
   // },
+
   getProfileLikes: (req, res) => {
     dbHelpers.getProfileLikes(req.params.user_id, (err, results) => {
       if (err) res.status(400).send(err);

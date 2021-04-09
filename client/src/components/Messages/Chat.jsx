@@ -17,14 +17,25 @@ const Chat = ({
     setInputValue(e.target.value);
   };
 
+  useEffect(() => {
+    if (calendar) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [calendar]);
+
   const customStyles = {
     content : {
       top                   : '50%',
       left                  : '50%',
       right                 : 'auto',
       bottom                : 'auto',
+      height: "44em",
+      width: "60em",
       marginRight           : '-50%',
       transform             : 'translate(-50%, -50%)',
+      background            : "#EFF9F0",
       zIndex: 12
     }
   };
@@ -43,7 +54,7 @@ const Chat = ({
   return (
     <div>
       <button type="button" onClick={onMessageClick}>Back to Inbox</button>
-      <ReactNotification />
+      {/* <ReactNotification /> */}
       <br />
       <br />
       <div id="chat-container">
@@ -74,7 +85,7 @@ const Chat = ({
           isOpen={calendar}
           style={customStyles}
           onRequestClose={() => {clickedCalendar(!calendar)}}>
-            <Calendar clickedCalendar ={clickedCalendar}/>
+            <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId}/>
           </Modal>
           <input type="text" onChange={handleInputChange} />
           <i className="far fa-paper-plane" onClick={onSendClick} />

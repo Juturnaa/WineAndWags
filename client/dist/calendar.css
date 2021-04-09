@@ -9,11 +9,11 @@
 }
 .weekName {
     background: 200px;
-    background-color:lightblue;
+    background-color:#DDC8C4;
     display: flex;
     justify-content: center;
     border: solid;
-    border-color:blue;
+    border-color:#DDC8C4;
     height:4rem;
     width:4em;
     align-items: center;
@@ -32,7 +32,7 @@
   display: flex;
   justify-content: center;
   border: solid;
-  border-color:blue;
+  border-color:#DDC8C4;
   height:4rem;
   width:4em;
   align-items: center;
@@ -44,7 +44,7 @@
   display: flex;
   justify-content: center;
   border: solid;
-  border-color:blue;
+  border-color:#DDC8C4;
   height:4rem;
   width:4em;
   align-items: center;
@@ -52,11 +52,11 @@
 
 .daySelected {
   background: 200px;
-  background-color:lightblue;
+  background-color:lightcoral;
   display: flex;
   justify-content: center;
   border: solid;
-  border-color:blue;
+  border-color: #DDC8C4;
   height:4rem;
   width:4em;
   align-items: center;
@@ -76,12 +76,69 @@
 
 .today {
   background: 200px;
-  background-color:lightcoral;
+  background-color:#dda0dd;
   display: flex;
   justify-content: center;
   border: solid;
-  border-color:blue;
+  border-color:#DDC8C4;
   height:4rem;
   width:4em;
   align-items: center;
 }
+.matchSchedules {
+  background: 200px;
+  background-color:lightblue;
+  display: flex;
+  justify-content: center;
+  border: solid;
+  border-color: #DDC8C4;
+  height:4rem;
+  width:4em;
+  align-items: center;
+}
+.Time {
+  display: flex;
+}
+.TimeSchedule{
+  display:flex;
+  flex-direction: column;
+}
+.hoursTime{
+  display:flex;
+  flex-direction: column;
+  height:10rem;
+  width:10rem;
+  overflow-y: scroll;
+  list-style-type: none;
+  text-align: center;
+}
+.minutesTime{
+  display:flex;
+  flex-direction: column;
+  height:10rem;
+  width:10rem;
+  overflow-y: scroll;
+  list-style-type: none;
+  text-align: center;
+}
+.indvTime:hover{
+background-color: white;
+}
+
+.topCalendar {
+  display:flex;
+  justify-content: space-around;
+}
+
+.alignbutton{
+  display:flex;
+  justify-content: center;
+}
+.calButton {
+  width:10em;
+  height:4em;
+  margin-left:1rem;
+  margin-right:1rem;
+  background-color: #DDC8C4
+}
+
