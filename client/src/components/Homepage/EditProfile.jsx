@@ -37,6 +37,9 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
   },
+  addDogBtn: {
+    backgroundColor: 'rgba(239, 249, 240, 0.75)',
+  },
 });
 
 function EditProfile({
@@ -335,8 +338,8 @@ function EditProfile({
         : null}
       {dogs ? (
         <div id="editDogPage">
-          <div>
-            <button type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</button>
+          <div style={{ display: 'inline-flex', justifyContent: 'center', marginTop: '0.2%' }}>
+            <Button className={classes.addDogBtn} variant="contained" type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</Button>
           </div>
           {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
           {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
@@ -344,13 +347,15 @@ function EditProfile({
               <Form id="editDog-form" onSubmit={submitDog} key={index}>
                 <div className="dogForm-inputs">
                   <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
-                  <input type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
-                  <button type="button" onClick={uploadDogClick}>Upload Photo</button>
-                  <div>
-                    <IconButton onClick={deleteDogPhoto}>
-                      <DeleteForeverRoundedIcon variant="rounded" />
-                    </IconButton>
+                  <div style={{ display: 'flex', flexFlow: 'row nowrap' }}>
+                    <Input className={classes.upload} type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
+                    <div className="trashbutton">
+                      <IconButton onClick={deleteDogPhoto}>
+                        <DeleteForeverRoundedIcon className={classes.trash} variant="rounded" />
+                      </IconButton>
+                    </div>
                   </div>
+                  <Button type="button" onClick={uploadDogClick}>Upload Photo</Button>
                 </div>
                 <div className="dogForm-inputs2">
                   <Form.Row>

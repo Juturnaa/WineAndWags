@@ -138,8 +138,9 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
+  /// logs in as number 7 when registering
+
   useEffect(() => {
-    console.log('logged in', currentUserID)
     axios.all([
       axios.get(`/app/users/my-profile/${currentUserID}`),
       axios.get(`/app/users/photos/${currentUserID}`),
@@ -222,14 +223,14 @@ const App = () => {
     }
   }, [appointment]);
 
-  // if (landing) {
-  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  // }
-  // if (register) {
-  //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-  //   );
-  // }
+  if (landing) {
+    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  }
+  if (register) {
+    return (
+      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+    );
+  }
 
   return (
     <div>

@@ -160,7 +160,7 @@ body {
 #editDogPage {
     display: flex;
     flex-flow: column nowrap;
-    height: 90vh;
+    height: 91vh;
 }
 
 #editDog-container {
