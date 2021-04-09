@@ -24,7 +24,7 @@ const PhotosList = ({ photos, likePhoto }) => {
               {photos.map((item, ind) => (
                 <Carousel.Item key={ind}>
                   <div style={{
-                    backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%',
+                    backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%', borderRadius: '5%'
                   }}
                   />
                 </Carousel.Item>
