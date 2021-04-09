@@ -5,7 +5,6 @@
     font-size: 6em;
     color:#6b4d57;
     top:2%;
-
 }
 .pictures{
     background-color: white;
@@ -42,6 +41,14 @@
 }
 .file-btn{
     flex-grow:2;
+    font-size: 1.2em;
+}
+.file-chosen {
+    padding: 8px 0 8px 77px;
+    color: #6b4d57;
+    font-weight: bold;
+    border-radius: 3px;
+    border: 1px solid gray;
 }
 .file-btn label{
     margin-bottom:0;

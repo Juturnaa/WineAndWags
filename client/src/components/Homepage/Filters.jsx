@@ -216,7 +216,7 @@ export default function Filters({
           <div className='dog-filters'>
             <Typography variant="h4" gutterBottom>Dog</Typography>
             <Typography variant="overline" display="block" gutterBottom>Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
-            <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={20} />
+            <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={30} />
             <Typography variant="overline" display="block" gutterBottom>Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
             <Slider style={sliderStyle}
               value={sizeRange}
