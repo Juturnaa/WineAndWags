@@ -6,7 +6,7 @@ import Calendar from './Calendar.jsx';
 // import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
-  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo,
+  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo, setMessageCount, messageCount,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
@@ -36,6 +36,7 @@ const Chat = ({
     })
       .then(() => {
         setInputValue('');
+        setMessageCount(messageCount + 1);
       })
       .catch((err) => console.log(err));
   };

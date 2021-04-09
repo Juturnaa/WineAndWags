@@ -26,6 +26,7 @@ const App = () => {
   const [allMessages, setAllMessages] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [reviewModal, setReviewModal] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
 
   // potiential Match User states
   const [potiential, setPotiential] = useState();
@@ -218,6 +219,8 @@ const App = () => {
         setBtn={setBtn}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
+        setMessageCount={setMessageCount}
+        messageCount={messageCount}
       />
     </div>
   );

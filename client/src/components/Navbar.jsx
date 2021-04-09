@@ -27,7 +27,7 @@ const Messages = () => (
 );
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount,
 }) {
   let [notifs, setNotifs] = useState([]);
   let [unread, setUnread] = useState(0);
@@ -116,6 +116,8 @@ function NavBar({
                 matchesPhotos={matchesPhotos}
                 allMessages={allMessages}
                 matchesInfo={matchesInfo}
+                setMessageCount={setMessageCount}
+                messageCount={messageCount}
               />
             )}
           />

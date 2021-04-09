@@ -4,7 +4,7 @@ import Chat from './Chat';
 import MatchesCarousel from './MatchesCarousel';
 
 const Inbox = ({
-  currentUser, matches, matchesPhotos, allMessages, matchesInfo,
+  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount,
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
@@ -106,6 +106,8 @@ const Inbox = ({
             onMessageClick={onMessageClick}
             currentUser={currentUser}
             matchesInfo={matchesInfo}
+            setMessageCount={setMessageCount}
+            messageCount={messageCount}
           />
         )}
     </div>
