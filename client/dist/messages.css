@@ -115,11 +115,26 @@
   display: flex;
   flex-direction: column;
   margin-left: 20px;
+  width: 100%;
+}
+
+.unread-message-container {
+  display: flex;
 }
 
 .unread-message {
-  border: 5px red;
-  color: red;
+  /* border: 5px red; */
+  font-weight: bold;
+  justify-self: start;
+  color: #13070C;
+
+}
+
+.fa-circle {
+  justify-self: end;
+  /* align-self: flex-end; */
+  margin-left: 10px;
+  color: #13070C;
 }
 
 /* -------------CHAT--------------- */

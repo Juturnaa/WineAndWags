@@ -14,10 +14,15 @@ const Inbox = ({
   const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
   const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
   const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
+  let newestMessageId = 0;
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
     setCurrentMessageId(Number(e.target.getAttribute('name')));
+    console.log('message id', e.target.getAttribute('data-id'));
+    axios.patch(`/app/${currentUser.id}/convos/`, {
+      message_id: e.target.getAttribute('data-id'),
+    });
   };
 
   // useEffect(() => {
@@ -81,25 +86,25 @@ const Inbox = ({
                   const newestMessageIndex = allMessages[match[0].user_id].length - 1;
                   if (allMessages[match[0].user_id].length !== 0) {
                     return (
-                      <div className="message-container" key={match[0].user_id} name={index} onClick={onMessageClick}>
-                        <div className="messages-photos-container" name={index} onClick={onMessageClick}>
+                      <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                        <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                           <img
                             className="human-photos-small"
                             alt="human"
                             src={match[0].url}
-                            name={index}
+                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
                             onClick={onMessageClick}
                           />
                           <img
                             className="dog-photos-small"
                             alt="dog"
                             src={match[1].url}
-                            name={index}
+                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
                             onClick={onMessageClick}
                           />
                         </div>
-                        <div className="name-message-container" name={index} onClick={onMessageClick}>
-                          <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
+                        <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                          <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
                             {sessionMatchesInfo[match[0].user_id].name}
                             {' '}
                             and
@@ -108,16 +113,18 @@ const Inbox = ({
                           </div>
 
                           {/* ---------Most recent message------------ */}
-                          {console.log('current user', allMessages[match[0].user_id][newestMessageIndex].sender_id )}
                           {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
                             ? (
-                              <div name={index} className="unread-message" onClick={onMessageClick}>
-                                {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
-                                {allMessages[match[0].user_id][newestMessageIndex].body}
+                              <div className="unread-message-container">
+                                <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
+                                  {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                                  {allMessages[match[0].user_id][newestMessageIndex].body}
+                                </div>
+                                <i className="fas fa-circle fa-xs" />
                               </div>
                             )
                             : (
-                              <div name={index} onClick={onMessageClick}>
+                              <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                                 {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
                                 {allMessages[match[0].user_id][newestMessageIndex].body}
                               </div>

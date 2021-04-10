@@ -191,6 +191,12 @@ const dbHelpers = {
       callback(err, res);
     });
   },
+  patchMessage: (user_id, message_id, callback) => {
+    const queryStr = `UPDATE waw.message SET opened=true WHERE id=${message_id}`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
 
   //CALENDAR ------------------------------------------//
   getSchedule: (req,callback) =>{
