@@ -879,10 +879,10 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     return (
         <div className="register">
             <div className="center">
-                <div className="upper-text">{titleText}</div>
                 <div className="ear ear--left"></div>
                 <div className="ear ear--right"></div>
                     <div className="login-body">
+                    <div className="upper-text">{titleText}</div>
                     <div className="face">
                         <div className="eyes">
                             <div className="eye eye--left">
