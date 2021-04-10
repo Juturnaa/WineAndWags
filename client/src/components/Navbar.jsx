@@ -50,7 +50,6 @@ function NavBar({
   const getNotifs = () => {
     axios.get(`/app/notifications/${currentUserID}`)
       .then((data) => {
-        console.log(data)
         let counter = 0;
         data.data.forEach((result) => { if (!result.read) counter++; });
         setNotifs(data.data);
@@ -69,7 +68,7 @@ function NavBar({
   }, []);
 
   return (
-    <BrowserRouter>      
+    <BrowserRouter>
       <nav className="navigation-bar">
         <div className="navbar-title-content">
           <div className="navbar-title">
@@ -102,7 +101,6 @@ function NavBar({
               </div>
             )
             : null}
-          
         </div>
       </nav>
       {unread > 0
