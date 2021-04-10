@@ -4,7 +4,7 @@ import Chat from './Chat';
 import MatchesCarousel from './MatchesCarousel';
 
 const Inbox = ({
-  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount,
+  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount, getAllMessages,
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
@@ -21,10 +21,10 @@ const Inbox = ({
 
   const messageQueueCount = () => {
     let count = 0;
-    const allMessagesKeys = Object.keys(allMessages);
-    for (let i = 0; i < allMessagesKeys.length; i++) {
-      if (allMessages[i] && allMessages[i].length > 0) {
-        count++;
+    const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
+    for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
+      if (sessionAllMessages[i] && sessionAllMessages[i].length > 0) {
+        count += 1;
       }
     }
     return count;
@@ -115,6 +115,7 @@ const Inbox = ({
             matchesInfo={sessionMatchesInfo}
             setMessageCount={setMessageCount}
             messageCount={messageCount}
+            getAllMessages={getAllMessages}
           />
         )}
     </div>
