@@ -150,8 +150,8 @@ export default function Homepage({
   });
 
   return (
-    <div className='homepage'>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div className="homepage">
+      <div style={{ left: '0', position: 'absolute' }}>
         <ThemeProvider theme={theme}>
           <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
         </ThemeProvider>

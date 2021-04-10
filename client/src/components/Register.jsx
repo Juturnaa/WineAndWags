@@ -421,7 +421,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             </React.Fragment>
     //--------------------------page 4 inputs --------------------------//
     } else if (page === 4) {
-        inputs = 
+        inputs =
         <div className="prefs">
             <div className="owner-prefs">
                 <div className="owner-prefs-title">Owner</div>
@@ -648,6 +648,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
         let promises2 =[];
         axios.post('/app/users', {name:owner, bio:ownerBio, email, hash, age:ownerAge, zipcode, city, searched_as})
             .then((data)=>{
+                console.log(data.data.id);
                 setCurrentID(data.data.id);
                 return data.data.id;
             })
