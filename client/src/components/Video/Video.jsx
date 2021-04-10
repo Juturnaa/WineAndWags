@@ -18,12 +18,11 @@ function Video({
     me, callAccepted, name, setName, callEnded, leaveCall, callUser,
   } = React.useContext(SocketContext);
 
+  console.log(currentUser.name)
 
-  const matchUserId = matchesPhotos[currentMessageId][0].user_id;
-
-  const videoInvite = (e) => {
-    console.log('clicked');
-    axios.post(`/app/${currentUser.id}/convos/${matchUserId}`, {
+  const videoInvite = (matchId) => {
+    console.log('matchId', matchId)
+    axios.post(`/app/${currentUser.id}/convos/${matchId}`, {
       message: `Join me for a video chat at: ${me}`,
     })
       .then(() => {
@@ -35,7 +34,7 @@ function Video({
 
   function MatchesCarousel() {
     return (
-      <div id="matches-container">
+      <div style={{marginTop: '2%'}} id="matches-container">
         <Carousel
           disableArrowsOnEnd
           itemsToShow={5}
@@ -45,7 +44,7 @@ function Video({
           {matchesPhotos.map((match, index) => (
             <div className="match-container">
               <div className="inbox-matches-names">
-                {matchesInfo[match[0].user_id].name}
+                {matchesInfo[match[0].user_id].name || ''}
                 {' '}
                 and
                 {' '}
@@ -57,14 +56,13 @@ function Video({
                   alt="human"
                   src={match[0].url}
                   name={index}
-                  onClick={videoInvite}
+                  onClick={() => videoInvite(match[0].user_id)}
                 />
                 <img
                   className="dog-photos"
                   alt="dog"
                   src={match[1].url}
                   name={index}
-                  onClick={videoInvite}
                 />
               </div>
             </div>
@@ -76,18 +74,13 @@ function Video({
 
   return (
     <div>
-      <span>
-        Match Queue (
-        {sessionMatches.length}
-        )
-      </span>
       <MatchesCarousel
               // matchesPhotos={matchesPhotos}
         matchesPhotos={sessionMatchesPhotos}
               // matchesInfo={matchesInfo}
         matchesInfo={sessionMatchesInfo}
       />
-      <VideoPlayer />
+      <VideoPlayer name={currentUser.name} />
       <Options />
     </div>
   );

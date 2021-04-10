@@ -78,3 +78,14 @@
   background-size: 100%;
   background-repeat: no-repeat;
 }
+
+.video {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin: 10%;
+}
+
+.video-container {
+  text-align: center;
+}
