@@ -4,7 +4,7 @@ import Peer from 'simple-peer';
 
 const SocketContext = React.createContext();
 
-const socket = io('http://localhost:3000');
+const socket = io('http://localhost:5000');
 
 const ContextProvider = ({ children }) => {
   const [stream, setStream] = React.useState(null);
