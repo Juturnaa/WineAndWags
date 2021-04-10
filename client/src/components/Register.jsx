@@ -786,42 +786,83 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
         let emailRe = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
         if(type === 'back') setPage(page-1)
         else if (page === 1) {
-            if ([owner, email, password, password2, zipcode, city].some(x => x === undefined || x === '')){
-                validated =false;
-                alert("Fields cannot be blank")
-            } else if (!emailRe.test(email)) {
-                validated =false;
-                alert("Invalid email")
-            } else if (password !== password2) {
-                validated = false;
-                alert("Passwords must match")
-            } else if (!zipRe.test(zipcode)) {
-                validated = false
-                alert("Invalid zipcode")
-            } else setPage(page+1)
+            if (owner === undefined || owner === '') { validated = false; setNameError("Field cannot be blank");}
+            else setNameError('')
+
+            if (email === undefined || email === '') {validated = false;  setEmailError("Field cannot be blank");}
+            else if (!emailRe.test(email)) {validated = false; setEmailError("Invalid email");}
+            else setEmailError('');
+
+            if (password=== undefined || password=== '') {validated = false; setPasswordError("Field cannot be blank");}
+            else setPasswordError('')
+
+            if (zipcode === undefined || zipcode === '') {validated = false; setZipcodeError("Field cannot be blank");}
+            else if (!zipRe.test(zipcode)) {validated = false; setZipcodeError("Invalid zipcode");}
+            else setZipcodeError('');
+
+            if (city === undefined || city === '') {validated = false; setCityError("Field cannot be blank");}
+            else setCityError('');
+            if (password !== password2) {validated = false; setPassword2Error("Passwords must match");}
+            else setPassword2Error('');
+
+            if(validated) setPage(page+1);
         } else if(page === 2) {
-            if([ownerAge, searched_as, ownerBio].some(x => x === undefined || x === '') || ownerPics.some(x => x === undefined || x === '')){
-                validated =false;
-                alert("Fields cannot be blank")
+            if (ownerAge === undefined || ownerAge === ''){
+                validated = false; 
+                setAgeError("Field cannot be blank");
             } else if(ownerAge < 18){
-                validated =false;
-                alert("Age must be greater than or equal to 18")
-            } else setPage(page+1)
+                validated = false; 
+                setAgeError("Age must be at least 18")
+            } else setAgeError('');
+            if (searchedAs === undefined || searchedAs === ''){
+                validated = false; 
+                setOwnerGenderError("Field cannot be blank");
+            } else setOwnerGenderError('');
+            if (ownerBio=== undefined || ownerBio=== ''){
+                validated = false; 
+                setBioError("Field cannot be blank");
+            } else setBioError('');
+            if (ownerPics.some(x => x === undefined || x === '')){
+                validated = false; 
+                setPictureError("Field cannot be blank");
+            } else setPictureError('');
+            
+            if(validated) setPage(page+1);
 
         } else if (page === 3) {
             for(let i=0; i<numDogs.length;i++){
-                if([dogAges[i],dogGenders[i], breeds[i], dogBios[i]].some(x => x === undefined || x === '') || dogPics[i].some(x => x === undefined || x === '')){
-                    validated =false;
-                    alert("Fields cannot be blank")
+                if(dogPics[i].some(x => x === undefined || x === '')){
+                    validated = false;
+                    setDogError('All picture files must be chosen')
                     break;
-                }
+                } else if (dogAges[i] === undefined || dogAges[i] === ''){
+                    validated = false;
+                    setDogError('Dog age cannot be blank ')
+                    break;
+                } else if (dogGenders[i] === undefined || dogGenders[i] === ''){
+                    validated = false;
+                    setDogError('Dog gender cannot be blank ')
+                    break;
+                } else if (breeds[i] === undefined || breeds[i] === ''){
+                    validated = false;
+                    setDogError('Dog breed cannot be blank ')
+                    break;
+                } else if (dogBios[i] === undefined || dogBios[i] === ''){
+                    validated = false;
+                    setDogError('Dog bio cannot be blank ')
+                    break;
+                } else setDogError('');
             }
             if(validated) setPage(page+1)
         } else if(page === 4) {
-            if([dog_genders, ownerGenders].some(x => x === undefined || x === '')){
+            if(ownerGenders === undefined || ownerGenders === ''){
+                validated= false;
+                setOwnerGenderError('Field cannot be blank');
+            } else setOwnerGenderError('')
+            if(dog_genders === undefined || dog_genders === ''){
                 validated =false;
-                alert("Fields cannot be blank")
-            }
+                setDogGenderError("Field cannot be blank")
+            } else setDogGenderError('');
             if(validated) postInfo()
         }
 

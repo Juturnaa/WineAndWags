@@ -232,14 +232,8 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing || currentUserID === undefined) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  else if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
+  if (register) return (<Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />);
+  else if (landing || currentUserID === undefined) return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
   else if (currentUserID){
     return (
       <div>
