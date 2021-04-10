@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import Chat from './Chat';
 import MatchesCarousel from './MatchesCarousel';
 
 const Inbox = ({
-  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount, getAllMessages,
+  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount, getAllMessages, setAllMessages,
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
@@ -18,6 +19,22 @@ const Inbox = ({
     setMessageMode(!messageMode);
     setCurrentMessageId(Number(e.target.getAttribute('name')));
   };
+
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const messages = {};
+  //   matches.map((match) => {
+  //     axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+  //       .then((results) => {
+  //         if (isMounted) {
+  //           messages[match.user_id] = results.data;
+  //         }
+  //       })
+  //       .catch((err) => console.log(err));
+  //   });
+  //   setAllMessages(messages);
+  //   return () => { isMounted = false; };
+  // }, [dmSent]);
 
   const messageQueueCount = () => {
     let count = 0;

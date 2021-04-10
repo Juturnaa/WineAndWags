@@ -14,17 +14,19 @@ const Chat = ({
 
   const [inputValue, setInputValue] = useState('');
   const [calendar, clickedCalendar] = useState(false);
-  const [dmSent, setDmSent] = useState(0);
   const [messages, setMessages] = useState([]);
+  const [dmSent, setDmSent] = useState(0);
 
   const getMessages = () => {
     axios.get(`/app/${currentUserId}/convos/${matchUserId}`)
-    .then((results) => {
-      console.log('results', results.data);
-      setMessages(results.data);
-    })
-    .catch((err) => console.log(err));
-  }
+      .then((results) => {
+        console.log('results', results.data);
+        setMessages(results.data);
+        setDmSent((dmSent) => dmSent + 1);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };

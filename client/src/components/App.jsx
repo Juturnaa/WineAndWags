@@ -147,10 +147,10 @@ const App = () => {
         .then((results) => {
           console.log('results messages', results.data)
           messages[match.user_id] = results.data;
+          setAllMessages(messages);
         })
         .catch((err) => console.log(err));
     });
-    setAllMessages(messages);
   }
 
   useEffect(() => {
@@ -278,7 +278,7 @@ const App = () => {
         setMessageCount={setMessageCount}
         messageCount={messageCount}
         getAllMessages={getAllMessages}
-      />
+        setAllMessages={setAllMessages}
       />
       {/* <ContextProvider>
         <Video />

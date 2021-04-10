@@ -27,7 +27,7 @@ import Map from './Map/Map';
 // </Route>
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -155,6 +155,7 @@ function NavBar({
               allMessages={allMessages}
               matchesInfo={matchesInfo}
               getAllMessages={getAllMessages}
+              setAllMessages={setAllMessages}
             />
           )}
         />
