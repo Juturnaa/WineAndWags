@@ -106,10 +106,23 @@ const Inbox = ({
                             {' '}
                             {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
                           </div>
-                          <div name={index} onClick={onMessageClick}>
-                            {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex].body)}
-                            {allMessages[match[0].user_id][newestMessageIndex].body}
-                          </div>
+
+                          {/* ---------Most recent message------------ */}
+                          {console.log('current user', allMessages[match[0].user_id][newestMessageIndex].sender_id )}
+                          {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
+                            ? (
+                              <div name={index} className="unread-message" onClick={onMessageClick}>
+                                {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                                {allMessages[match[0].user_id][newestMessageIndex].body}
+                              </div>
+                            )
+                            : (
+                              <div name={index} onClick={onMessageClick}>
+                                {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                                {allMessages[match[0].user_id][newestMessageIndex].body}
+                              </div>
+                            )}
+
                         </div>
                       </div>
                     );
