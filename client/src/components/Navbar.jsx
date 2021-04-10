@@ -30,7 +30,7 @@ import { ContextProvider } from './Video/SocketContext';
 
 
 function NavBar({
-  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
+  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -167,6 +167,8 @@ const logMeOut = () => {
               matchesPhotos={matchesPhotos}
               allMessages={allMessages}
               matchesInfo={matchesInfo}
+              getAllMessages={getAllMessages}
+              setAllMessages={setAllMessages}
             />
           )}
         />
@@ -225,16 +227,6 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
 };
 
 NavBar.defaultProps = {
@@ -244,8 +236,6 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
-  allMessages: {},
-  matchesInfo: {},
 };
 
 export default NavBar;

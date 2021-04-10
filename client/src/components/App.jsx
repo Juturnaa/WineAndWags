@@ -139,6 +139,20 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
+
+  const getAllMessages = () => {
+    const messages = {};
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          console.log('results messages', results.data)
+          messages[match.user_id] = results.data;
+          setAllMessages(messages);
+        })
+        .catch((err) => console.log(err));
+    });
+  }
+
   useEffect(() => {
     if (currentUserID !== undefined) {
       axios.all([
@@ -192,7 +206,7 @@ const App = () => {
         })
         .catch((err) => console.log(err));
     }
-  }, [currentUser]);
+  }, [currentUser, messageCount]);
 
   useEffect(() => {
     const matchPhotos = [];
@@ -202,7 +216,7 @@ const App = () => {
       })
       .catch((err) => console.log(err)));
     setMatchesPhotos(matchPhotos);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     const messages = {};
@@ -226,7 +240,7 @@ const App = () => {
         .catch((err) => console.log(err));
     });
     setMatchesInfo(info);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     if (appointment.length > 0) {
@@ -283,6 +297,8 @@ const App = () => {
         setShowNotifs={setShowNotifs}
         setMessageCount={setMessageCount}
         messageCount={messageCount}
+        getAllMessages={getAllMessages}
+        setAllMessages={setAllMessages}
       />
       {/* <ContextProvider>
         <Video />
