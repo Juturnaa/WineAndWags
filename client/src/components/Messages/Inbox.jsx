@@ -35,6 +35,9 @@ const Inbox = ({
   //   setAllMessages(messages);
   //   return () => { isMounted = false; };
   // }, [dmSent]);
+  // useEffect(() => {
+  //   getAllMessages();
+  // }, []);
 
   const messageQueueCount = () => {
     let count = 0;
@@ -75,8 +78,8 @@ const Inbox = ({
                   )
                 </span>
                 {sessionMatchesPhotos.map((match, index) => {
-                  const newestMessageIndex = sessionAllMessages[match[0].user_id].length - 1;
-                  if (sessionAllMessages[match[0].user_id].length !== 0) {
+                  const newestMessageIndex = allMessages[match[0].user_id].length - 1;
+                  if (allMessages[match[0].user_id].length !== 0) {
                     return (
                       <div className="message-container" key={match[0].user_id} name={index} onClick={onMessageClick}>
                         <div className="messages-photos-container" name={index} onClick={onMessageClick}>
@@ -103,14 +106,9 @@ const Inbox = ({
                             {' '}
                             {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
                           </div>
-                          <div>
-                            {(sessionAllMessages[match[0].user_id].length !== 0)
-                              ? (
-                                <div name={index} onClick={onMessageClick}>
-                                  {sessionAllMessages[match[0].user_id][newestMessageIndex].body}
-                                </div>
-                              )
-                              : <div name={index} onClick={onMessageClick}>Make the first move! Be bold, and write your own story...</div>}
+                          <div name={index} onClick={onMessageClick}>
+                            {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex].body)}
+                            {allMessages[match[0].user_id][newestMessageIndex].body}
                           </div>
                         </div>
                       </div>
@@ -126,13 +124,14 @@ const Inbox = ({
             matchesPhotos={sessionMatchesPhotos}
             messageMode={messageMode}
             currentMessageId={currentMessageId}
-            allMessages={sessionAllMessages}
+            allMessages={allMessages}
             onMessageClick={onMessageClick}
             currentUser={currentUser}
             matchesInfo={sessionMatchesInfo}
             setMessageCount={setMessageCount}
             messageCount={messageCount}
             getAllMessages={getAllMessages}
+            setAllMessages={setAllMessages}
           />
         )}
     </div>

@@ -8,7 +8,7 @@ import Video from '../Video/Video';
 // import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
-  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo, setMessageCount, messageCount, getAllMessages,
+  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo, setMessageCount, messageCount, getAllMessages, setAllMessages,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
@@ -22,9 +22,14 @@ const Chat = ({
   const getMessages = () => {
     axios.get(`/app/${currentUserId}/convos/${matchUserId}`)
       .then((results) => {
-        console.log('results', results.data);
+        console.log('results and data', results.data);
         setMessages(results.data);
         setDmSent((dmSent) => dmSent + 1);
+        allMessages[matchUserId] = results.data;
+      })
+      .then(() => {
+        // setAllMessages(results.data);
+        // window.sessionStorage.setItem('messages', JSON.stringify(results.data));
       })
       .catch((err) => console.log(err));
   };
@@ -45,6 +50,7 @@ const Chat = ({
     getMessages();
   }, []);
 
+
   const customStyles = {
     content : {
       top                   : '50%',
@@ -61,7 +67,6 @@ const Chat = ({
   };
 
   const onSendClick = (e) => {
-    console.log('clicked');
     axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
       message: inputValue,
     })
