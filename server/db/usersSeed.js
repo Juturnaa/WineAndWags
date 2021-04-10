@@ -1,6 +1,9 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable camelcase */
+const bcrypt = require("bcryptjs");
 const db = require("./index.js");
 
-let names = [
+const names = [
   "Aaberg",
   "Aalst",
   "Aara",
@@ -19,8 +22,179 @@ let names = [
   "Abbate",
   "Abbe",
   "Abbey",
+  "Florry",
+  "Flory",
+  "Flossi",
+  "Flossie",
+  "Flossy",
+  "Flss",
+  "Fran",
+  "Francene",
+  "Frances",
+  "Francesca",
+  "Francine",
+  "Francisca",
+  "Franciska",
+  "Francoise",
+  "Francyne",
+  "Frank",
+  "Frankie",
+  "Franky",
+  "Franni",
+  "Frannie",
+  "Franny",
+  "Frayda",
+  "Fred",
+  "Freda",
+  "Freddi",
+  "Freddie",
+  "Freddy",
+  "Fredelia",
+  "Frederica",
+  "Fredericka",
+  "Frederique",
+  "Fredi",
+  "Fredia",
+  "Fredra",
+  "Fredrika",
+  "Freida",
+  "Frieda",
+  "Friederike",
+  "Fulvia",
+  "Gabbey",
+  "Gabbi",
+  "Gabbie",
+  "Gabey",
+  "Gabi",
+  "Gabie",
+  "Gabriel",
+  "Gabriela",
+  "Gabriell",
+  "Gabriella",
+  "Gabrielle",
+  "Gabriellia",
+  "Gabrila",
+  "Gaby",
+  "Gae",
+  "Gael",
+  "Gail",
+  "Gale",
+  "Gale",
+  "Galina",
+  "Garland",
+  "Garnet",
+  "Garnette",
+  "Gates",
+  "Gavra",
+  "Gavrielle",
+  "Gay",
+  "Gaye",
+  "Gayel",
+  "Gayla",
+  "Gayle",
+  "Gayleen",
+  "Gaylene",
+  "Gaynor",
+  "Gelya",
+  "Gena",
+  "Gene",
+  "Geneva",
+  "Genevieve",
+  "Genevra",
+  "Genia",
+  "Genna",
+  "Genni",
+  "Gennie",
+  "Gennifer",
+  "Genny",
+  "Genovera",
+  "Genvieve",
+  "George",
+  "Georgeanna",
+  "Georgeanne",
+  "Georgena",
+  "Georgeta",
+  "Georgetta",
+  "Georgette",
+  "Georgia",
+  "Georgiana",
+  "Georgianna",
+  "Georgianne",
+  "Georgie",
+  "Georgina",
+  "Georgine",
+  "Geralda",
+  "Geraldine",
+  "Gerda",
+  "Gerhardine",
+  "Geri",
+  "Gerianna",
+  "Gerianne",
+  "Gerladina",
+  "Germain",
+  "Germaine",
+  "Germana",
+  "Gerri",
+  "Gerrie",
+  "Gerrilee",
+  "Gerry",
+  "Gert",
+  "Gerta",
+  "Gerti",
+  "Gertie",
+  "Gertrud",
+  "Gertruda",
+  "Gertrude",
+  "Gertrudis",
+  "Gerty",
+  "Giacinta",
+  "Giana",
+  "Gianina",
+  "Gianna",
+  "Gigi",
+  "Gilberta",
+  "Gilberte",
+  "Gilbertina",
+  "Gilbertine",
+  "Gilda",
+  "Gilemette",
+  "Gill",
+  "Gillan",
+  "Gilli",
+  "Gillian",
+  "Gillie",
+  "Gilligan",
+  "Gilly",
+  "Gina",
+  "Ginelle",
+  "Ginevra",
+  "Ginger",
+  "Ginni",
+  "Ginnie",
+  "Ginnifer",
+  "Ginny",
+  "Giorgia",
+  "Giovanna",
+  "Gipsy",
+  "Giralda",
+  "Gisela",
+  "Gisele",
+  "Gisella",
+  "Giselle",
+  "Giuditta",
+  "Giulia",
+  "Giulietta",
+  "Giustina",
+  "Gizela",
+  "Glad",
+  "Gladi",
+  "Gladys",
+  "Gleda",
+  "Glen",
+  "Glenda",
+  "Glenine",
 ];
-let ages = [
+const ages = [
   44,
   34,
   42,
@@ -40,7 +214,7 @@ let ages = [
   25,
   56,
 ];
-let zipcodes = [
+const zipcodes = [
   "90220",
   "90221",
   "90502",
@@ -136,35 +310,39 @@ let zipcodes = [
   "92821",
   "92823",
 ];
-let genders = ["m", "f", "nb"];
-let bios = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
-let password = "password";
 
-const getRandom = (min, max) => {
-  return Math.floor(Math.random() * (max - min) + min);
-};
+const genders = ["M", "F", "All"];
+const bios = ["hey my name is triko.", "YEEEEEHAWEWWWWW", "im all vibed up!"];
+const password = "password";
+
+const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 const seedUsers = () => {
-  for (let i = 0; i < 1000; i++) {
-    let name = names[getRandom(0, names.length - 1)];
-    let gender = genders[getRandom(0, genders.length - 1)];
-    let bio = bios[getRandom(0, bios.length - 1)];
-    let email = `sophiaacheong${i}@gmail.com`;
-    let age = ages[getRandom(0, ages.length - 1)];
-    let zipcode = zipcodes[getRandom(0, zipcodes.length - 1)];
-    let searched_as = genders[getRandom(0, genders.length - 1)];
+  for (let i = 1; i <= 1000; i++) {
+    const name = names[getRandom(0, names.length)];
+    const gender = genders[getRandom(0, genders.length)];
+    const bio = bios[getRandom(0, bios.length)];
+    const email = `sophiaacheong${i}@gmail.com`;
+    const age = ages[getRandom(0, ages.length)];
+    const zipcode = zipcodes[getRandom(0, zipcodes.length)];
+    const searched_as = genders[getRandom(0, genders.length)];
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    const city = "LA";
+    console.log(i);
     db.query(
-      `INSERT INTO waw.users("name", gender, bio, email, "password", age, zipcode, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7, $8)`,
+      'INSERT INTO waw.users("name", bio, email, "password", age, zipcode, city, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7, $8)',
       [
         `${name}`,
-        `${gender}`,
         `${bio}`,
         `${email}`,
-        `${password}`,
+        `${hash}`,
         `${age}`,
         `${zipcode}`,
+        `${city}`,
         `${searched_as}`,
-      ]
+      ],
+      (err, res) => console.log("done!")
     );
   }
 };

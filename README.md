@@ -9,3 +9,4 @@
 7. git push origin "your branch name"
 8. go to git hub and make PR
 9. psql -U michaelbanuelos < server/db/schema.sql
+psql -U postgres < server/db/schema.sql
