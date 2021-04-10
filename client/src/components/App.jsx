@@ -80,6 +80,8 @@ const App = () => {
     let uId;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
+        console.log('filters', filters)
+        console.log(data);
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setPotiential(data.data[random]);
         uId = data.data[random].id;
