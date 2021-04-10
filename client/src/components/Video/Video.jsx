@@ -3,6 +3,7 @@ import Carousel from 'react-elastic-carousel';
 import { ContextProvider, SocketContext } from './SocketContext';
 import VideoPlayer from './VideoPlayer';
 import Options from './Options';
+import axios from 'axios';
 
 // Thanks justine!
 
@@ -13,14 +14,16 @@ function Video({
   const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
   const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
   const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
-
   const {
     me, callAccepted, name, setName, callEnded, leaveCall, callUser,
   } = React.useContext(SocketContext);
 
+
+  const matchUserId = matchesPhotos[currentMessageId][0].user_id;
+
   const videoInvite = (e) => {
     console.log('clicked');
-    axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
+    axios.post(`/app/${currentUser.id}/convos/${matchUserId}`, {
       message: `Join me for a video chat at: ${me}`,
     })
       .then(() => {
@@ -61,7 +64,7 @@ function Video({
                   alt="dog"
                   src={match[1].url}
                   name={index}
-                  onClick={onMessageClick}
+                  onClick={videoInvite}
                 />
               </div>
             </div>
