@@ -29,7 +29,7 @@ const Chat = ({
       })
       .then(() => {
         // setAllMessages(results.data);
-        // window.sessionStorage.setItem('messages', JSON.stringify(results.data));
+        window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
       })
       .catch((err) => console.log(err));
   };
