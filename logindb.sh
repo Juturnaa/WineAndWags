@@ -1,0 +1,1 @@
+ssh -i ".pem" ubuntu@ec2-13-52-253-68.us-west-1.compute.amazonaws.com
