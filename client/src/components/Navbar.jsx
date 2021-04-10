@@ -82,7 +82,7 @@ function NavBar({
           <NavLink className="nav-icon" exact to="/home" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-home" /></NavLink>
           <button style={{ background: 'none', border: 'none' }} className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setEdit(false); }}><i className="far fa-bell" /></button>
           <NavLink className="nav-icon" exact to="/inbox" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-envelope" /></NavLink>
-          <NavLink className="nav-icon" exact to="/video" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-video" /></NavLink>
+          {/* <NavLink className="nav-icon" exact to="/video" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-video" /></NavLink> */}
           <NavLink className="nav-icon" exact to="/map" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-map" /></NavLink>
           <a className="nav-icon" onClick={() => { setEdit(!edit); setShowNotifs(false); }}>
             {humanPhoto.length ? (
