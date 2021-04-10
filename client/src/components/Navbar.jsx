@@ -50,6 +50,7 @@ function NavBar({
   const getNotifs = () => {
     axios.get(`/app/notifications/${currentUserID}`)
       .then((data) => {
+        console.log(data)
         let counter = 0;
         data.data.forEach((result) => { if (!result.read) counter++; });
         setNotifs(data.data);
