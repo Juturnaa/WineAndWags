@@ -19,6 +19,7 @@ function Video({
   } = React.useContext(SocketContext);
 
   console.log(currentUser.name)
+  console.log(me);
 
   const videoInvite = (matchId) => {
     console.log('matchId', matchId)
