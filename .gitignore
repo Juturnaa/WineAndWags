@@ -4,3 +4,4 @@ package-lock.json
 dbConfig.js
 awsConfig.js
 googleConfig.js
+*.pem

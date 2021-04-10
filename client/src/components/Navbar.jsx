@@ -28,14 +28,23 @@ import { ContextProvider } from './Video/SocketContext';
 //  {loggedIn ? <Redirect to="/home" /> : <LandingPage />}
 // </Route>
 
+
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
+  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
   const [human, setHuman] = useState(true);
   const [dogs, setDogs] = useState(false);
   const [unread, setUnread] = useState(0);
+
+
+const logMeOut = () => {
+  localStorage.clear()
+    setLanding(true)
+    setCurrentUser(null);
+    location.href = '/home'
+}
 
   const changeHuman = () => {
     setHuman(true);
@@ -82,7 +91,7 @@ function NavBar({
           <NavLink className="nav-icon" exact to="/home" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-home" /></NavLink>
           <button style={{ background: 'none', border: 'none' }} className="nav-icon" onClick={() => { setShowNotifs(!showNotifs); setEdit(false); }}><i className="far fa-bell" /></button>
           <NavLink className="nav-icon" exact to="/inbox" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-envelope" /></NavLink>
-          <NavLink className="nav-icon" exact to="/video" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-video" /></NavLink>
+          {/* <NavLink className="nav-icon" exact to="/video" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="fas fa-video" /></NavLink> */}
           <NavLink className="nav-icon" exact to="/map" onClick={() => { setEdit(false); setShowNotifs(false); }}><i className="far fa-map" /></NavLink>
           <a className="nav-icon" onClick={() => { setEdit(!edit); setShowNotifs(false); }}>
             {humanPhoto.length ? (
@@ -100,6 +109,7 @@ function NavBar({
                   <div id="editNav-triangle" />
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
+                  <Dropdown.Item onClick={logMeOut}>Logout</Dropdown.Item>
                 </div>
               </div>
             )

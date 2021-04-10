@@ -81,7 +81,7 @@ function Video({
         matchesInfo={sessionMatchesInfo}
       />
       <VideoPlayer name={currentUser.name} />
-      <Options />
+      <Options username={currentUser.name} />
     </div>
   );
 }

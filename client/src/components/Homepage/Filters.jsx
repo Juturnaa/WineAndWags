@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Slider from '@material-ui/core/Slider';
@@ -33,9 +32,8 @@ export default function Filters({
   close, setFilterParams,
   currentUser, currentUserID,
   potiential, showAlert,
-  zipCodes, changeZipCodes
+  zipCodes, changeZipCodes,
 }) {
-
   // XS, S, M, L, XL
   const sizeLabels = [
     {
@@ -57,38 +55,38 @@ export default function Filters({
     {
       value: 4,
       label: 'XL',
-    }
+    },
   ];
 
   const displaySizeRangeAsString = (first, second) => {
     if (first !== undefined && second !== undefined) {
-      return `${sizeLabels[first].label} - ${sizeLabels[second].label}`
+      return `${sizeLabels[first].label} - ${sizeLabels[second].label}`;
     }
-  }
+  };
 
   const sliderStyle = {
-    width: '50%'
-  }
+    width: '50%',
+  };
 
   // transforming data to work with filter params for get random profile
   const getSizeRange = (min, max) => {
-    const sizes = ['XS', 'S', 'M', 'L', 'XL']
-    let result = []
+    const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+    const result = [];
     for (let i = min; i <= max; i++) {
-      result.push(`'${sizes[i]}'`)
+      result.push(`'${sizes[i]}'`);
     }
-    return result.join(',')
-  }
+    return result.join(',');
+  };
 
   // PATCH user settings
   const saveChanges = () => {
     const sizeNumToString = (n) => {
-      if (n === 0) return 'XS'
-      if (n === 1) return 'S'
-      if (n === 2) return 'M'
-      if (n === 3) return 'L'
-      if (n === 4) return 'XL'
-    }
+      if (n === 0) return 'XS';
+      if (n === 1) return 'S';
+      if (n === 2) return 'M';
+      if (n === 3) return 'L';
+      if (n === 4) return 'XL';
+    };
     const values = {
       sizeRange: [sizeNumToString(sizeRange[0]), sizeNumToString(sizeRange[1])],
       dogGenders,
@@ -99,31 +97,31 @@ export default function Filters({
       avoidBreeds: avoidBreeds.join(','),
       maxDistance,
       ownerAgeRange,
-      ownerGenders
-    }
+      ownerGenders,
+    };
 
     axios.patch(`app/${currentUserID}/filters`, values)
       .then((results) => {
-        updateFilterParams()
+        updateFilterParams();
         close(false);
         showAlert(true);
       })
       .catch((err) => console.error(err));
-  }
+  };
 
   const updateFilterParams = () => {
     // request for zip codes based on currentUser zip and maxDistance slider
     const options = {
       method: 'GET',
       url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
-      params: { zipcode: currentUser.zipcode, maximumradius: maxDistance, key: 'HQH2IMXH3DL9TC616NNR' }
-    }
+      params: { zipcode: currentUser.zipcode, maximumradius: maxDistance, key: 'AAOQMTRST8WJ41JRKG5L' },
+    };
     axios.request(options)
       .then((response) => {
-        let uniqueZips = [];
-        for (let item of response.data.DataList) {
+        const uniqueZips = [];
+        for (const item of response.data.DataList) {
           if (!uniqueZips.includes(item.Code)) {
-            uniqueZips.push(`'${item.Code}'`)
+            uniqueZips.push(`'${item.Code}'`);
           }
         }
         changeZipCodes(uniqueZips.join(','));
@@ -137,35 +135,45 @@ export default function Filters({
           avoidBreeds: avoidBreeds.join(','),
           zipCodes: uniqueZips.join(','),
           ownerAgeRange,
-          ownerGenders
-        }
-        setFilterParams(params)
-      })
-  }
+          ownerGenders,
+        };
+        setFilterParams(params);
+      });
+  };
 
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: "#EFF9F0"
+        main: '#EFF9F0',
       },
       secondary: {
-        main: "#13070C"
-      }
+        main: '#13070C',
+      },
     },
   });
 
   return (
-    <div className='filter-modal'>
+    <div className="filter-modal">
       <ThemeProvider theme={theme}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end' }}>
           <IconButton onClick={() => close(false)} color="secondary" aria-label="close-filter-modal"><CancelIcon /></IconButton>
         </div>
-        <div className='filter-modal-inner'>
-          <div className='owner-filters'>
+        <div className="filter-modal-inner">
+          <div className="owner-filters">
             <Typography variant="h4" gutterBottom>Owner</Typography>
-            <Typography variant="overline" display="block" gutterBottom>Age range: {ownerAgeRange[0]}-{ownerAgeRange[1]}</Typography>
+            <Typography variant="overline" display="block" gutterBottom>
+              Age range:
+              {ownerAgeRange[0]}
+              -
+              {ownerAgeRange[1]}
+            </Typography>
             <Slider color="primary" style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
-            <Typography variant="overline" display="block" gutterBottom>Max distance: {maxDistance} miles</Typography>
+            <Typography variant="overline" display="block" gutterBottom>
+              Max distance:
+              {maxDistance}
+              {' '}
+              miles
+            </Typography>
             <Slider style={sliderStyle} value={maxDistance} onChange={(e, val) => changeMaxDistance(val)} aria-labelledby="continuous-slider" min={0} max={50} />
             <div style={{ padding: 0, marginTop: '1.25rem' }}>
               <Typography variant="overline" display="block" gutterBottom>Genders</Typography>
@@ -180,12 +188,21 @@ export default function Filters({
             <Button variant="contained" style={{ width: '10rem', marginTop: '2.5rem' }} color="primary" onClick={() => saveChanges()}>Apply changes</Button>
 
           </div>
-          <div className='dog-filters'>
+          <div className="dog-filters">
             <Typography variant="h4" gutterBottom>Dog</Typography>
-            <Typography variant="overline" display="block" gutterBottom>Age range: {dogAgeRange[0]}-{dogAgeRange[1]}</Typography>
+            <Typography variant="overline" display="block" gutterBottom>
+              Age range:
+              {dogAgeRange[0]}
+              -
+              {dogAgeRange[1]}
+            </Typography>
             <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={30} />
-            <Typography variant="overline" display="block" gutterBottom>Size range: {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}</Typography>
-            <Slider style={sliderStyle}
+            <Typography variant="overline" display="block" gutterBottom>
+              Size range:
+              {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}
+            </Typography>
+            <Slider
+              style={sliderStyle}
               value={sizeRange}
               onChange={(e, val) => changeSizeRange(val)}
               marks={sizeLabels}
@@ -236,5 +253,5 @@ export default function Filters({
         </div>
       </ThemeProvider>
     </div>
-  )
+  );
 }
