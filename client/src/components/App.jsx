@@ -11,7 +11,6 @@ import ReviewModal from './Homepage/ReviewModal';
 import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
-
 const App = () => {
   const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
@@ -118,6 +117,7 @@ const App = () => {
       .catch((err) => console.log(err));
     axios.post(`/app/${id}/profile-likes`, { liked_user_id: currentUser.id })
       .then((data) => {
+        updateMatches();
       })
       .catch((err) => {
         console.log(err);
@@ -154,38 +154,48 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log('logged in', currentUserID)
-    axios.all([
-      axios.get(`/app/users/my-profile/${currentUserID}`),
-      axios.get(`/app/users/photos/${currentUserID}`),
-      axios.get(`/app/dates/${currentUserID}`),
-    ])
-      .then(axios.spread((one, two, three) => {
-        setCurrentUser(one.data);
-        setCurrentDogs(one.data.dogs_info);
-        const human = [];
-        const dogs = [];
-        let fixedAppt = three.data;
-        for (let i = 0; i < two.data.length; i++) {
-          if (two.data[i].dog_id === null) {
-            human.push(two.data[i]);
-          } else {
-            dogs.push(two.data[i]);
-          }
-        }
-        if (three.data.length > 0) {
-          for (let i = 0; i < three.data.length; i++) {
-            if (three.data[i].reviewed) {
-              fixedAppt = fixedAppt.slice(0, i).concat(fixedAppt.slice(i + 1, three.data.length));
+    if (currentUserID !== undefined) {
+      axios.all([
+        axios.get(`/app/users/my-profile/${currentUserID}`),
+        axios.get(`/app/users/photos/${currentUserID}`),
+        axios.get(`/app/dates/${currentUserID}`),
+      ])
+        .then(axios.spread((one, two, three) => {
+          setCurrentUser(one.data);
+          setCurrentDogs(one.data.dogs_info);
+          const human = [];
+          const dogs = [];
+          let fixedAppt = three.data;
+          for (let i = 0; i < two.data.length; i++) {
+            if (two.data[i].dog_id === null) {
+              human.push(two.data[i]);
+            } else {
+              dogs.push(two.data[i]);
             }
           }
-        }
-        setHumanPhoto(human);
-        setDogsPhoto(dogs);
-        setAppointment(fixedAppt);
-      }))
-      .catch((err) => console.error(err));
-  }, []);
+          if (three.data.length > 0) {
+            for (let i = 0; i < three.data.length; i++) {
+              if (three.data[i].reviewed) {
+                fixedAppt = fixedAppt.slice(0, i).concat(fixedAppt.slice(i + 1, three.data.length));
+              }
+            }
+          }
+          setHumanPhoto(human);
+          setDogsPhoto(dogs);
+          setAppointment(fixedAppt);
+        }))
+        .catch((err) => console.error(err));
+    }
+  }, [currentUserID]);
+
+
+  const updateMatches = () => {
+    axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     if (currentUser.id) {
@@ -235,6 +245,8 @@ const App = () => {
   useEffect(() => {
     if (appointment.length > 0) {
       setReviewModal(!reviewModal);
+    } else {
+      setReviewModal(false);
     }
   }, [appointment]);
 
@@ -244,14 +256,14 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
 
   return (
     <div>

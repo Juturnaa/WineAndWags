@@ -214,13 +214,14 @@
   width: 75%;
 }
 
-/* .send-message-input {
+.send-message-input {
   border: none;
   width: 700px;
-} */
+}
+
 .send-message-input:focus {
   outline: none;
-}
+} */
 
 .fa-calendar-alt {
   cursor: pointer;
