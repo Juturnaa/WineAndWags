@@ -40,7 +40,8 @@ router.route('/dogs/:user')
 router
   .route('/:user_id/convos')
   .get(controller.getAllConvos)
-  .post(controller.postNewConvo);
+  .post(controller.postNewConvo)
+  .patch(controller.patchMessage);
 
 router
   .route('/:user_id/convos/:recipient_id')

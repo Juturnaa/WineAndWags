@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import bcrypt from 'bcryptjs';
 import axios from 'axios';
 
@@ -10,12 +10,24 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
     let [password, setPassword] =useState('');
     let [inputting, setInputting]=useState('');
 
+    useEffect(() => {
+        const loggedInUser = localStorage.getItem("user");
+        if (loggedInUser) {
+          const foundUser = JSON.parse(loggedInUser);
+          setCurrentID(foundUser);
+          setLanding(false);
+        }
+      }, []);
+
+
     let handleLogin = () => {
         axios.get(`/app/users/login/${email}`)
             .then((user) => {
                 if(!bcrypt.compareSync(password, user.data.password) || user.data.email !== email){
                     alert('Email and/or password are incorrect')
                 } else {
+                    console.log(user.data)
+                    localStorage.setItem("user", user.data.id)
                     setCurrentID(user.data.id);
                     setLanding(false);
                 }

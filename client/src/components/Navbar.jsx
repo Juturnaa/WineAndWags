@@ -28,14 +28,23 @@ import { ContextProvider } from './Video/SocketContext';
 //  {loggedIn ? <Redirect to="/home" /> : <LandingPage />}
 // </Route>
 
+
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
+  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
   const [human, setHuman] = useState(true);
   const [dogs, setDogs] = useState(false);
   const [unread, setUnread] = useState(0);
+
+
+const logMeOut = () => {
+  localStorage.clear()
+    setLanding(true)
+    setCurrentUser(null);
+    location.href = '/home'
+}
 
   const changeHuman = () => {
     setHuman(true);
@@ -100,6 +109,7 @@ function NavBar({
                   <div id="editNav-triangle" />
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
+                  <Dropdown.Item onClick={logMeOut}>Logout</Dropdown.Item>
                 </div>
               </div>
             )
@@ -157,6 +167,8 @@ function NavBar({
               matchesPhotos={matchesPhotos}
               allMessages={allMessages}
               matchesInfo={matchesInfo}
+              getAllMessages={getAllMessages}
+              setAllMessages={setAllMessages}
             />
           )}
         />
@@ -215,16 +227,6 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
 };
 
 NavBar.defaultProps = {
@@ -234,8 +236,6 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
-  allMessages: {},
-  matchesInfo: {},
 };
 
 export default NavBar;

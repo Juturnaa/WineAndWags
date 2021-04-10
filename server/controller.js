@@ -99,6 +99,16 @@ const controller = {
       },
     );
   },
+  patchMessage: (req, res) => {
+    dbHelpers.patchMessage(
+      req.params.user_id,
+      req.body.message_id,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send('Message sent!');
+      },
+    );
+  },
   updateReview: (req, res) => {
     dbHelpers.updateReview(req, (err, results) => {
       if (err) res.status(400).send(err);
