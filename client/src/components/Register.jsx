@@ -22,7 +22,7 @@ import Breeds from '../dummyData/dogBreed';
 
 
 export default function Register({ setCurrentID, setRegister, setLanding }) {
-    let [page, setPage] = useState(1);
+    let [page, setPage] = useState(4);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -63,9 +63,23 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let [owner_min_age, setOwnerMinAge] =useState(18);
     let [owner_max_age, setOwnerMaxAge] =useState(100)
     let [ownerAgePref, setOwnerAgePref] =useState([18, 100])
-    let [error, setError] =useState(false);
     let inputs;
     let titleText="";
+
+    //--------------------------Error Handling--------------------------//
+    let [NameError, setNameError]=useState('');
+    let [EmailError, setEmailError]=useState('');
+    let [PasswordError, setPasswordError]=useState('');
+    let [Password2Error, setPassword2Error]=useState('');
+    let [ZipcodeError, setZipcodeError]=useState('');
+    let [CityError, setCityError]=useState('');
+    let [PictureError, setPictureError]=useState('');
+    let [AgeError, setAgeError]=useState('');
+    let [OwnerGenderError, setOwnerGenderError]=useState('');
+    let [DogGenderError, setDogGenderError]=useState('');
+    let [DogError, setDogError]=useState('');
+
+
 
     if(page===1 || page ===2) titleText = "User Info";
     else if(page === 3) titleText = "Dog Info";
@@ -179,17 +193,24 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     if(page === 1) {
         inputs = <React.Fragment>
             <input name="owner" value={owner} type="text" placeholder="Owner's Name" onChange={(e) => setOwner(e.target.value)}/>
+            {NameError ? <div className="error">{NameError}</div> : ""}
             <input name="email" value={email} type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+            {EmailError ? <div className="error">{EmailError}</div> : ""}
             <input name="password" value={password} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+            {PasswordError ? <div className="error">{PasswordError}</div> : ""}
             <input name="password2" value={password2} type="password" placeholder="Confirm Password" onChange={(e) => setPassword2(e.target.value)}/>
+            {Password2Error ? <div className="error">{Password2Error}</div> : ""}
             <input name="zipcode" value={zipcode} type="text" placeholder="Zipcode" onChange={(e) => setZipcode(e.target.value)}/>
+            {ZipcodeError ? <div className="error">{ZipcodeError}</div> : ""}
             <input name="city" value={city} type="text" placeholder="City" onChange={(e) => setCity(e.target.value)}/>
+            {CityError ? <div className="error">{CityError}</div> : ""}
             </React.Fragment>
     //--------------------------page 2 inputs --------------------------//
     } else if (page === 2) {
         inputs = <React.Fragment>
             <div className ="pictures">
                 <span>Pictures</span>
+                {PictureError ? <div className="error">{PictureError}</div> : ""}
                 {ownerPicsNum.map((num)=> (
                     <div key={num} className="add-photos">
                         <input type="file" id={`img${num-1}`} style={{display:"none"}} onChange={(e) => {let arr =ownerPics.slice(); arr.splice(num-1,1,e.target.files[0]); setOwnerPics(arr)}} />
@@ -218,8 +239,9 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
 
             </div>
             <input className="age" placeholder="Age" value={ownerAge} type="number" min={18} onChange={(e) => setOwnerAge(e.target.value)}/>
+            {AgeError ? <div className="error">{AgeError}</div> : ""}
             <div className="gender-input">
-                <FormControl component="fieldset" error={error}>
+                <FormControl component="fieldset" error={ownerGenderError===''} helperText={ownerGenderError}>
                     <FormLabel component="legend" className={classes.InputLabel}>Include me in searches for</FormLabel>
                     <RadioGroup row value={searched_as}>
                         <FormControlLabel
@@ -247,18 +269,19 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                 </FormControl>
             </div>
             <textarea className="bio" value={ownerBio} name="ownerBio" placeholder="Bio" onChange={(e) => setOwnerBio(e.target.value)}/>
+            {BioError ? <div className="error">{BioError}</div> : ""}
             </React.Fragment>
 
     //--------------------------page 3 inputs --------------------------//
     } else if (page === 3) {
         inputs = <React.Fragment>
+            {DogError ? <div className="error">{DogError}</div> : ""}
             {numDogs.map(num => (
             <React.Fragment>
                 <input className="dog-name" name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
                 <div className ="pictures">
                     <span>Pictures</span>
                     {dogPicsNum[num-1].map((num2)=> (
-
                     <div key={num2} className="add-photos">
                         <input type="file" id={`img${num-1}${num2-1}`} style={{display:"none"}} onChange={(e) => {
                             let bigArr= dogPics.slice(); let arr = bigArr[num-1].slice();
@@ -299,7 +322,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                 </div>
                 <input className="age" placeholder="Age" name="dogAge" value={dogAges[num-1]} type="number" min="0" onChange={(e) => {let arr = dogAges.slice(); arr.splice(num-1,1,e.target.value); setDogAges(arr)}}/>
                 <div className="gender-input">
-                    <FormControl component="fieldset" error={error}>
+                    <FormControl component="fieldset">
                         <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                         <RadioGroup row value={dogGenders[num-1]}>
                             <FormControlLabel
@@ -319,7 +342,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         </RadioGroup>
                     </FormControl>
                 </div>
-                <FormControl error={error} className={classes.formControl}>
+                <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-required">Breed</InputLabel>
                     <Select
                     native
@@ -457,7 +480,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         />
                     </div>
                     <div className="gender-input">
-                        <FormControl component="fieldset" error={error}>
+                        <FormControl component="fieldset" error={OwnerGenderError ===''} helperText={OwnerGenderError}>
                             <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                 <FormControlLabel
@@ -530,7 +553,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                             />
                     </div>
                     <div className="gender-input">
-                        <FormControl component="fieldset" error={error}>
+                        <FormControl component="fieldset" error={DogGenderError===''} helperText={DogGenderError}>
                             <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                 <FormControlLabel
