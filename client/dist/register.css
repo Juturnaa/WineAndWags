@@ -1,0 +1,167 @@
+.upper-text {
+    display:flex;
+    justify-content: center;
+    /* align-items:center; */
+    font-size: 6em;
+    color:#6b4d57;
+    top:2%;
+}
+.pictures{
+    background-color: white;
+    display:flex;
+    flex-direction: column;
+}
+.pictures span {
+    font-size: 1.4em;
+    color:#6b4d57;
+    /* font-weight: bold; */
+}
+.add-photos{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 50px;
+}
+.pictures, .bio {
+    width:400px;
+    min-height: 100px;
+    border-radius: 11px;
+    padding: 15px 40px;
+}
+.gender-input {
+    width:400px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register-btns {
+    display:flex;
+    flex-direction: row;
+}
+.file-btn{
+    flex-grow:2;
+    font-size: 1.2em;
+}
+.file-chosen {
+    padding: 8px 0 8px 77px;
+    color: #6b4d57;
+    font-weight: bold;
+    border-radius: 3px;
+    border: 1px solid gray;
+}
+.file-btn label{
+    margin-bottom:0;
+}
+.plus, .file-btn {
+    margin-right:5px;
+}
+.pictures, .age, .dog-name {
+    margin-bottom: 10px;
+}
+.bio {
+    margin-top:10px;
+}
+
+.plus{
+    color:#6b4d57;
+}
+.minus{
+    color:#243946;
+}
+.checkboxes-container {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    padding-right: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 1.1em;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 400px;
+  }
+.checkboxes-container input{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+} 
+.checkmark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+}
+.checkboxes-container:hover input ~ .checkmark {
+    background-color: #ccc;
+}
+.checkboxes-container input:checked ~ .checkmark{
+    background-color:#6b4d57;
+} 
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the checkmark when checked */
+.checkboxes-container input:checked ~ .checkmark:after {
+    display:block;
+}
+/* Style the checkmark/indicator */
+.checkboxes-container .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+
+
+.bool-checkboxes {
+    display:flex;
+    flex-direction: column;
+    justify-content: center
+}
+.hypo, .neutered,.health_issues{
+    display:flex;
+    justify-content: space-between;
+    width:400px;
+    font-size: 1.3em;
+    color:#ddc8c4;
+}
+
+.health_issues span{
+    min-width:fit-content;
+}
+.prefs {
+    display:flex;
+}
+.owner-prefs, .dog-prefs {
+    margin: 0 10px;
+}
+.prefs-content{
+    display:flex;
+    flex-direction: column;
+    padding: 0 40px;
+}
+.dog-prefs-title, .owner-prefs-title {
+    font-size: 2em;
+    color:#6b4d57;
+    background:white;
+    font-weight:bold;
+    padding: 10px 40px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+}

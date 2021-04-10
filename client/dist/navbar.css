@@ -1,0 +1,106 @@
+.navigation-bar {
+  background-color: #243946;
+  width: 100vw;
+  height: 3.5rem;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  text-align: right;
+  padding: 0.5rem;
+}
+
+.nav-icons {
+  min-width:fit-content;
+}
+
+.nav-icon {
+  margin-right: 1.5rem !important;
+  font-size: 1.25rem !important;
+  color: #eff9f0;
+  transition-duration: 0.25s !important;
+  margin-top: 0.3em;
+}
+
+.nav-icon:hover {
+  color: #ddc8c4 !important;
+  cursor: pointer;
+}
+
+.profile-thumbnail {
+  height: 2rem !important;
+  width: 2rem !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background-position: 50% 50% !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  position: absolute !important;
+  top: 0.25rem !important;
+  right: 0.5rem !important;
+  margin-top: 0.3em;
+}
+
+#editNav {
+  border: none;
+  border-radius: 50%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  right: 1em;
+  z-index: 5;
+  border-radius: 4px;
+  color: #6b4d57;
+  border-right: 1px solid #6b4d57;
+  border-left: 1px solid #6b4d57;
+  border-bottom: 1px solid #6b4d57;
+}
+
+#editNav-triangle {
+  margin-top: -0.3em;
+  margin-left: 10em;
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid white;
+  z-index: 5;
+}
+
+.navbar-title{
+    position:relative;
+    width:300px;
+    height: 50px;
+    top:-10px;
+    margin-left:40vw;
+}
+.navbar-title-content h2{
+    font-family:'Lobster', sans-serif;
+    position:absolute;
+    font-size: 2.75em;
+
+}
+.navbar-title-content h2:nth-child(1) {
+    color:transparent;
+    -webkit-text-stroke: 2px #ddc8c4;
+}
+.navbar-title-content h2:nth-child(2) {
+    color:#ddc8c4;
+    animation: water 4s ease-in-out infinite;
+}
+.navbar-title-content{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 0;
+  z-index: 100;
+}
+.navbar-title-content span{
+    color:#ddc8c4;
+    font-size: 2.5em;
+}
