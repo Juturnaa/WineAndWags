@@ -6,10 +6,12 @@ import Calendar from './Calendar.jsx';
 // import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
-  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo,
+  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo, setMessageCount, messageCount,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
+  // const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
+
   const [inputValue, setInputValue] = useState('');
   const [calendar, clickedCalendar] = useState(false);
 
@@ -47,6 +49,7 @@ const Chat = ({
     })
       .then(() => {
         setInputValue('');
+        setMessageCount((messageCount) => messageCount + 1);
       })
       .catch((err) => console.log(err));
   };
@@ -103,9 +106,9 @@ const Chat = ({
           isOpen={calendar}
           style={customStyles}
           onRequestClose={() => {clickedCalendar(!calendar)}}>
-            <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId}/>
+            <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId} currentUser={currentUser}/>
           </Modal>
-          <input type="text" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0' }} />
+          <input type="text" className="send-message-input" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0', border: 'none', width: '700px' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
       </div>

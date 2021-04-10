@@ -1,15 +1,38 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Modal from 'react-modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    transform: 'translate(-50%, -50%)',
+    width: '50%',
+    background: 'rgba(221, 200, 196, 0.6)',
+    padding: '10px',
+  },
+};
+
+const useStyles = makeStyles({
+  button: {
+    color: 'black',
+    backgroundColor: '#eff9f0',
+    borderColor: '#eff9f0',
+  },
+});
+
 function ReviewModal({ reviewModal, setReviewModal, appointment }) {
+  const classes = useStyles();
   const [rating, setRate] = useState();
-  const [tempRate, setTemp] = useState();
+  const [tempRate, setTemp] = useState(null);
 
   useEffect(() => {
     const rate = {};
@@ -20,7 +43,6 @@ function ReviewModal({ reviewModal, setReviewModal, appointment }) {
       }
     }
     setRate(rate);
-    setTemp(rate);
   }, [appointment]);
 
   const ratingChange = (e) => {
@@ -30,37 +52,38 @@ function ReviewModal({ reviewModal, setReviewModal, appointment }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setReviewModal(!reviewModal);
-    const keys = Object.keys(tempRate);
-    const values = Object.values(tempRate);
-    const promises = [];
-    for (let i = 0; i < keys.length; i++) {
-      promises.push(axios.patch(`/app/ratings/${keys[i]}`, { rating: values[i] }));
+    if (tempRate === null) {
+      alert('Please rate dog(s)');
+    } else {
+      setReviewModal(!reviewModal);
+      const keys = Object.keys(tempRate);
+      const values = Object.values(tempRate);
+      const promises = [];
+      for (let i = 0; i < keys.length; i++) {
+        promises.push(axios.patch(`/app/ratings/${keys[i]}`, { rating: values[i] }));
+      }
+      promises.push(axios.patch(`/app/dates/${appointment[0].id}`));
+      axios.all(promises)
+        .then((...results) => console.log('updated!'))
+        .catch((err) => console.error(err));
     }
-    promises.push(axios.patch(`/app/dates/${appointment[0].id}`));
-    axios.all(promises)
-      .then((...results) => console.log('updated!'))
-      .catch((err) => console.error(err));
   };
 
   return (
-    <Modal appElement={document.getElementById('app')} isOpen={reviewModal} onRequestClose={() => setReviewModal(!reviewModal)}>
-      <div id="reviewModal">
+    <Modal style={customStyles} appElement={document.getElementById('app')} isOpen={reviewModal}>
+      <div id="reviewModal-container">
         {appointment.map((item, index) => (
-          <div key={index}>
+          <div className="review" key={index}>
             <h5>{`Did ${item.name}'s dog behave on the date?`}</h5>
             {item.dogs.map((ite, ind) => (
-              <div key={ind}>
+              <div className="review" key={ind}>
                 <div><b>{ite.name}</b></div>
                 <Form onSubmit={handleSubmit}>
                   <Form.Group>
-                    <Form.Label>
-                      Rating
-                    </Form.Label>
                     <Form.Check type="radio" label="Yes" value={+1} name={ite.id} onChange={ratingChange} />
                     <Form.Check type="radio" label="No" value={-1} name={ite.id} onChange={ratingChange} />
                   </Form.Group>
-                  <Button type="submit">Submit Rating</Button>
+                  <Button className={classes.button} type="submit">Submit Rating</Button>
                 </Form>
               </div>
             ))}

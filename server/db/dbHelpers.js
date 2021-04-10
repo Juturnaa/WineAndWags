@@ -119,7 +119,6 @@ const dbHelpers = {
   editOwnerProfile: (req, callback) => {
     const {
       name,
-      gender,
       bio,
       email,
       password,
@@ -127,7 +126,7 @@ const dbHelpers = {
       zipcode,
       searched_as,
     } = req.body;
-    const qryStr = `UPDATE waw.users SET name='${name}', gender='${gender}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE email='${req.params.email}'`;
+    const qryStr = `UPDATE waw.users SET name='${name}', bio='${bio}', email='${email}', password='${password}', age=${age}, zipcode='${zipcode}', searched_as='${searched_as}' WHERE id=${req.params.id}`;
     db.query(qryStr, (err, results) => callback(err, results));
   },
   editDogProfile: (req, callback) => {
@@ -181,7 +180,7 @@ const dbHelpers = {
     });
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
-    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MM AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id}))`;
+    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MI AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})) ORDER BY time_stamp ASC`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });

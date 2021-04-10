@@ -147,21 +147,20 @@ let minutes = [
         "id": d.id
       })
     })
+    .then(()=>{
+      axios.post(`/notifications/${props.currentUserId}/`,{
+        "type":"appointment",
+        "type_id":d.id,
+        "sender_name":props.currentUser.name,
+        "recipient_id": props.matchUserId
+      })
+      .err((err)=>{console.log(err)})
+    })
     .then(()=>{getMatchSchedule()})
-    .then(()=>{alert('nice')})
+    .then(()=>{alert('Appointment made')})
     .err(()=>{console.log('err')})
   }
 
-
-  let yourSchedule =()=>{
-    if(schedule.length >0){
-      schedule.map((d,i)=>{
-        if (isSameDay(selectedDate,new Date(schedule[i].dates))){
-        return <p key={i}>{d.dates}</p>
-        }
-      })
-    }
-  }
 
   // function clickOk() {
   //   // store.addNotification({

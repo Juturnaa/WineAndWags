@@ -11,9 +11,8 @@ import ReviewModal from './Homepage/ReviewModal';
 import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
-
 const App = () => {
-  const [currentUserID, setCurrentID] = useState(7);
+  const [currentUserID, setCurrentID] = useState();
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -28,6 +27,7 @@ const App = () => {
   const [allMessages, setAllMessages] = useState([]);
   const [appointment, setAppointment] = useState([]);
   const [reviewModal, setReviewModal] = useState(false);
+  const [messageCount, setMessageCount] = useState(0);
 
   // potiential Match User states
   const [potiential, setPotiential] = useState();
@@ -139,44 +139,46 @@ const App = () => {
   };
 
   useEffect(() => {
-    console.log('logged in', currentUserID)
-    axios.all([
-      axios.get(`/app/users/my-profile/${currentUserID}`),
-      axios.get(`/app/users/photos/${currentUserID}`),
-      axios.get(`/app/dates/${currentUserID}`),
-    ])
-      .then(axios.spread((one, two, three) => {
-        setCurrentUser(one.data);
-        setCurrentDogs(one.data.dogs_info);
-        const human = [];
-        const dogs = [];
-        let fixedAppt = three.data;
-        for (let i = 0; i < two.data.length; i++) {
-          if (two.data[i].dog_id === null) {
-            human.push(two.data[i]);
-          } else {
-            dogs.push(two.data[i]);
-          }
-        }
-        if (three.data.length > 0) {
-          for (let i = 0; i < three.data.length; i++) {
-            if (three.data[i].reviewed) {
-              fixedAppt = fixedAppt.slice(0, i).concat(fixedAppt.slice(i + 1, three.data.length));
+    if (currentUserID !== undefined) {
+      axios.all([
+        axios.get(`/app/users/my-profile/${currentUserID}`),
+        axios.get(`/app/users/photos/${currentUserID}`),
+        axios.get(`/app/dates/${currentUserID}`),
+      ])
+        .then(axios.spread((one, two, three) => {
+          setCurrentUser(one.data);
+          setCurrentDogs(one.data.dogs_info);
+          const human = [];
+          const dogs = [];
+          let fixedAppt = three.data;
+          for (let i = 0; i < two.data.length; i++) {
+            if (two.data[i].dog_id === null) {
+              human.push(two.data[i]);
+            } else {
+              dogs.push(two.data[i]);
             }
           }
-        }
-        setHumanPhoto(human);
-        setDogsPhoto(dogs);
-        setAppointment(fixedAppt);
-      }))
-      .catch((err) => console.error(err));
-  }, []);
+          if (three.data.length > 0) {
+            for (let i = 0; i < three.data.length; i++) {
+              if (three.data[i].reviewed) {
+                fixedAppt = fixedAppt.slice(0, i).concat(fixedAppt.slice(i + 1, three.data.length));
+              }
+            }
+          }
+          setHumanPhoto(human);
+          setDogsPhoto(dogs);
+          setAppointment(fixedAppt);
+        }))
+        .catch((err) => console.error(err));
+    }
+  }, [currentUserID]);
 
   useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/matches`)
         .then((results) => {
           setMatches(results.data);
+          window.sessionStorage.setItem('matches', JSON.stringify(results.data));
         })
         .catch((err) => console.log(err));
     }
@@ -202,7 +204,7 @@ const App = () => {
         .catch((err) => console.log(err));
     });
     setAllMessages(messages);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     const info = {};
@@ -219,22 +221,30 @@ const App = () => {
   useEffect(() => {
     if (appointment.length > 0) {
       setReviewModal(!reviewModal);
+    } else {
+      setReviewModal(false);
     }
   }, [appointment]);
 
-  // if (landing) {
-  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  // }
-  // if (register) {
-  //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-  //   );
-  // }
+  // ------SETTING MATCH INFO TO SESSION STORAGE------ //
+  window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+  window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+  window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  // ------------------------------------------------- //
+
+  if (landing) {
+    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  }
+  if (register) {
+    return (
+      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+    );
+  }
 
   return (
     <div>
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-      {/* <NavBar
+      <NavBar
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto || ''}
@@ -253,10 +263,12 @@ const App = () => {
         potientialDogsImg={potientialDogsImg}
         showNotifs={showNotifs}
         setShowNotifs={setShowNotifs}
-      /> */}
-      <ContextProvider>
+        setMessageCount={setMessageCount}
+        messageCount={messageCount}
+      />
+      {/* <ContextProvider>
         <Video />
-      </ContextProvider>
+      </ContextProvider> */}
     </div>
   );
 };
