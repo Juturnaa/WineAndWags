@@ -295,17 +295,19 @@ const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
 
 const seedUsers = () => {
   for (let i = 1; i <= 1000; i++) {
-    let name = maleNames[getRandom(0, maleNames.length)];
-    let bio = femaleBios[getRandom(0, maleBios.length)];
+    let name;
+    let bio;
     let photo;
 
-    const gender = photoGender[getRandom(0, genders.length)];
-    if (gender === "M" || "All") {
+    const gender = photoGender[getRandom(0, photoGender.length)];
+    if (gender === "M") {
       name = maleNames[getRandom(0, maleNames.length)];
       bio = maleBios[getRandom(0, maleBios.length)];
+      photo = malePhotos[getRandom(0, malePhotos.length)];
     } else {
       name = femaleNames[getRandom(0, femaleNames.length)];
-      bio = femaleBios[getRandom(0, maleBios.length)];
+      bio = femaleBios[getRandom(0, femaleBios.length)];
+      photo = femalePhotos[getRandom(0, femalePhotos.length)];
     }
     const email = `sophiaacheong${i}@gmail.com`;
     const age = ages[getRandom(0, ages.length)];
@@ -328,27 +330,38 @@ const seedUsers = () => {
         `${city}`,
         `${searched_as}`,
       ],
-      (err, res) => console.log("done!")
-    );
-
-    for (let k = 1; k < 2; k++) {
-      if (gender === "M" || "All") {
-        photo = malePhotos[getRandom(0, malePhotos.length)];
-      } else {
-        photo = femalePhotos[getRandom(0, femalePhotos.length)];
+      (err, res) => {
+        // for (let k = 1; k <= 4; k++) {
+        //   if (gender === "M" || "All") {
+        //     photo = malePhotos[getRandom(0, malePhotos.length)];
+        //   } else {
+        //     photo = femalePhotos[getRandom(0, femalePhotos.length)];
+        //   }
+        db.query(
+          `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${i}, ${null}, '${photo}')`
+        );
+        // }
       }
-      db.query(
-        `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${i}, ${null}, '${photo}')`
-      );
-    }
+    );
   }
 };
+
+function setPhotos(dogs) {
+  console.log("dogs", dogs);
+  for (let i = 0; i < dogs.length; i++) {
+    let dogId = dogs[i].id;
+    const dogPhoto = dogPhotos[Math.floor(Math.random() * dogPhotos.length)];
+    db.query(
+      `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${dogs[i].owner_id}, ${dogId}, '${dogPhoto}')`
+    );
+  }
+}
 
 const seedDogs = () => {
   let dogId = 1;
 
   for (let i = 1; i <= 1000; i++) {
-    let dogAmount = getRandom(0, 3);
+    let dogAmount = getRandom(1, 3);
 
     for (let j = 0; j < dogAmount; j++) {
       const dogName = dogNames[getRandom(0, dogNames.length)];
@@ -357,15 +370,15 @@ const seedDogs = () => {
       const hypoOptions = Math.random() < 0.5;
       const neuteredOptions = Math.random() < 0.5;
       const ratingOptions = rating[getRandom(0, rating.length)];
-      const owner_id = i + 1;
-      const dogAge = dogAges[getRandom(0, dogAges.length)] + 1;
+      const owner_id = i;
+      const dogAge = dogAges[getRandom(0, dogAges.length)];
       const size = dogSizes[getRandom(0, dogSizes.length)];
       const breeds = breed[getRandom(0, breed.length)];
       const healthy = Math.random() < 0.5;
       db.query(
         "INSERT INTO waw.dogs(id, name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
         [
-          `${dogId}`,
+          `${getRandom(0, 10000)}`,
           `${dogName}`,
           `${dogGender}`,
           `${dogBio}`,
@@ -378,20 +391,23 @@ const seedDogs = () => {
           `${breeds}`,
           `${healthy}`,
         ],
-        (err, res) => console.log("done!")
+        (err, res) => {}
       );
-
-      for (let k = 1; k <= dogAmount; k++) {
-        let photo = dogPhotos[getRandom(0, dogPhotos.length)];
-        db.query(
-          `INSERT INTO waw.photos(user_id, dog_id, url) VALUES (${i}, ${dogId}, '${photo}')`
-        );
-      }
-      dogId++;
     }
-    dogId++;
   }
 };
+const seedPhotos = () => {
+  db.query("SELECT * FROM waw.dogs ORDER BY owner_id", (err, res) => {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log("before calling setphotos");
+      setPhotos(res.rows);
+    }
+  });
+};
+// seedPhotos();
+// seedPhotos();
 seedUsers();
 
-seedDogs();
+// seedDogs();
