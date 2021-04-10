@@ -104,7 +104,6 @@ function NavBar({
               </div>
             )
             : null}
-
         </div>
       </nav>
       {unread > 0
