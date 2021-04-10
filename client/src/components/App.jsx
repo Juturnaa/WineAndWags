@@ -232,45 +232,48 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
+  if (landing || currentUserID === undefined) {
     return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
   }
-  if (register) {
+  else if (register) {
     return (
       <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
     );
   }
+  else if (currentUserID){
+    return (
+      <div>
+        {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
+        <NavBar
+          likePhoto={likePhoto}
+          likeProfile={likeProfile}
+          humanPhoto={humanPhoto || ''}
+          dogsImg={dogsImg}
+          getRandomUser={getRandomUser}
+          currentUser={currentUser}
+          breeds={breeds}
+          currentDogs={currentDogs}
+          matches={matches}
+          matchesPhotos={matchesPhotos}
+          matchesInfo={matchesInfo}
+          allMessages={allMessages}
+          setCurrentID={setCurrentID}
+          currentUserID={currentUserID}
+          potiential={potiential}
+          potientialDog={potientialDog}
+          potientialDogsImg={potientialDogsImg}
+          showNotifs={showNotifs}
+          setShowNotifs={setShowNotifs}
+          setMessageCount={setMessageCount}
+          messageCount={messageCount}
+        />
+        {/* <ContextProvider>
+          <Video />
+        </ContextProvider> */}
+      </div>
+    );
 
-  return (
-    <div>
-      {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-      <NavBar
-        likePhoto={likePhoto}
-        likeProfile={likeProfile}
-        humanPhoto={humanPhoto || ''}
-        dogsImg={dogsImg}
-        getRandomUser={getRandomUser}
-        currentUser={currentUser}
-        breeds={breeds}
-        currentDogs={currentDogs}
-        matches={matches}
-        matchesPhotos={matchesPhotos}
-        matchesInfo={matchesInfo}
-        allMessages={allMessages}
-        currentUserID={currentUserID}
-        potiential={potiential}
-        potientialDog={potientialDog}
-        potientialDogsImg={potientialDogsImg}
-        showNotifs={showNotifs}
-        setShowNotifs={setShowNotifs}
-        setMessageCount={setMessageCount}
-        messageCount={messageCount}
-      />
-      {/* <ContextProvider>
-        <Video />
-      </ContextProvider> */}
-    </div>
-  );
+  }
 };
 
 export default App;

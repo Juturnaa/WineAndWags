@@ -27,7 +27,7 @@ import Map from './Map/Map';
 // </Route>
 
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
+  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, setCurrentID, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -96,6 +96,7 @@ function NavBar({
                 <div id="editNav-triangle" />
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
+                  <Dropdown.Item as={Link} to="/" onClick={()=> {setCurrentID()}}>Log Out</Dropdown.Item>
                 </div>
               </div>
             )
