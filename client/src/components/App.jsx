@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState();
+  const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -244,14 +244,14 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
 
   return (
     <div>
