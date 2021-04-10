@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import Modal from 'react-modal';
 import Calendar from './Calendar.jsx';
+import VideoCallIcon from '@material-ui/icons/VideoCall';
+import Video from '../Video/Video';
 // import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
@@ -108,6 +110,8 @@ const Chat = ({
           onRequestClose={() => {clickedCalendar(!calendar)}}>
             <Calendar clickedCalendar ={clickedCalendar} currentUserId={currentUserId} matchUserId={matchUserId} currentUser={currentUser}/>
           </Modal>
+          <VideoCallIcon style={{marginLeft: '1%'}}
+            onClick={() => location.href = '/video' }/>
           <input type="text" className="send-message-input" value={inputValue} onChange={handleInputChange} style={{ backgroundColor: '#EFF9F0', border: 'none', width: '700px' }} />
           <i className="far fa-paper-plane" onClick={onSendClick} />
         </div>
