@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState();
+  const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -117,6 +117,7 @@ const App = () => {
       .catch((err) => console.log(err));
     axios.post(`/app/${id}/profile-likes`, { liked_user_id: currentUser.id })
       .then((data) => {
+        updateMatches();
       })
       .catch((err) => {
         console.log(err);
@@ -172,6 +173,15 @@ const App = () => {
         .catch((err) => console.error(err));
     }
   }, [currentUserID]);
+
+
+  const updateMatches = () => {
+    axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+  };
 
   useEffect(() => {
     if (currentUser.id) {
@@ -232,14 +242,14 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
 
   return (
     <div>
