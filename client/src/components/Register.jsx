@@ -18,11 +18,12 @@ import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Breeds from '../dummyData/dogBreed';
 
 
 export default function Register({ setCurrentID, setRegister, setLanding }) {
-    let [page, setPage] = useState(4);
+    let [page, setPage] = useState(1);
     let [owner, setOwner] = useState('');
     let [email, setEmail] = useState('');
     let [password, setPassword] = useState('');
@@ -76,6 +77,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let [PictureError, setPictureError]=useState('');
     let [AgeError, setAgeError]=useState('');
     let [OwnerGenderError, setOwnerGenderError]=useState('');
+    let [BioError, setBioError] = useState('')
     let [DogGenderError, setDogGenderError]=useState('');
     let [DogError, setDogError]=useState('');
 
@@ -192,7 +194,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     //--------------------------page 1 inputs --------------------------//
     if(page === 1) {
         inputs = <React.Fragment>
-            <input name="owner" value={owner} type="text" placeholder="Owner's Name" onChange={(e) => setOwner(e.target.value)}/>
+            <input style={{paddingTop:"10"}} name="owner" value={owner} type="text" placeholder="Owner's Name" onChange={(e) => setOwner(e.target.value)}/>
             {NameError ? <div className="error">{NameError}</div> : ""}
             <input name="email" value={email} type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
             {EmailError ? <div className="error">{EmailError}</div> : ""}
@@ -241,7 +243,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
             <input className="age" placeholder="Age" value={ownerAge} type="number" min={18} onChange={(e) => setOwnerAge(e.target.value)}/>
             {AgeError ? <div className="error">{AgeError}</div> : ""}
             <div className="gender-input">
-                <FormControl component="fieldset" error={ownerGenderError===''} helperText={ownerGenderError}>
+                <FormControl component="fieldset">
                     <FormLabel component="legend" className={classes.InputLabel}>Include me in searches for</FormLabel>
                     <RadioGroup row value={searched_as}>
                         <FormControlLabel
@@ -266,6 +268,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         onClick ={()=> setSearchedAs("Both")}
                         />
                     </RadioGroup>
+                    {OwnerGenderError!=='' ? <FormHelperText error={true}>{OwnerGenderError}</FormHelperText> : ""}
                 </FormControl>
             </div>
             <textarea className="bio" value={ownerBio} name="ownerBio" placeholder="Bio" onChange={(e) => setOwnerBio(e.target.value)}/>
@@ -275,10 +278,10 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     //--------------------------page 3 inputs --------------------------//
     } else if (page === 3) {
         inputs = <React.Fragment>
-            {DogError ? <div className="error">{DogError}</div> : ""}
+            {DogError ? <div className="error" style={{background:"white", borderRadius:"30px", marginBottom:"10", paddingTop:"10"}}>{DogError}</div> : ""}
             {numDogs.map(num => (
             <React.Fragment>
-                <input className="dog-name" name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
+                <input style={{paddingTop:"10"}} className="dog-name" name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
                 <div className ="pictures">
                     <span>Pictures</span>
                     {dogPicsNum[num-1].map((num2)=> (
@@ -404,7 +407,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         max={4}
                     />
                 </div>
-                <textarea className="bio" value={dogBios[num-1]} name="dogBio" placeholder="Bio" onChange={(e) => { let arr = dogBios.slice(); arr.splice(num-1,1, e.target.value); setDogBios(arr)}}/>
+                <textarea style= {{marginBottom:"10px"}}className="bio" value={dogBios[num-1]} name="dogBio" placeholder="Bio" onChange={(e) => { let arr = dogBios.slice(); arr.splice(num-1,1, e.target.value); setDogBios(arr)}}/>
                 </React.Fragment>
             ))}
             {numDogs.length > 1 ?
@@ -480,7 +483,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         />
                     </div>
                     <div className="gender-input">
-                        <FormControl component="fieldset" error={OwnerGenderError ===''} helperText={OwnerGenderError}>
+                        <FormControl component="fieldset">
                             <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                 <FormControlLabel
@@ -505,6 +508,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                                 onClick ={()=> setOwnerGenders("All")}
                                 />
                             </RadioGroup>
+                            {OwnerGenderError!==''? <FormHelperText error={true}>{OwnerGenderError}</FormHelperText>: ""}
                         </FormControl>
                     </div>
                 </div>
@@ -551,9 +555,10 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                             min={0}
                             max={30}
                             />
+                            
                     </div>
                     <div className="gender-input">
-                        <FormControl component="fieldset" error={DogGenderError===''} helperText={DogGenderError}>
+                        <FormControl component="fieldset">
                             <FormLabel component="legend" className={classes.InputLabel}>Gender</FormLabel>
                             <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                 <FormControlLabel
@@ -578,6 +583,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                                 onClick ={()=> setDogGendersPref("Both")}
                                 />
                             </RadioGroup>
+                            {DogGenderError!==''? <FormHelperText error={true}>{DogGenderError}</FormHelperText>: ""}
                         </FormControl>
                     </div>
                     <div className="bool-checkboxes">
@@ -667,11 +673,9 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let postInfo = () => {
         const hash=bcrypt.hashSync(password, 10);
         let promises =[];
-
         let promises2 =[];
         axios.post('/app/users', {name:owner, bio:ownerBio, email, hash, age:ownerAge, zipcode, city, searched_as})
             .then((data)=>{
-                console.log(data.data.id);
                 setCurrentID(data.data.id);
                 return data.data.id;
             })
@@ -814,7 +818,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                 validated = false; 
                 setAgeError("Age must be at least 18")
             } else setAgeError('');
-            if (searchedAs === undefined || searchedAs === ''){
+            if (searched_as === undefined || searched_as === ''){
                 validated = false; 
                 setOwnerGenderError("Field cannot be blank");
             } else setOwnerGenderError('');
@@ -831,7 +835,11 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
 
         } else if (page === 3) {
             for(let i=0; i<numDogs.length;i++){
-                if(dogPics[i].some(x => x === undefined || x === '')){
+                if (dogs[i] === undefined || dogs[i] === ''){
+                    validated = false;
+                    setDogError('Dog name cannot be blank ')
+                    break;
+                } if(dogPics[i].some(x => x === undefined || x === '')){
                     validated = false;
                     setDogError('All picture files must be chosen')
                     break;
