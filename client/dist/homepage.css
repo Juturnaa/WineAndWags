@@ -7,13 +7,18 @@
 .homepage {
   display: flex;
   flex-direction: column;
-  background: #896A67;
+  background: #6b4d57;
   height: 93vh;
+  padding:2% 10%;
 }
 
 .potential-match-view {
   display: flex;
   flex-flow: row nowrap;
-  height: 90%;
+  height: fit-content;
   width: 100%;
+}
+.filter-btn {
+  left: 0;
+  position: absolute;
 }

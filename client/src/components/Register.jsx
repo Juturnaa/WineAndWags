@@ -879,10 +879,10 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     return (
         <div className="register">
             <div className="center">
-                <div className="upper-text">{titleText}</div>
                 <div className="ear ear--left"></div>
                 <div className="ear ear--right"></div>
                     <div className="login-body">
+                    <div className="upper-text">{titleText}</div>
                     <div className="face">
                         <div className="eyes">
                             <div className="eye eye--left">
@@ -946,7 +946,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                     <div className="login-container">
                         {inputs}
                         <div className="register-btns">
-                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:<button className="login-button" onClick={()=> setLanding(true)}>Back</button>}
+                            {page > 1 ? <button className="register-button" onClick={() => pageHandler("back")}>Back</button>:<button className="login-button" onClick={()=> {setLanding(true); setRegister(false);}}>Back</button>}
                             <button className="register-button" onClick={() => pageHandler("next")}>{page === 4 ? "Register" : "Next"} </button>
 
                         </div>

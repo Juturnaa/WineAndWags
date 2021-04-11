@@ -23,6 +23,9 @@
 .login-body {
     position:relative;
 }
+.login-content {
+    margin-top: 25vh;
+}
 
 .center .ear {
     position: absolute;

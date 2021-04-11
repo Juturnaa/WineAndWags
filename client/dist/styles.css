@@ -12,6 +12,15 @@
     .navbar-title {
         margin-left:2vw;
     }
+    .filter-btn {
+        display:none;
+    }
+}
+@media only screen and (max-width: 650px) {
+    .potential-match-view {
+        flex-direction: column;
+    } 
+    
 }
 @media only screen and (max-width: 550px) {
     .navbar-title {
@@ -22,10 +31,11 @@
     .nav-icons, .notifs-icon{
         display:none;
     }
+    
 }
 
 body {
-    background: #896A67 !important;
+    background: #6b4d57 !important;
     color: #13070C;
 }
 

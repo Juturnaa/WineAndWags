@@ -10,23 +10,34 @@
   display: flex;
   flex-direction: column;
   margin: 0.5%;
+  padding: 0 3vw;
 }
 
 .card-text {
-  background-color: #eff9f0;
-  margin: 1%;
+  background-color: #fdfdfd;
+  padding: 2% 5%;
   border: solid 1px #13070c;
-  border-radius: 2%;
+  border-radius: 0 0 15px 15px;
   height: 40%;
-  flex-flow: column wrap;
-  padding: 1%;
+  max-height: 322px;
+  min-height: 270px;
+  min-width: 250px;
+}
+.card-text-info {
   display: flex;
+  flex-flow: column wrap;
+  max-height: 200px;
 }
 #card-name {
   font-size: 36px;
   font-weight: bold;
-  text-align: center;
-  color: #13070c;
+  background-color: #fdfdfd;
+  width:100%;
+  align-self:flex-end;
+  color:#243946;
+  display:flex;
+  justify-content: space-between;
+  min-width: fit-content;
 }
 .text-component {
   display: flex;
@@ -49,6 +60,7 @@
 
 .img-container {
   position: relative;
+  min-width: 100px;
 }
 
 #carouselProfile {
