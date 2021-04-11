@@ -115,7 +115,7 @@ const App = () => {
                 type_id: data.id,
                 recipient_id: currentUser.id,
                 sender_name: currentUser.name,
-              })
+              });
               alert('its a match!');
             });
         }
@@ -127,8 +127,7 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
-      })
-      
+      });
   };
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
@@ -146,19 +145,18 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
-
   const getAllMessages = () => {
     const messages = {};
     matches.map((match) => {
       axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
         .then((results) => {
-          console.log('results messages', results.data)
+          console.log('results messages', results.data);
           messages[match.user_id] = results.data;
           setAllMessages(messages);
         })
         .catch((err) => console.log(err));
     });
-  }
+  };
 
   useEffect(() => {
     if (currentUserID !== undefined) {
@@ -195,13 +193,12 @@ const App = () => {
     }
   }, [currentUserID]);
 
-
   const updateMatches = () => {
     axios.get(`/app/${currentUser.id}/matches`)
-        .then((results) => {
-          setMatches(results.data);
-        })
-        .catch((err) => console.log(err));
+      .then((results) => {
+        setMatches(results.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -262,7 +259,7 @@ const App = () => {
   window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
-  
+
   // if (landing) {
   //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
   // }
@@ -275,11 +272,9 @@ const App = () => {
   return (
     <div>
       {landing ? <Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />
-      : null
-      }
+        : null}
       { register ? <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-      : null
-      }
+        : null}
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
       <NavBar
         setCurrentUser={setCurrentUser}
