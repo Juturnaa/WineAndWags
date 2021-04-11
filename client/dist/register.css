@@ -165,3 +165,10 @@
     border-radius: 20px;
     margin-bottom: 10px;
 }
+
+.error{
+    width: 400px;
+    color: red;
+    padding: 0 0 10px 40px;
+    font-size: 1rem;
+}

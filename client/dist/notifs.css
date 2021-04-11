@@ -36,6 +36,9 @@
     margin: 7px 10px 0 10px;
     padding:5px;
 }
+.unread-notif:hover,.read-notif:hover{
+    cursor: pointer;
+}
 
 .notifs-icon{
     position:absolute;

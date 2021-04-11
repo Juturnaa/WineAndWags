@@ -71,7 +71,6 @@ const logMeOut = () => {
     axios.patch(`/app/notifications/${notif_id}`)
       .then(() => {
         getNotifs();
-        console.log('updated');
       });
   };
   useEffect(() => {

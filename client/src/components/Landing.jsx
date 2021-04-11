@@ -108,7 +108,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                         </div>
                     </div>
                     <div className="login-container">
-                        <input className="username" type="text" autoComplete="on" placeholder="Email" onFocus={()=> setInputting('username')} onBlur={()=> setInputting('')} onChange={(e)=>setEmail(e.target.value)}/>
+                        <input style={{paddingTop:"10"}} className="username" type="text" autoComplete="on" placeholder="Email" onFocus={()=> setInputting('username')} onBlur={()=> setInputting('')} onChange={(e)=>setEmail(e.target.value)}/>
                         <input className="password" type="password" autoComplete="off" placeholder="Password" onFocus={()=>setInputting('password')} onBlur={()=> setInputting('')} onChange={(e)=>setPassword(e.target.value)}/>
                         <button className="login-button" onClick={()=>handleLogin()}>Log in </button>
                         <button className="register-button" onClick={()=>{setRegister(true); setLanding(false)}}>Register </button>
