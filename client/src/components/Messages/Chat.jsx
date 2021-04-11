@@ -22,7 +22,7 @@ const Chat = ({
   const getMessages = () => {
     axios.get(`/app/${currentUserId}/convos/${matchUserId}`)
       .then((results) => {
-        console.log('results and data', results.data);
+        // console.log('results and data', results.data);
         setMessages(results.data);
         setDmSent((dmSent) => dmSent + 1);
         allMessages[matchUserId] = results.data;

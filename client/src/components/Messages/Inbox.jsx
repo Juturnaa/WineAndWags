@@ -14,12 +14,10 @@ const Inbox = ({
   const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
   const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
   const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
-  let newestMessageId = 0;
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
     setCurrentMessageId(Number(e.target.getAttribute('name')));
-    console.log('message id', e.target.getAttribute('data-id'));
     axios.patch(`/app/${currentUser.id}/convos/`, {
       message_id: e.target.getAttribute('data-id'),
     });
@@ -117,7 +115,7 @@ const Inbox = ({
                             ? (
                               <div className="unread-message-container">
                                 <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
-                                  {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                                  {/* {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])} */}
                                   {allMessages[match[0].user_id][newestMessageIndex].body}
                                 </div>
                                 <i className="fas fa-circle fa-xs" />
@@ -125,7 +123,6 @@ const Inbox = ({
                             )
                             : (
                               <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                                {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
                                 {allMessages[match[0].user_id][newestMessageIndex].body}
                               </div>
                             )}
