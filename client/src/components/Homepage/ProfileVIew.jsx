@@ -39,50 +39,36 @@ const ProfileView = ({ user, photos, likePhoto }) => {
 
   return (
     <div className="profile-card">
-      <div id="card-name">
-        {user !== undefined ? user.name : null}
-      </div>
       <div className="photo-container">
         <PhotosList photos={photos || ''} likePhoto={likePhoto} />
         <div className="card-text">
-          <div className="text-component">
-            {' '}
-            <div className="text-component-key">City: </div>
-            {' '}
-            <div className="text-component-value">
-              {' '}
-              {user !== undefined ? user.city : null}
-              {' '}
-            </div>
-            {' '}
+          <div id="card-name">
+          {user !== undefined ? user.name : "No name"}
           </div>
-          <div className="text-component">
-            {' '}
-            <div className="text-component-key">Gender: </div>
-            {' '}
-            <div className="text-component-value">
-              {' '}
-              {user !== undefined ? gender : null}
-              {' '}
+          <div className="card-text-info">
+            <div className="text-component">
+              <div className="text-component-key">City: </div>
+              <div className="text-component-value">
+                {user !== undefined ? user.city : null}
+              </div>
             </div>
-            {' '}
-          </div>
-          <div className="text-component">
-            <div className="text-component-key">Age: </div>
-            {' '}
-            <div className="text-component-value">
-              {' '}
-              {user !== undefined ? user.age : null}
-              {' '}
+            <div className="text-component">
+              <div className="text-component-key">Gender: </div>
+              <div className="text-component-value">
+                {user !== undefined ? gender : null}
+              </div>
             </div>
-          </div>
-          <div className="text-component">
-            <div className="text-component-key">About Me: </div>
-            {' '}
-            <div className="text-component-value">
-              {' '}
-              {user !== undefined ? user.bio : null}
-              {' '}
+            <div className="text-component">
+              <div className="text-component-key">Age: </div>
+              <div className="text-component-value">
+                {user !== undefined ? user.age : null}
+              </div>
+            </div>
+            <div className="text-component">
+              <div className="text-component-key">About Me: </div>
+              <div className="text-component-value">
+                {user !== undefined ? user.bio : null}
+              </div>
             </div>
           </div>
         </div>
