@@ -18,6 +18,7 @@ import Select from '@material-ui/core/Select';
 import Chip from '@material-ui/core/Chip';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Breeds from '../dummyData/dogBreed';
 
 
@@ -63,9 +64,24 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let [owner_min_age, setOwnerMinAge] =useState(18);
     let [owner_max_age, setOwnerMaxAge] =useState(100)
     let [ownerAgePref, setOwnerAgePref] =useState([18, 100])
-    let [dogIds, setDogIds] =useState([]);
     let inputs;
     let titleText="";
+
+    //--------------------------Error Handling--------------------------//
+    let [NameError, setNameError]=useState('');
+    let [EmailError, setEmailError]=useState('');
+    let [PasswordError, setPasswordError]=useState('');
+    let [Password2Error, setPassword2Error]=useState('');
+    let [ZipcodeError, setZipcodeError]=useState('');
+    let [CityError, setCityError]=useState('');
+    let [PictureError, setPictureError]=useState('');
+    let [AgeError, setAgeError]=useState('');
+    let [OwnerGenderError, setOwnerGenderError]=useState('');
+    let [BioError, setBioError] = useState('')
+    let [DogGenderError, setDogGenderError]=useState('');
+    let [DogError, setDogError]=useState('');
+
+
 
     if(page===1 || page ===2) titleText = "User Info";
     else if(page === 3) titleText = "Dog Info";
@@ -178,18 +194,25 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     //--------------------------page 1 inputs --------------------------//
     if(page === 1) {
         inputs = <React.Fragment>
-            <input name="owner" value={owner} type="text" placeholder="Owner's Name" onChange={(e) => setOwner(e.target.value)}/>
+            <input style={{paddingTop:"10"}} name="owner" value={owner} type="text" placeholder="Owner's Name" onChange={(e) => setOwner(e.target.value)}/>
+            {NameError ? <div className="error">{NameError}</div> : ""}
             <input name="email" value={email} type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}/>
+            {EmailError ? <div className="error">{EmailError}</div> : ""}
             <input name="password" value={password} type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}/>
+            {PasswordError ? <div className="error">{PasswordError}</div> : ""}
             <input name="password2" value={password2} type="password" placeholder="Confirm Password" onChange={(e) => setPassword2(e.target.value)}/>
+            {Password2Error ? <div className="error">{Password2Error}</div> : ""}
             <input name="zipcode" value={zipcode} type="text" placeholder="Zipcode" onChange={(e) => setZipcode(e.target.value)}/>
+            {ZipcodeError ? <div className="error">{ZipcodeError}</div> : ""}
             <input name="city" value={city} type="text" placeholder="City" onChange={(e) => setCity(e.target.value)}/>
+            {CityError ? <div className="error">{CityError}</div> : ""}
             </React.Fragment>
     //--------------------------page 2 inputs --------------------------//
     } else if (page === 2) {
         inputs = <React.Fragment>
             <div className ="pictures">
                 <span>Pictures</span>
+                {PictureError ? <div className="error">{PictureError}</div> : ""}
                 {ownerPicsNum.map((num)=> (
                     <div key={num} className="add-photos">
                         <input type="file" id={`img${num-1}`} style={{display:"none"}} onChange={(e) => {let arr =ownerPics.slice(); arr.splice(num-1,1,e.target.files[0]); setOwnerPics(arr)}} />
@@ -218,6 +241,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
 
             </div>
             <input className="age" placeholder="Age" value={ownerAge} type="number" min={18} onChange={(e) => setOwnerAge(e.target.value)}/>
+            {AgeError ? <div className="error">{AgeError}</div> : ""}
             <div className="gender-input">
                 <FormControl component="fieldset">
                     <FormLabel component="legend" className={classes.InputLabel}>Include me in searches for</FormLabel>
@@ -244,21 +268,23 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         onClick ={()=> setSearchedAs("Both")}
                         />
                     </RadioGroup>
+                    {OwnerGenderError!=='' ? <FormHelperText error={true}>{OwnerGenderError}</FormHelperText> : ""}
                 </FormControl>
             </div>
             <textarea className="bio" value={ownerBio} name="ownerBio" placeholder="Bio" onChange={(e) => setOwnerBio(e.target.value)}/>
+            {BioError ? <div className="error">{BioError}</div> : ""}
             </React.Fragment>
 
     //--------------------------page 3 inputs --------------------------//
     } else if (page === 3) {
         inputs = <React.Fragment>
+            {DogError ? <div className="error" style={{background:"white", borderRadius:"30px", marginBottom:"10", paddingTop:"10"}}>{DogError}</div> : ""}
             {numDogs.map(num => (
             <React.Fragment>
-                <input className="dog-name" name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
+                <input style={{paddingTop:"10"}} className="dog-name" name="dog" value={dogs[num-1]} type="text" placeholder="Dog's Name" onChange={(e) => {let arr = dogs.slice(); arr.splice(num-1,1,e.target.value); setDogs(arr)}}/>
                 <div className ="pictures">
                     <span>Pictures</span>
                     {dogPicsNum[num-1].map((num2)=> (
-
                     <div key={num2} className="add-photos">
                         <input type="file" id={`img${num-1}${num2-1}`} style={{display:"none"}} onChange={(e) => {
                             let bigArr= dogPics.slice(); let arr = bigArr[num-1].slice();
@@ -319,7 +345,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         </RadioGroup>
                     </FormControl>
                 </div>
-                <FormControl required className={classes.formControl}>
+                <FormControl className={classes.formControl}>
                     <InputLabel htmlFor="age-native-required">Breed</InputLabel>
                     <Select
                     native
@@ -381,7 +407,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                         max={4}
                     />
                 </div>
-                <textarea className="bio" value={dogBios[num-1]} name="dogBio" placeholder="Bio" onChange={(e) => { let arr = dogBios.slice(); arr.splice(num-1,1, e.target.value); setDogBios(arr)}}/>
+                <textarea style= {{marginBottom:"10px"}}className="bio" value={dogBios[num-1]} name="dogBio" placeholder="Bio" onChange={(e) => { let arr = dogBios.slice(); arr.splice(num-1,1, e.target.value); setDogBios(arr)}}/>
                 </React.Fragment>
             ))}
             {numDogs.length > 1 ?
@@ -482,6 +508,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                                 onClick ={()=> setOwnerGenders("All")}
                                 />
                             </RadioGroup>
+                            {OwnerGenderError!==''? <FormHelperText error={true}>{OwnerGenderError}</FormHelperText>: ""}
                         </FormControl>
                     </div>
                 </div>
@@ -528,6 +555,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                             min={0}
                             max={30}
                             />
+                            
                     </div>
                     <div className="gender-input">
                         <FormControl component="fieldset">
@@ -555,6 +583,7 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
                                 onClick ={()=> setDogGendersPref("Both")}
                                 />
                             </RadioGroup>
+                            {DogGenderError!==''? <FormHelperText error={true}>{DogGenderError}</FormHelperText>: ""}
                         </FormControl>
                     </div>
                     <div className="bool-checkboxes">
@@ -644,11 +673,9 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     let postInfo = () => {
         const hash=bcrypt.hashSync(password, 10);
         let promises =[];
-
         let promises2 =[];
         axios.post('/app/users', {name:owner, bio:ownerBio, email, hash, age:ownerAge, zipcode, city, searched_as})
             .then((data)=>{
-                console.log(data.data.id);
                 setCurrentID(data.data.id);
                 return data.data.id;
             })
@@ -763,42 +790,87 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
         let emailRe = /(?!.*\.{2})^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
         if(type === 'back') setPage(page-1)
         else if (page === 1) {
-            if ([owner, email, password, password2, zipcode, city].some(x => x === undefined || x === '')){
-                validated =false;
-                alert("Fields cannot be blank")
-            } else if (!emailRe.test(email)) {
-                validated =false;
-                alert("Invalid email")
-            } else if (password !== password2) {
-                validated = false;
-                alert("Passwords must match")
-            } else if (!zipRe.test(zipcode)) {
-                validated = false
-                alert("Invalid zipcode")
-            } else setPage(page+1)
+            if (owner === undefined || owner === '') { validated = false; setNameError("Field cannot be blank");}
+            else setNameError('')
+
+            if (email === undefined || email === '') {validated = false;  setEmailError("Field cannot be blank");}
+            else if (!emailRe.test(email)) {validated = false; setEmailError("Invalid email");}
+            else setEmailError('');
+
+            if (password=== undefined || password=== '') {validated = false; setPasswordError("Field cannot be blank");}
+            else setPasswordError('')
+
+            if (zipcode === undefined || zipcode === '') {validated = false; setZipcodeError("Field cannot be blank");}
+            else if (!zipRe.test(zipcode)) {validated = false; setZipcodeError("Invalid zipcode");}
+            else setZipcodeError('');
+
+            if (city === undefined || city === '') {validated = false; setCityError("Field cannot be blank");}
+            else setCityError('');
+            if (password !== password2) {validated = false; setPassword2Error("Passwords must match");}
+            else setPassword2Error('');
+
+            if(validated) setPage(page+1);
         } else if(page === 2) {
-            if([ownerAge, searched_as, ownerBio].some(x => x === undefined || x === '') || ownerPics.some(x => x === undefined || x === '')){
-                validated =false;
-                alert("Fields cannot be blank")
+            if (ownerAge === undefined || ownerAge === ''){
+                validated = false; 
+                setAgeError("Field cannot be blank");
             } else if(ownerAge < 18){
-                validated =false;
-                alert("Age must be greater than or equal to 18")
-            } else setPage(page+1)
+                validated = false; 
+                setAgeError("Age must be at least 18")
+            } else setAgeError('');
+            if (searched_as === undefined || searched_as === ''){
+                validated = false; 
+                setOwnerGenderError("Field cannot be blank");
+            } else setOwnerGenderError('');
+            if (ownerBio=== undefined || ownerBio=== ''){
+                validated = false; 
+                setBioError("Field cannot be blank");
+            } else setBioError('');
+            if (ownerPics.some(x => x === undefined || x === '')){
+                validated = false; 
+                setPictureError("Field cannot be blank");
+            } else setPictureError('');
+            
+            if(validated) setPage(page+1);
 
         } else if (page === 3) {
             for(let i=0; i<numDogs.length;i++){
-                if([dogAges[i],dogGenders[i], breeds[i], dogBios[i]].some(x => x === undefined || x === '') || dogPics[i].some(x => x === undefined || x === '')){
-                    validated =false;
-                    alert("Fields cannot be blank")
+                if (dogs[i] === undefined || dogs[i] === ''){
+                    validated = false;
+                    setDogError('Dog name cannot be blank ')
                     break;
-                }
+                } if(dogPics[i].some(x => x === undefined || x === '')){
+                    validated = false;
+                    setDogError('All picture files must be chosen')
+                    break;
+                } else if (dogAges[i] === undefined || dogAges[i] === ''){
+                    validated = false;
+                    setDogError('Dog age cannot be blank ')
+                    break;
+                } else if (dogGenders[i] === undefined || dogGenders[i] === ''){
+                    validated = false;
+                    setDogError('Dog gender cannot be blank ')
+                    break;
+                } else if (breeds[i] === undefined || breeds[i] === ''){
+                    validated = false;
+                    setDogError('Dog breed cannot be blank ')
+                    break;
+                } else if (dogBios[i] === undefined || dogBios[i] === ''){
+                    validated = false;
+                    setDogError('Dog bio cannot be blank ')
+                    break;
+                } else setDogError('');
             }
             if(validated) setPage(page+1)
         } else if(page === 4) {
-            if([dog_genders, ownerGenders].some(x => x === undefined || x === '')){
+            if(ownerGenders === undefined || ownerGenders === ''){
+                validated= false;
+                setOwnerGenderError('Field cannot be blank');
+            } else setOwnerGenderError('')
+            if(dog_genders === undefined || dog_genders === ''){
                 validated =false;
-                alert("Fields cannot be blank")
-            }
+                setDogGenderError("Field cannot be blank")
+            } else setDogGenderError('');
             if(validated) postInfo()
         }
 
@@ -807,10 +879,10 @@ export default function Register({ setCurrentID, setRegister, setLanding }) {
     return (
         <div className="register">
             <div className="center">
-                <div className="upper-text">{titleText}</div>
                 <div className="ear ear--left"></div>
                 <div className="ear ear--right"></div>
                     <div className="login-body">
+                    <div className="upper-text">{titleText}</div>
                     <div className="face">
                         <div className="eyes">
                             <div className="eye eye--left">

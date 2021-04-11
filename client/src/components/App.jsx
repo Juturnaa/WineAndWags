@@ -109,7 +109,13 @@ const App = () => {
         myLikes = data.data.map((likeObj) => likeObj.liked_user_id);
         if (myLikes.includes(potiential.id)) {
           axios.post(`/app/${currentUserID}/convos`, { recipient_id: potiential.id })
-            .then(() => {
+            .then((data) => {
+              axios.post(`/app/notifications/${currentUser.id}`, {
+                type: 'match',
+                type_id: data.id,
+                recipient_id: currentUser.id,
+                sender_name: currentUser.name,
+              })
               alert('its a match!');
             });
         }
@@ -121,7 +127,8 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+
   };
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
@@ -264,23 +271,10 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  if (landing) {
-    return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  }
-  if (register) {
-    return (
-      <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-    );
-  }
-
-  return (
+  if (register) return (<Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />);
+  else if (landing) return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  else return (
     <div>
-      {landing ? <Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />
-      : null
-      }
-      { register ? <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-      : null
-      }
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
       <NavBar
         setCurrentUser={setCurrentUser}

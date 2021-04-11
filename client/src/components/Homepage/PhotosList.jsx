@@ -22,11 +22,11 @@ const PhotosList = ({ photos, likePhoto }) => {
         ? (
           <div>
             {' '}
-            <Carousel id="carouselProfile" style={{border: 'solid 1px #13070C', borderRadius: '5%'}} interval={null} activeIndex={index} onSelect={handleSelect}>
+            <Carousel id="carouselProfile" style={{border: 'solid 1px #13070C'}} interval={null} activeIndex={index} onSelect={handleSelect}>
               {photos.map((item, ind) => (
                 <Carousel.Item key={ind}>
                   <div style={{
-                    backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%', borderRadius: '5%'
+                    backgroundImage: `url(${item.url})`, backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundPosition: 'center', height: '100%'
                   }}
                   />
                 </Carousel.Item>
