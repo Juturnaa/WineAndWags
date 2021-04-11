@@ -8,7 +8,7 @@ import DogView from './DogView';
 import LikeButton from './LikeButton';
 
 export default function Homepage({
-  currentUser, likeProfile, humanPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
+  currentUser, likeProfile, potientialPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
 }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
@@ -122,6 +122,7 @@ export default function Homepage({
                 healthIssues: filters.health_issues,
                 avoidBreeds: filters.avoid_breeds,
                 ownerAgeRange: [filters.min_age, filters.max_age],
+                ownerGenders: filters.genders,
                 zipCodes: uniqueZips.join(','),
               };
               setFilterParams(params);
@@ -157,7 +158,7 @@ export default function Homepage({
         {alert ? <div className="filter-alert">UPDATED PREFERENCES</div> : null}
       </div>
       <div className="potential-match-view">
-        <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
+        <ProfileView user={potiential} photos={potientialPhoto} likePhoto={likePhoto} />
         <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />

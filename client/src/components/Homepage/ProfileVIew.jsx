@@ -15,6 +15,8 @@ const ProfileView = ({ user, photos, likePhoto }) => {
     }
   }, [user])
 
+  console.log('photos', photos)
+
   const userPhotos = [
     {
       id: 1,

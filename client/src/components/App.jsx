@@ -299,6 +299,7 @@ const App = () => {
         setAllMessages={setAllMessages}
         setHumanPhoto={setHumanPhoto}
         setDogsPhoto={setDogsPhoto}
+        potientialPhoto={potientialPhoto}
       />
       {/* <ContextProvider>
         <Video />
