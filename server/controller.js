@@ -74,7 +74,7 @@ const controller = {
       req.body.recipient_id,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send('Created new convo!');
+        else res.status(200).send(results.rows[0]);
       },
     );
   },
