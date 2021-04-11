@@ -45,7 +45,6 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
   const [neutered, setNeutered] = useState(false);
   const [health, setHealth] = useState(false);
   const [validated, setValidated] = useState(false);
-  const [emailValidate, setEmail] = useState(false);
 
   const valueChange = (e) => {
     setDogValue({ ...dogValue, [e.target.name]: e.target.value });
@@ -65,11 +64,11 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
     information.hypo = hypoallergenic;
     information.neutered = neutered;
     information.healthy = health;
-    // axios.post(`/app/dogs/${currentUserID}`, information)
-    //   .then((results) => axios.post(`/app/users/my-dog/${results.data.id}`, fd)
-    //     .then((results) => alert(results.data))
-    //     .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY')))
-    //   .catch((err) => console.error(err));
+    axios.post(`/app/dogs/${currentUserID}`, information)
+      .then((results) => axios.post(`/app/users/my-dog/${results.data.id}`, fd)
+        .then((results) => alert(results.data))
+        .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY')))
+      .catch((err) => console.error(err));
   };
 
   return (
@@ -101,12 +100,13 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
             </Form.Group>
             <Form.Group>
               <Form.Label>Breed</Form.Label>
-              <Form.Control as="select" name="breed" onChange={valueChange}>
-                <option>Select a breed</option>
+              <Form.Control as="select" name="breed" onChange={valueChange} required>
+                <option value="">Select a breed</option>
                 {breed.map((item, index) => (
                   <option key={index} value={item}>{item}</option>
                 ))}
               </Form.Control>
+              <FormControl.Feedback type="invalid">Please select a breed.</FormControl.Feedback>
             </Form.Group>
             <Form.Row>
               <Form.Group as={Col}>
@@ -125,16 +125,39 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Gender</Form.Label>
-                <Form.Check type="radio" name="gender" value="M" label="Male" onChange={valueChange} isValid />
-                <Form.Check type="radio" name="gender" value="F" label="Female" onChange={valueChange} isValid />
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="gender" value="M" onChange={valueChange} required />
+                  <FormCheck.Label>Male</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="gender" value="F" onChange={valueChange} required />
+                  <FormCheck.Label>Female</FormCheck.Label>
+                  <FormControl.Feedback type="invalid">Plesae select a gender.</FormControl.Feedback>
+                </Form.Check>
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Size</Form.Label>
-                <Form.Check type="radio" name="size" label="XS" value="XS" onChange={valueChange} />
-                <Form.Check type="radio" name="size" label="S" value="S" onChange={valueChange} />
-                <Form.Check type="radio" name="size" label="M" value="M" onChange={valueChange} />
-                <Form.Check type="radio" name="size" label="L" value="L" onChange={valueChange} />
-                <Form.Check type="radio" name="size" label="XL" value="XL" onChange={valueChange} />
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="XS" onChange={valueChange} required />
+                  <FormCheck.Label>XS</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="S" onChange={valueChange} required />
+                  <FormCheck.Label>S</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="M" onChange={valueChange} required />
+                  <FormCheck.Label>M</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="L" onChange={valueChange} required />
+                  <FormCheck.Label>L</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="XL" onChange={valueChange} required />
+                  <FormCheck.Label>XL</FormCheck.Label>
+                  <FormControl.Feedback type="invalid">Please select a size.</FormControl.Feedback>
+                </Form.Check>
               </Form.Group>
             </Form.Row>
             <div style={{ display: 'flex', justifyContent: 'center' }}>

@@ -11,6 +11,7 @@ import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import { IconButton, Input, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Col from 'react-bootstrap/Col';
+import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import EditHumanImage from './EditHumanImage';
@@ -77,6 +78,7 @@ function EditProfile({
   const [dogID, setDogID] = useState();
   const [dogIndex, setDogIndex] = useState(0);
   const [index, setIndex] = useState(0);
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -194,6 +196,11 @@ function EditProfile({
 
   const submitHuman = (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    };
+    setValidated(true);
     let result;
     let resultAge;
     let resultZip;
@@ -226,9 +233,9 @@ function EditProfile({
           newValues[keys[i]] = values[i];
         }
       }
-      axios.patch(`/app/users/my-profile/${currentUserID}`, newValues)
-        .then((results) => alert(results.data))
-        .catch((err) => console.error(err));
+      // axios.patch(`/app/users/my-profile/${currentUserID}`, newValues)
+      //   .then((results) => alert(results.data))
+      //   .catch((err) => console.error(err));
     } else if (!result && !resultAge && !resultZip) {
       alert('Email, Age, Zipcode are not valid');
     } else if (!result) {
@@ -294,7 +301,7 @@ function EditProfile({
     <div id="editprofile-body">
       {human
         ? (
-          <Form id="editHuman" onSubmit={submitHuman}>
+          <Form noValidate validated={validated} id="editHuman" onSubmit={submitHuman}>
             <div id="editProfile-container">
               <div className="humanEdit">
                 <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} index={index} setIndex={setIndex} />
@@ -339,7 +346,7 @@ function EditProfile({
                 <Form.Row>
                   <Form.Group as={Col}>
                     <Form.Label>E-mail</Form.Label>
-                    <Form.Control as="input" type="email" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
+                    <Form.Control as="input" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Form.Label>Password</Form.Label>
