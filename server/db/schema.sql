@@ -77,7 +77,8 @@ CREATE TABLE IF NOT EXISTS waw.message (
   sender_id INT NOT NULL,
   body TEXT NOT NULL,
   time_stamp TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  convo_id INT NOT NULL
+  convo_id INT NOT NULL,
+  opened BOOLEAN NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS waw.filters (

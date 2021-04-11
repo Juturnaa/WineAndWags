@@ -19,7 +19,6 @@ function Video({
   } = React.useContext(SocketContext);
 
   console.log(currentUser.name)
-  console.log(me);
 
   const videoInvite = (matchId) => {
     console.log('matchId', matchId)
@@ -82,7 +81,7 @@ function Video({
         matchesInfo={sessionMatchesInfo}
       />
       <VideoPlayer name={currentUser.name} />
-      <Options />
+      <Options username={currentUser.name} />
     </div>
   );
 }

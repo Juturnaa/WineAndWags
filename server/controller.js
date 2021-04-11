@@ -74,7 +74,7 @@ const controller = {
       req.body.recipient_id,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send('Created new convo!');
+        else res.status(200).send(results.rows[0]);
       },
     );
   },
@@ -93,6 +93,16 @@ const controller = {
       req.params.user_id,
       req.params.recipient_id,
       req.body,
+      (err, results) => {
+        if (err) res.status(400).send(err);
+        else res.status(200).send('Message sent!');
+      },
+    );
+  },
+  patchMessage: (req, res) => {
+    dbHelpers.patchMessage(
+      req.params.user_id,
+      req.body.message_id,
       (err, results) => {
         if (err) res.status(400).send(err);
         else res.status(200).send('Message sent!');
