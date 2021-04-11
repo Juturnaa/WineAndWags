@@ -103,6 +103,7 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
+
     let myLikes;
     axios.get(`/app/${currentUserID}/profile-likes`)
       .then((data) => {
@@ -201,6 +202,13 @@ const App = () => {
   };
 
   useEffect(() => {
+    window.sessionStorage.setItem('matches', JSON.stringify(matches));
+    window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+    window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+    window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  }, [matches, allMessages, matchesPhotos, matchesInfo]);
+
+  useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/matches`)
         .then((results) => {
@@ -259,12 +267,10 @@ const App = () => {
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
 
-  return (
+  if (register) return (<Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />);
+  else if (landing) return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  else return (
     <div>
-      {landing ? <Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />
-        : null}
-      { register ? <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-        : null}
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
       <NavBar
         setCurrentUser={setCurrentUser}

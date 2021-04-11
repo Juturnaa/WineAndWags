@@ -102,7 +102,7 @@ export default function Homepage({
           const options = {
             method: 'GET',
             url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
-            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'AAOQMTRST8WJ41JRKG5L' },
+            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'R9NC7P6CVW7RDGU10LKR' },
           };
           axios.request(options)
             .then((response) => {
@@ -152,7 +152,7 @@ export default function Homepage({
 
   return (
     <div className="homepage">
-      <div style={{ left: '0', position: 'absolute' }}>
+      <div className="filter-btn">
         <ThemeProvider theme={theme}>
           <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
         </ThemeProvider>

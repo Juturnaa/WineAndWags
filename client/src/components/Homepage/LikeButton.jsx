@@ -19,7 +19,7 @@ const LikeButton = ({ user, getRandomUser, filterParams, likeProfile }) => {
     const classes = useStyles();
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', height: '10%' }} >
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', height: '10%'}} >
             <div className="like-buttons" ><NotInterestedIcon className={classes.customHoverFocus2} style={{ fontSize: '5em' }} onClick={() =>  getRandomUser(filterParams)}  /></div>
             <div className="like-buttons" style={{marginLeft: '1%'}}><FavoriteIcon className={classes.customHoverFocus} style={{ fontSize: '5em', marginLeft: '2%' }}  onClick={() => {
                 likeProfile(user.id);

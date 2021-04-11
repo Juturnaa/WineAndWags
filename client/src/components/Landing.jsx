@@ -45,7 +45,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                 <div className="ear ear--right"></div>
                     <div className="login-body">
                     {login ?
-                    <React.Fragment>
+                    <div className="login-content">
                         <div className="face" style={inputting==='username'? {'--rotate-head':`${-Math.min(email.length-16, 19)}deg`}: {'--rotate-head':'0deg'}}>
 
                         <div className="eyes">
@@ -114,7 +114,7 @@ export default function Landing({ setCurrentID, setLanding, setRegister }) {
                         <button className="register-button" onClick={()=>{setRegister(true); setLanding(false)}}>Register </button>
                     </div>
 
-                    </React.Fragment>
+                    </div>
                 :
 
                     <div className="content">
