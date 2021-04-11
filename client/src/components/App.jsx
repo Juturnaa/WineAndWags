@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState(7);
+  const [currentUserID, setCurrentID] = useState();
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -103,6 +103,7 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
+
     let myLikes;
     axios.get(`/app/${currentUserID}/profile-likes`)
       .then((data) => {
@@ -203,6 +204,13 @@ const App = () => {
         })
         .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    window.sessionStorage.setItem('matches', JSON.stringify(matches));
+    window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+    window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+    window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  }, [matches, allMessages, matchesPhotos, matchesInfo]);
 
   useEffect(() => {
     if (currentUser.id) {
