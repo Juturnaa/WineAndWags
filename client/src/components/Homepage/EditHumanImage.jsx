@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
-function EditHumanImage({ humanPhoto, setHumanURL }) {
-  const [index, setIndex] = useState(0);
-
+function EditHumanImage({ humanPhoto, setHumanURL, index, setIndex }) {
   const handleSelect = (selectedIndex, e) => {
     setIndex(selectedIndex);
     setHumanURL(humanPhoto[selectedIndex].id);

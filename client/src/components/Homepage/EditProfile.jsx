@@ -43,7 +43,7 @@ const useStyles = makeStyles({
 });
 
 function EditProfile({
-  currentUser, dogsImg, breeds, humanPhoto, human, dogs, currentUserID,
+  currentUser, dogsImg, breeds, humanPhoto, human, dogs, currentUserID, setHumanPhoto, setDogsPhoto,
 }) {
   const classes = useStyles();
   const [humanValue, setHumanValue] = useState({
@@ -75,6 +75,8 @@ function EditProfile({
   const [dogURL, setDogURL] = useState(0);
   const [uploadDog, setUploadDog] = useState();
   const [dogID, setDogID] = useState();
+  const [dogIndex, setDogIndex] = useState(0);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -102,6 +104,27 @@ function EditProfile({
     }
     setHumanImg(humansimages);
   }, [humanPhoto]);
+
+  const getPhotos = () => {
+    axios.get(`/app/users/photos/${currentUserID}`)
+      .then((results) => {
+        const humanphotos = [];
+        const dogsphotos = [];
+        for (let i = 0; i < results.data.length; i++) {
+          console.log(results.data[i])
+          if (results.data[i].dog_id === null) {
+            humanphotos.push(results.data[i]);
+          } else {
+            dogsphotos.push(results.data[i]);
+          }
+
+          console.log('dogs photos', dogsphotos)
+          setHumanPhoto(humanphotos);
+          setDogsPhoto(dogsphotos);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
 
   const arrangeDogs = (arr) => {
     const chunk = [];
@@ -156,12 +179,16 @@ function EditProfile({
   const deletePhoto = () => {
     axios.delete(`/app/users/delete/${humanURL}`)
       .then((results) => alert('deleted'))
+      .then(() => getPhotos())
+      .then(() => setIndex(0))
       .catch((err) => console.error(err));
   };
 
   const deleteDogPhoto = () => {
     axios.delete(`/app/users/delete/${dogURL}`)
       .then((results) => alert('deleted'))
+      .then(() => getPhotos())
+      .then(() => setDogIndex(0))
       .catch((err) => console.error(err));
   };
 
@@ -199,7 +226,6 @@ function EditProfile({
           newValues[keys[i]] = values[i];
         }
       }
-      // hardcoded the end point
       axios.patch(`/app/users/my-profile/${currentUserID}`, newValues)
         .then((results) => alert(results.data))
         .catch((err) => console.error(err));
@@ -250,6 +276,7 @@ function EditProfile({
     fd.append('image', uploadHuman, uploadHuman.name);
     axios.post(`/app/users/photos/${currentUser.id}`, fd)
       .then((results) => alert(results.data))
+      .then(() => getPhotos())
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
@@ -259,10 +286,9 @@ function EditProfile({
     fd.append('image', uploadDog, uploadDog.name);
     axios.post(`/app/users/my-dog/${dogID}`, fd)
       .then((results) => alert(results.data))
+      .then(() => getPhotos())
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
-
-  console.log(dogValue);
 
   return (
     <div id="editprofile-body">
@@ -271,7 +297,7 @@ function EditProfile({
           <Form id="editHuman" onSubmit={submitHuman}>
             <div id="editProfile-container">
               <div className="humanEdit">
-                <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} />
+                <EditHumanImage humanImg={humanImg} humanPhoto={humanPhoto} setHumanURL={setHumanURL} index={index} setIndex={setIndex} />
                 <div style={{ display: 'flex', flexFlow: 'row nowrap' }}>
                   <Input className={classes.upload} type="file" name="url" id="fileinput" onChange={(e) => setUploadHuman(e.target.files[0])} />
                   <div className="trashbutton">
@@ -313,7 +339,7 @@ function EditProfile({
                 <Form.Row>
                   <Form.Group as={Col}>
                     <Form.Label>E-mail</Form.Label>
-                    <Form.Control as="input" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
+                    <Form.Control as="input" type="email" name="email" placeholder={currentUser.email} onChange={humanValueChange} />
                   </Form.Group>
                   <Form.Group as={Col}>
                     <Form.Label>Password</Form.Label>
@@ -346,7 +372,7 @@ function EditProfile({
             <div id="editDog-container">
               <Form id="editDog-form" onSubmit={submitDog} key={index}>
                 <div className="dogForm-inputs">
-                  <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} />
+                  <EditDogImage dogImages={dogImages} id={item.id} setDogURL={setDogURL} setDogID={setDogID} dogIndex={dogIndex} setDogIndex={setDogIndex} />
                   <div style={{ display: 'flex', flexFlow: 'row nowrap' }}>
                     <Input className={classes.upload} type="file" name="url" id="fileinput" onChange={(e) => setUploadDog(e.target.files[0])} />
                     <div className="trashbutton">

@@ -28,9 +28,8 @@ import { ContextProvider } from './Video/SocketContext';
 //  {loggedIn ? <Redirect to="/home" /> : <LandingPage />}
 // </Route>
 
-
 function NavBar({
-  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
+  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages, setDogsPhoto, setHumanPhoto,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -38,13 +37,12 @@ function NavBar({
   const [dogs, setDogs] = useState(false);
   const [unread, setUnread] = useState(0);
 
-
   const logMeOut = () => {
-    localStorage.clear()
-      setLanding(true)
-      setCurrentUser(null);
-      location.href = '/home'
-  }
+    localStorage.clear();
+    setLanding(true);
+    setCurrentUser(null);
+    location.href = '/home';
+  };
 
   const changeHuman = () => {
     setHuman(true);
@@ -174,7 +172,7 @@ function NavBar({
           )}
         />
         <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} currentUserID={currentUserID} />} />
+        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} currentUserID={currentUserID} setDogsPhoto={setDogsPhoto} setHumanPhoto={setHumanPhoto} />} />
         <Route
           exact
           path="/video"

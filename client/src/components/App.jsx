@@ -37,7 +37,6 @@ const App = () => {
   const [potientialDogsImg, setPotientialDogsImg] = useState([]);
   const [showNotifs, setShowNotifs] = useState(false);
 
-  console.log(potiential, potientialDogsPhoto)
   useEffect(() => {
     const dogsimages = [];
     const store = [];
@@ -81,8 +80,6 @@ const App = () => {
     let uId;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
-        console.log('hi');
-        console.log('data:', data.data);
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setPotiential(data.data[random]);
         uId = data.data[random].id;
@@ -153,7 +150,6 @@ const App = () => {
     matches.map((match) => {
       axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
         .then((results) => {
-          console.log('results messages', results.data);
           messages[match.user_id] = results.data;
           setAllMessages(messages);
         })
@@ -295,6 +291,8 @@ const App = () => {
         messageCount={messageCount}
         getAllMessages={getAllMessages}
         setAllMessages={setAllMessages}
+        setHumanPhoto={setHumanPhoto}
+        setDogsPhoto={setDogsPhoto}
       />
       {/* <ContextProvider>
         <Video />

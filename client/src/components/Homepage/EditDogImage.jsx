@@ -4,17 +4,15 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-bootstrap/Carousel';
 
 function EditDogImage({
-  dogImages, id, setDogURL,
+  dogImages, id, setDogURL, dogIndex, setDogIndex,
 }) {
-  const [index, setIndex] = useState(0);
-
   const handleSelect = (selectedIndex, e) => {
-    setIndex(selectedIndex);
+    setDogIndex(selectedIndex);
     setDogURL(dogImages[id][selectedIndex].id);
   };
 
   return (
-    <Carousel className="editCarousel" interval={null} activeIndex={index} onSelect={handleSelect}>
+    <Carousel className="editCarousel" interval={null} activeIndex={dogIndex} onSelect={handleSelect}>
       {dogImages[id].map((item, ind) => (
         <Carousel.Item key={ind}>
           <div style={{
@@ -35,12 +33,16 @@ EditDogImage.propTypes = {
   ),
   id: PropTypes.number,
   setDogURL: PropTypes.func,
+  dogIndex: PropTypes.number,
+  setDogIndex: PropTypes.func,
 };
 
 EditDogImage.defaultProps = {
   dogImages: {},
   id: null,
   setDogURL: null,
+  dogIndex: 0,
+  setDogIndex: null,
 };
 
 export default EditDogImage;

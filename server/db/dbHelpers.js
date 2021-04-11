@@ -370,8 +370,8 @@ const dbHelpers = {
     db.query(
       `INSERT INTO waw.dogs(name, gender, bio, hypo, neutered, rating, owner_id, age, size, breed, healthy) VALUES ('${name}', '${gender}', '${bio}', ${hypo}, ${neutered}, 0, ${req.params.user}, ${age}, '${size}', '${breed}', ${healthy}) RETURNING id`,
       (err, data) => {
-        if (err) res.send(err);
-        else res.send(data.rows[0]);
+        if (err) res.status(400).send(err);
+        else res.status(200).send(data.rows[0]);
       },
     );
   },
