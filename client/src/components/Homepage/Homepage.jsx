@@ -106,13 +106,13 @@ export default function Homepage({
           };
           axios.request(options)
             .then((response) => {
-              // const uniqueZips = [];
-              // for (const item of response.data.DataList) {
-              //   if (!uniqueZips.includes(item.Code)) {
-              //     uniqueZips.push(`'${item.Code}'`);
-              //   }
-              // }
-              // changeZipCodes(uniqueZips.join(','));
+              const uniqueZips = [];
+              for (const item of response.data.DataList) {
+                if (!uniqueZips.includes(item.Code)) {
+                  uniqueZips.push(`'${item.Code}'`);
+                }
+              }
+              changeZipCodes(uniqueZips.join(','));
               const params = {
                 sizeRange: getSizeRange(sizeToNumberValue(filters.min_size), sizeToNumberValue(filters.max_size)),
                 dogGenders: filters.dog_genders,
@@ -122,9 +122,7 @@ export default function Homepage({
                 healthIssues: filters.health_issues,
                 avoidBreeds: filters.avoid_breeds,
                 ownerAgeRange: [filters.min_age, filters.max_age],
-                ownerGenders: filters.genders,
-                zipCodes: '90220',
-                // zipCodes: uniqueZips.join(','),
+                zipCodes: uniqueZips.join(','),
               };
               setFilterParams(params);
               getRandomUser(params);
