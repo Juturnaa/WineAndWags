@@ -132,7 +132,9 @@ const logMeOut = () => {
                 let txt;
                 if (notif.type === 'photoLike') txt = ' liked your photo';
                 else if (notif.type === 'message') txt = ' sent you a message';
-                else if (notif.type === 'appointment') txt = ' planned date with you';
+                else if (notif.type === 'appointment') txt = ' planned a date with you';
+                else if (notif.type === 'match') txt = ' matched with you';
+                else if (notif.type === 'video') txt = ' called you';
                 if (notif.read) {
                   return (
                     <div className="read-notif">
