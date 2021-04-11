@@ -250,7 +250,15 @@ const App = () => {
     }
   }, [appointment]);
 
+  useEffect(() => {
+    window.sessionStorage.setItem('matches', JSON.stringify(matches));
+    window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+    window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+    window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  }, [matches]);
+
   // ------SETTING MATCH INFO TO SESSION STORAGE------ //
+  window.sessionStorage.setItem('matches', JSON.stringify(matches));
   window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
   window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));

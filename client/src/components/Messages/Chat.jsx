@@ -22,13 +22,11 @@ const Chat = ({
   const getMessages = () => {
     axios.get(`/app/${currentUserId}/convos/${matchUserId}`)
       .then((results) => {
-        // console.log('results and data', results.data);
         setMessages(results.data);
         setDmSent((dmSent) => dmSent + 1);
         allMessages[matchUserId] = results.data;
       })
       .then(() => {
-        // setAllMessages(results.data);
         window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
       })
       .catch((err) => console.log(err));
@@ -70,10 +68,21 @@ const Chat = ({
     axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
       message: inputValue,
     })
-      .then(() => {
+      .then((results) => {
         setInputValue('');
         getMessages();
         setMessageCount((messageCount) => messageCount + 1);
+        const convo_id = results.data[0].convo_id;
+        axios.post(`/app/notifications/${currentUserId}`, {
+          type: 'message',
+          type_id: convo_id,
+          sender_name: currentUser.name,
+          recipient_id: matchUserId,
+        })
+          .then(() => {
+            console.log('Notification sent!');
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   };

@@ -80,58 +80,62 @@ const Inbox = ({
                   {messageQueueCount()}
                   )
                 </span>
-                {sessionMatchesPhotos.map((match, index) => {
-                  const newestMessageIndex = allMessages[match[0].user_id].length - 1;
-                  if (allMessages[match[0].user_id].length !== 0) {
-                    return (
-                      <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                        <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                          <img
-                            className="human-photos-small"
-                            alt="human"
-                            src={match[0].url}
-                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
-                            onClick={onMessageClick}
-                          />
-                          <img
-                            className="dog-photos-small"
-                            alt="dog"
-                            src={match[1].url}
-                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
-                            onClick={onMessageClick}
-                          />
-                        </div>
-                        <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                          <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
-                            {sessionMatchesInfo[match[0].user_id].name}
-                            {' '}
-                            and
-                            {' '}
-                            {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
+                {Object.keys(sessionAllMessages).length !== 0
+                  ? sessionMatchesPhotos.map((match, index) => {
+                    const newestMessageIndex = allMessages[match[0].user_id].length - 1;
+                    if (allMessages[match[0].user_id].length !== 0) {
+                      return (
+                        <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                          <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                            <img
+                              className="human-photos-small"
+                              alt="human"
+                              src={match[0].url}
+                              name={index}
+                              data-id={allMessages[match[0].user_id][newestMessageIndex].id}
+                              onClick={onMessageClick}
+                            />
+                            <img
+                              className="dog-photos-small"
+                              alt="dog"
+                              src={match[1].url}
+                              name={index}
+                              data-id={allMessages[match[0].user_id][newestMessageIndex].id}
+                              onClick={onMessageClick}
+                            />
                           </div>
+                          <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                            <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
+                              {sessionMatchesInfo[match[0].user_id].name}
+                              {' '}
+                              and
+                              {' '}
+                              {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
+                            </div>
 
-                          {/* ---------Most recent message------------ */}
-                          {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
-                            ? (
-                              <div className="unread-message-container">
-                                <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
-                                  {/* {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])} */}
+                            {/* ---------Most recent message------------ */}
+                            {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
+                              ? (
+                                <div className="unread-message-container">
+                                  <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
+                                    {/* {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])} */}
+                                    {allMessages[match[0].user_id][newestMessageIndex].body}
+                                  </div>
+                                  <i className="fas fa-circle fa-xs" />
+                                </div>
+                              )
+                              : (
+                                <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                                   {allMessages[match[0].user_id][newestMessageIndex].body}
                                 </div>
-                                <i className="fas fa-circle fa-xs" />
-                              </div>
-                            )
-                            : (
-                              <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                                {allMessages[match[0].user_id][newestMessageIndex].body}
-                              </div>
-                            )}
+                              )}
 
+                          </div>
                         </div>
-                      </div>
-                    );
-                  }
-                })}
+                      );
+                    }
+                  })
+                  : null}
               </div>
             </div>
           </div>
