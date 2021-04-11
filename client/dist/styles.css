@@ -12,6 +12,15 @@
     .navbar-title {
         margin-left:2vw;
     }
+    .filter-btn {
+        display:none;
+    }
+}
+@media only screen and (max-width: 650px) {
+    .potential-match-view {
+        flex-direction: column;
+    } 
+    
 }
 @media only screen and (max-width: 550px) {
     .navbar-title {
@@ -22,6 +31,7 @@
     .nav-icons, .notifs-icon{
         display:none;
     }
+    
 }
 
 body {

@@ -19,21 +19,24 @@
   border: solid 1px #13070c;
   border-radius: 0 0 15px 15px;
   height: 40%;
-  flex-flow: column wrap;
+  max-height: 322px;
+  min-height: 270px;
+  min-width: 250px;
+}
+.card-text-info {
   display: flex;
-  min-height:322px;
+  flex-flow: column wrap;
+  max-height: 200px;
 }
 #card-name {
   font-size: 36px;
   font-weight: bold;
-  text-align: center;
   background-color: #fdfdfd;
-  width:50%;
-  border-radius: 15px 15px 0 0;
+  width:100%;
   align-self:flex-end;
   color:#243946;
   display:flex;
-  justify-content: center;
+  justify-content: space-between;
   min-width: fit-content;
 }
 .text-component {
