@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Filters from './Filters';
 import ProfileView from './ProfileVIew';
 import DogView from './DogView';
 import LikeButton from './LikeButton';
-import Button from '@material-ui/core/Button';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
 export default function Homepage({
   currentUser, likeProfile, humanPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
 }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
-  const [currentDogIndex, setCurrentDogIndex] = useState(0)
-  const [isDisplayingSkipDogs, setIsDisplayingSkipDogs] = useState(0)
+  const [currentDogIndex, setCurrentDogIndex] = useState(0);
+  const [isDisplayingSkipDogs, setIsDisplayingSkipDogs] = useState(0);
   useEffect(() => {
     if (potientialDog.length > 1) {
-      setIsDisplayingSkipDogs(true)
+      setIsDisplayingSkipDogs(true);
     } else {
-      setIsDisplayingSkipDogs(false)
+      setIsDisplayingSkipDogs(false);
     }
-    setCurrentDog(potientialDog[currentDogIndex])
-  }, [potientialDog, currentDogIndex])
+    setCurrentDog(potientialDog[currentDogIndex]);
+  }, [potientialDog, currentDogIndex]);
   useEffect(() => {
-    setCurrentDogIndex(0)
-  }, [potientialDog])
+    setCurrentDogIndex(0);
+  }, [potientialDog]);
 
   useEffect(() => {
 
-  }, [filterParams])
+  }, [filterParams]);
 
   // Dog Filters
   const [sizeRange, changeSizeRange] = useState([1, 3]); // range represented by strings XS, S, M, L, XL
@@ -49,9 +49,9 @@ export default function Homepage({
   const [alert, showAlert] = useState(false); // instead of using alert()
   useEffect(() => {
     if (alert) {
-      setTimeout(() => { showAlert(false) }, 3000);
+      setTimeout(() => { showAlert(false); }, 3000);
     }
-  }, [alert])
+  }, [alert]);
 
   // Requests
 
@@ -67,11 +67,11 @@ export default function Homepage({
 
   const updateDogIndex = () => {
     if (currentDogIndex === potientialDog.length - 1) {
-      setCurrentDogIndex(0)
+      setCurrentDogIndex(0);
     } else {
-      setCurrentDogIndex(currentDogIndex + 1)
+      setCurrentDogIndex(currentDogIndex + 1);
     }
-  }
+  };
 
   // GET request to get the user's settings
   useEffect(() => {
@@ -102,14 +102,14 @@ export default function Homepage({
           const options = {
             method: 'GET',
             url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
-            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'HQH2IMXH3DL9TC616NNR' }
-          }
+            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'AAOQMTRST8WJ41JRKG5L' },
+          };
           axios.request(options)
             .then((response) => {
-              let uniqueZips = [];
-              for (let item of response.data.DataList) {
+              const uniqueZips = [];
+              for (const item of response.data.DataList) {
                 if (!uniqueZips.includes(item.Code)) {
-                  uniqueZips.push(`'${item.Code}'`)
+                  uniqueZips.push(`'${item.Code}'`);
                 }
               }
               changeZipCodes(uniqueZips.join(','));
@@ -123,14 +123,14 @@ export default function Homepage({
                 avoidBreeds: filters.avoid_breeds,
                 ownerAgeRange: [filters.min_age, filters.max_age],
                 ownerGenders: filters.genders,
-                zipCodes: uniqueZips.join(',')
-              }
+                zipCodes: uniqueZips.join(','),
+              };
               setFilterParams(params);
               getRandomUser(params);
             })
             .catch((err) => {
-              console.error(err)
-            })
+              console.error(err);
+            });
         })
         .catch((err) => {
           console.error(err);
@@ -141,11 +141,11 @@ export default function Homepage({
   const theme = createMuiTheme({
     palette: {
       primary: {
-        main: "#EFF9F0"
+        main: '#EFF9F0',
       },
       secondary: {
-        main: "#13070C"
-      }
+        main: '#13070C',
+      },
     },
   });
 
@@ -155,17 +155,17 @@ export default function Homepage({
         <ThemeProvider theme={theme}>
           <Button variant="contained" style={{ width: '6rem', margin: '0.5rem' }} color="primary" onClick={() => toggleFilterModal(!filterModalOpen)}>Filters</Button>
         </ThemeProvider>
-        {alert ? <div className='filter-alert'>UPDATED PREFERENCES</div> : null}
+        {alert ? <div className="filter-alert">UPDATED PREFERENCES</div> : null}
       </div>
-      <div className='potential-match-view'>
+      <div className="potential-match-view">
         <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
         <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
       {filterModalOpen
         ? (
-          <div className='filter-container'>
-            <div className='arrowhead'></div>
+          <div className="filter-container">
+            <div className="arrowhead" />
             <Filters
               sizeRange={sizeRange}
               changeSizeRange={changeSizeRange}

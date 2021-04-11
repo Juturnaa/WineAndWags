@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState();
+  const [currentUserID, setCurrentID] = useState(7);
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -117,6 +117,7 @@ const App = () => {
       .catch((err) => console.log(err));
     axios.post(`/app/${id}/profile-likes`, { liked_user_id: currentUser.id })
       .then((data) => {
+        updateMatches();
       })
       .catch((err) => {
         console.log(err);
@@ -137,6 +138,20 @@ const App = () => {
     })
       .catch((err) => console.log(err));
   };
+
+
+  const getAllMessages = () => {
+    const messages = {};
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          console.log('results messages', results.data)
+          messages[match.user_id] = results.data;
+          setAllMessages(messages);
+        })
+        .catch((err) => console.log(err));
+    });
+  }
 
   useEffect(() => {
     if (currentUserID !== undefined) {
@@ -173,6 +188,15 @@ const App = () => {
     }
   }, [currentUserID]);
 
+
+  const updateMatches = () => {
+    axios.get(`/app/${currentUser.id}/matches`)
+        .then((results) => {
+          setMatches(results.data);
+        })
+        .catch((err) => console.log(err));
+  };
+
   useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/matches`)
@@ -182,7 +206,7 @@ const App = () => {
         })
         .catch((err) => console.log(err));
     }
-  }, [currentUser]);
+  }, [currentUser, messageCount]);
 
   useEffect(() => {
     const matchPhotos = [];
@@ -192,7 +216,7 @@ const App = () => {
       })
       .catch((err) => console.log(err)));
     setMatchesPhotos(matchPhotos);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     const messages = {};
@@ -216,7 +240,7 @@ const App = () => {
         .catch((err) => console.log(err));
     });
     setMatchesInfo(info);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     if (appointment.length > 0) {
@@ -231,43 +255,56 @@ const App = () => {
   window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
+  
+  // if (landing) {
+  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
+  // }
+  // if (register) {
+  //   return (
+  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+  //   );
+  // }
 
-  if (register) return (<Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />);
-  else if (landing || currentUserID === undefined) return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  else if (currentUserID){
-    return (
-      <div>
-        {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
-        <NavBar
-          likePhoto={likePhoto}
-          likeProfile={likeProfile}
-          humanPhoto={humanPhoto || ''}
-          dogsImg={dogsImg}
-          getRandomUser={getRandomUser}
-          currentUser={currentUser}
-          breeds={breeds}
-          currentDogs={currentDogs}
-          matches={matches}
-          matchesPhotos={matchesPhotos}
-          matchesInfo={matchesInfo}
-          allMessages={allMessages}
-          setCurrentID={setCurrentID}
-          currentUserID={currentUserID}
-          potiential={potiential}
-          potientialDog={potientialDog}
-          potientialDogsImg={potientialDogsImg}
-          showNotifs={showNotifs}
-          setShowNotifs={setShowNotifs}
-          setMessageCount={setMessageCount}
-          messageCount={messageCount}
-        />
-        {/* <ContextProvider>
-          <Video />
-        </ContextProvider> */}
-      </div>
-    );
-
-  }
+  return (
+    <div>
+      {landing ? <Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />
+      : null
+      }
+      { register ? <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+      : null
+      }
+      {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
+      <NavBar
+        setCurrentUser={setCurrentUser}
+        setLanding={setLanding}
+        likePhoto={likePhoto}
+        likeProfile={likeProfile}
+        humanPhoto={humanPhoto || ''}
+        dogsImg={dogsImg}
+        getRandomUser={getRandomUser}
+        currentUser={currentUser}
+        breeds={breeds}
+        currentDogs={currentDogs}
+        matches={matches}
+        matchesPhotos={matchesPhotos}
+        matchesInfo={matchesInfo}
+        allMessages={allMessages}
+        currentUserID={currentUserID}
+        potiential={potiential}
+        potientialDog={potientialDog}
+        potientialDogsImg={potientialDogsImg}
+        showNotifs={showNotifs}
+        setShowNotifs={setShowNotifs}
+        setMessageCount={setMessageCount}
+        messageCount={messageCount}
+        getAllMessages={getAllMessages}
+        setAllMessages={setAllMessages}
+      />
+      {/* <ContextProvider>
+        <Video />
+      </ContextProvider> */}
+    </div>
+  );
 };
 
 export default App;
