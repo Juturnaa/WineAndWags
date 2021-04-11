@@ -28,14 +28,23 @@ import { ContextProvider } from './Video/SocketContext';
 //  {loggedIn ? <Redirect to="/home" /> : <LandingPage />}
 // </Route>
 
+
 function NavBar({
-  currentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg,
+  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
   const [human, setHuman] = useState(true);
   const [dogs, setDogs] = useState(false);
   const [unread, setUnread] = useState(0);
+
+
+const logMeOut = () => {
+  localStorage.clear()
+    setLanding(true)
+    setCurrentUser(null);
+    location.href = '/home'
+}
 
   const changeHuman = () => {
     setHuman(true);
@@ -62,7 +71,6 @@ function NavBar({
     axios.patch(`/app/notifications/${notif_id}`)
       .then(() => {
         getNotifs();
-        console.log('updated');
       });
   };
   useEffect(() => {
@@ -100,6 +108,7 @@ function NavBar({
                   <div id="editNav-triangle" />
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeHuman}>Edit Me</Dropdown.Item>
                   <Dropdown.Item as={Link} to="/editprofile" onClick={changeDogs}>Edit my dog(s)</Dropdown.Item>
+                  <Dropdown.Item onClick={logMeOut}>Logout</Dropdown.Item>
                 </div>
               </div>
             )
@@ -123,7 +132,9 @@ function NavBar({
                 let txt;
                 if (notif.type === 'photoLike') txt = ' liked your photo';
                 else if (notif.type === 'message') txt = ' sent you a message';
-                else if (notif.type === 'appointment') txt = ' planned date with you';
+                else if (notif.type === 'appointment') txt = ' planned a date with you';
+                else if (notif.type === 'match') txt = ' matched with you';
+                else if (notif.type === 'video') txt = ' called you';
                 if (notif.read) {
                   return (
                     <div className="read-notif">
@@ -157,6 +168,8 @@ function NavBar({
               matchesPhotos={matchesPhotos}
               allMessages={allMessages}
               matchesInfo={matchesInfo}
+              getAllMessages={getAllMessages}
+              setAllMessages={setAllMessages}
             />
           )}
         />
@@ -215,16 +228,6 @@ NavBar.propTypes = {
       PropTypes.any,
     ]),
   ),
-  allMessages: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
-  matchesInfo: PropTypes.objectOf(
-    PropTypes.oneOfType([
-      PropTypes.any,
-    ]),
-  ),
 };
 
 NavBar.defaultProps = {
@@ -234,8 +237,6 @@ NavBar.defaultProps = {
   currentDogs: [],
   dogsImg: [],
   matches: [],
-  allMessages: {},
-  matchesInfo: {},
 };
 
 export default NavBar;

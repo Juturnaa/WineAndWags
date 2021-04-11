@@ -8,7 +8,7 @@ import Video from '../Video/Video';
 // import ReactNotification from 'react-notifications-component'
 
 const Chat = ({
-  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo, setMessageCount, messageCount,
+  matchesPhotos, messageMode, currentMessageId, allMessages, onMessageClick, currentUser, matchesInfo, setMessageCount, messageCount, getAllMessages, setAllMessages,
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
@@ -16,6 +16,23 @@ const Chat = ({
 
   const [inputValue, setInputValue] = useState('');
   const [calendar, clickedCalendar] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [dmSent, setDmSent] = useState(0);
+
+  const getMessages = () => {
+    axios.get(`/app/${currentUserId}/convos/${matchUserId}`)
+      .then((results) => {
+        console.log('results and data', results.data);
+        setMessages(results.data);
+        setDmSent((dmSent) => dmSent + 1);
+        allMessages[matchUserId] = results.data;
+      })
+      .then(() => {
+        // setAllMessages(results.data);
+        window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -28,6 +45,11 @@ const Chat = ({
       document.body.style.overflow = 'unset';
     }
   }, [calendar]);
+
+  useEffect(() => {
+    getMessages();
+  }, []);
+
 
   const customStyles = {
     content : {
@@ -45,12 +67,12 @@ const Chat = ({
   };
 
   const onSendClick = (e) => {
-    console.log('clicked');
     axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
       message: inputValue,
     })
       .then(() => {
         setInputValue('');
+        getMessages();
         setMessageCount((messageCount) => messageCount + 1);
       })
       .catch((err) => console.log(err));
@@ -78,7 +100,7 @@ const Chat = ({
         <br />
 
         <div id="direct-messages-container">
-          {allMessages[matchUserId].map((message) => {
+          {messages.map((message) => {
             // console.log('message', message)
             if (message.sender_id === currentUserId) {
               return (

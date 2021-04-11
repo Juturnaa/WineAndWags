@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Pagination } from '@material-ui/lab';
 import Carousel from 'react-bootstrap/Carousel';
 import PhotoLikeButton from './PhotoLikeButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 
 const PhotosList = ({ photos, likePhoto }) => {
   const [index, setIndex] = useState(0);
@@ -33,7 +35,7 @@ const PhotosList = ({ photos, likePhoto }) => {
             <PhotoLikeButton photoId={photos[index].id} likePhoto={likePhoto} />
           </div>
         )
-        : null}
+        : <CircularProgress color="secondary" />}
 
     </div>
   );

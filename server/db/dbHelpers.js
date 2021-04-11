@@ -174,19 +174,25 @@ const dbHelpers = {
   postNewConvo: (user_id, recipient_id, callback) => {
     console.log(recipient_id);
     const queryStr = `INSERT INTO waw.convo SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
-    WHERE NOT EXISTS (SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id}))`;
+    WHERE NOT EXISTS (SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id})) RETURNING *`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
-    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MI AM'), convo_id FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})) ORDER BY time_stamp ASC`;
+    const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MI AM'), convo_id, opened FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})) ORDER BY time_stamp ASC`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
   },
   postMessage: (user_id, recipient_id, body, callback) => {
-    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, (select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})))`;
+    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id, opened) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, (select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})), false)`;
+    db.query(queryStr, (err, res) => {
+      callback(err, res);
+    });
+  },
+  patchMessage: (user_id, message_id, callback) => {
+    const queryStr = `UPDATE waw.message SET opened=true WHERE id=${message_id}`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });

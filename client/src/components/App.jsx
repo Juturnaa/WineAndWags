@@ -109,7 +109,13 @@ const App = () => {
         myLikes = data.data.map((likeObj) => likeObj.liked_user_id);
         if (myLikes.includes(potiential.id)) {
           axios.post(`/app/${currentUserID}/convos`, { recipient_id: potiential.id })
-            .then(() => {
+            .then((data) => {
+              axios.post(`/app/notifications/${currentUser.id}`, {
+                type: 'match',
+                type_id: data.id,
+                recipient_id: currentUser.id,
+                sender_name: currentUser.name,
+              })
               alert('its a match!');
             });
         }
@@ -121,7 +127,8 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      
   };
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
@@ -138,6 +145,20 @@ const App = () => {
     })
       .catch((err) => console.log(err));
   };
+
+
+  const getAllMessages = () => {
+    const messages = {};
+    matches.map((match) => {
+      axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+        .then((results) => {
+          console.log('results messages', results.data)
+          messages[match.user_id] = results.data;
+          setAllMessages(messages);
+        })
+        .catch((err) => console.log(err));
+    });
+  }
 
   useEffect(() => {
     if (currentUserID !== undefined) {
@@ -192,7 +213,7 @@ const App = () => {
         })
         .catch((err) => console.log(err));
     }
-  }, [currentUser]);
+  }, [currentUser, messageCount]);
 
   useEffect(() => {
     const matchPhotos = [];
@@ -202,7 +223,7 @@ const App = () => {
       })
       .catch((err) => console.log(err)));
     setMatchesPhotos(matchPhotos);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     const messages = {};
@@ -226,7 +247,7 @@ const App = () => {
         .catch((err) => console.log(err));
     });
     setMatchesInfo(info);
-  }, [matches]);
+  }, [matches, messageCount]);
 
   useEffect(() => {
     if (appointment.length > 0) {
@@ -241,7 +262,7 @@ const App = () => {
   window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
-
+  
   // if (landing) {
   //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
   // }
@@ -253,8 +274,16 @@ const App = () => {
 
   return (
     <div>
+      {landing ? <Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />
+      : null
+      }
+      { register ? <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
+      : null
+      }
       {reviewModal ? <ReviewModal reviewModal={reviewModal} setReviewModal={setReviewModal} appointment={appointment || ''} /> : null}
       <NavBar
+        setCurrentUser={setCurrentUser}
+        setLanding={setLanding}
         likePhoto={likePhoto}
         likeProfile={likeProfile}
         humanPhoto={humanPhoto || ''}
@@ -275,6 +304,8 @@ const App = () => {
         setShowNotifs={setShowNotifs}
         setMessageCount={setMessageCount}
         messageCount={messageCount}
+        getAllMessages={getAllMessages}
+        setAllMessages={setAllMessages}
       />
       {/* <ContextProvider>
         <Video />

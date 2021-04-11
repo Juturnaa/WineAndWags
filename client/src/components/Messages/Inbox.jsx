@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import Chat from './Chat';
 import MatchesCarousel from './MatchesCarousel';
 
 const Inbox = ({
-  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount,
+  currentUser, matches, matchesPhotos, allMessages, matchesInfo, setMessageCount, messageCount, getAllMessages, setAllMessages,
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
@@ -13,18 +14,42 @@ const Inbox = ({
   const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
   const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
   const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
+  let newestMessageId = 0;
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
     setCurrentMessageId(Number(e.target.getAttribute('name')));
+    console.log('message id', e.target.getAttribute('data-id'));
+    axios.patch(`/app/${currentUser.id}/convos/`, {
+      message_id: e.target.getAttribute('data-id'),
+    });
   };
+
+  // useEffect(() => {
+  //   let isMounted = true;
+  //   const messages = {};
+  //   matches.map((match) => {
+  //     axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
+  //       .then((results) => {
+  //         if (isMounted) {
+  //           messages[match.user_id] = results.data;
+  //         }
+  //       })
+  //       .catch((err) => console.log(err));
+  //   });
+  //   setAllMessages(messages);
+  //   return () => { isMounted = false; };
+  // }, [dmSent]);
+  // useEffect(() => {
+  //   getAllMessages();
+  // }, []);
 
   const messageQueueCount = () => {
     let count = 0;
-    const allMessagesKeys = Object.keys(allMessages);
-    for (let i = 0; i < allMessagesKeys.length; i++) {
-      if (allMessages[i] && allMessages[i].length > 0) {
-        count++;
+    const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
+    for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
+      if (sessionAllMessages[i] && sessionAllMessages[i].length > 0) {
+        count += 1;
       }
     }
     return count;
@@ -58,43 +83,53 @@ const Inbox = ({
                   )
                 </span>
                 {sessionMatchesPhotos.map((match, index) => {
-                  const newestMessageIndex = sessionAllMessages[match[0].user_id].length - 1;
-                  if (sessionAllMessages[match[0].user_id].length !== 0) {
+                  const newestMessageIndex = allMessages[match[0].user_id].length - 1;
+                  if (allMessages[match[0].user_id].length !== 0) {
                     return (
-                      <div className="message-container" key={match[0].user_id} name={index} onClick={onMessageClick}>
-                        <div className="messages-photos-container" name={index} onClick={onMessageClick}>
+                      <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                        <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                           <img
                             className="human-photos-small"
                             alt="human"
                             src={match[0].url}
-                            name={index}
+                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
                             onClick={onMessageClick}
                           />
                           <img
                             className="dog-photos-small"
                             alt="dog"
                             src={match[1].url}
-                            name={index}
+                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
                             onClick={onMessageClick}
                           />
                         </div>
-                        <div className="name-message-container" name={index} onClick={onMessageClick}>
-                          <div name={index} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
+                        <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                          <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
                             {sessionMatchesInfo[match[0].user_id].name}
                             {' '}
                             and
                             {' '}
                             {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
                           </div>
-                          <div>
-                            {(sessionAllMessages[match[0].user_id].length !== 0)
-                              ? (
-                                <div name={index} onClick={onMessageClick}>
-                                  {sessionAllMessages[match[0].user_id][newestMessageIndex].body}
+
+                          {/* ---------Most recent message------------ */}
+                          {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
+                            ? (
+                              <div className="unread-message-container">
+                                <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
+                                  {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                                  {allMessages[match[0].user_id][newestMessageIndex].body}
                                 </div>
-                              )
-                              : <div name={index} onClick={onMessageClick}>Make the first move! Be bold, and write your own story...</div>}
-                          </div>
+                                <i className="fas fa-circle fa-xs" />
+                              </div>
+                            )
+                            : (
+                              <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                                {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                                {allMessages[match[0].user_id][newestMessageIndex].body}
+                              </div>
+                            )}
+
                         </div>
                       </div>
                     );
@@ -109,12 +144,14 @@ const Inbox = ({
             matchesPhotos={sessionMatchesPhotos}
             messageMode={messageMode}
             currentMessageId={currentMessageId}
-            allMessages={sessionAllMessages}
+            allMessages={allMessages}
             onMessageClick={onMessageClick}
             currentUser={currentUser}
             matchesInfo={sessionMatchesInfo}
             setMessageCount={setMessageCount}
             messageCount={messageCount}
+            getAllMessages={getAllMessages}
+            setAllMessages={setAllMessages}
           />
         )}
     </div>
