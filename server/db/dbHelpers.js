@@ -99,7 +99,7 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
-
+    console.log(qryStr);
     db.query(qryStr, (err, data) => {
       if (err) {
         res.status(400).send('something went wrong with your query');
