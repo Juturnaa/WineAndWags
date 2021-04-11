@@ -341,7 +341,7 @@ function EditProfile({
           <div style={{ display: 'inline-flex', justifyContent: 'center', marginTop: '0.2%' }}>
             <Button className={classes.addDogBtn} variant="contained" type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</Button>
           </div>
-          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} /> : null}
+          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} currentUserID={currentUserID} /> : null}
           {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
             <div id="editDog-container">
               <Form id="editDog-form" onSubmit={submitDog} key={index}>

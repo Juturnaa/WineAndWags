@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState(10);
+  const [currentUserID, setCurrentID] = useState();
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -37,6 +37,7 @@ const App = () => {
   const [potientialDogsImg, setPotientialDogsImg] = useState([]);
   const [showNotifs, setShowNotifs] = useState(false);
 
+  console.log(potiential, potientialDogsPhoto)
   useEffect(() => {
     const dogsimages = [];
     const store = [];
@@ -80,6 +81,8 @@ const App = () => {
     let uId;
     axios.get('/app/users/random-profile', { params: { filters } })
       .then((data) => {
+        console.log('hi');
+        console.log('data:', data.data);
         random = Math.floor(Math.random() * (data.data.length - 0) + 0);
         setPotiential(data.data[random]);
         uId = data.data[random].id;
@@ -259,15 +262,6 @@ const App = () => {
   window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
   window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
   // ------------------------------------------------- //
-
-  // if (landing) {
-  //   return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
-  // }
-  // if (register) {
-  //   return (
-  //     <Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />
-  //   );
-  // }
 
   return (
     <div>

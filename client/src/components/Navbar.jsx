@@ -39,12 +39,12 @@ function NavBar({
   const [unread, setUnread] = useState(0);
 
 
-const logMeOut = () => {
-  localStorage.clear()
-    setLanding(true)
-    setCurrentUser(null);
-    location.href = '/home'
-}
+  const logMeOut = () => {
+    localStorage.clear()
+      setLanding(true)
+      setCurrentUser(null);
+      location.href = '/home'
+  }
 
   const changeHuman = () => {
     setHuman(true);

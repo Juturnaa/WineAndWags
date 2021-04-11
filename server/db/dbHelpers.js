@@ -69,7 +69,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
-      AND waw.users.zipcode IN (${zipCodes})
+      AND waw.users.zipcode IN ('${zipCodes}')
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -88,7 +88,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
-      AND waw.users.zipcode IN (${zipCodes})
+      AND waw.users.zipcode IN ('${zipCodes}')
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -99,7 +99,6 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
-    console.log(qryStr);
     db.query(qryStr, (err, data) => {
       if (err) {
         res.status(400).send('something went wrong with your query');
