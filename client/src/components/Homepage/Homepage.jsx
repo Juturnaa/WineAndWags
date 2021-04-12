@@ -8,7 +8,7 @@ import DogView from './DogView';
 import LikeButton from './LikeButton';
 
 export default function Homepage({
-  currentUser, likeProfile, humanPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
+  currentUser, likeProfile, potientialPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
 }) {
   const [filterModalOpen, toggleFilterModal] = useState(false);
   const [currentDog, setCurrentDog] = useState({});
@@ -102,7 +102,7 @@ export default function Homepage({
           const options = {
             method: 'GET',
             url: 'https://api.zip-codes.com/ZipCodesAPI.svc/1.0/FindZipCodesInRadius',
-            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'AAOQMTRST8WJ41JRKG5L' },
+            params: { zipcode: currentUser.zipcode, maximumradius: filters.max_dist, key: 'R9NC7P6CVW7RDGU10LKR' },
           };
           axios.request(options)
             .then((response) => {
@@ -158,7 +158,7 @@ export default function Homepage({
         {alert ? <div className="filter-alert">UPDATED PREFERENCES</div> : null}
       </div>
       <div className="potential-match-view">
-        <ProfileView user={potiential} photos={humanPhoto} likePhoto={likePhoto} />
+        <ProfileView user={potiential} photos={potientialPhoto} likePhoto={likePhoto} />
         <DogView potientialDogsImg={potientialDogsImg} isDisplayingSkipDogs={isDisplayingSkipDogs} updateDogIndex={updateDogIndex} dog={currentDog || ''} dogPhotos={dogPhotos} likePhoto={likePhoto} />
       </div>
       <LikeButton user={potiential} setCurrentDogIndex={setCurrentDogIndex} likeProfile={likeProfile} filterParams={filterParams} getRandomUser={getRandomUser} />
@@ -195,6 +195,7 @@ export default function Homepage({
               showAlert={showAlert}
               zipCodes={zipCodes}
               changeZipCodes={changeZipCodes}
+              getRandomUser={getRandomUser}
             />
           </div>
         ) : null}

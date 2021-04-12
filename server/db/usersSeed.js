@@ -13,6 +13,9 @@ const malePhotos = [
   'https://image.shutterstock.com/image-photo/portrait-young-smiling-handsome-bearded-600w-1906254982.jpg',
   'https://image.shutterstock.com/image-photo/young-handsome-man-beard-wearing-600w-1640944705.jpg',
   'https://image.shutterstock.com/image-photo/close-side-profile-photo-intelligent-600w-1447435748.jpg',
+  'https://image.shutterstock.com/image-photo/smiling-bearded-young-male-model-260nw-788313199.jpg',
+  'https://image.shutterstock.com/image-photo/isolated-shot-young-handsome-male-260nw-762790210.jpg',
+  'https://image.shutterstock.com/image-photo/happy-young-man-portrait-handsome-260nw-262734242.jpg',
 ];
 const femalePhotos = [
   'https://image.shutterstock.com/image-photo/close-side-portrait-healthy-young-600w-674516284.jpg',
@@ -23,6 +26,9 @@ const femalePhotos = [
   'https://image.shutterstock.com/image-photo/side-portrait-smiling-asian-woman-600w-1399301462.jpg',
   'https://image.shutterstock.com/image-photo/beautiful-redhead-woman-freckles-studio-600w-789036601.jpg',
   'https://image.shutterstock.com/image-photo/profile-side-view-portrait-nice-600w-1619251795.jpg',
+  'https://image.shutterstock.com/image-photo/isolated-portrait-smiling-business-woman-260nw-684509272.jpg',
+  'https://image.shutterstock.com/image-photo/closeup-portrait-yong-woman-casual-260nw-1554086789.jpg',
+  'https://image.shutterstock.com/image-photo/beautiful-smiling-woman-clean-skin-260nw-478870669.jpg',
 ];
 const maleBios = [
   'Greetings!',
@@ -30,6 +36,8 @@ const maleBios = [
   'Used to work at Jamba Juice!',
   'im all vibed up!',
   'YEEEEEHAWEWWWWW',
+  'Just want to meet my soulmate',
+  'You need to get along with my dog',
 ];
 const femaleBios = [
   'I wish I was younger!',
@@ -37,10 +45,11 @@ const femaleBios = [
   'Love Going Outside',
   'looking for a wonderful conversation...',
   'TOTAL WINE FIEND',
+  'Any sugar daddies?',
 ];
 
-const maleNames = ['Derek', 'Nader', 'Ronald', 'Kun', 'Marcus', 'Timothy'];
-const femaleNames = ['Sarah', 'Lisa', 'Veronica', 'Latrella'];
+const maleNames = ['Derek', 'Nader', 'Ronald', 'Kun', 'Marcus', 'Timothy', 'Michael', 'Jake', 'Joseph', 'Paul', 'Brian', 'Hyungjoon', 'Luis', 'Kun', 'Derek', 'Daniel', 'David', 'Alex', 'Robert', 'Jazper', 'Sho', 'Deo', 'Mikael'];
+const femaleNames = ['Sarah', 'Lisa', 'Veronica', 'Latrella', 'Justine', 'Mai', 'Sophia', 'Agnes', 'Ruth', 'Jessica', 'Julie', 'Amanda', 'Amy', 'Crystal', 'Sam', 'Alexis', 'Ashton', 'Ashley', 'Cadyen', 'Max', 'Annabelle', 'Ariel'];
 const ages = [
   18,
   19,
@@ -83,7 +92,7 @@ const ages = [
   56,
   57,
 ];
-1;
+
 const zipcodes = [
   '90220',
   '90221',
@@ -181,8 +190,8 @@ const zipcodes = [
   '92823',
 ];
 
-const genders = ['M', 'F', 'All'];
-// const photoGender = ['M', 'F'];
+const genders = ['M', 'F'];
+
 const password = 'password';
 const cities = [
   'Pasadena',
@@ -193,35 +202,54 @@ const cities = [
   'Temple City',
 ];
 
-const getRandom = (min, max) => Math.floor(Math.random() * (max - min) + min);
+function getRandom(max) {
+  return Math.floor(Math.random() * max);
+}
 
 const seedUsers = () => {
   for (let i = 1; i <= 1000; i++) {
     let name;
     let bio;
 
-    const gender = genders[getRandom(0, genders.length)];
-    if (gender === 'M') {
-      name = maleNames[getRandom(0, maleNames.length)];
-      bio = maleBios[getRandom(0, maleBios.length)];
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(0, malePhotos.length)]}')`);
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(0, malePhotos.length)]}')`);
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(0, malePhotos.length)]}')`);
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(0, malePhotos.length)]}')`);
-    } else {
-      name = femaleNames[getRandom(0, femaleNames.length)];
-      bio = femaleBios[getRandom(0, femaleBios.length)];
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(0, femalePhotos.length)]}')`);
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(0, femalePhotos.length)]}')`);
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(0, femalePhotos.length)]}')`);
-      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(0, femalePhotos.length)]}')`);
+    const random = getRandom(10);
+    let gender = genders[getRandom(genders.length)];
+    if (gender === 'M' && random % 2 === 0) {
+      name = maleNames[getRandom(maleNames.length)];
+      bio = maleBios[getRandom(maleBios.length)];
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+    } else if (gender === 'M' && random % 2 === 1) {
+      gender = 'All';
+      name = maleNames[getRandom(maleNames.length)];
+      bio = maleBios[getRandom(maleBios.length)];
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${malePhotos[getRandom(malePhotos.length)]}')`);
+    } else if (gender === 'F' && random % 2 === 0) {
+      name = femaleNames[getRandom(femaleNames.length)];
+      bio = femaleBios[getRandom(femaleBios.length)];
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+    } else if (gender === 'F' && random % 2 === 1) {
+      gender = 'All';
+      name = femaleNames[getRandom(femaleNames.length)];
+      bio = femaleBios[getRandom(femaleBios.length)];
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
+      db.query(`INSERT INTO waw.photos(user_id, dog_id, url) VALUES(${i}, null, '${femalePhotos[getRandom(femalePhotos.length)]}')`);
     }
     const email = `sophiaacheong${i}@gmail.com`;
-    const age = ages[getRandom(0, ages.length)];
-    const zipcode = zipcodes[getRandom(0, zipcodes.length)];
+    const age = ages[getRandom(ages.length)];
+    const zipcode = zipcodes[getRandom(zipcodes.length)];
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
-    const city = cities[getRandom(0, cities.length)];
+    const city = cities[getRandom(cities.length)];
     console.log(i);
     db.query(
       'INSERT INTO waw.users(id, "name", bio, email, "password", age, zipcode, city, searched_as) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9)',

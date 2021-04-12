@@ -1,8 +1,8 @@
-const axios = require('axios');
-const dbHelpers = require('./db/dbHelpers');
-const upload = require('./file-upload');
+const axios = require("axios");
+const dbHelpers = require("./db/dbHelpers");
+const upload = require("./file-upload");
 
-const singleUpload = upload.single('image');
+const singleUpload = upload.single("image");
 
 const controller = {
   getMyProfile: (req, res) => {
@@ -23,13 +23,13 @@ const controller = {
   editOwnerProfile: (req, res) => {
     dbHelpers.editOwnerProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
   editDogProfile: (req, res) => {
     dbHelpers.editDogProfile(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
   uploadPhotos: (req, res) => {
@@ -38,7 +38,7 @@ const controller = {
       else {
         dbHelpers.uploadPhotos(req, req.file.location, (error) => {
           if (error) res.status(404).send(error);
-          else res.status(202).send('Success!');
+          else res.status(202).send("Success!");
         });
       }
     });
@@ -49,7 +49,7 @@ const controller = {
       else {
         dbHelpers.uploadDogPhotos(req, req.file.location, (err, result) => {
           if (err) res.status(404).send(err);
-          res.status(202).send('Success!');
+          res.status(202).send("Success!");
         });
       }
     });
@@ -57,7 +57,7 @@ const controller = {
   removePhotos: (req, res) => {
     dbHelpers.removePhotos(req, (err, results) => {
       if (err) res.status(404).send(err);
-      res.status(202).send('Success!');
+      res.status(202).send("Success!");
     });
   },
 
@@ -75,7 +75,7 @@ const controller = {
       (err, results) => {
         if (err) res.status(400).send(err);
         else res.status(200).send(results.rows[0]);
-      },
+      }
     );
   },
   getConvoMessages: (req, res) => {
@@ -85,7 +85,7 @@ const controller = {
       (err, results) => {
         if (err) res.status(400).send(err);
         else res.status(200).send(results.rows);
-      },
+      }
     );
   },
   postMessage: (req, res) => {
@@ -95,7 +95,7 @@ const controller = {
       req.body,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send('Message sent!');
+        else res.status(200).send(results.rows[0]);
       },
     );
   },
@@ -105,8 +105,8 @@ const controller = {
       req.body.message_id,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send('Message sent!');
-      },
+        else res.status(200).send("Message sent!");
+      }
     );
   },
   updateReview: (req, res) => {
@@ -116,37 +116,35 @@ const controller = {
     });
   },
   // CALENDAR------------------------------------//
-  getSchedule: (req,res) => {
-    dbHelpers.getSchedule(req, (err,results)=>{
-      if(err) res.status(400).send(err);
-      res.status(200).send(results.rows)
-      }
-    )
+  getSchedule: (req, res) => {
+    dbHelpers.getSchedule(req, (err, results) => {
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
+    });
   },
-  postSchedule: (req,res)=>{
-    dbHelpers.postSchedule(req,(err,results)=>{
-      if(err) res.status(400).send(err);
-      res.status(200).send(results.rows)
-    })
+  postSchedule: (req, res) => {
+    dbHelpers.postSchedule(req, (err, results) => {
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
+    });
   },
-  putScheduleMatched: (req,res)=>{
-    dbHelpers.putScheduleMatched(req,(err,results)=>{
-      if(err) res.status(400).send(err);
-      res.status(200).send(results.rows)
-    })
+  putScheduleMatched: (req, res) => {
+    dbHelpers.putScheduleMatched(req, (err, results) => {
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
+    });
   },
-  getAppointment: (req,res) => {
-    dbHelpers.getAppointment(req, (err,results)=>{
-      if(err) res.status(400).send(err);
-      res.status(200).send(results.rows)
-      }
-    )
+  getAppointment: (req, res) => {
+    dbHelpers.getAppointment(req, (err, results) => {
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
+    });
   },
-  postAppointment:(req,res)=>{
-    dbHelpers.postAppointment(req,(err,results)=>{
-      if(err) res.status(400).send(err);
-      res.status(200).send(results.rows)
-    })
+  postAppointment: (req, res) => {
+    dbHelpers.postAppointment(req, (err, results) => {
+      if (err) res.status(400).send(err);
+      res.status(200).send(results.rows);
+    });
   },
   // PROFILE LIKES AND MATCHES------------------------------------//
   // getAllProfileLikes: (req, res) => {
@@ -179,8 +177,8 @@ const controller = {
       req.body.liked_user_id,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send('Profile liked!');
-      },
+        else res.status(200).send("Profile liked!");
+      }
     );
   },
   postNewPhotoLike: (req, res) => {
@@ -189,8 +187,8 @@ const controller = {
       req.body.liked_photo_id,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send('Photo liked!');
-      },
+        else res.status(200).send("Photo liked!");
+      }
     );
   },
   getMatches: (req, res) => {
@@ -213,7 +211,7 @@ const controller = {
   },
   updateSavedFilters: (req, res) => {
     dbHelpers.updateSavedFilters(req.params.user_id, req, (err, results) => {
-      err ? res.status(404).send(err) : res.status(202).send('Updated');
+      err ? res.status(404).send(err) : res.status(202).send("Updated");
     });
   },
 
@@ -222,44 +220,53 @@ const controller = {
     let allResults = [];
     let result1;
     const { latitude, longitude } = JSON.parse(req.query.location);
-    axios.get('https://api.yelp.com/v3/businesses/search', {
-      params: {
-        latitude: latitude,
-        longitude: longitude,
-        categories: 'dog_parks',
-      },
-      headers: {
-        authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
-      },
-    }).then((result) => {
-      result1 = result.data;
-      axios.get('https://api.yelp.com/v3/businesses/search', {
+    axios
+      .get("https://api.yelp.com/v3/businesses/search", {
         params: {
           latitude: latitude,
           longitude: longitude,
-          term: 'Off Leash Dog Beaches',
+          categories: "dog_parks",
         },
         headers: {
-          authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
+          authorization:
+            "Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx",
         },
-      }).then((result2) => {
-        allResults = result1.businesses.concat(result2.data.businesses);
-        axios.get('https://api.yelp.com/v3/businesses/search', {
-          params: {
-            latitude: latitude,
-            longitude: longitude,
-            categories: 'restaurants',
-            attributes: 'pet_friendly',
-          },
-          headers: {
-            authorization: 'Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx',
-          },
-        }).then((result3) => {
-          // res.send(allResults.concat(result3.data.businesses));
-          res.send(allResults);
-        });
+      })
+      .then((result) => {
+        result1 = result.data;
+        axios
+          .get("https://api.yelp.com/v3/businesses/search", {
+            params: {
+              latitude: latitude,
+              longitude: longitude,
+              term: "Off Leash Dog Beaches",
+            },
+            headers: {
+              authorization:
+                "Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx",
+            },
+          })
+          .then((result2) => {
+            allResults = result1.businesses.concat(result2.data.businesses);
+            axios
+              .get("https://api.yelp.com/v3/businesses/search", {
+                params: {
+                  latitude: latitude,
+                  longitude: longitude,
+                  categories: "restaurants",
+                  attributes: "pet_friendly",
+                },
+                headers: {
+                  authorization:
+                    "Bearer FCjYuGUU6sDdV4pbWxqy23I_UsG730pGsK6b5euAEsgmoU6l3UVN2YR5WfIhuiDIZAxfwBxulDU7XUoOGXpbAPb__VPZFuOTo5qY4eNNSsf8LpPqe9GiXFp1rFJrYHYx",
+                },
+              })
+              .then((result3) => {
+                // res.send(allResults.concat(result3.data.businesses));
+                res.send(allResults);
+              });
+          });
       });
-    });
   },
   postFilters: (req, res) => {
     dbHelpers.postFilters(req, res);
@@ -280,8 +287,7 @@ const controller = {
   },
   updateNotif: (req, res) => {
     dbHelpers.updateNotif(req, res);
-  }
-
+  },
 };
 
 module.exports = controller;

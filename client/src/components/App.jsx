@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState(7);
+  const [currentUserID, setCurrentID] = useState();
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});
@@ -103,6 +103,7 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
+
     let myLikes;
     axios.get(`/app/${currentUserID}/profile-likes`)
       .then((data) => {
@@ -115,7 +116,7 @@ const App = () => {
                 type_id: data.id,
                 recipient_id: currentUser.id,
                 sender_name: currentUser.name,
-              })
+              });
               alert('its a match!');
             });
         }
@@ -127,8 +128,7 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
-      })
-      
+      });
   };
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
@@ -146,19 +146,17 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
-
   const getAllMessages = () => {
     const messages = {};
     matches.map((match) => {
       axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
         .then((results) => {
-          console.log('results messages', results.data)
           messages[match.user_id] = results.data;
           setAllMessages(messages);
         })
         .catch((err) => console.log(err));
     });
-  }
+  };
 
   useEffect(() => {
     if (currentUserID !== undefined) {
@@ -195,13 +193,12 @@ const App = () => {
     }
   }, [currentUserID]);
 
-
   const updateMatches = () => {
     axios.get(`/app/${currentUser.id}/matches`)
-        .then((results) => {
-          setMatches(results.data);
-        })
-        .catch((err) => console.log(err));
+      .then((results) => {
+        setMatches(results.data);
+      })
+      .catch((err) => console.log(err));
   };
 
   useEffect(() => {
@@ -209,7 +206,6 @@ const App = () => {
       axios.get(`/app/${currentUser.id}/matches`)
         .then((results) => {
           setMatches(results.data);
-          window.sessionStorage.setItem('matches', JSON.stringify(results.data));
         })
         .catch((err) => console.log(err));
     }
@@ -257,12 +253,6 @@ const App = () => {
     }
   }, [appointment]);
 
-  // ------SETTING MATCH INFO TO SESSION STORAGE------ //
-  window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
-  window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
-  window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
-  // ------------------------------------------------- //
-
   if (register) return (<Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />);
   else if (landing) return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
   else return (
@@ -293,6 +283,10 @@ const App = () => {
         messageCount={messageCount}
         getAllMessages={getAllMessages}
         setAllMessages={setAllMessages}
+        setHumanPhoto={setHumanPhoto}
+        setDogsPhoto={setDogsPhoto}
+        potientialPhoto={potientialPhoto}
+        setCurrentDogs={setCurrentDogs}
       />
       {/* <ContextProvider>
         <Video />

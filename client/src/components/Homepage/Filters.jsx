@@ -16,6 +16,8 @@ import IconButton from '@material-ui/core/IconButton';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import breeds from '../../dummyData/dogBreed';
+import zipcodes from '../../dummyData/zipcodes';
+
 
 export default function Filters({
   sizeRange, changeSizeRange,
@@ -25,7 +27,6 @@ export default function Filters({
   neutered, changeNeutered,
   healthIssues, changeHealthIssues,
   avoidBreeds, changeAvoidedBreeds,
-  preferredBreeds, changePreferredBreeds,
   maxDistance, changeMaxDistance,
   ownerAgeRange, changeOwnerAgeRange,
   ownerGenders, changeOwnerGenders,
@@ -33,6 +34,7 @@ export default function Filters({
   currentUser, currentUserID,
   potiential, showAlert,
   zipCodes, changeZipCodes,
+  getRandomUser
 }) {
   // XS, S, M, L, XL
   const sizeLabels = [
@@ -118,10 +120,17 @@ export default function Filters({
     };
     axios.request(options)
       .then((response) => {
-        const uniqueZips = [];
-        for (const item of response.data.DataList) {
-          if (!uniqueZips.includes(item.Code)) {
-            uniqueZips.push(`'${item.Code}'`);
+        let uniqueZips = [];
+        // hardcode list of zips if api key is out
+        if (response.data.Error === "Credit limit has been reached.") {
+          for (const zip of zipcodes) {
+            uniqueZips.push(`'${zip}'`);
+          }
+        } else {
+          for (const item of response.data.DataList) {
+            if (!uniqueZips.includes(item.Code)) {
+              uniqueZips.push(`'${item.Code}'`);
+            }
           }
         }
         changeZipCodes(uniqueZips.join(','));
@@ -138,6 +147,7 @@ export default function Filters({
           ownerGenders,
         };
         setFilterParams(params);
+        getRandomUser(params);
       });
   };
 
