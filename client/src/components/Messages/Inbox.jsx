@@ -16,6 +16,8 @@ const Inbox = ({
   const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
   let newestMessageId = 0;
 
+  console.log('matches', matchesPhotos)
+
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
     setCurrentMessageId(Number(e.target.getAttribute('name')));
