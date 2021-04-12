@@ -96,4 +96,4 @@ router
 router.route('/notifications/:id/')
   .get(controller.getNotif)
   .post(controller.postNotif)
-  .patch(controller.updateNotif)
+  .patch(controller.updateNotif);

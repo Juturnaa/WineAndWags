@@ -10,47 +10,37 @@ const Inbox = ({
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
 
-  const sessionMatches = JSON.parse(sessionStorage.getItem('matches'));
-  const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
-  const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
-  const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
-  let newestMessageId = 0;
-
-  console.log('matches', matchesPhotos)
+  let humanPhoto = '';
+  let dogPhoto = '';
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
     setCurrentMessageId(Number(e.target.getAttribute('name')));
-    console.log('message id', e.target.getAttribute('data-id'));
     axios.patch(`/app/${currentUser.id}/convos/`, {
       message_id: e.target.getAttribute('data-id'),
     });
   };
 
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const messages = {};
-  //   matches.map((match) => {
-  //     axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
-  //       .then((results) => {
-  //         if (isMounted) {
-  //           messages[match.user_id] = results.data;
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   });
-  //   setAllMessages(messages);
-  //   return () => { isMounted = false; };
-  // }, [dmSent]);
-  // useEffect(() => {
-  //   getAllMessages();
-  // }, []);
+  const getProfilePhotos = (matchPics) => {
+    for (let i = 0; i < matchPics.length; i++) {
+      if (matchPics[i].dog_id === null) {
+        humanPhoto = matchPics[i].url;
+        break;
+      }
+    }
+    for (let j = 0; j < matchPics.length; j++) {
+      if (matchPics[j].dog_id !== null) {
+        dogPhoto = matchPics[j].url;
+        break;
+      }
+    }
+  };
 
   const messageQueueCount = () => {
     let count = 0;
-    const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
-    for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
-      if (sessionAllMessages[i] && sessionAllMessages[i].length > 0) {
+    const allMessageKeys = Object.keys(allMessages);
+    for (let i = 0; i < allMessageKeys.length; i++) {
+      if (allMessages[allMessageKeys[i]].length > 0) {
         count += 1;
       }
     }
@@ -60,20 +50,17 @@ const Inbox = ({
   return (
     <div id="inbox-container">
       <br />
-
       {!messageMode
         ? (
           <div>
             <span>
               Match Queue (
-              {sessionMatches.length}
+              {matches.length}
               )
             </span>
             <MatchesCarousel
-              // matchesPhotos={matchesPhotos}
-              matchesPhotos={sessionMatchesPhotos}
-              // matchesInfo={matchesInfo}
-              matchesInfo={sessionMatchesInfo}
+              matchesPhotos={matchesPhotos}
+              matchesInfo={matchesInfo}
               onMessageClick={onMessageClick}
               messageQueueCount={messageQueueCount}
             />
@@ -84,72 +71,76 @@ const Inbox = ({
                   {messageQueueCount()}
                   )
                 </span>
-                {sessionMatchesPhotos.map((match, index) => {
-                  const newestMessageIndex = allMessages[match[0].user_id].length - 1;
-                  if (allMessages[match[0].user_id].length !== 0) {
-                    return (
-                      <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                        <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                          <img
-                            className="human-photos-small"
-                            alt="human"
-                            src={match[0].url}
-                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
-                            onClick={onMessageClick}
-                          />
-                          <img
-                            className="dog-photos-small"
-                            alt="dog"
-                            src={match[1].url}
-                            name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id}
-                            onClick={onMessageClick}
-                          />
-                        </div>
-                        <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                          <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
-                            {sessionMatchesInfo[match[0].user_id].name}
-                            {' '}
-                            and
-                            {' '}
-                            {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
+                {Object.keys(allMessages).length !== 0
+                  ? matchesPhotos.map((match, index) => {
+                    const newestMessageIndex = allMessages[match[0].user_id].length - 1;
+                    if (allMessages[match[0].user_id].length !== 0) {
+                      return (
+                        <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                          <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                          {getProfilePhotos(match)}
+                            <img
+                              className="human-photos-small"
+                              alt="human"
+                              src={humanPhoto}
+                              name={index}
+                              data-id={allMessages[match[0].user_id][newestMessageIndex].id}
+                              onClick={onMessageClick}
+                            />
+                            <img
+                              className="dog-photos-small"
+                              alt="dog"
+                              src={dogPhoto}
+                              name={index}
+                              data-id={allMessages[match[0].user_id][newestMessageIndex].id}
+                              onClick={onMessageClick}
+                            />
                           </div>
+                          <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                            <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
+                              {matchesInfo[match[0].user_id].name}
+                              {' '}
+                              and
+                              {' '}
+                              {matchesInfo[match[0].user_id].dogs_info[0].name}
+                            </div>
 
-                          {/* ---------Most recent message------------ */}
-                          {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
-                            ? (
-                              <div className="unread-message-container">
-                                <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
-                                  {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
+                            {/* ---------Most recent message------------ */}
+                            {((allMessages[match[0].user_id][newestMessageIndex].sender_id !== currentUser.id) && (allMessages[match[0].user_id][newestMessageIndex].opened === false))
+                              ? (
+                                <div className="unread-message-container">
+                                  <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} className="unread-message" onClick={onMessageClick}>
+                                    {/* {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])} */}
+                                    {allMessages[match[0].user_id][newestMessageIndex].body}
+                                  </div>
+                                  <i className="fas fa-circle fa-xs" />
+                                </div>
+                              )
+                              : (
+                                <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                                   {allMessages[match[0].user_id][newestMessageIndex].body}
                                 </div>
-                                <i className="fas fa-circle fa-xs" />
-                              </div>
-                            )
-                            : (
-                              <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
-                                {console.log('newest message', allMessages[match[0].user_id][newestMessageIndex])}
-                                {allMessages[match[0].user_id][newestMessageIndex].body}
-                              </div>
-                            )}
+                              )}
 
+                          </div>
                         </div>
-                      </div>
-                    );
-                  }
-                })}
+                      );
+                    }
+                  })
+                  : null}
               </div>
             </div>
           </div>
         )
         : (
           <Chat
-            matchesPhotos={sessionMatchesPhotos}
+            matchesPhotos={matchesPhotos}
             messageMode={messageMode}
             currentMessageId={currentMessageId}
             allMessages={allMessages}
             onMessageClick={onMessageClick}
             currentUser={currentUser}
-            matchesInfo={sessionMatchesInfo}
+            matchesInfo={matchesInfo}
             setMessageCount={setMessageCount}
             messageCount={messageCount}
             getAllMessages={getAllMessages}

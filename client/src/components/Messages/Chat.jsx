@@ -12,7 +12,8 @@ const Chat = ({
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
-  // const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
+  let humanPhoto = '';
+  let dogPhoto = '';
 
   const [inputValue, setInputValue] = useState('');
   const [calendar, clickedCalendar] = useState(false);
@@ -22,20 +23,30 @@ const Chat = ({
   const getMessages = () => {
     axios.get(`/app/${currentUserId}/convos/${matchUserId}`)
       .then((results) => {
-        console.log('results and data', results.data);
         setMessages(results.data);
         setDmSent((dmSent) => dmSent + 1);
         allMessages[matchUserId] = results.data;
-      })
-      .then(() => {
-        // setAllMessages(results.data);
-        window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
       })
       .catch((err) => console.log(err));
   };
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const getProfilePhotos = (matchPics) => {
+    for (let i = 0; i < matchPics.length; i++) {
+      if (matchPics[i].dog_id === null) {
+        humanPhoto = matchPics[i].url;
+        break;
+      }
+    }
+    for (let j = 0; j < matchPics.length; j++) {
+      if (matchPics[j].dog_id !== null) {
+        dogPhoto = matchPics[j].url;
+        break;
+      }
+    }
   };
 
   useEffect(() => {
@@ -70,24 +81,36 @@ const Chat = ({
     axios.post(`/app/${currentUserId}/convos/${matchUserId}`, {
       message: inputValue,
     })
-      .then(() => {
+      .then((results) => {
         setInputValue('');
         getMessages();
-        setMessageCount((messageCount) => messageCount + 1);
+        // setMessageCount((messageCount) => messageCount + 1);
+        const convo_id = results.data[0].convo_id;
+        axios.post(`/app/notifications/${currentUserId}`, {
+          type: 'message',
+          type_id: convo_id,
+          sender_name: currentUser.name,
+          recipient_id: matchUserId,
+        })
+          .then(() => {
+            console.log('Notification sent!');
+          })
+          .catch((err) => console.log(err));
       })
       .catch((err) => console.log(err));
   };
 
   return (
     <div>
-      <button type="button" onClick={onMessageClick}>Back to Inbox</button>
+      <button type="button" className="back-to-inbox-button" onClick={onMessageClick}><i className="fas fa-long-arrow-alt-left" /> Inbox</button>
       {/* <ReactNotification /> */}
       <br />
       <br />
       <div id="chat-container">
         <div id="chat-images-container">
-          <img className="chat-human-photo" alt="human" src={matchesPhotos[currentMessageId][0].url} />
-          <img className="chat-dog-photo" alt="dog" src={matchesPhotos[currentMessageId][1].url} />
+          {getProfilePhotos(matchesPhotos[currentMessageId])}
+          <img className="chat-human-photo" alt="human" src={humanPhoto} />
+          <img className="chat-dog-photo" alt="dog" src={dogPhoto} />
           <div id="chat-names">
             {matchesInfo[matchUserId].name}
             {' '}

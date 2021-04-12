@@ -95,8 +95,8 @@ const controller = {
       req.body,
       (err, results) => {
         if (err) res.status(400).send(err);
-        else res.status(200).send("Message sent!");
-      }
+        else res.status(200).send(results.rows[0]);
+      },
     );
   },
   patchMessage: (req, res) => {

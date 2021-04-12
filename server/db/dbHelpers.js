@@ -177,7 +177,7 @@ const dbHelpers = {
     });
   },
   postMessage: (user_id, recipient_id, body, callback) => {
-    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id, opened) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, (select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})), false)`;
+    const queryStr = `INSERT INTO waw.message (id, sender_id, body, time_stamp, convo_id, opened) VALUES (DEFAULT, ${user_id}, '${body.message}', DEFAULT, (select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})), false) RETURNING *`;
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
