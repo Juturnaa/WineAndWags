@@ -6,6 +6,7 @@ import Filters from './Filters';
 import ProfileView from './ProfileVIew';
 import DogView from './DogView';
 import LikeButton from './LikeButton';
+import zipcodes from '../../dummyData/zipcodes';
 
 export default function Homepage({
   currentUser, likeProfile, potientialPhoto, currentDogs, potientialDogsImg, getRandomUser, dogPhotos, likePhoto, currentUserID, potiential, potientialDog,
@@ -106,10 +107,17 @@ export default function Homepage({
           };
           axios.request(options)
             .then((response) => {
-              const uniqueZips = [];
-              for (const item of response.data.DataList) {
-                if (!uniqueZips.includes(item.Code)) {
-                  uniqueZips.push(`'${item.Code}'`);
+              let uniqueZips = [];
+              // hardcode list of zips if api key is out
+              if (response.data.Error === "Credit limit has been reached.") {
+                for (const zip of zipcodes) {
+                  uniqueZips.push(`'${zip}'`);
+                }
+              } else {
+                for (const item of response.data.DataList) {
+                  if (!uniqueZips.includes(item.Code)) {
+                    uniqueZips.push(`'${item.Code}'`);
+                  }
                 }
               }
               changeZipCodes(uniqueZips.join(','));
