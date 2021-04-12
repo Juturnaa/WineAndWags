@@ -195,6 +195,7 @@ export default function Homepage({
               showAlert={showAlert}
               zipCodes={zipCodes}
               changeZipCodes={changeZipCodes}
+              getRandomUser={getRandomUser}
             />
           </div>
         ) : null}
