@@ -35,5 +35,12 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.css'],
   },
+  devServer: {
+    host: '0.0.0.0',
+    disableHostCheck: true,
+  },
+  watchOptions: {
+    poll: true,
+  },
   watch: true,
 };

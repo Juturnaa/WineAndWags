@@ -69,7 +69,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
-      AND waw.users.zipcode IN (${zipCodes})
+      AND waw.users.zipcode IN ('${zipCodes}')
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -88,7 +88,7 @@ const dbHelpers = {
       )) dogs_info FROM waw.users
       LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
       WHERE waw.users.age BETWEEN ${ownerAgeRange[0]} AND ${ownerAgeRange[1]}
-      AND waw.users.zipcode IN (${zipCodes})
+      AND waw.users.zipcode IN ('${zipCodes}')
       AND waw.users.searched_as = '${ownerGenders}'
       AND waw.dogs.age BETWEEN ${dogAgeRange[0]} AND ${dogAgeRange[1]}
       AND waw.dogs.size IN (${sizeRange})
@@ -99,8 +99,26 @@ const dbHelpers = {
       AND waw.dogs.gender = '${dogGenders}'
       GROUP BY waw.users.id`;
     }
-
-    db.query(qryStr, (err, data) => {
+    console.log(qryStr)
+    db.query(`SELECT waw.users.*, json_agg(jsonb_build_object('id', waw.dogs.id,
+    'name', waw.dogs.name, 'gender', waw.dogs.gender,
+    'bio', waw.dogs.bio, 'hypo', waw.dogs.hypo, 'neutered',
+    waw.dogs.neutered, 'rating', waw.dogs.rating, 'age',
+    waw.dogs.age, 'size', waw.dogs.size, 'breed', waw.dogs.breed,
+    'healthy', dogs.healthy
+    )) dogs_info FROM waw.users
+    LEFT JOIN waw.dogs ON waw.dogs.owner_id = waw.users.id
+    WHERE waw.users.age BETWEEN 21 AND 74
+    AND waw.users.zipcode IN ('91773','91740','91741','91724','91768','91750','91723','91767','91769','91722','91791','91711','91702','91766','91763','91788','91789','91793','91792','91790','91765','91010','91786','91706','91744','91784','91008','91009','91785','91016','91758')
+    AND waw.users.searched_as = 'F'
+    AND waw.dogs.age BETWEEN 0 AND 30
+    AND waw.dogs.size IN ('XS','S','M','L')
+    AND waw.dogs.hypo = false
+    AND waw.dogs.neutered = true
+    AND waw.dogs.healthy = false
+    AND waw.dogs.breed NOT IN ('Siberian Husky,Himalayan Sheepdog')
+    AND waw.dogs.gender = 'F'
+    GROUP BY waw.users.id`, (err, data) => {
       if (err) {
         res.status(400).send("something went wrong with your query");
       } else {
