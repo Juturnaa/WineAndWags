@@ -3,11 +3,14 @@ import { SocketContext } from './SocketContext';
 
 function Options({ username }) {
   const {
-    me, callAccepted, name, setName, callEnded, leaveCall, callUser, answerCall, call
+    me, callAccepted, name, setName, callEnded, leaveCall, callUser, answerCall, call,
   } = React.useContext(SocketContext);
 
   const [idToCall, setIdToCall] = React.useState('');
-  setName(username);
+
+  React.useEffect(() => {
+    setName(username);
+  }, []);
 
   return (
     <div style={{
