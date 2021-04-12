@@ -189,7 +189,8 @@ function NavBar({
             </ContextProvider>
           )}
         />
-        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} potientialPhoto={potientialPhoto} dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDogsImg={potientialDogsImg} potientialDog={potientialDog || ''} />} />
+        <Route path="/*" render={() => <Homepage likePhoto={likePhoto} likeProfile={likeProfile} getRandomUser={getRandomUser} currentUser={currentUser} potientialPhoto={potientialPhoto
+        } dogPhotos={dogsImg} currentDogs={currentDogs} currentUserID={currentUserID} potiential={potiential} potientialDogsImg={potientialDogsImg} potientialDog={potientialDog || ''} />} />
       </Switch>
     </BrowserRouter>
   );
