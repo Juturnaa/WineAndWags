@@ -2,6 +2,9 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import {
+  Dialog, DialogContentText, DialogActions, DialogTitle,
+} from '@material-ui/core';
 import Modal from 'react-modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -26,6 +29,8 @@ const useStyles = makeStyles({
     color: 'black',
     backgroundColor: '#eff9f0',
     borderColor: '#eff9f0',
+    display: 'flex',
+    justifyContent: 'center',
   },
 });
 
@@ -33,13 +38,14 @@ function ReviewModal({ reviewModal, setReviewModal, appointment }) {
   const classes = useStyles();
   const [rating, setRate] = useState();
   const [tempRate, setTemp] = useState(null);
+  const [alert, setAlert] = useState();
 
   useEffect(() => {
     const rate = {};
     for (let i = 0; i < appointment.length; i++) {
       const currDogs = appointment[i].dogs;
       for (let j = 0; j < currDogs.length; j++) {
-        rate[`${currDogs[i].id}`] = currDogs[i].rating;
+        rate[`${currDogs[j].id}`] = currDogs[j].rating;
       }
     }
     setRate(rate);
@@ -56,6 +62,7 @@ function ReviewModal({ reviewModal, setReviewModal, appointment }) {
       alert('Please rate dog(s)');
     } else {
       setReviewModal(!reviewModal);
+      setAlert(!alert);
       const keys = Object.keys(tempRate);
       const values = Object.values(tempRate);
       const promises = [];
@@ -64,33 +71,50 @@ function ReviewModal({ reviewModal, setReviewModal, appointment }) {
       }
       promises.push(axios.patch(`/app/dates/${appointment[0].id}`));
       axios.all(promises)
-        .then((...results) => console.log('updated!'))
+        .then((...results) => console.log('success'))
         .catch((err) => console.error(err));
     }
   };
 
   return (
-    <Modal style={customStyles} appElement={document.getElementById('app')} isOpen={reviewModal}>
-      <div id="reviewModal-container">
-        {appointment.map((item, index) => (
-          <div className="review" key={index}>
-            <h5>{`Did ${item.name}'s dog behave on the date?`}</h5>
-            {item.dogs.map((ite, ind) => (
-              <div className="review" key={ind}>
-                <div><b>{ite.name}</b></div>
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group>
-                    <Form.Check type="radio" label="Yes" value={+1} name={ite.id} onChange={ratingChange} />
-                    <Form.Check type="radio" label="No" value={-1} name={ite.id} onChange={ratingChange} />
-                  </Form.Group>
-                  <Button className={classes.button} type="submit">Submit Rating</Button>
-                </Form>
+    <div>
+      {alert ? (
+        <Dialog open={alert} onClose={() => setAlert(false)}>
+          <DialogTitle>Thank you</DialogTitle>
+          <DialogContentText>
+            You reviews have been submitted!
+          </DialogContentText>
+          <DialogActions>
+            <Button onClick={() => setAlert(false)} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      ) : null }
+      <Modal style={customStyles} appElement={document.getElementById('app')} isOpen={reviewModal}>
+        <div id="reviewModal-container">
+          <Form onSubmit={handleSubmit}>
+            {appointment.map((item, index) => (
+              <div className="review" key={index}>
+                <h5>{`Did ${item.name}'s dog behave on the date?`}</h5>
+                {item.dogs.map((ite, ind) => (
+                  <div className="review" key={ind}>
+                    <div><b>{ite.name}</b></div>
+                    <Form.Group>
+                      <Form.Check type="radio" label="Yes" value={+1} name={ite.id} onChange={ratingChange} />
+                      <Form.Check type="radio" label="No" value={-1} name={ite.id} onChange={ratingChange} />
+                    </Form.Group>
+                  </div>
+                ))}
               </div>
             ))}
-          </div>
-        ))}
-      </div>
-    </Modal>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button className={classes.button} type="submit">Submit Rating</Button>
+            </div>
+          </Form>
+        </div>
+      </Modal>
+    </div>
   );
 }
 
