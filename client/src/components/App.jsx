@@ -105,10 +105,10 @@ const App = () => {
   const likeProfile = (id) => {
 
     let myLikes;
-    axios.get(`/app/${currentUserID}/profile-likes`)
+    axios.get(`/app/${id}/profile-likes`)
       .then((data) => {
         myLikes = data.data.map((likeObj) => likeObj.liked_user_id);
-        if (myLikes.includes(potiential.id)) {
+        if (myLikes.includes(currentUserID)) {
           axios.post(`/app/${currentUserID}/convos`, { recipient_id: potiential.id })
             .then((data) => {
               axios.post(`/app/notifications/${currentUser.id}`, {
@@ -122,7 +122,7 @@ const App = () => {
         }
       })
       .catch((err) => console.log(err));
-    axios.post(`/app/${id}/profile-likes`, { liked_user_id: currentUser.id })
+    axios.post(`/app/${currentUser.id}/profile-likes`, { liked_user_id: id })
       .then((data) => {
         updateMatches();
       })
@@ -196,6 +196,7 @@ const App = () => {
   const updateMatches = () => {
     axios.get(`/app/${currentUser.id}/matches`)
       .then((results) => {
+        console.log(results.data)
         setMatches(results.data);
       })
       .catch((err) => console.log(err));
