@@ -35,7 +35,7 @@ const PhotosList = ({ photos, likePhoto }) => {
             <PhotoLikeButton photoId={photos[index].id} likePhoto={likePhoto} />
           </div>
         )
-        : <CircularProgress color="secondary" />}
+        : <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}><CircularProgress color="secondary" /></div>}
 
     </div>
   );
