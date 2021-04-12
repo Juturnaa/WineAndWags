@@ -1,0 +1,104 @@
+.profile-pic {
+  width: 250px;
+  height: 250px;
+}
+
+.profile-card {
+  width: 50%;
+  justify-content: flex-start;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin: 0.5%;
+  padding: 0 3vw;
+}
+
+.card-text {
+  background-color: #fdfdfd;
+  padding: 2% 5%;
+  border: solid 1px #13070c;
+  border-radius: 0 0 15px 15px;
+  max-height: 322px;
+  min-height: 270px;
+  min-width: 250px;
+}
+.card-text-info {
+  display: flex;
+  flex-flow: column wrap;
+  max-height: 215px;
+  min-height: 215px;
+  min-width: 285px;
+}
+#card-name {
+  font-size: 36px;
+  font-weight: bold;
+  background-color: #fdfdfd;
+  width:100%;
+  align-self:flex-end;
+  color:#243946;
+  display:flex;
+  justify-content: space-between;
+  min-width: fit-content;
+}
+.text-component {
+  display: flex;
+  color: #13070c;
+  flex-direction: column;
+  padding: 0.5%;
+}
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+}
+
+.text-component-key {
+  font-weight: bold;
+}
+
+.img-container {
+  position: relative;
+  min-width: 100px;
+}
+
+#carouselProfile {
+  width: 100%;
+  height: 20em;
+  margin: auto;
+}
+
+.img-container .img-btn {
+  position: absolute;
+  top: 15%;
+  left: 85%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: transparent;
+  color: black;
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.img-container .img-btn:hover {
+  background-color: #ddc8c4;
+  background-image: url("heart.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+
+.video {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  margin: 10%;
+}
+
+.video-container {
+  text-align: center;
+}

@@ -1,0 +1,74 @@
+.filter-modal {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  right: auto;
+  bottom: auto;
+  background-color: rgba(221, 200, 196, 0.94);
+  border-radius: 0.25rem;
+  padding: 1%;
+  color: #13070c;
+}
+
+.filter-modal-inner {
+  justify-content: center;
+  display: flex;
+  flex-flow: row nowrap;
+}
+
+.filter-container {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 6.25rem;
+  left: 0.5%;
+  width: 50%;
+  right: auto;
+  bottom: auto;
+  z-index: 100;
+  border-radius: 0.1rem;
+  padding-bottom: 1%;
+  color: #13070c;
+}
+
+.dog-filters {
+  padding: 1%;
+}
+
+.owner-filters {
+  padding: 1%;
+  display: flex;
+  flex-direction: column;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.arrowhead {
+  position: relative;
+  margin-top: 0.2rem;
+  margin-left: 2.75rem;
+  width: 0;
+  height: 0;
+  border-left: 0.5rem solid transparent;
+  border-right: 0.5rem solid transparent;
+  border-bottom: 0.5rem solid rgba(221, 200, 196, 0.94);
+}
+
+@keyframes fade_out {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+.filter-alert {
+  color: #ddc8c4;
+  opacity: 1;
+  animation-name: fade_out;
+  animation-duration: 3s;
+  margin-top: 0.75rem;
+  margin-left: 0.1rem;
+  font-size: 1.25rem;
+  font-family: 'Roboto';
+}
