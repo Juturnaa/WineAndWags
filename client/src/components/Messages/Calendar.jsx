@@ -134,7 +134,7 @@ let minutes = [
     })
     .then(()=>{getSchedule()})
     .then(()=>{props.clickedCalendar(false)})
-    .err(()=>{console.log('err')})
+    .then(()=> alert('Added time slot to your schedule'))
   }
   }
   //I should flip put and post so it's faster
@@ -154,11 +154,9 @@ let minutes = [
         "sender_name":props.currentUser.name,
         "recipient_id": props.matchUserId
       })
-      .err((err)=>{console.log(err)})
     })
     .then(()=>{getMatchSchedule()})
     .then(()=>{alert('Appointment made')})
-    .err(()=>{console.log('err')})
   }
 
 
