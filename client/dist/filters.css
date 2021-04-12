@@ -7,7 +7,7 @@
   bottom: auto;
   background-color: rgba(221, 200, 196, 0.94);
   border-radius: 0.25rem;
-  padding-bottom: 1%;
+  padding: 1%;
   color: #13070c;
 }
 
@@ -68,6 +68,7 @@ button:hover {
   animation-name: fade_out;
   animation-duration: 3s;
   margin-top: 0.75rem;
+  margin-left: 0.1rem;
   font-size: 1.25rem;
   font-family: 'Roboto';
 }
