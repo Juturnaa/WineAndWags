@@ -8,18 +8,16 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Pagination } from '@material-ui/lab';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
-import { IconButton, Input, Button } from '@material-ui/core';
+import {
+  IconButton, Input, Button, Dialog, DialogContentText, DialogActions, DialogTitle,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Col from 'react-bootstrap/Col';
-import FormControl from 'react-bootstrap/FormControl';
 import Form from 'react-bootstrap/Form';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import EditHumanImage from './EditHumanImage';
 import EditDogImage from './EditDogImage';
 import AddDogModal from './AddDogModal';
-
-// have to click humans to show dogs..
-// for the wrong entries, instead of alerting the UI switch to doing error boxes (react)
 
 const useStyles = makeStyles({
   upload: {
@@ -44,7 +42,7 @@ const useStyles = makeStyles({
 });
 
 function EditProfile({
-  currentUser, dogsImg, breeds, humanPhoto, human, dogs, currentUserID, setHumanPhoto, setDogsPhoto,
+  currentUser, dogsImg, breeds, humanPhoto, human, dogs, currentUserID, setHumanPhoto, setDogsPhoto, setCurrentUser, setCurrentDogs,
 }) {
   const classes = useStyles();
   const [humanValue, setHumanValue] = useState({
@@ -79,6 +77,8 @@ function EditProfile({
   const [dogIndex, setDogIndex] = useState(0);
   const [index, setIndex] = useState(0);
   const [validated, setValidated] = useState(false);
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [photoAlert, setPhotoAlert] = useState(false);
 
   useEffect(() => {
     if (dogsImg.length > 0) {
@@ -113,14 +113,11 @@ function EditProfile({
         const humanphotos = [];
         const dogsphotos = [];
         for (let i = 0; i < results.data.length; i++) {
-          console.log(results.data[i])
           if (results.data[i].dog_id === null) {
             humanphotos.push(results.data[i]);
           } else {
             dogsphotos.push(results.data[i]);
           }
-
-          console.log('dogs photos', dogsphotos)
           setHumanPhoto(humanphotos);
           setDogsPhoto(dogsphotos);
         }
@@ -180,7 +177,7 @@ function EditProfile({
 
   const deletePhoto = () => {
     axios.delete(`/app/users/delete/${humanURL}`)
-      .then((results) => alert('deleted'))
+      .then((results) => setDeleteAlert(!deleteAlert))
       .then(() => getPhotos())
       .then(() => setIndex(0))
       .catch((err) => console.error(err));
@@ -188,7 +185,7 @@ function EditProfile({
 
   const deleteDogPhoto = () => {
     axios.delete(`/app/users/delete/${dogURL}`)
-      .then((results) => alert('deleted'))
+      .then((results) => setDeleteAlert(!deleteAlert))
       .then(() => getPhotos())
       .then(() => setDogIndex(0))
       .catch((err) => console.error(err));
@@ -199,7 +196,7 @@ function EditProfile({
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
-    };
+    }
     setValidated(true);
     let result;
     let resultAge;
@@ -233,9 +230,9 @@ function EditProfile({
           newValues[keys[i]] = values[i];
         }
       }
-      // axios.patch(`/app/users/my-profile/${currentUserID}`, newValues)
-      //   .then((results) => alert(results.data))
-      //   .catch((err) => console.error(err));
+      axios.patch(`/app/users/my-profile/${currentUserID}`, newValues)
+        .then((results) => alert(results.data))
+        .catch((err) => console.error(err));
     } else if (!result && !resultAge && !resultZip) {
       alert('Email, Age, Zipcode are not valid');
     } else if (!result) {
@@ -282,7 +279,7 @@ function EditProfile({
     const fd = new FormData();
     fd.append('image', uploadHuman, uploadHuman.name);
     axios.post(`/app/users/photos/${currentUser.id}`, fd)
-      .then((results) => alert(results.data))
+      .then((results) => setPhotoAlert(!photoAlert))
       .then(() => getPhotos())
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
@@ -292,13 +289,43 @@ function EditProfile({
     fd.append('owner_id', currentUser.id);
     fd.append('image', uploadDog, uploadDog.name);
     axios.post(`/app/users/my-dog/${dogID}`, fd)
-      .then((results) => alert(results.data))
+      .then((results) => setPhotoAlert(!photoAlert))
       .then(() => getPhotos())
       .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY'));
   };
 
   return (
     <div id="editprofile-body">
+      {deleteAlert
+        ? (
+          <Dialog open={deleteAlert} onClose={() => setDeleteAlert(!deleteAlert)}>
+            <DialogTitle>Remove image</DialogTitle>
+            <DialogContentText>
+              Photo has been deleted.
+            </DialogContentText>
+            <DialogActions>
+              <Button onClick={() => setDeleteAlert(!deleteAlert)} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )
+        : null}
+      {photoAlert
+        ? (
+          <Dialog open={photoAlert} onClose={() => setPhotoAlert(!photoAlert)}>
+            <DialogTitle>Upload image</DialogTitle>
+            <DialogContentText>
+              Photo has been uploaded.
+            </DialogContentText>
+            <DialogActions>
+              <Button onClick={() => setPhotoAlert(!photoAlert)} color="primary">
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )
+        : null}
       {human
         ? (
           <Form noValidate validated={validated} id="editHuman" onSubmit={submitHuman}>
@@ -374,7 +401,7 @@ function EditProfile({
           <div style={{ display: 'inline-flex', justifyContent: 'center', marginTop: '0.2%' }}>
             <Button className={classes.addDogBtn} variant="contained" type="button" onClick={() => setAddDog(!addDog)}>Add a Dog</Button>
           </div>
-          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} currentUserID={currentUserID} /> : null}
+          {addDog ? <AddDogModal addDog={addDog} setAddDog={setAddDog} currentUserID={currentUserID} setHumanPhoto={setHumanPhoto} setDogsPhoto={setDogsPhoto} setCurrentUser={setCurrentUser} setCurrentDogs={setCurrentDogs} /> : null}
           {dogPages !== undefined ? dogPages[currentDogPg - 1].map((item, index) => (
             <div id="editDog-container">
               <Form id="editDog-form" onSubmit={submitDog} key={index}>

@@ -29,7 +29,7 @@ import { ContextProvider } from './Video/SocketContext';
 // </Route>
 
 function NavBar({
-  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages, setDogsPhoto, setHumanPhoto, potientialPhoto,
+  currentUser, setLanding, setCurrentUser, likeProfile, humanPhoto, breeds, dogsImg, currentDogs, getRandomUser, matches, matchesPhotos, likePhoto, allMessages, currentUserID, potiential, potientialDog, editProfileBtn, setBtn, showNotifs, setShowNotifs, matchesInfo, setMessageCount, messageCount, potientialDogsImg, getAllMessages, setAllMessages, setDogsPhoto, setHumanPhoto, potientialPhoto, setCurrentDogs,
 }) {
   const [notifs, setNotifs] = useState([]);
   const [edit, setEdit] = useState(false);
@@ -172,7 +172,7 @@ function NavBar({
           )}
         />
         <Route exact path="/map" render={() => <Map currentUser={currentUser} />} />
-        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} currentUserID={currentUserID} setDogsPhoto={setDogsPhoto} setHumanPhoto={setHumanPhoto} />} />
+        <Route exact path="/editprofile" render={() => <EditProfile currentUser={currentUser} humanPhoto={humanPhoto} dogsImg={dogsImg} breeds={breeds} human={human} dogs={dogs} changeHuman={changeHuman} changeDogs={changeDogs} setEdit={setEdit} currentUserID={currentUserID} setDogsPhoto={setDogsPhoto} setHumanPhoto={setHumanPhoto} setCurrentUser={setCurrentUser} setCurrentDogs={setCurrentDogs} />} />
         <Route
           exact
           path="/video"

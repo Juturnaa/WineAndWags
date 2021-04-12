@@ -300,6 +300,7 @@ const App = () => {
         setHumanPhoto={setHumanPhoto}
         setDogsPhoto={setDogsPhoto}
         potientialPhoto={potientialPhoto}
+        setCurrentDogs={setCurrentDogs}
       />
       {/* <ContextProvider>
         <Video />

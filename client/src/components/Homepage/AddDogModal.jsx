@@ -9,6 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import FormControl from 'react-bootstrap/FormControl';
 import FormCheck from 'react-bootstrap/FormCheck';
 import axios from 'axios';
+import { Alert, AlertTitle } from '@material-ui/lab';
 import breed from '../../dummyData/dogBreed';
 
 const customStyles = {
@@ -28,7 +29,9 @@ const useStyles = makeStyles({
   },
 });
 
-function AddDogModal({ setAddDog, addDog, currentUserID }) {
+function AddDogModal({
+  setAddDog, addDog, currentUserID, setCurrentUser, setCurrentDogs, setHumanPhoto, setDogsPhoto,
+}) {
   const classes = useStyles();
   const [dogImgUpload, setDogImgUpload] = useState();
   const [dogValue, setDogValue] = useState({
@@ -45,9 +48,33 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
   const [neutered, setNeutered] = useState(false);
   const [health, setHealth] = useState(false);
   const [validated, setValidated] = useState(false);
+  const [alert, setAlert] = useState(false);
 
   const valueChange = (e) => {
     setDogValue({ ...dogValue, [e.target.name]: e.target.value });
+  };
+
+  const updateDogs = () => {
+    axios.all([
+      axios.get(`/app/users/my-profile/${currentUserID}`),
+      axios.get(`/app/users/photos/${currentUserID}`),
+    ])
+      .then(axios.spread((one, two) => {
+        setCurrentUser(one.data);
+        setCurrentDogs(one.data.dogs_info);
+        const human = [];
+        const dogs = [];
+        for (let i = 0; i < two.data.length; i++) {
+          if (two.data[i].dog_id === null) {
+            human.push(two.data[i]);
+          } else {
+            dogs.push(two.data[i]);
+          }
+        }
+        setHumanPhoto(human);
+        setDogsPhoto(dogs);
+      }))
+      .catch((err) => console.error(err));
   };
 
   const postDog = (e) => {
@@ -57,23 +84,37 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
       e.stopPropagation();
     }
     setValidated(true);
-    const fd = new FormData();
-    fd.append('image', dogImgUpload, dogImgUpload.name);
-    fd.append('owner_id', currentUserID);
-    const information = dogValue;
-    information.hypo = hypoallergenic;
-    information.neutered = neutered;
-    information.healthy = health;
-    axios.post(`/app/dogs/${currentUserID}`, information)
-      .then((results) => axios.post(`/app/users/my-dog/${results.data.id}`, fd)
-        .then((results) => alert(results.data))
-        .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY')))
-      .catch((err) => console.error(err));
+    if (dogImgUpload === undefined) {
+      setAlert(true);
+    } else {
+      setAlert(false);
+      const fd = new FormData();
+      fd.append('image', dogImgUpload, dogImgUpload.name);
+      fd.append('owner_id', currentUserID);
+      const information = dogValue;
+      information.hypo = hypoallergenic;
+      information.neutered = neutered;
+      information.healthy = health;
+      axios.post(`/app/dogs/${currentUserID}`, information)
+        .then((results) => axios.post(`/app/users/my-dog/${results.data.id}`, fd)
+          .then((results) => alert(results.data))
+          .then(() => updateDogs())
+          .catch((err) => setAlert(false)))
+        .catch((err) => console.error(err));
+    }
   };
 
   return (
     <div>
       <Modal style={customStyles} appElement={document.getElementById('app')} isOpen={addDog} onRequestClose={() => setAddDog(!addDog)}>
+        {alert ? (
+          <Alert severity="error">
+            <AlertTitle>Error</AlertTitle>
+            Please upload an image file -
+            {' '}
+            <strong>JPG/JPEG/PNG ONLY</strong>
+          </Alert>
+        ) : null}
         <div id="modalAddDog">
           <Form noValidate validated={validated} onSubmit={postDog}>
             <div>
@@ -84,7 +125,7 @@ function AddDogModal({ setAddDog, addDog, currentUserID }) {
             <Form.Row>
               <Form.Group as={Col}>
                 <Form.Label>Name</Form.Label>
-                <Form.Control as="input" type="text" pattern="[A-Za-z]" name="name" onChange={valueChange} required />
+                <Form.Control as="input" type="text" name="name" onChange={valueChange} required />
                 <FormControl.Feedback type="invalid">Please provide a valid name.</FormControl.Feedback>
               </Form.Group>
               <Form.Group as={Col}>
