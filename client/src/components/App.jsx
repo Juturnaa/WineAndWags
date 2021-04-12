@@ -103,6 +103,7 @@ const App = () => {
       });
   };
   const likeProfile = (id) => {
+
     let myLikes;
     axios.get(`/app/${currentUserID}/profile-likes`)
       .then((data) => {
@@ -115,7 +116,7 @@ const App = () => {
                 type_id: data.id,
                 recipient_id: currentUser.id,
                 sender_name: currentUser.name,
-              })
+              });
               alert('its a match!');
             });
         }
@@ -127,8 +128,7 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
-      })
-
+      });
   };
   const likePhoto = (photoId) => {
     axios.post(`/app/${currentUser.id}/photo-likes`, { liked_photo_id: photoId })
@@ -146,19 +146,17 @@ const App = () => {
       .catch((err) => console.log(err));
   };
 
-
   const getAllMessages = () => {
     const messages = {};
     matches.map((match) => {
       axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
         .then((results) => {
-          console.log('results messages', results.data)
           messages[match.user_id] = results.data;
           setAllMessages(messages);
         })
         .catch((err) => console.log(err));
     });
-  }
+  };
 
   useEffect(() => {
     if (currentUserID !== undefined) {
@@ -195,14 +193,20 @@ const App = () => {
     }
   }, [currentUserID]);
 
-
   const updateMatches = () => {
     axios.get(`/app/${currentUser.id}/matches`)
-        .then((results) => {
-          setMatches(results.data);
-        })
-        .catch((err) => console.log(err));
+      .then((results) => {
+        setMatches(results.data);
+      })
+      .catch((err) => console.log(err));
   };
+
+  useEffect(() => {
+    window.sessionStorage.setItem('matches', JSON.stringify(matches));
+    window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
+    window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
+    window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
+  }, [matches, allMessages, matchesPhotos, matchesInfo]);
 
   useEffect(() => {
     if (currentUser.id) {
@@ -301,6 +305,9 @@ const App = () => {
         messageCount={messageCount}
         getAllMessages={getAllMessages}
         setAllMessages={setAllMessages}
+        setHumanPhoto={setHumanPhoto}
+        setDogsPhoto={setDogsPhoto}
+        potientialPhoto={potientialPhoto}
       />
       {/* <ContextProvider>
         <Video />

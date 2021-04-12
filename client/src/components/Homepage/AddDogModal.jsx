@@ -1,21 +1,35 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-modal';
+import Form from 'react-bootstrap/Form';
+import Col from 'react-bootstrap/Col';
+import { Button, Input } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import FormControl from 'react-bootstrap/FormControl';
+import FormCheck from 'react-bootstrap/FormCheck';
+import axios from 'axios';
+import breed from '../../dummyData/dogBreed';
 
-// const customStyles = {
-//   content: {
-//     top: '50%',
-//     left: '50%',
-//     right: 'auto',
-//     bottom: 'auto',
-//     marginRight: '-50%',
-//     transform: 'translate(-50%, -50%)',
-//   },
-// };
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+};
 
-// fix bug of the Modal -> need to do z-index: Bootstrap React carousel is on top of the modal
+const useStyles = makeStyles({
+  submitButton: {
+    fontSize: 'medium',
+  },
+});
 
-function AddDogModal({ setAddDog, addDog }) {
+function AddDogModal({ setAddDog, addDog, currentUserID }) {
+  const classes = useStyles();
   const [dogImgUpload, setDogImgUpload] = useState();
   const [dogValue, setDogValue] = useState({
     name: '',
@@ -30,75 +44,126 @@ function AddDogModal({ setAddDog, addDog }) {
   const [hypoallergenic, setHypo] = useState(false);
   const [neutered, setNeutered] = useState(false);
   const [health, setHealth] = useState(false);
+  const [validated, setValidated] = useState(false);
 
   const valueChange = (e) => {
     setDogValue({ ...dogValue, [e.target.name]: e.target.value });
   };
 
+  const postDog = (e) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+    }
+    setValidated(true);
+    const fd = new FormData();
+    fd.append('image', dogImgUpload, dogImgUpload.name);
+    fd.append('owner_id', currentUserID);
+    const information = dogValue;
+    information.hypo = hypoallergenic;
+    information.neutered = neutered;
+    information.healthy = health;
+    axios.post(`/app/dogs/${currentUserID}`, information)
+      .then((results) => axios.post(`/app/users/my-dog/${results.data.id}`, fd)
+        .then((results) => alert(results.data))
+        .catch((err) => alert('INVALID FILE TYPE. JPG/JPEG/PNG ONLY')))
+      .catch((err) => console.error(err));
+  };
+
   return (
     <div>
-      <Modal appElement={document.getElementById('app')} isOpen={addDog} onRequestClose={() => setAddDog(!addDog)}>
+      <Modal style={customStyles} appElement={document.getElementById('app')} isOpen={addDog} onRequestClose={() => setAddDog(!addDog)}>
         <div id="modalAddDog">
-          <form>
+          <Form noValidate validated={validated} onSubmit={postDog}>
             <div>
-              Photo:
+              Photo
               {' '}
-              <input type="file" name="url" id="fileinput" onChange={(e) => setDogImgUpload(e.target.value)} />
+              <Input type="file" name="url" id="fileinput" onChange={(e) => setDogImgUpload(e.target.files[0])} />
             </div>
-            <div>
-              Name:
-              {' '}
-              <input type="text" name="name" onChange={valueChange} />
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Name</Form.Label>
+                <Form.Control as="input" type="text" pattern="[A-Za-z]" name="name" onChange={valueChange} required />
+                <FormControl.Feedback type="invalid">Please provide a valid name.</FormControl.Feedback>
+              </Form.Group>
+              <Form.Group as={Col}>
+                <Form.Label>Age</Form.Label>
+                <Form.Control as="input" name="age" type="number" min="0" max="30" onChange={valueChange} required />
+                <FormControl.Feedback type="invalid">Please provide a valid age.</FormControl.Feedback>
+              </Form.Group>
+            </Form.Row>
+            <Form.Group>
+              <Form.Label>Bio</Form.Label>
+              <Form.Control as="textarea" rows={3} col={20} name="bio" onChange={valueChange} required />
+              <FormControl.Feedback type="invalid">Please provide a valid bio.</FormControl.Feedback>
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Breed</Form.Label>
+              <Form.Control as="select" name="breed" onChange={valueChange} required>
+                <option value="">Select a breed</option>
+                {breed.map((item, index) => (
+                  <option key={index} value={item}>{item}</option>
+                ))}
+              </Form.Control>
+              <FormControl.Feedback type="invalid">Please select a breed.</FormControl.Feedback>
+            </Form.Group>
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Hypoallergenic</Form.Label>
+                <Form.Check type="checkbox" checked={hypoallergenic} onChange={() => setHypo(!hypoallergenic)} />
+              </Form.Group>
+              <Form.Group as={Col}>
+                <Form.Label>Neutered/Spayed</Form.Label>
+                <Form.Check type="checkbox" checked={neutered} onChange={() => setNeutered(!neutered)} />
+              </Form.Group>
+              <Form.Group as={Col}>
+                <Form.Label>Health issues</Form.Label>
+                <Form.Check type="checkbox" checked={health} onChange={() => setHealth(!health)} />
+              </Form.Group>
+            </Form.Row>
+            <Form.Row>
+              <Form.Group as={Col}>
+                <Form.Label>Gender</Form.Label>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="gender" value="M" onChange={valueChange} required />
+                  <FormCheck.Label>Male</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="gender" value="F" onChange={valueChange} required />
+                  <FormCheck.Label>Female</FormCheck.Label>
+                  <FormControl.Feedback type="invalid">Plesae select a gender.</FormControl.Feedback>
+                </Form.Check>
+              </Form.Group>
+              <Form.Group as={Col}>
+                <Form.Label>Size</Form.Label>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="XS" onChange={valueChange} required />
+                  <FormCheck.Label>XS</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="S" onChange={valueChange} required />
+                  <FormCheck.Label>S</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="M" onChange={valueChange} required />
+                  <FormCheck.Label>M</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="L" onChange={valueChange} required />
+                  <FormCheck.Label>L</FormCheck.Label>
+                </Form.Check>
+                <Form.Check>
+                  <FormCheck.Input type="radio" name="size" value="XL" onChange={valueChange} required />
+                  <FormCheck.Label>XL</FormCheck.Label>
+                  <FormControl.Feedback type="invalid">Please select a size.</FormControl.Feedback>
+                </Form.Check>
+              </Form.Group>
+            </Form.Row>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Button className={classes.submitButton} variant="outlined" type="submit">Add</Button>
             </div>
-            <div>
-              M
-              {' '}
-              <input type="radio" name="gender" value="M" onChange={valueChange} />
-              F
-              {' '}
-              <input type="radio" name="gender" value="F" onChange={valueChange} />
-            </div>
-            <div>
-              Hypoallergenic
-              {' '}
-              <input type="checkbox" onChange={() => setHypo(!hypoallergenic)} />
-            </div>
-            <div>
-              Neutered/Spayed
-              {' '}
-              <input type="checkbox" onChange={() => setNeutered(!neutered)} />
-            </div>
-            <div>
-              Age
-              {' '}
-              <input type="text" name="age" onChange={valueChange} />
-            </div>
-            <div>
-              Size:
-              {' '}
-              <br />
-              XS
-              {' '}
-              <input type="radio" name="size" value="XS" onChange={valueChange} />
-              S
-              {' '}
-              <input type="radio" name="size" value="S" onChange={valueChange} />
-              M
-              {' '}
-              <input type="radio" name="size" value="M" onChange={valueChange} />
-              L
-              {' '}
-              <input type="radio" name="size" value="L" onChange={valueChange} />
-              XL
-              {' '}
-              <input type="radio" name="size" value="XL" onChange={valueChange} />
-            </div>
-            <div>
-              Healthy
-              {' '}
-              <input type="checkbox" onChange={() => setHealth(!health)} />
-            </div>
-          </form>
+          </Form>
         </div>
       </Modal>
     </div>
@@ -108,11 +173,13 @@ function AddDogModal({ setAddDog, addDog }) {
 AddDogModal.propTypes = {
   setAddDog: PropTypes.func,
   addDog: PropTypes.bool,
+  currentUserID: PropTypes.number,
 };
 
 AddDogModal.defaultProps = {
   setAddDog: null,
   addDog: false,
+  currentUserID: null,
 };
 
 export default AddDogModal;
