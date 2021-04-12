@@ -173,6 +173,7 @@ export default function Filters({
             <Typography variant="h4" gutterBottom>Owner</Typography>
             <Typography variant="overline" display="block" gutterBottom>
               Age range:
+              {' '}
               {ownerAgeRange[0]}
               -
               {ownerAgeRange[1]}
@@ -180,6 +181,7 @@ export default function Filters({
             <Slider color="primary" style={sliderStyle} value={ownerAgeRange} onChange={(e, val) => changeOwnerAgeRange(val)} aria-labelledby="range-slider" min={18} max={100} />
             <Typography variant="overline" display="block" gutterBottom>
               Max distance:
+              {' '}
               {maxDistance}
               {' '}
               miles
@@ -202,6 +204,7 @@ export default function Filters({
             <Typography variant="h4" gutterBottom>Dog</Typography>
             <Typography variant="overline" display="block" gutterBottom>
               Age range:
+              {' '}
               {dogAgeRange[0]}
               -
               {dogAgeRange[1]}
@@ -209,6 +212,7 @@ export default function Filters({
             <Slider style={sliderStyle} value={dogAgeRange} onChange={(e, val) => changeDogAgeRange(val)} aria-labelledby="range-slider" min={0} max={30} />
             <Typography variant="overline" display="block" gutterBottom>
               Size range:
+              {' '}
               {displaySizeRangeAsString(sizeRange[0], sizeRange[1])}
             </Typography>
             <Slider
