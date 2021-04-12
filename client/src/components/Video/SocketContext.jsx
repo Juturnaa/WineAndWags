@@ -39,7 +39,7 @@ const ContextProvider = ({ children }) => {
     const peer = new Peer({ initiator: false, trickle: false, stream });
 
     peer.on('signal', (data) => {
-      socket.emit('answerCall', { singal: data, to: call.from });
+      socket.emit('answerCall', { signal: data, to: call.from });
     });
     peer.on('stream', (currentStream) => {
       userVideo.current.srcObject = currentStream;
