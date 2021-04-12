@@ -45,7 +45,7 @@ function Options({ username }) {
         {call.isReceivedCall && !callAccepted && (
           <button
             type="button"
-            onClick={() => answerCall}
+            onClick={answerCall}
           >
             Answer Call
           </button>
