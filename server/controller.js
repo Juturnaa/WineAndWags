@@ -83,6 +83,8 @@ const controller = {
       req.params.user_id,
       req.params.recipient_id,
       (err, results) => {
+        console.log(err)
+        console.log('testing')
         if (err) res.status(400).send(err);
         else res.status(200).send(results.rows);
       }

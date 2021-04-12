@@ -152,6 +152,7 @@ const dbHelpers = {
   updateReview: (req, callback) => {
     const { rating } = req.body;
     const qryStr = `UPDATE waw.dogs SET rating = ${rating} WHERE id=${req.params.dogid}`;
+    console.log(qryStr);
     db.query(qryStr, (err, results) => callback(err, results));
   },
 
@@ -163,7 +164,6 @@ const dbHelpers = {
     });
   },
   postNewConvo: (user_id, recipient_id, callback) => {
-    console.log(recipient_id);
     const queryStr = `INSERT INTO waw.convo SELECT nextval('waw.convo_id_seq'), ${user_id}, ${recipient_id}
     WHERE NOT EXISTS (SELECT id FROM waw.convo WHERE user1 in (${user_id}, ${recipient_id}) AND user2 in (${user_id}, ${recipient_id})) RETURNING *`;
     db.query(queryStr, (err, res) => {
@@ -172,6 +172,7 @@ const dbHelpers = {
   },
   getConvoMessages: (user_id, recipient_id, callback) => {
     const queryStr = `SELECT id, sender_id, body, time_stamp, to_char(time_stamp,'FMHH12:MI AM'), convo_id, opened FROM waw.message WHERE convo_id=(select id from waw.convo where user1 in (${user_id}, ${recipient_id}) and user2 in (${user_id}, ${recipient_id})) ORDER BY time_stamp ASC`;
+    console.log(queryStr);
     db.query(queryStr, (err, res) => {
       callback(err, res);
     });
