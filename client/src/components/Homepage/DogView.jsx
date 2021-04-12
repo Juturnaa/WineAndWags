@@ -6,8 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
     customHoverFocus: {
-      color: '#DDC8C4',
-      "&:hover": { color: "#EFF9F0" }
+      color: '#6b4d57',
+      "&:hover": { color: "#DDC8C4" }
     }
   }));
 
@@ -91,7 +91,7 @@ const DogView = ({ dog, dogPhotos, likePhoto, updateDogIndex, isDisplayingSkipDo
                         <div>{dog.name || "No name"}</div>                        
                         {isDisplayingSkipDogs ?  <div><ArrowForwardIcon className={classes.customHoverFocus} style={{ fontSize: '50px', marginLeft: '50%', marginTop: '1%' }} onClick={updateDogIndex}/></div>  : '' }
                       </div>
-                      <div className="text-component"><div className="text-component-key">About Me: </div> <div className="text-component-value"> {dog.bio} </div></div>
+                      <div className="text-component" style={{flexDirection:"row"}}><div className="text-component-key" style={{minWidth:"fit-content", marginRight:'5'}}>About Me: </div> <div className="text-component-value"> {dog.bio} </div></div>
                     <div className="card-text-info">
                       <div className="text-component"><div className="text-component-key">Age: </div> <div className="text-component-value"> {dog.age} </div>  </div>
                       <div className="text-component"><div className="text-component-key">Gender: </div> <div className="text-component-value"> {gender} </div>  </div>

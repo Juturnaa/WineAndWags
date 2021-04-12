@@ -23,8 +23,8 @@ const ProfileView = ({ user, photos, likePhoto }) => {
           <div id="card-name">
           {user !== undefined ? user.name : "No name"}
           </div>
-          <div className="text-component" style={{display:'inline-block'}}>
-              <div className="text-component-key">About Me: </div>
+          <div className="text-component" style={{flexDirection:'row'}}>
+              <div className="text-component-key" style={{minWidth:"fit-content", marginRight:'5'}}>About Me: </div>
               <div className="text-component-value">
                 {user !== undefined ? user.bio : null}
               </div>
