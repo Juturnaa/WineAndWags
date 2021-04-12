@@ -18,7 +18,6 @@
   padding: 2% 5%;
   border: solid 1px #13070c;
   border-radius: 0 0 15px 15px;
-  height: 40%;
   max-height: 322px;
   min-height: 270px;
   min-width: 250px;
@@ -26,7 +25,9 @@
 .card-text-info {
   display: flex;
   flex-flow: column wrap;
-  max-height: 200px;
+  max-height: 215px;
+  min-height: 215px;
+  min-width: 285px;
 }
 #card-name {
   font-size: 36px;
