@@ -18,7 +18,13 @@
   height: fit-content;
   width: 100%;
 }
+
 .filter-btn {
-  left: 0;
   position: absolute;
+  top: 3.5rem;
+  left: 0.1rem;
+}
+
+.like-buttons:hover {
+  cursor: pointer;
 }
