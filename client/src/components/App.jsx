@@ -12,7 +12,7 @@ import { ContextProvider } from './Video/SocketContext';
 import Video from './Video/Video';
 
 const App = () => {
-  const [currentUserID, setCurrentID] = useState(7);
+  const [currentUserID, setCurrentID] = useState();
   const [register, setRegister] = useState(false);
   const [landing, setLanding] = useState(true);
   const [currentUser, setCurrentUser] = useState({});

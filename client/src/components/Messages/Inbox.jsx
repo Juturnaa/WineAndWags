@@ -9,6 +9,7 @@ const Inbox = ({
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
+  const [messageQueueCount, setMessageQueueCount] = useState(1);
 
   const sessionMatches = JSON.parse(sessionStorage.getItem('matches'));
   const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
@@ -42,16 +43,46 @@ const Inbox = ({
   //   getAllMessages();
   // }, []);
 
-  const messageQueueCount = () => {
+  useEffect(() => {
     let count = 0;
     const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
+    console.log('sessionAllMessagesKeys', sessionAllMessagesKeys)
     for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
-      if (sessionAllMessages[i] && sessionAllMessages[i].length > 0) {
+      // console.log(sessionAllMessages[sessionAllMessagesKeys[i]])
+      if (sessionAllMessages[sessionAllMessagesKeys[i]].length > 0) {
         count += 1;
       }
     }
-    return count;
-  };
+    setMessageQueueCount(count);
+  }, []);
+
+  // const messageQueueCount = () => {
+  //   let count = 0;
+  //   const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
+  //   for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
+  //     if (sessionAllMessages[i] && sessionAllMessages[i].length > 0) {
+  //       count += 1;
+  //     }
+  //   }
+  //   return count;
+  // };
+
+  // const getProfilePhotos = () => {
+  //   let humanPhoto = '';
+  //   let dogPhoto = '';
+  //   for (let i = 0; i < sessionMatchesPhotos.length; i++)
+  //     if (photo.dog_id === null) {
+  //       humanPhoto = photo.url;
+  //       break;
+  //     }
+  //   })}
+  //   {match.forEach((photo) => {
+  //     if (photo.dog_id !== null) {
+  //       dogPhoto = photo.url;
+  //       break;
+  //     }
+  //   })}
+  // }
 
   return (
     <div id="inbox-container">
@@ -77,7 +108,7 @@ const Inbox = ({
               <div id="messages-container">
                 <span>
                   Message Queue (
-                  {messageQueueCount()}
+                  {messageQueueCount}
                   )
                 </span>
                 {Object.keys(sessionAllMessages).length !== 0

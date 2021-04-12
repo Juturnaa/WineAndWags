@@ -89,7 +89,7 @@ const Chat = ({
 
   return (
     <div>
-      <button type="button" onClick={onMessageClick}>Back to Inbox</button>
+      <button type="button" className="back-to-inbox-button" onClick={onMessageClick}><i class="fas fa-long-arrow-alt-left" /> Inbox</button>
       {/* <ReactNotification /> */}
       <br />
       <br />
