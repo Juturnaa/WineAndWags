@@ -35,11 +35,11 @@ for (let i = 1; i <= 200; i++) {
 }
 
 // -----------MATCHES FOR USER_ID 7------------ //
-for (let i = 8; i <= 300; i++) {
+for (let i = 8; i <= 40; i++) {
   // USER_ID 7 LIKES:
-  // db.query(`INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${7}, ${i}
-  // WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${7} AND liked_user_id in (${i}))`);
-  // USERS 8-20 LIKING USER 7
+  db.query(`INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${7}, ${i}
+  WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${7} AND liked_user_id in (${i}))`);
+  USERS 8-20 LIKING USER 7
   db.query(`INSERT INTO waw.profilelikes SELECT nextval('waw.profilelikes_id_seq'), ${i}, ${7}
   WHERE NOT EXISTS (SELECT id FROM waw.profilelikes WHERE user_id=${i} AND liked_user_id in (${7}))`);
   // POSTING NEW CONVOS FOR USER 7 MATCHES
