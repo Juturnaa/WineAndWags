@@ -190,7 +190,7 @@ const zipcodes = [
   '92823',
 ];
 
-const genders = ['M', 'F', 'All'];
+const genders = ['M', 'F'];
 
 const password = 'password';
 const cities = [
