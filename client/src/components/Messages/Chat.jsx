@@ -14,7 +14,6 @@ const Chat = ({
   const currentUserId = currentUser.id;
   let humanPhoto = '';
   let dogPhoto = '';
-  // const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
 
   const [inputValue, setInputValue] = useState('');
   const [calendar, clickedCalendar] = useState(false);
@@ -27,9 +26,6 @@ const Chat = ({
         setMessages(results.data);
         setDmSent((dmSent) => dmSent + 1);
         allMessages[matchUserId] = results.data;
-      })
-      .then(() => {
-        window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
       })
       .catch((err) => console.log(err));
   };
@@ -88,7 +84,7 @@ const Chat = ({
       .then((results) => {
         setInputValue('');
         getMessages();
-        setMessageCount((messageCount) => messageCount + 1);
+        // setMessageCount((messageCount) => messageCount + 1);
         const convo_id = results.data[0].convo_id;
         axios.post(`/app/notifications/${currentUserId}`, {
           type: 'message',
@@ -106,7 +102,7 @@ const Chat = ({
 
   return (
     <div>
-      <button type="button" className="back-to-inbox-button" onClick={onMessageClick}><i class="fas fa-long-arrow-alt-left" /> Inbox</button>
+      <button type="button" className="back-to-inbox-button" onClick={onMessageClick}><i className="fas fa-long-arrow-alt-left" /> Inbox</button>
       {/* <ReactNotification /> */}
       <br />
       <br />

@@ -9,17 +9,9 @@ const Inbox = ({
 }) => {
   const [messageMode, setMessageMode] = useState(false);
   const [currentMessageId, setCurrentMessageId] = useState(null);
-  const [messageQueueCount, setMessageQueueCount] = useState(1);
 
   let humanPhoto = '';
   let dogPhoto = '';
-
-  const sessionMatches = JSON.parse(sessionStorage.getItem('matches'));
-  const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
-  const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
-  const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
-
-  console.log('matches', matchesPhotos);
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
@@ -44,49 +36,31 @@ const Inbox = ({
     }
   };
 
-  useEffect(() => {
+  const messageQueueCount = () => {
     let count = 0;
-    const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
-    console.log('sessionAllMessagesKeys', sessionAllMessagesKeys);
-    for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
-      // console.log(sessionAllMessages[sessionAllMessagesKeys[i]])
-      if (sessionAllMessages[sessionAllMessagesKeys[i]].length > 0) {
+    const allMessageKeys = Object.keys(allMessages);
+    for (let i = 0; i < allMessageKeys.length; i++) {
+      if (allMessages[allMessageKeys[i]].length > 0) {
         count += 1;
       }
     }
-    setMessageQueueCount(count);
-  }, []);
-
-  // const messageQueueCount = () => {
-  //   let count = 0;
-  //   const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
-  //   for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
-  //     if (sessionAllMessages[i] && sessionAllMessages[i].length > 0) {
-  //       count += 1;
-  //     }
-  //   }
-  //   return count;
-  // };
-
-
+    return count;
+  };
 
   return (
     <div id="inbox-container">
       <br />
-
       {!messageMode
         ? (
           <div>
             <span>
               Match Queue (
-              {sessionMatches.length}
+              {matches.length}
               )
             </span>
             <MatchesCarousel
-              // matchesPhotos={matchesPhotos}
-              matchesPhotos={sessionMatchesPhotos}
-              // matchesInfo={matchesInfo}
-              matchesInfo={sessionMatchesInfo}
+              matchesPhotos={matchesPhotos}
+              matchesInfo={matchesInfo}
               onMessageClick={onMessageClick}
               messageQueueCount={messageQueueCount}
             />
@@ -94,11 +68,11 @@ const Inbox = ({
               <div id="messages-container">
                 <span>
                   Message Queue (
-                  {messageQueueCount}
+                  {messageQueueCount()}
                   )
                 </span>
-                {Object.keys(sessionAllMessages).length !== 0
-                  ? sessionMatchesPhotos.map((match, index) => {
+                {Object.keys(allMessages).length !== 0
+                  ? matchesPhotos.map((match, index) => {
                     const newestMessageIndex = allMessages[match[0].user_id].length - 1;
                     if (allMessages[match[0].user_id].length !== 0) {
                       return (
@@ -124,11 +98,11 @@ const Inbox = ({
                           </div>
                           <div className="name-message-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                             <div name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick} style={{ fontWeight: 'bold' }}>
-                              {sessionMatchesInfo[match[0].user_id].name}
+                              {matchesInfo[match[0].user_id].name}
                               {' '}
                               and
                               {' '}
-                              {sessionMatchesInfo[match[0].user_id].dogs_info[0].name}
+                              {matchesInfo[match[0].user_id].dogs_info[0].name}
                             </div>
 
                             {/* ---------Most recent message------------ */}
@@ -160,13 +134,13 @@ const Inbox = ({
         )
         : (
           <Chat
-            matchesPhotos={sessionMatchesPhotos}
+            matchesPhotos={matchesPhotos}
             messageMode={messageMode}
             currentMessageId={currentMessageId}
             allMessages={allMessages}
             onMessageClick={onMessageClick}
             currentUser={currentUser}
-            matchesInfo={sessionMatchesInfo}
+            matchesInfo={matchesInfo}
             setMessageCount={setMessageCount}
             messageCount={messageCount}
             getAllMessages={getAllMessages}

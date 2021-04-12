@@ -202,18 +202,10 @@ const App = () => {
   };
 
   useEffect(() => {
-    window.sessionStorage.setItem('matches', JSON.stringify(matches));
-    window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
-    window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
-    window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
-  }, [matches, allMessages, matchesPhotos, matchesInfo]);
-
-  useEffect(() => {
     if (currentUser.id) {
       axios.get(`/app/${currentUser.id}/matches`)
         .then((results) => {
           setMatches(results.data);
-          window.sessionStorage.setItem('matches', JSON.stringify(results.data));
         })
         .catch((err) => console.log(err));
     }
@@ -260,20 +252,6 @@ const App = () => {
       setReviewModal(false);
     }
   }, [appointment]);
-
-  useEffect(() => {
-    window.sessionStorage.setItem('matches', JSON.stringify(matches));
-    window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
-    window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
-    window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
-  }, [matches]);
-
-  // ------SETTING MATCH INFO TO SESSION STORAGE------ //
-  window.sessionStorage.setItem('matches', JSON.stringify(matches));
-  window.sessionStorage.setItem('matchesPhotos', JSON.stringify(matchesPhotos));
-  window.sessionStorage.setItem('messages', JSON.stringify(allMessages));
-  window.sessionStorage.setItem('matchesInfo', JSON.stringify(matchesInfo));
-  // ------------------------------------------------- //
 
   if (register) return (<Register setCurrentID={setCurrentID} setRegister={setRegister} setLanding={setLanding} />);
   else if (landing) return (<Landing setLanding={setLanding} setRegister={setRegister} setCurrentID={setCurrentID} />);
