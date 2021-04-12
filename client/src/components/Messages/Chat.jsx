@@ -12,6 +12,8 @@ const Chat = ({
 }) => {
   const matchUserId = matchesPhotos[currentMessageId][0].user_id;
   const currentUserId = currentUser.id;
+  let humanPhoto = '';
+  let dogPhoto = '';
   // const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
 
   const [inputValue, setInputValue] = useState('');
@@ -34,6 +36,21 @@ const Chat = ({
 
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
+  };
+
+  const getProfilePhotos = (matchPics) => {
+    for (let i = 0; i < matchPics.length; i++) {
+      if (matchPics[i].dog_id === null) {
+        humanPhoto = matchPics[i].url;
+        break;
+      }
+    }
+    for (let j = 0; j < matchPics.length; j++) {
+      if (matchPics[j].dog_id !== null) {
+        dogPhoto = matchPics[j].url;
+        break;
+      }
+    }
   };
 
   useEffect(() => {
@@ -95,8 +112,9 @@ const Chat = ({
       <br />
       <div id="chat-container">
         <div id="chat-images-container">
-          <img className="chat-human-photo" alt="human" src={matchesPhotos[currentMessageId][0].url} />
-          <img className="chat-dog-photo" alt="dog" src={matchesPhotos[currentMessageId][1].url} />
+          {getProfilePhotos(matchesPhotos[currentMessageId])}
+          <img className="chat-human-photo" alt="human" src={humanPhoto} />
+          <img className="chat-dog-photo" alt="dog" src={dogPhoto} />
           <div id="chat-names">
             {matchesInfo[matchUserId].name}
             {' '}

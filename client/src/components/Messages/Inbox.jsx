@@ -11,12 +11,15 @@ const Inbox = ({
   const [currentMessageId, setCurrentMessageId] = useState(null);
   const [messageQueueCount, setMessageQueueCount] = useState(1);
 
+  let humanPhoto = '';
+  let dogPhoto = '';
+
   const sessionMatches = JSON.parse(sessionStorage.getItem('matches'));
   const sessionAllMessages = JSON.parse(sessionStorage.getItem('messages'));
   const sessionMatchesInfo = JSON.parse(sessionStorage.getItem('matchesInfo'));
   const sessionMatchesPhotos = JSON.parse(sessionStorage.getItem('matchesPhotos'));
 
-  console.log('matches', matchesPhotos)
+  console.log('matches', matchesPhotos);
 
   const onMessageClick = (e) => {
     setMessageMode(!messageMode);
@@ -26,29 +29,25 @@ const Inbox = ({
     });
   };
 
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const messages = {};
-  //   matches.map((match) => {
-  //     axios.get(`/app/${currentUser.id}/convos/${match.user_id}`)
-  //       .then((results) => {
-  //         if (isMounted) {
-  //           messages[match.user_id] = results.data;
-  //         }
-  //       })
-  //       .catch((err) => console.log(err));
-  //   });
-  //   setAllMessages(messages);
-  //   return () => { isMounted = false; };
-  // }, [dmSent]);
-  // useEffect(() => {
-  //   getAllMessages();
-  // }, []);
+  const getProfilePhotos = (matchPics) => {
+    for (let i = 0; i < matchPics.length; i++) {
+      if (matchPics[i].dog_id === null) {
+        humanPhoto = matchPics[i].url;
+        break;
+      }
+    }
+    for (let j = 0; j < matchPics.length; j++) {
+      if (matchPics[j].dog_id !== null) {
+        dogPhoto = matchPics[j].url;
+        break;
+      }
+    }
+  };
 
   useEffect(() => {
     let count = 0;
     const sessionAllMessagesKeys = Object.keys(sessionAllMessages);
-    console.log('sessionAllMessagesKeys', sessionAllMessagesKeys)
+    console.log('sessionAllMessagesKeys', sessionAllMessagesKeys);
     for (let i = 0; i < sessionAllMessagesKeys.length; i++) {
       // console.log(sessionAllMessages[sessionAllMessagesKeys[i]])
       if (sessionAllMessages[sessionAllMessagesKeys[i]].length > 0) {
@@ -69,22 +68,7 @@ const Inbox = ({
   //   return count;
   // };
 
-  // const getProfilePhotos = () => {
-  //   let humanPhoto = '';
-  //   let dogPhoto = '';
-  //   for (let i = 0; i < sessionMatchesPhotos.length; i++)
-  //     if (photo.dog_id === null) {
-  //       humanPhoto = photo.url;
-  //       break;
-  //     }
-  //   })}
-  //   {match.forEach((photo) => {
-  //     if (photo.dog_id !== null) {
-  //       dogPhoto = photo.url;
-  //       break;
-  //     }
-  //   })}
-  // }
+
 
   return (
     <div id="inbox-container">
@@ -120,10 +104,11 @@ const Inbox = ({
                       return (
                         <div className="message-container" key={match[0].user_id} name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
                           <div className="messages-photos-container" name={index} data-id={allMessages[match[0].user_id][newestMessageIndex].id} onClick={onMessageClick}>
+                          {getProfilePhotos(match)}
                             <img
                               className="human-photos-small"
                               alt="human"
-                              src={match[0].url}
+                              src={humanPhoto}
                               name={index}
                               data-id={allMessages[match[0].user_id][newestMessageIndex].id}
                               onClick={onMessageClick}
@@ -131,7 +116,7 @@ const Inbox = ({
                             <img
                               className="dog-photos-small"
                               alt="dog"
-                              src={match[1].url}
+                              src={dogPhoto}
                               name={index}
                               data-id={allMessages[match[0].user_id][newestMessageIndex].id}
                               onClick={onMessageClick}
