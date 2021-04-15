@@ -3,10 +3,15 @@
 This project was a brief 1-week sprint where our team of 7 engineers were assigned to complete and MVP for two clients, Bruce & Stacy. The MVP was to be built from scratch, front to end and was designed to be a dating application for human and dogs. The features include being able to make an account, having preferences, matching with another user, notifications, calendar to make appointments, editing profile, and map of dog friendly places near the user. 
 
 ## Table of Contents
-* Technologies
-* Schemas
-* Getting started
+* [Technologies](#technologies "Goto technologies")
+* [Schemas](#schemas "Goto schemas")
+* [Getting started](#getting-started "Goto getting-started")
 
+## Technologies 
+
+## Schemas
+
+## Getting Started
 <!------
 1. git remote add juturna https://github.com/Juturnaa/WineAndWags.git
 2. git fetch --all
