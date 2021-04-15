@@ -4,10 +4,13 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 
 ## Table of Contents
 * [Technologies](#technologies "Goto technologies")
+* [Authentication](#authentication "Goto authentication")
 * [Schemas](#schemas "Goto schemas")
 * [Getting started](#getting-started "Goto getting-started")
 
 ## Technologies 
+
+## Authentication
 
 ## Schemas
 
