@@ -20,6 +20,7 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 * AWSs3
 
 ## Authentication
+We used bcrypt to authenticate our password for our users account when logging into the application. 
 > __Note:__ Make sure to keep all of authentication key's confidential and follow the example files for inputting the key to access the correct things.
 * __YelpAPI__ 
 * __AWSAPI__
