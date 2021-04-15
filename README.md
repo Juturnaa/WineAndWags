@@ -20,6 +20,9 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 
 ## Authentication
 > __Note:__ Make sure to keep all of authentication key's confidential and follow the example files for inputting the key to access the correct things.
+* __YelpAPI__ 
+* __AWSAPI__
+* __GoogleAPI__ 
 
 ## Schemas
 
