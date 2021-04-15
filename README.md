@@ -16,6 +16,7 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 * NodeJS
 * Material-UI 
 * FortAwesome 
+* PostgreSQL
 * AWSs3
 
 ## Authentication
