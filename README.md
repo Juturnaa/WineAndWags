@@ -9,8 +9,17 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 * [Getting started](#getting-started "Goto getting-started")
 
 ## Technologies 
+* ReactJS@V16
+* Webpack@V4
+* Babel@V7
+* Express
+* NodeJS
+* Material-UI 
+* FortAwesome 
+* AWSs3
 
 ## Authentication
+> __Note:__ Make sure to keep all of authentication key's confidential and follow the example files for inputting the key to access the correct things.
 
 ## Schemas
 
