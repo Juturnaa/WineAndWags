@@ -4,4 +4,5 @@ package-lock.json
 dbConfig.js
 awsConfig.js
 googleConfig.js
+yelpKey.js
 *.pem
