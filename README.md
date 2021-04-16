@@ -4,7 +4,6 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 ## Table of Contents
 * [Technologies](#technologies "Goto technologies")
 * [Authentication](#authentication "Goto authentication")
-* [Schemas](#schemas "Goto schemas")
 * [Getting started](#getting-started "Goto getting-started")
 
 ## Technologies 
@@ -28,8 +27,6 @@ We used bcrypt to authenticate our password for our users account when logging i
   * Sign into AWS and go to IAM department. 
   * Create a user and you will recieve access key ID and secret access key. 
 * __GoogleAPI__ The GoogleAPI is used to retrieve the google maps layout for the mapping component. 
-
-## Schemas
 
 ## Getting Started
 1. Install the dependencies. 
