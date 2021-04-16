@@ -22,13 +22,44 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 ## Authentication
 We used bcrypt to authenticate our password for our users account when logging into the application. 
 > __Note:__ Make sure to keep all of authentication key's confidential and follow the example files for inputting the key to access the correct things.
-* __YelpAPI__ 
-* __AWSAPI__
-* __GoogleAPI__ 
+* __YelpAPI__ We use YelpAPI to recover yelp's data to locate where the dog friendly places are aroud the user for the map component. 
+  * You do need a yelp account to access the authorization key. 
+  * https://www.yelp.com/developers/v3/manage_app - make an App and Yelp will give you a ClientID and API Key.
+* __AWSAPI__ We use the AWSAPI to access the s3 storage for being able to upload photos to the database. 
+  * Sign into AWS and go to IAM department. 
+  * Create a user and you will recieve access key ID and secret access key. 
+* __GoogleAPI__ The GoogleAPI is used to retrieve the google maps layout for the mapping component. 
 
 ## Schemas
 
 ## Getting Started
+1. Install the dependencies. 
+  ```
+  npm install 
+  ```
+2. Create the access keys that are directed in [Authentication](#authentication "Goto authentication") and fill out the proper files under config folder. 
+  * dbConfig.js → Access file to connect to PostgreSQL. 
+  * awsConfig.js → Insert AWS IAM Key. 
+  * yelpKey.js → Insert YelpAPI Key. 
+  * googleConfig.js → Insert GoogleAPI Key. 
+3. Run the schema file into your local database. ``` psql -U [username] < server/db/schema.sql ```
+4. Run the seeding functions into your database. Please run them in the chronological order below. 
+  1. usersSeed.js
+  2. dogSeed.js
+  3. photoSeed.js
+  4. filterSeed.js
+  5. matchesSeed.js
+  6. notifSeed.js
+  7. photosLikedSeeder.js
+6. Build the application. 
+  ```
+  npm run build
+  ```
+5. Start the application.
+  ```
+  npm run start
+  ```
+6. Navigate to ```localhost:3000```
 <!------
 1. git remote add juturna https://github.com/Juturnaa/WineAndWags.git
 2. git fetch --all
