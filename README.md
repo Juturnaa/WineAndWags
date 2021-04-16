@@ -38,10 +38,10 @@ We used bcrypt to authenticate our password for our users account when logging i
   npm install 
   ```
 2. Create the access keys that are directed in [Authentication](#authentication "Goto authentication") and fill out the proper files under config folder. 
-  * dbConfig.js → Access file to connect to PostgreSQL. 
-  * awsConfig.js → Insert AWS IAM Key. 
-  * yelpKey.js → Insert YelpAPI Key. 
-  * googleConfig.js → Insert GoogleAPI Key. 
+   * dbConfig.js → Access file to connect to PostgreSQL. 
+   * awsConfig.js → Insert AWS IAM Key. 
+   * yelpKey.js → Insert YelpAPI Key. 
+   * googleConfig.js → Insert GoogleAPI Key. 
 3. Run the schema file into your local database. ``` psql -U [username] < server/db/schema.sql ```
 4. Run the seeding functions into your database. Please run them in the chronological order below. 
   1. usersSeed.js
@@ -51,15 +51,15 @@ We used bcrypt to authenticate our password for our users account when logging i
   5. matchesSeed.js
   6. notifSeed.js
   7. photosLikedSeeder.js
-6. Build the application. 
+5. Build the application. 
   ```
   npm run build
   ```
-5. Start the application.
+6. Start the application.
   ```
   npm run start
   ```
-6. Navigate to ```localhost:3000```
+7. Navigate to ```localhost:3000```
 <!------
 1. git remote add juturna https://github.com/Juturnaa/WineAndWags.git
 2. git fetch --all
