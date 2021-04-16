@@ -44,13 +44,13 @@ We used bcrypt to authenticate our password for our users account when logging i
    * googleConfig.js → Insert GoogleAPI Key. 
 3. Run the schema file into your local database. ``` psql -U [username] < server/db/schema.sql ```
 4. Run the seeding functions into your database. Please run them in the chronological order below. 
-  1. usersSeed.js
-  2. dogSeed.js
-  3. photoSeed.js
-  4. filterSeed.js
-  5. matchesSeed.js
-  6. notifSeed.js
-  7. photosLikedSeeder.js
+   1. usersSeed.js
+   2. dogSeed.js
+   3. photoSeed.js
+   4. filterSeed.js
+   5. matchesSeed.js
+   6. notifSeed.js
+   7. photosLikedSeeder.js
 5. Build the application. 
   ```
   npm run build
