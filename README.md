@@ -15,7 +15,7 @@ This project was a brief 1-week sprint where our team of 7 engineers were assign
 * Material-UI 
 * FortAwesome 
 * PostgreSQL
-* AWSs3
+* AWS s3
 
 ## Authentication
 We used bcrypt to authenticate our password for our users account when logging into the application. 
